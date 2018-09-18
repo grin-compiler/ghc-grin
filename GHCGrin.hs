@@ -97,5 +97,5 @@ main = do opts <- getOpts
 
 pipelineOpts :: PipelineOpts
 pipelineOpts = defaultOpts
-  { _poOutputDir = "."
+  { _poOutputDir = ".ghc-grin2"
   }
