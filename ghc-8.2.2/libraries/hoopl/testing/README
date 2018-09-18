@@ -1,0 +1,58 @@
+Here is some testing code which may also serve as a sample client.
+
+Base system
+~~~~~~~~~~~
+  Ast.hs         Abstract syntax for a language of basic blocks,
+                 instructions, and calls
+
+  IR.hs          Intermediate Representation of a procedure whose body is a
+                 Hoopl control-flow graph.
+
+  Expr.hs        Definition of expressions used in both Ast and IR
+
+  Ast2ir.hs      Translation from Ast to IR.  The highlight is mapping
+                 the string labels in the source from the abstract Labels
+                 defined by Hoopl.
+
+  Ir2Ast.hs      Translated from IR to Ast. The original string Labels to the
+                 abstract Labels mappings are used to do this translation.
+
+
+Optimizations
+~~~~~~~~~~~~~
+  ConstProp.hs   Constant propagation as described in the paper.
+
+  Live.hs        Live-variable analysis and dead-assignment elimination.
+
+  Simplify.s     A simplifier for expressions, written as a "deep
+                 forward rewriter" for Hoopl.  Used in constant
+                 propagation. 
+
+  OptSupport.hs  Mysterious functions to support lattice computations
+                 and expression-crawling.  May one day be documented.
+                 Eventually may be migrated into Hoopl in generic
+                 form, to support multiple clients.
+
+
+Interpreter
+~~~~~~~~~~~
+  Eval.hs        An interpreter for control-flow graphs.  We'd like to
+                 make this code higher-order.
+
+  EvalMonad.hs   A monad that maintains the state used by the
+                 interpreter: a value for every variable, plus values
+                 on the heap.
+
+
+Testing
+~~~~~~~
+  Main.hs        Just hacking---there's no real testing code yet
+
+  
+
+Other
+~~~~~
+  Parse.hs       A parser built using Parsec---does not depend on
+                 Hoopl at all.
+
+  PP.hs          A work in progress?

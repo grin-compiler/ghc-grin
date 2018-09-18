@@ -1,0 +1,21 @@
+f(a) {
+L0:
+  x = 3 + 4
+  res = 0
+  goto L1
+L1:
+  if a > 0 then goto L2 else goto L6
+L2:
+  a = a - 1
+  res = res + x
+  if x > 5 then goto L3 else goto L4
+L3:
+  goto L5
+L4:
+  x = x - 1
+  goto L5
+L5:
+  goto L1
+L6:
+  ret (res)
+}

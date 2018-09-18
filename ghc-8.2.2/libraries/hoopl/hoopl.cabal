@@ -1,0 +1,82 @@
+Name:                hoopl
+Version:             3.10.2.2
+-- NOTE: Don't forget to update ./changelog.md
+Description:
+  Higher-order optimization library
+  .
+  See /Norman Ramsey, Joao Dias, and Simon Peyton Jones./
+  <http://research.microsoft.com/en-us/um/people/simonpj/Papers/c--/hoopl-haskell10.pdf "Hoopl: A Modular, Reusable Library for Dataflow Analysis and Transformation"> /(2010)/ for more details.
+
+License:             BSD3
+License-File:        LICENSE
+Author:              Norman Ramsey, Joao Dias, Simon Marlow and Simon Peyton Jones
+Maintainer:          Ning Wang <email@ningwang.org>, Michal Terepeta <michal.terepeta@gmail.com>, Norman Ramsey <nr@cs.tufts.edu>
+Homepage:            https://github.com/haskell/hoopl
+Bug-Reports:         https://github.com/haskell/hoopl/issues/
+Build-Type:          Simple
+Cabal-Version:       >=1.10
+Synopsis:            A library to support dataflow analysis and optimization
+Category:            Compilers/Interpreters
+Tested-With:         GHC>=7.0.1
+Extra-Source-Files:  README.md, changelog.md
+
+Source-repository head
+  Type:       git
+  Location:   http://git.haskell.org/packages/hoopl.git
+
+Library
+  Default-Language:  Haskell2010
+  Other-Extensions:  CPP
+                     FlexibleContexts
+                     FlexibleInstances
+                     GADTs
+                     LiberalTypeSynonyms
+                     MultiParamTypeClasses
+                     RankNTypes
+                     ScopedTypeVariables
+                     TypeFamilies
+                     TypeSynonymInstances
+  If impl(ghc>=7.2)
+    Other-Extensions: Safe Trustworthy
+
+  Hs-Source-Dirs:    src
+  Build-Depends:     base >= 4.3 && < 4.11,
+                     containers >= 0.5 && < 0.6
+  Exposed-Modules:   Compiler.Hoopl,
+                     Compiler.Hoopl.Internals,
+                     Compiler.Hoopl.Wrappers,
+                     Compiler.Hoopl.Passes.Dominator,
+                     Compiler.Hoopl.Passes.DList
+
+  -- The remaining modules are hidden *provisionally*
+  Other-modules:     Compiler.Hoopl.Checkpoint,
+                     Compiler.Hoopl.Collections,
+                     Compiler.Hoopl.Combinators,
+                     Compiler.Hoopl.Dataflow,
+                     Compiler.Hoopl.Debug,
+                     Compiler.Hoopl.Block,
+                     Compiler.Hoopl.Graph,
+                     Compiler.Hoopl.Label,
+                     Compiler.Hoopl.MkGraph,
+                     Compiler.Hoopl.Fuel,
+                     Compiler.Hoopl.Pointed,
+                     Compiler.Hoopl.Shape,
+                     Compiler.Hoopl.Show,
+                     Compiler.Hoopl.Unique,
+                     Compiler.Hoopl.XUtil
+
+  Ghc-Options:       -Wall -fno-warn-name-shadowing
+
+Test-Suite hoopl-test
+  Default-Language:  Haskell2010
+  Type:              exitcode-stdio-1.0
+  Main-Is:           Main.hs
+  Hs-Source-Dirs:    testing src
+  Build-Depends:     base >= 4.3 && < 4.10,
+                     containers >= 0.5 && < 0.6,
+                     filepath,
+                     mtl >= 2.1.3.1,
+                     parsec >= 3.1.7,
+                     test-framework < 0.9,
+                     test-framework-hunit < 0.4,
+                     mtl >= 2.1.3.1

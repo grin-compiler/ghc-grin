@@ -1,0 +1,6 @@
+-- Test that we don't crash on divide by zero.
+procName() {
+L0:
+  reg1 = 42 / 0
+  ret(reg1)
+}

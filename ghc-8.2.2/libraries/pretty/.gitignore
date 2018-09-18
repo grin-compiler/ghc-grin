@@ -1,0 +1,6 @@
+dist/
+GNUmakefile
+dist-install
+ghc.mk
+cabal.sandbox.config
+.cabal-sandbox

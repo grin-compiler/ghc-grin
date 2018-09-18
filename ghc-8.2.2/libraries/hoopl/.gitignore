@@ -1,0 +1,19 @@
+.*.swp
+*.bak
+*~
+
+# GHC build system produces these
+GNUmakefile
+
+dist
+dist-install
+dist-boot
+ghc.mk
+.hpc
+
+# Cabal sandbox
+.cabal-sandbox
+cabal.sandbox.config
+
+# Coverage reports
+*.tix

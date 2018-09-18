@@ -1,0 +1,6 @@
+-- Tests parsing of memory stores and loads.
+procName(mm, aa) {
+L0:
+  m[aa] = m[mm] + m[aa]
+  ret(m[aa])
+}

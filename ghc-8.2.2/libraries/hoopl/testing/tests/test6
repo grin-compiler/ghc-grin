@@ -1,0 +1,9 @@
+-- Tests that we don't remove any of var1 as dead code.
+procName(var1, var2) {
+L0:
+  var1 = m[var2]
+  var1 = m[m[var1]]
+  var1 = m[var1 + var1]
+  var1 = m[m[var1]] - m[var1 + var1]
+  ret(var1)
+}

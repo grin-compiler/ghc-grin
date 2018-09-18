@@ -1,0 +1,1828 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><title
+    >TypeFamilies</title
+    ><link href="#" rel="stylesheet" type="text/css" title="Ocean"
+     /><script src="haddock-util.js" type="text/javascript"
+    ></script
+    ><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"
+    ></script
+    ><script type="text/javascript"
+    >//
+window.onload = function () {pageLoad();};
+//
+</script
+    ></head
+  ><body
+  ><div id="package-header"
+    ><ul class="links" id="page-menu"
+      ><li
+	><a href="#"
+	  >Contents</a
+	  ></li
+	><li
+	><a href="#"
+	  >Index</a
+	  ></li
+	></ul
+      ><p class="caption empty"
+      ></p
+      ></div
+    ><div id="content"
+    ><div id="module-header"
+      ><table class="info"
+	><tr
+	  ><th
+	    >Safe Haskell</th
+	    ><td
+	    >Safe</td
+	    ></tr
+	  ></table
+	><p class="caption"
+	>TypeFamilies</p
+	></div
+      ><div id="description"
+      ><p class="caption"
+	>Description</p
+	><div class="doc"
+	><p
+	  >Doc for: module TypeFamilies</p
+	  ></div
+	></div
+      ><div id="synopsis"
+      ><p id="control.syn" class="caption expander" onclick="toggleSection('syn')"
+	>Synopsis</p
+	><ul id="section.syn" class="hide" onclick="toggleSection('syn')"
+	><li class="src short"
+	  ><span class="keyword"
+	    >data</span
+	    > <a href="#"
+	    >X</a
+	    ><ul class="subs"
+	    ><li
+	      >= <a href="#"
+		>X</a
+		></li
+	      ><li
+	      >| <a href="#"
+		>XX</a
+		></li
+	      ><li
+	      >| <a href="#"
+		>XXX</a
+		></li
+	      ></ul
+	    ></li
+	  ><li class="src short"
+	  ><span class="keyword"
+	    >data</span
+	    > <a href="#"
+	    >Y</a
+	    ></li
+	  ><li class="src short"
+	  ><span class="keyword"
+	    >data</span
+	    > <a href="#"
+	    >Z</a
+	    ><ul class="subs"
+	    ><li
+	      >= <a href="#"
+		>ZA</a
+		></li
+	      ><li
+	      >| <a href="#"
+		>ZB</a
+		></li
+	      ></ul
+	    ></li
+	  ><li class="src short"
+	  ><span class="keyword"
+	    >class</span
+	    > <a href="#"
+	    >Test</a
+	    > a</li
+	  ><li class="src short"
+	  ><span class="keyword"
+	    >type family</span
+	    > <a href="#"
+	    >Foo</a
+	    > a :: k</li
+	  ><li class="src short"
+	  ><span class="keyword"
+	    >data family</span
+	    > <a href="#"
+	    >Bat</a
+	    > (a :: k) :: <a href="#"
+	    >*</a
+	    ></li
+	  ><li class="src short"
+	  ><span class="keyword"
+	    >class</span
+	    > <a href="#"
+	    >Assoc</a
+	    > a <span class="keyword"
+	    >where</span
+	    ><ul class="subs"
+	    ><li
+	      ><span class="keyword"
+		>data</span
+		> <a href="#"
+		>AssocD</a
+		> a :: <a href="#"
+		>*</a
+		></li
+	      ><li
+	      ><span class="keyword"
+		>type</span
+		> <a href="#"
+		>AssocT</a
+		> a :: <a href="#"
+		>*</a
+		></li
+	      ></ul
+	    ></li
+	  ><li class="src short"
+	  ><span class="keyword"
+	    >type family</span
+	    > <a href="#"
+	    >Bar</a
+	    > b <span class="keyword"
+	    >where ...</span
+	    ></li
+	  ><li class="src short"
+	  ><span class="keyword"
+	    >type family</span
+	    > (a :: k) <a href="#"
+	    >&lt;&gt;</a
+	    > (b :: k) :: k</li
+	  ><li class="src short"
+	  ><span class="keyword"
+	    >class</span
+	    > (a :: k) <a href="#"
+	    >&gt;&lt;</a
+	    > (b :: k)</li
+	  ></ul
+	></div
+      ><div id="interface"
+      ><h1
+	>Documentation</h1
+	><div class="top"
+	><p class="src"
+	  ><span class="keyword"
+	    >data</span
+	    > <a id="t:X" class="def"
+	    >X</a
+	    > <a href="#" class="selflink"
+	    >#</a
+	    ></p
+	  ><div class="doc"
+	  ><p
+	    >Doc for: data X</p
+	    ></div
+	  ><div class="subs constructors"
+	  ><p class="caption"
+	    >Constructors</p
+	    ><table
+	    ><tr
+	      ><td class="src"
+		><a id="v:X" class="def"
+		  >X</a
+		  ></td
+		><td class="doc"
+		><p
+		  >Doc for: X</p
+		  ></td
+		></tr
+	      ><tr
+	      ><td class="src"
+		><a id="v:XX" class="def"
+		  >XX</a
+		  ></td
+		><td class="doc"
+		><p
+		  >Doc for: XX</p
+		  ></td
+		></tr
+	      ><tr
+	      ><td class="src"
+		><a id="v:XXX" class="def"
+		  >XXX</a
+		  ></td
+		><td class="doc"
+		><p
+		  >Doc for: XXX</p
+		  ></td
+		></tr
+	      ></table
+	    ></div
+	  ><div class="subs instances"
+	  ><p id="control.i:X" class="caption collapser" onclick="toggleSection('i:X')"
+	    >Instances</p
+	    ><div id="section.i:X" class="show"
+	    ><table
+	      ><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:X:-62--60-:1" class="instance expander" onclick="toggleSection('i:id:X:-62--60-:1')"
+		      ></span
+		      > <a href="#"
+		      >(&gt;&lt;)</a
+		      > <a href="#"
+		      >X</a
+		      > <a href="#"
+		      >XX</a
+		      > <a href="#"
+		      >XXX</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:X:-62--60-:1" class="inst-details hide"
+		    ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:X:Assoc:2" class="instance expander" onclick="toggleSection('i:id:X:Assoc:2')"
+		      ></span
+		      > <a href="#"
+		      >Assoc</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >X</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: instance Assoc X</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:X:Assoc:2" class="inst-details hide"
+		    ><div class="subs associated-types"
+		      ><p class="caption"
+			>Associated Types</p
+			><p class="src"
+			><span class="keyword"
+			  >data</span
+			  > <a href="#"
+			  >AssocD</a
+			  > <a href="#"
+			  >X</a
+			  > (a :: <a href="#"
+			  >X</a
+			  >) :: <a href="#"
+			  >*</a
+			  > <a href="#" class="selflink"
+			  >#</a
+			  ></p
+			><p class="src"
+			><span class="keyword"
+			  >type</span
+			  > <a href="#"
+			  >AssocT</a
+			  > <a href="#"
+			  >X</a
+			  > (a :: <a href="#"
+			  >X</a
+			  >) :: <a href="#"
+			  >*</a
+			  > <a href="#" class="selflink"
+			  >#</a
+			  ></p
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:X:Test:3" class="instance expander" onclick="toggleSection('i:id:X:Test:3')"
+		      ></span
+		      > <a href="#"
+		      >Test</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >X</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: instance Test X</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:X:Test:3" class="inst-details hide"
+		    ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:X:Foo:4" class="instance expander" onclick="toggleSection('i:id:X:Foo:4')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >Foo</a
+		      > <a href="#"
+		      >X</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:X:Foo:4" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>Foo</a
+			> <a href="#"
+			>X</a
+			> = <a href="#"
+			>Y</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:X:-60--62-:5" class="instance expander" onclick="toggleSection('i:id:X:-60--62-:5')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >(&lt;&gt;)</a
+		      > <a href="#"
+		      >X</a
+		      > <a href="#"
+		      >XXX</a
+		      > <a href="#"
+		      >XX</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:X:-60--62-:5" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>(&lt;&gt;)</a
+			> <a href="#"
+			>X</a
+			> <a href="#"
+			>XXX</a
+			> <a href="#"
+			>XX</a
+			> = <a href="#"
+			>X</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:X:AssocD:6" class="instance expander" onclick="toggleSection('i:id:X:AssocD:6')"
+		      ></span
+		      > <span class="keyword"
+		      >data</span
+		      > <a href="#"
+		      >AssocD</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >X</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:X:AssocD:6" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>data</span
+			> <a href="#"
+			>AssocD</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>X</a
+			> = <a id="v:AssocX" class="def"
+			>AssocX</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:X:AssocT:7" class="instance expander" onclick="toggleSection('i:id:X:AssocT:7')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >AssocT</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >X</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:X:AssocT:7" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>AssocT</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>X</a
+			> = <a href="#"
+			>Foo</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>X</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:X:Bat:8" class="instance expander" onclick="toggleSection('i:id:X:Bat:8')"
+		      ></span
+		      > <span class="keyword"
+		      >data</span
+		      > <a href="#"
+		      >Bat</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >X</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: data instance Bat X</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:X:Bat:8" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>data</span
+			> <a href="#"
+			>Bat</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>X</a
+			> <ul class="inst"
+			><li class="inst"
+			  >= <a id="v:BatX" class="def"
+			    >BatX</a
+			    > <a href="#"
+			    >X</a
+			    ></li
+			  ><li class="inst"
+			  >| <a id="v:BatXX" class="def"
+			    >BatXX</a
+			    > { <ul class="subs"
+			    ><li
+			      ><a id="v:aaa" class="def"
+				>aaa</a
+				> :: <a href="#"
+				>X</a
+				></li
+			      ><li
+			      ><a id="v:bbb" class="def"
+				>bbb</a
+				> :: <a href="#"
+				>Y</a
+				></li
+			      ></ul
+			    > }</li
+			  ></ul
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:X:Foo:9" class="instance expander" onclick="toggleSection('i:id:X:Foo:9')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >Foo</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >X</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:X:Foo:9" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>Foo</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>X</a
+			> = <a href="#"
+			>Y</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:X:-60--62-:10" class="instance expander" onclick="toggleSection('i:id:X:-60--62-:10')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >(&lt;&gt;)</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >X</a
+		      > a</span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:X:-60--62-:10" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>(&lt;&gt;)</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>X</a
+			> a = <a href="#"
+			>X</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		></table
+	      ></div
+	    ></div
+	  ></div
+	><div class="top"
+	><p class="src"
+	  ><span class="keyword"
+	    >data</span
+	    > <a id="t:Y" class="def"
+	    >Y</a
+	    > <a href="#" class="selflink"
+	    >#</a
+	    ></p
+	  ><div class="doc"
+	  ><p
+	    >Doc for: data Y</p
+	    ></div
+	  ><div class="subs instances"
+	  ><p id="control.i:Y" class="caption collapser" onclick="toggleSection('i:Y')"
+	    >Instances</p
+	    ><div id="section.i:Y" class="show"
+	    ><table
+	      ><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:Y:Assoc:1" class="instance expander" onclick="toggleSection('i:id:Y:Assoc:1')"
+		      ></span
+		      > <a href="#"
+		      >Assoc</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >Y</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: instance Assoc Y</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:Y:Assoc:1" class="inst-details hide"
+		    ><div class="subs associated-types"
+		      ><p class="caption"
+			>Associated Types</p
+			><p class="src"
+			><span class="keyword"
+			  >data</span
+			  > <a href="#"
+			  >AssocD</a
+			  > <a href="#"
+			  >Y</a
+			  > (a :: <a href="#"
+			  >Y</a
+			  >) :: <a href="#"
+			  >*</a
+			  > <a href="#" class="selflink"
+			  >#</a
+			  ></p
+			><p class="src"
+			><span class="keyword"
+			  >type</span
+			  > <a href="#"
+			  >AssocT</a
+			  > <a href="#"
+			  >Y</a
+			  > (a :: <a href="#"
+			  >Y</a
+			  >) :: <a href="#"
+			  >*</a
+			  > <a href="#" class="selflink"
+			  >#</a
+			  ></p
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:Y:Test:2" class="instance expander" onclick="toggleSection('i:id:Y:Test:2')"
+		      ></span
+		      > <a href="#"
+		      >Test</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >Y</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: instance Test Y</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:Y:Test:2" class="inst-details hide"
+		    ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:Y:Bar:3" class="instance expander" onclick="toggleSection('i:id:Y:Bar:3')"
+		      ></span
+		      > <span class="keyword"
+		      >data</span
+		      > <a href="#"
+		      >Bar</a
+		      > <a href="#"
+		      >Y</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:Y:Bar:3" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>data</span
+			> <a href="#"
+			>Bar</a
+			> <a href="#"
+			>Y</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:Y:AssocD:4" class="instance expander" onclick="toggleSection('i:id:Y:AssocD:4')"
+		      ></span
+		      > <span class="keyword"
+		      >data</span
+		      > <a href="#"
+		      >AssocD</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >Y</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:Y:AssocD:4" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>data</span
+			> <a href="#"
+			>AssocD</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>Y</a
+			> = <a id="v:AssocY" class="def"
+			>AssocY</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:Y:AssocT:5" class="instance expander" onclick="toggleSection('i:id:Y:AssocT:5')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >AssocT</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >Y</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:Y:AssocT:5" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>AssocT</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>Y</a
+			> = <a href="#"
+			>Bat</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>Y</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:Y:Bat:6" class="instance expander" onclick="toggleSection('i:id:Y:Bat:6')"
+		      ></span
+		      > <span class="keyword"
+		      >data</span
+		      > <a href="#"
+		      >Bat</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >Y</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: data instance Bat Y</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:Y:Bat:6" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>data</span
+			> <a href="#"
+			>Bat</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>Y</a
+			> = <a id="v:BatY" class="def"
+			>BatY</a
+			> <a href="#"
+			>Y</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:Y:Foo:7" class="instance expander" onclick="toggleSection('i:id:Y:Foo:7')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >Foo</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >Y</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:Y:Foo:7" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>Foo</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>Y</a
+			> = <a href="#"
+			>X</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:Y:-60--62-:8" class="instance expander" onclick="toggleSection('i:id:Y:-60--62-:8')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >(&lt;&gt;)</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >Y</a
+		      > a</span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:Y:-60--62-:8" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>(&lt;&gt;)</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>Y</a
+			> a = a</div
+		      ></div
+		    ></td
+		  ></tr
+		></table
+	      ></div
+	    ></div
+	  ></div
+	><div class="top"
+	><p class="src"
+	  ><span class="keyword"
+	    >data</span
+	    > <a id="t:Z" class="def"
+	    >Z</a
+	    > <a href="#" class="selflink"
+	    >#</a
+	    ></p
+	  ><div class="doc"
+	  ><p
+	    >Doc for: data Z</p
+	    ></div
+	  ><div class="subs constructors"
+	  ><p class="caption"
+	    >Constructors</p
+	    ><table
+	    ><tr
+	      ><td class="src"
+		><a id="v:ZA" class="def"
+		  >ZA</a
+		  ></td
+		><td class="doc empty"
+		></td
+		></tr
+	      ><tr
+	      ><td class="src"
+		><a id="v:ZB" class="def"
+		  >ZB</a
+		  ></td
+		><td class="doc empty"
+		></td
+		></tr
+	      ></table
+	    ></div
+	  ><div class="subs instances"
+	  ><p id="control.i:Z" class="caption collapser" onclick="toggleSection('i:Z')"
+	    >Instances</p
+	    ><div id="section.i:Z" class="show"
+	    ><table
+	      ><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:id:Z:Bat:1" class="instance expander" onclick="toggleSection('i:id:Z:Bat:1')"
+		      ></span
+		      > <span class="keyword"
+		      >data</span
+		      > <a href="#"
+		      >Bat</a
+		      > <a href="#"
+		      >Z</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: data instance Bat Z</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:id:Z:Bat:1" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>data</span
+			> <a href="#"
+			>Bat</a
+			> <a href="#"
+			>Z</a
+			> <span class="keyword"
+			>where</span
+			><ul class="inst"
+			><li class="inst"
+			  ><a id="v:BatZ1" class="def"
+			    >BatZ1</a
+			    > :: <a href="#"
+			    >Bat</a
+			    > <a href="#"
+			    >Z</a
+			    > <a href="#"
+			    >ZA</a
+			    ></li
+			  ><li class="inst"
+			  ><a id="v:BatZ2" class="def"
+			    >BatZ2</a
+			    > :: <a href="#"
+			    >Bat</a
+			    > <a href="#"
+			    >Z</a
+			    > <a href="#"
+			    >ZB</a
+			    ></li
+			  ></ul
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		></table
+	      ></div
+	    ></div
+	  ></div
+	><div class="top"
+	><p class="src"
+	  ><span class="keyword"
+	    >class</span
+	    > <a id="t:Test" class="def"
+	    >Test</a
+	    > a <a href="#" class="selflink"
+	    >#</a
+	    ></p
+	  ><div class="doc"
+	  ><p
+	    >Doc for: class Test a</p
+	    ></div
+	  ><div class="subs instances"
+	  ><p id="control.i:Test" class="caption collapser" onclick="toggleSection('i:Test')"
+	    >Instances</p
+	    ><div id="section.i:Test" class="show"
+	    ><table
+	      ><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:ic:Test:Test:1" class="instance expander" onclick="toggleSection('i:ic:Test:Test:1')"
+		      ></span
+		      > <a href="#"
+		      >Test</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >Y</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: instance Test Y</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:ic:Test:Test:1" class="inst-details hide"
+		    ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:ic:Test:Test:2" class="instance expander" onclick="toggleSection('i:ic:Test:Test:2')"
+		      ></span
+		      > <a href="#"
+		      >Test</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >X</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: instance Test X</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:ic:Test:Test:2" class="inst-details hide"
+		    ></div
+		    ></td
+		  ></tr
+		></table
+	      ></div
+	    ></div
+	  ></div
+	><div class="top"
+	><p class="src"
+	  ><span class="keyword"
+	    >type family</span
+	    > <a id="t:Foo" class="def"
+	    >Foo</a
+	    > a :: k <a href="#" class="selflink"
+	    >#</a
+	    ></p
+	  ><div class="doc"
+	  ><p
+	    >Doc for: type family Foo a</p
+	    ></div
+	  ><div class="subs instances"
+	  ><p id="control.i:Foo" class="caption collapser" onclick="toggleSection('i:Foo')"
+	    >Instances</p
+	    ><div id="section.i:Foo" class="show"
+	    ><table
+	      ><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:if:Foo:Foo:1" class="instance expander" onclick="toggleSection('i:if:Foo:Foo:1')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >Foo</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >Y</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:if:Foo:Foo:1" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>Foo</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>Y</a
+			> = <a href="#"
+			>X</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:if:Foo:Foo:2" class="instance expander" onclick="toggleSection('i:if:Foo:Foo:2')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >Foo</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >X</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:if:Foo:Foo:2" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>Foo</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>X</a
+			> = <a href="#"
+			>Y</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		></table
+	      ></div
+	    ></div
+	  ></div
+	><div class="top"
+	><p class="src"
+	  ><span class="keyword"
+	    >data family</span
+	    > <a id="t:Bat" class="def"
+	    >Bat</a
+	    > (a :: k) :: <a href="#"
+	    >*</a
+	    > <a href="#" class="selflink"
+	    >#</a
+	    ></p
+	  ><div class="doc"
+	  ><p
+	    >Doc for: data family Bat a</p
+	    ></div
+	  ><div class="subs instances"
+	  ><p id="control.i:Bat" class="caption collapser" onclick="toggleSection('i:Bat')"
+	    >Instances</p
+	    ><div id="section.i:Bat" class="show"
+	    ><table
+	      ><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:if:Bat:Bat:1" class="instance expander" onclick="toggleSection('i:if:Bat:Bat:1')"
+		      ></span
+		      > <span class="keyword"
+		      >data</span
+		      > <a href="#"
+		      >Bat</a
+		      > <a href="#"
+		      >Z</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: data instance Bat Z</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:if:Bat:Bat:1" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>data</span
+			> <a href="#"
+			>Bat</a
+			> <a href="#"
+			>Z</a
+			> <span class="keyword"
+			>where</span
+			><ul class="inst"
+			><li class="inst"
+			  ><a id="v:BatZ1" class="def"
+			    >BatZ1</a
+			    > :: <a href="#"
+			    >Bat</a
+			    > <a href="#"
+			    >Z</a
+			    > <a href="#"
+			    >ZA</a
+			    ></li
+			  ><li class="inst"
+			  ><a id="v:BatZ2" class="def"
+			    >BatZ2</a
+			    > :: <a href="#"
+			    >Bat</a
+			    > <a href="#"
+			    >Z</a
+			    > <a href="#"
+			    >ZB</a
+			    ></li
+			  ></ul
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:if:Bat:Bat:2" class="instance expander" onclick="toggleSection('i:if:Bat:Bat:2')"
+		      ></span
+		      > <span class="keyword"
+		      >data</span
+		      > <a href="#"
+		      >Bat</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >Y</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: data instance Bat Y</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:if:Bat:Bat:2" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>data</span
+			> <a href="#"
+			>Bat</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>Y</a
+			> = <a id="v:BatY" class="def"
+			>BatY</a
+			> <a href="#"
+			>Y</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:if:Bat:Bat:3" class="instance expander" onclick="toggleSection('i:if:Bat:Bat:3')"
+		      ></span
+		      > <span class="keyword"
+		      >data</span
+		      > <a href="#"
+		      >Bat</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >X</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: data instance Bat X</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:if:Bat:Bat:3" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>data</span
+			> <a href="#"
+			>Bat</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>X</a
+			> <ul class="inst"
+			><li class="inst"
+			  >= <a id="v:BatX" class="def"
+			    >BatX</a
+			    > <a href="#"
+			    >X</a
+			    ></li
+			  ><li class="inst"
+			  >| <a id="v:BatXX" class="def"
+			    >BatXX</a
+			    > { <ul class="subs"
+			    ><li
+			      ><a id="v:aaa" class="def"
+				>aaa</a
+				> :: <a href="#"
+				>X</a
+				></li
+			      ><li
+			      ><a id="v:bbb" class="def"
+				>bbb</a
+				> :: <a href="#"
+				>Y</a
+				></li
+			      ></ul
+			    > }</li
+			  ></ul
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		></table
+	      ></div
+	    ></div
+	  ></div
+	><div class="top"
+	><p class="src"
+	  ><span class="keyword"
+	    >class</span
+	    > <a id="t:Assoc" class="def"
+	    >Assoc</a
+	    > a <a href="#" class="selflink"
+	    >#</a
+	    ></p
+	  ><div class="doc"
+	  ><p
+	    >Doc for: class Assoc a</p
+	    ></div
+	  ><div class="subs associated-types"
+	  ><p class="caption"
+	    >Associated Types</p
+	    ><p class="src"
+	    ><span class="keyword"
+	      >data</span
+	      > <a id="t:AssocD" class="def"
+	      >AssocD</a
+	      > a :: <a href="#"
+	      >*</a
+	      > <a href="#" class="selflink"
+	      >#</a
+	      ></p
+	    ><div class="doc"
+	    ><p
+	      >Doc for: data AssocD a</p
+	      ></div
+	    ><p class="src"
+	    ><span class="keyword"
+	      >type</span
+	      > <a id="t:AssocT" class="def"
+	      >AssocT</a
+	      > a :: <a href="#"
+	      >*</a
+	      > <a href="#" class="selflink"
+	      >#</a
+	      ></p
+	    ><div class="doc"
+	    ><p
+	      >Doc for: type AssocT a</p
+	      ></div
+	    ></div
+	  ><div class="subs instances"
+	  ><p id="control.i:Assoc" class="caption collapser" onclick="toggleSection('i:Assoc')"
+	    >Instances</p
+	    ><div id="section.i:Assoc" class="show"
+	    ><table
+	      ><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:ic:Assoc:Assoc:1" class="instance expander" onclick="toggleSection('i:ic:Assoc:Assoc:1')"
+		      ></span
+		      > <a href="#"
+		      >Assoc</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >Y</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: instance Assoc Y</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:ic:Assoc:Assoc:1" class="inst-details hide"
+		    ><div class="subs associated-types"
+		      ><p class="caption"
+			>Associated Types</p
+			><p class="src"
+			><span class="keyword"
+			  >data</span
+			  > <a href="#"
+			  >AssocD</a
+			  > <a href="#"
+			  >Y</a
+			  > (a :: <a href="#"
+			  >Y</a
+			  >) :: <a href="#"
+			  >*</a
+			  > <a href="#" class="selflink"
+			  >#</a
+			  ></p
+			><p class="src"
+			><span class="keyword"
+			  >type</span
+			  > <a href="#"
+			  >AssocT</a
+			  > <a href="#"
+			  >Y</a
+			  > (a :: <a href="#"
+			  >Y</a
+			  >) :: <a href="#"
+			  >*</a
+			  > <a href="#" class="selflink"
+			  >#</a
+			  ></p
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:ic:Assoc:Assoc:2" class="instance expander" onclick="toggleSection('i:ic:Assoc:Assoc:2')"
+		      ></span
+		      > <a href="#"
+		      >Assoc</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >X</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc"
+		  ><p
+		    >Doc for: instance Assoc X</p
+		    ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:ic:Assoc:Assoc:2" class="inst-details hide"
+		    ><div class="subs associated-types"
+		      ><p class="caption"
+			>Associated Types</p
+			><p class="src"
+			><span class="keyword"
+			  >data</span
+			  > <a href="#"
+			  >AssocD</a
+			  > <a href="#"
+			  >X</a
+			  > (a :: <a href="#"
+			  >X</a
+			  >) :: <a href="#"
+			  >*</a
+			  > <a href="#" class="selflink"
+			  >#</a
+			  ></p
+			><p class="src"
+			><span class="keyword"
+			  >type</span
+			  > <a href="#"
+			  >AssocT</a
+			  > <a href="#"
+			  >X</a
+			  > (a :: <a href="#"
+			  >X</a
+			  >) :: <a href="#"
+			  >*</a
+			  > <a href="#" class="selflink"
+			  >#</a
+			  ></p
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		></table
+	      ></div
+	    ></div
+	  ></div
+	><div class="top"
+	><p class="src"
+	  ><span class="keyword"
+	    >type family</span
+	    > <a id="t:Bar" class="def"
+	    >Bar</a
+	    > b <span class="keyword"
+	    >where ...</span
+	    > <a href="#" class="selflink"
+	    >#</a
+	    ></p
+	  ><div class="doc"
+	  ><p
+	    >Doc for: type family Bar b</p
+	    ></div
+	  ><div class="subs equations"
+	  ><p class="caption"
+	    >Equations</p
+	    ><table
+	    ><tr
+	      ><td class="src"
+		><a href="#"
+		  >Bar</a
+		  > <a href="#"
+		  >X</a
+		  > = <a href="#"
+		  >X</a
+		  ></td
+		><td class="doc empty"
+		></td
+		></tr
+	      ><tr
+	      ><td class="src"
+		><a href="#"
+		  >Bar</a
+		  > y = <a href="#"
+		  >Y</a
+		  ></td
+		><td class="doc empty"
+		></td
+		></tr
+	      ></table
+	    ></div
+	  ></div
+	><div class="top"
+	><p class="src"
+	  ><span class="keyword"
+	    >type family</span
+	    > (a :: k) <a id="t:-60--62-" class="def"
+	    >&lt;&gt;</a
+	    > (b :: k) :: k <a href="#" class="selflink"
+	    >#</a
+	    ></p
+	  ><div class="subs instances"
+	  ><p id="control.i:-60--62-" class="caption collapser" onclick="toggleSection('i:-60--62-')"
+	    >Instances</p
+	    ><div id="section.i:-60--62-" class="show"
+	    ><table
+	      ><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:if:-60--62-:-60--62-:1" class="instance expander" onclick="toggleSection('i:if:-60--62-:-60--62-:1')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >(&lt;&gt;)</a
+		      > <a href="#"
+		      >X</a
+		      > <a href="#"
+		      >XXX</a
+		      > <a href="#"
+		      >XX</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:if:-60--62-:-60--62-:1" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>(&lt;&gt;)</a
+			> <a href="#"
+			>X</a
+			> <a href="#"
+			>XXX</a
+			> <a href="#"
+			>XX</a
+			> = <a href="#"
+			>X</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:if:-60--62-:-60--62-:2" class="instance expander" onclick="toggleSection('i:if:-60--62-:-60--62-:2')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >(&lt;&gt;)</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >Y</a
+		      > a</span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:if:-60--62-:-60--62-:2" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>(&lt;&gt;)</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>Y</a
+			> a = a</div
+		      ></div
+		    ></td
+		  ></tr
+		><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:if:-60--62-:-60--62-:3" class="instance expander" onclick="toggleSection('i:if:-60--62-:-60--62-:3')"
+		      ></span
+		      > <span class="keyword"
+		      >type</span
+		      > <a href="#"
+		      >(&lt;&gt;)</a
+		      > <a href="#"
+		      >*</a
+		      > <a href="#"
+		      >X</a
+		      > a</span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:if:-60--62-:-60--62-:3" class="inst-details hide"
+		    ><div class="src"
+		      ><span class="keyword"
+			>type</span
+			> <a href="#"
+			>(&lt;&gt;)</a
+			> <a href="#"
+			>*</a
+			> <a href="#"
+			>X</a
+			> a = <a href="#"
+			>X</a
+			></div
+		      ></div
+		    ></td
+		  ></tr
+		></table
+	      ></div
+	    ></div
+	  ></div
+	><div class="top"
+	><p class="src"
+	  ><span class="keyword"
+	    >class</span
+	    > (a :: k) <a id="t:-62--60-" class="def"
+	    >&gt;&lt;</a
+	    > (b :: k) <a href="#" class="selflink"
+	    >#</a
+	    ></p
+	  ><div class="subs instances"
+	  ><p id="control.i:-62--60-" class="caption collapser" onclick="toggleSection('i:-62--60-')"
+	    >Instances</p
+	    ><div id="section.i:-62--60-" class="show"
+	    ><table
+	      ><tr
+		><td class="src clearfix"
+		  ><span class="inst-left"
+		    ><span id="control.i:ic:-62--60-:-62--60-:1" class="instance expander" onclick="toggleSection('i:ic:-62--60-:-62--60-:1')"
+		      ></span
+		      > <a href="#"
+		      >(&gt;&lt;)</a
+		      > <a href="#"
+		      >X</a
+		      > <a href="#"
+		      >XX</a
+		      > <a href="#"
+		      >XXX</a
+		      ></span
+		    > <a href="#" class="selflink"
+		    >#</a
+		    ></td
+		  ><td class="doc empty"
+		  ></td
+		  ></tr
+		><tr
+		><td colspan="2"
+		  ><div id="section.i:ic:-62--60-:-62--60-:1" class="inst-details hide"
+		    ></div
+		    ></td
+		  ></tr
+		></table
+	      ></div
+	    ></div
+	  ></div
+	></div
+      ></div
+    ><div id="footer"
+    ></div
+    ></body
+  ></html
+>

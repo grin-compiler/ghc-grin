@@ -1,0 +1,13 @@
+resolver: lts-9.0
+packages:
+- Cabal/
+- cabal-install/
+- cabal-testsuite/
+nix:
+  packages:
+  - autoconf
+  - automake
+  - haskellPackages.happy
+  - haskellPackages.alex
+  - zlib
+  - zlib.out

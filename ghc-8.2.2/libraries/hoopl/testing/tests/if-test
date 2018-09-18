@@ -1,0 +1,10 @@
+f() {
+L0:
+  x = 3 + 4
+  z = x > 5
+  if z then goto L1 else goto L2
+L1:
+  ret (1)
+L2:
+  ret (2)
+}

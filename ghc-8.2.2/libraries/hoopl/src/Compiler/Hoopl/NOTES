@@ -1,0 +1,64 @@
+Simon and John,
+
+I've spent yet another evening on Hoopl---I implemented fold-style
+dataflow (as opposed to the concatMap style we have).  I'm quite happy
+with the fold stuff---take a look at DataflowFold.hs and the 'aff'
+functions and see if you agree.  If you like it, we will save a
+tremendous number of constructions and deconstructions in common cases
+where nodes are not rewritten.  Perhaps we should keep both alive and
+measure?
+
+I used the insights I got doing DataflowFold.hs to tighten up John's
+revision of Dataflow.hs.  All I did was generalize arfCat and arbCat
+so that I could use them more aggressively.  I quite like the results.
+
+Further observations:
+
+  The code for arbGraph and arfGraph is isomorphic---just substitute 'f'
+  for 'b' and nothing else changes.  Likewise for arbBlock and arfBlock.
+  The graph functions are 11 lines apiece and the block functions are 7
+  lines apiece, so it is not worth trying to abstract to save 18 lines,
+  but it is interesting and maybe something that should be noted in the
+  paper. 
+
+  arbNode and arfNode are fundamentally different.
+  They could be made more similar if arbNode produced and arfNode
+  accepted Fact e f instead of 'f', but even so a fundamental difference
+  remains:  in the forward case, the input fact goes into the RG, and in
+  the backward case it is the output fact.
+
+  It is a nuisance passing 'pass' to every function.  If 'pass' goes
+  only to analyzeAndRewrite[FB]wd', then we could simplify by putting
+  the node, cat, block, body, and graph functions inside.  We could
+  start writing code like this:
+
+    cat :: (thing1 -> info1 -> FuelMonad (RG f n e a, info1'))
+        -> (thing2 -> info2 -> FuelMonad (RG f n a x, info1))
+        -> (thing1 -> thing2 -> info2 -> FuelMonad (RG f n e x, info1'))
+    cat arb1 arb2 thing1 thing2 f = do { (g2,f2) <- arb2 thing2 f
+                                       ; (g1,f1) <- arb1 thing1 f2
+                                       ; return (g1 `rgCat` g2, f1) }
+    block :: Edges n => ARB (Block n) n
+    block (BFirst  n)  = node n
+    block (BMiddle n)  = node n
+    block (BLast   n)  = node n
+    block (BCat b1 b2) = (block `cat` block) b1 b2
+
+    graph :: Edges n => ARBX (Graph n) n
+    graph (GNil)                       = \f -> return (rgnil, f)
+    graph (GUnit b)                    = block b
+    graph (GMany NothingO b NothingO)  = body b
+    graph (GMany NothingO b (JustO x)) = (body `cat` arbx block) b x
+    graph (GMany (JustO e) b NothingO) = (block `cat` body) e b
+    graph (GMany (JustO e) b (JustO x)) 
+      = (uncurry (cat block body) `cat` arbx block) (e, b) x
+
+  I think this would be very nice stuff to show in the paper---a lot
+  nicer than the monadic madness in our submission---but it would
+  require a little more explanation to make sure the reader
+  understands where the pass comes from.
+
+Your opinions are solicited!
+
+
+Norman

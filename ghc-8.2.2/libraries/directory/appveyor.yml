@@ -1,0 +1,23 @@
+version: "{build}-{branch}"
+skip_tags: true
+shallow_clone: true
+build: false
+environment:
+  global:
+    # use a short path prefix to avoid running into path-length limitations
+    STACK_ROOT: C:\sr
+  matrix:
+  - DEPS: Win32-2.4.0.0
+    STACK: stack --skip-msys --resolver lts-7
+  - DEPS:
+    STACK: stack --skip-msys --resolver lts-5
+  - DEPS: Win32-2.3.0.1
+    STACK: stack --skip-msys --resolver lts-2
+    PREBUILD: sed -i.bak /GetFinalPathNameByHandleW/d configure.ac
+cache:
+- "%STACK_ROOT%"
+install:
+- set PATH=%CD%\_stack;C:\msys64\usr\bin;%PATH%
+- sh tools/testscript prepare
+test_script:
+- sh tools/testscript build

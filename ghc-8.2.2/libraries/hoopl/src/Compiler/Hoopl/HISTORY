@@ -1,0 +1,54 @@
+
+{- Notes about the genesis of Hoopl7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Hoopl7 has the following major chages
+
+a) GMany has symmetric entry and exit
+b) GMany closed-entry does not record a BlockId
+c) GMany open-exit does not record a BlockId
+d) The body of a GMany is called Body
+e) A Body is just a list of blocks, not a map. I've argued
+   elsewhere that this is consistent with (c)
+
+A consequence is that Graph is no longer an instance of Edges,
+but nevertheless I managed to keep the ARF and ARB signatures
+nice and uniform.
+
+This was made possible by
+
+* FwdTransfer looks like this:
+    type FwdTransfer n f
+      = forall e x. n e x -> Fact e f -> Fact x f 
+    type family   Fact x f :: *
+    type instance Fact C f = FactBase f
+    type instance Fact O f = f
+
+  Note that the incoming fact is a Fact (not just 'f' as in Hoopl5,6).
+  It's up to the *transfer function* to look up the appropriate fact
+  in the FactBase for a closed-entry node.  Example:
+	constProp (Label l) fb = lookupFact fb l
+  That is how Hoopl can avoid having to know the block-id for the
+  first node: it defers to the client.
+
+  [Side note: that means the client must know about 
+  bottom, in case the looupFact returns Nothing]
+
+* Note also that FwdTransfer *returns* a Fact too;
+  that is, the types in both directions are symmetrical.
+  Previously we returned a [(BlockId,f)] but I could not see
+  how to make everything line up if we do this.
+
+  Indeed, the main shortcoming of Hoopl7 is that we are more
+  or less forced into this uniform representation of the facts
+  flowing into or out of a closed node/block/graph, whereas
+  previously we had more flexibility.
+
+  In exchange the code is neater, with fewer distinct types.
+  And morally a FactBase is equivalent to [(BlockId,f)] and
+  nearly equivalent to (BlockId -> f).
+
+* I've realised that forwardBlockList and backwardBlockList
+  both need (Edges n), and that goes everywhere.
+
+* I renamed BlockId to Label
+-}
