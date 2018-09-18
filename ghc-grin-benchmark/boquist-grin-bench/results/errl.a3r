@@ -1,0 +1,321 @@
+SUBDIR ======> other/nfib
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> other/tsumupto
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> other/sieve
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> other/queens
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> other/words
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> other/puzzle
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> imaginary/tak
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> imaginary/exp3_8
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> spectral/awards
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> spectral/cichelli
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> spectral/sorting
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> spectral/boyer2
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> spectral/clausify
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> spectral/hartel/event
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> spectral/hartel/typecheck
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 9.s
+SUBDIR ======> other/nfib
+ulimit -t 30; ./7 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./8 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./9 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+SUBDIR ======> other/tsumupto
+ulimit -t 30; ./7 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./8 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./9 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+SUBDIR ======> other/sieve
+ulimit -t 30; ./7 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./8 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./9 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+SUBDIR ======> other/queens
+ulimit -t 30; ./7 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./8 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./9 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+SUBDIR ======> other/words
+ulimit -t 30; ./7 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./8 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./9 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+SUBDIR ======> other/puzzle
+ulimit -t 30; ./7 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./8 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./9 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+SUBDIR ======> imaginary/tak
+ulimit -t 30; ./7 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./8 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./9 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+SUBDIR ======> imaginary/exp3_8
+ulimit -t 30; ./7 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./8 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./9 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+SUBDIR ======> spectral/awards
+ulimit -t 30; ./7 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./8 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./9 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+SUBDIR ======> spectral/cichelli
+ulimit -t 30; ./7 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./8 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./9 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+SUBDIR ======> spectral/sorting
+ulimit -t 30; ./7 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./8 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./9 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+SUBDIR ======> spectral/boyer2
+ulimit -t 30; ./7 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./8 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./9 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+SUBDIR ======> spectral/clausify
+ulimit -t 30; ./7 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./8 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./9 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+SUBDIR ======> spectral/hartel/event
+ulimit -t 30; ./7 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./8 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./9 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+SUBDIR ======> spectral/hartel/typecheck
+ulimit -t 30; ./7 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./8 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./9 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+SUBDIR ======> other/nfib
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./7 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Sun Feb 14 22:21:49 1,999
+Application: ./7 -H5M
+29,860,703 
+Application Instructions: 343,401,132
+Stop: Sun Feb 14 22:22:08 1,999
+Instructions: 343,401,132
+Time: 18.170 usr  0.010 sys  18.436 real  98.614%
+Speed: 18,888.951 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./8 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Sun Feb 14 22:22:08 1,999
+Application: ./8 -H5M
+29,860,703 
+Application Instructions: 343,401,132
+Stop: Sun Feb 14 22:22:26 1,999
+Instructions: 343,401,132
+Time: 18.140 usr  0.000 sys  18.430 real  98.429%
+Speed: 18,930.603 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./9 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Sun Feb 14 22:22:26 1,999
+Application: ./9 -H5M
+29,860,703 
+Application Instructions: 343,401,132
+Stop: Sun Feb 14 22:22:45 1,999
+Instructions: 343,401,132
+Time: 18.090 usr  0.000 sys  18.455 real  98.025%
+Speed: 18,982.926 KIPS
+SUBDIR ======> other/tsumupto
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./7 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Sun Feb 14 22:22:45 1,999
+Application: ./7 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,549
+Stop: Sun Feb 14 22:22:47 1,999
+Instructions: 70,003,549
+Time: 2.580 usr  0.010 sys  2.617 real  98.971%
+Speed: 27,028.397 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./8 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Sun Feb 14 22:22:47 1,999
+Application: ./8 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,549
+Stop: Sun Feb 14 22:22:50 1,999
+Instructions: 70,003,549
+Time: 2.580 usr  0.010 sys  2.678 real  96.706%
+Speed: 27,028.397 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./9 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Sun Feb 14 22:22:50 1,999
+Application: ./9 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,549
+Stop: Sun Feb 14 22:22:53 1,999
+Instructions: 70,003,549
+Time: 2.560 usr  0.020 sys  2.601 real  99.177%
+Speed: 27,133.159 KIPS
+SUBDIR ======> other/sieve
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./7 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Sun Feb 14 22:22:53 1,999
+Application: ./7 -H40M
+121,013,308 
+Application Instructions: 445,471,996
+Stop: Sun Feb 14 22:23:19 1,999
+Instructions: 445,471,996
+Time: 25.500 usr  0.390 sys  26.292 real  98.470%
+Speed: 17,206.334 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./8 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Sun Feb 14 22:23:19 1,999
+Application: ./8 -H40M
+121,013,308 
+Application Instructions: 445,471,996
+Stop: Sun Feb 14 22:23:46 1,999
+Instructions: 445,471,996
+Time: 25.750 usr  0.350 sys  26.474 real  98.589%
+Speed: 17,067.893 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./9 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Sun Feb 14 22:23:46 1,999
+Application: ./9 -H40M
+121,013,308 
+Application Instructions: 445,471,996
+Stop: Sun Feb 14 22:24:12 1,999
+Instructions: 445,471,996
+Time: 25.700 usr  0.290 sys  26.358 real  98.605%
+Speed: 17,140.131 KIPS
+SUBDIR ======> other/queens
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./7 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Sun Feb 14 22:24:13 1,999
+Application: ./7 -H60M
+14,200 
+Application Instructions: 1,351,158,413
+Stop: Sun Feb 14 22:25:35 1,999
+Instructions: 1,351,158,413
+Time: 80.830 usr  0.570 sys  82.699 real  98.429%
+Speed: 16,598.998 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./8 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+gmake: *** [count_hgc] Hangup

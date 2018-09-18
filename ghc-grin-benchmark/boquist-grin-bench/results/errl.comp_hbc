@@ -1,0 +1,30 @@
+SUBDIR ======> other/nfib
+hbc -static -O -msparc8 -cpp -o nfib.hbc   nfib.hs
+SUBDIR ======> other/tsumupto
+hbc -static -O -msparc8 -cpp -o tsumupto.hbc   tsumupto.hs
+SUBDIR ======> other/sieve
+hbc -static -O -msparc8 -cpp -o sieve.hbc   sieve.hs
+SUBDIR ======> other/queens
+hbc -static -O -msparc8 -cpp -o queens.hbc   queens.hs
+SUBDIR ======> other/words
+hbc -static -O -msparc8 -cpp -o words.hbc   words.hs
+SUBDIR ======> other/puzzle
+hbc -static -O -msparc8 -cpp -o puzzle.hbc   puzzle.hs
+SUBDIR ======> imaginary/tak
+hbc -static -O -msparc8 -cpp -o tak.hbc   tak.hs
+SUBDIR ======> imaginary/exp3_8
+hbc -static -O -msparc8 -cpp -o exp3_8.hbc   exp3_8.hs
+SUBDIR ======> spectral/awards
+hbc -static -O -msparc8 -cpp -o awards.hbc   awards.hs
+SUBDIR ======> spectral/boyer2
+hbc -static -O -msparc8 -o boyer2.hbc   boyer2.hs
+SUBDIR ======> spectral/cichelli
+hbc -static -O -msparc8 -cpp -o cichelli.hbc   cichelli.hs
+SUBDIR ======> spectral/clausify
+hbc -static -O -msparc8 -cpp -o clausify.hbc   clausify.hs
+SUBDIR ======> spectral/hartel/event
+hbc -static -O -msparc8 -cpp -o event.hbc   event.hs
+SUBDIR ======> spectral/hartel/typecheck
+hbc -static -O -msparc8 -cpp -o typecheck.hbc   typecheck.hs
+SUBDIR ======> spectral/sorting
+hbc -static -O -msparc8 -cpp -o sorting.hbc   sorting.hs

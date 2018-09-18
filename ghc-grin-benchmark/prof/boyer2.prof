@@ -1,0 +1,9 @@
+# started on Wed Aug  1 10:26:32 2018
+
+
+ Performance counter stats for 'boyer2':
+
+        22,381,096      instructions:u                                              
+
+       0.009316196 seconds time elapsed
+

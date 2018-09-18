@@ -1,0 +1,8 @@
+- remove Ix.
+- add type signature to tautclause.
+- add type signature to insert (hbcc bug).
+- inRange -> inrange (no Ord).
+- exhaustive patterns (conjunct, disin, negin, clause', split').
+- Prelude repeat (no letrec).
+- Prelude take, elem (specialize, hbcc bug).
+- Hand specialise insert (eliminates last Ord/Eq stuff).

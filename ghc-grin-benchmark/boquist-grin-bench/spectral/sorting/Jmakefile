@@ -1,0 +1,9 @@
+SRCS_HS=Main.hs Sort.hs
+OBJS_O= Main.o  Sort.o
+
+NoFibMultiModuleCompileAndRun(sorting,-i Sort.hs -o1 sorting.stdout)
+
+NoFibHaskellCompile(sorting,Main,hs)
+NoFibHaskellCompile(sorting,Sort,hs)
+
+NoFibDependTarget(sorting, $(SRCS_HS))

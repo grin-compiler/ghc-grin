@@ -1,0 +1,10 @@
+PROG=sorting
+HBCCFLAGS=
+HGC1=-dall
+HGC2=-H150M
+HGC3=
+HBCFLAGS=
+GHCFLAGS=
+RUNFLAGS=-H60M
+
+include ../../hgc.mk

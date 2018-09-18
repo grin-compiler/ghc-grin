@@ -1,0 +1,107 @@
+name:                boquist-grin-bench
+version:             0.1.0.0
+synopsis:            GRIN benchmark set used in Urban Boquist PhD implementation
+description:
+license:             BSD3
+license-file:        LICENSE
+author:              Urban Boquist 
+copyright:           (c) 1999 Urban Boquist
+category:            Compiler
+build-type:          Simple
+tested-with:         GHC==8.2.2
+cabal-version:       >=1.10
+
+executable exp3_8
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: imaginary/exp3_8
+  main-is:        exp3_8.hs
+
+executable tak
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: imaginary/tak
+  main-is:        tak.hs
+
+executable nfib
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: other/nfib
+  main-is:        nfib.hs
+
+executable puzzle
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: other/puzzle
+  main-is:        puzzle.hs
+
+executable queens
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: other/queens
+  main-is:        queens.hs
+
+executable sieve
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: other/sieve
+  main-is:        sieve.hs
+
+executable tsumupto
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: other/tsumupto
+  main-is:        tsumupto.hs
+
+executable words
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: other/words
+  main-is:        words.hs
+
+executable awards
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: spectral/awards
+  main-is:        awards.hs
+
+executable boyer2
+  build-depends:  base
+  hs-source-dirs: spectral/boyer2
+  main-is:        boyer2.hs
+
+executable cichelli
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: spectral/cichelli
+  main-is:        cichelli.hs
+
+executable clausify
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: spectral/clausify
+  main-is:        clausify.hs
+
+executable event
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: spectral/hartel/event
+  main-is:        event.hs
+
+executable ida
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: spectral/hartel/ida
+  main-is:        ida.hs
+
+executable typecheck
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: spectral/hartel/typecheck
+  main-is:        typecheck.hs
+
+executable sorting
+  default-extensions: CPP
+  build-depends:  base
+  hs-source-dirs: spectral/sorting
+  main-is:        sorting.hs

@@ -1,0 +1,10 @@
+reset
+
+#rm -fr .stack-root/setup-exe-cache
+#rm -fr .stack-root/setup-exe-src
+
+stack --stack-root `pwd`/.stack-root clean
+
+rm -fr .stack-work
+
+stack --stack-root `pwd`/.stack-root build

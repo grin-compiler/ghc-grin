@@ -1,0 +1,96 @@
+SUBDIR ======> other/nfib, OUT=gj
+START: 09:59:36
+STOP:  09:59:38
+SUBDIR ======> other/tsumupto, OUT=gj
+START: 09:59:38
+STOP:  09:59:39
+SUBDIR ======> other/sieve, OUT=gj
+START: 09:59:39
+STOP:  09:59:41
+SUBDIR ======> other/queens, OUT=gj
+START: 09:59:41
+STOP:  09:59:45
+SUBDIR ======> other/words, OUT=gj
+START: 09:59:45
+STOP:  10:00:35
+SUBDIR ======> other/puzzle, OUT=gj
+START: 10:00:35
+STOP:  10:02:10
+SUBDIR ======> imaginary/tak, OUT=gj
+START: 10:02:10
+STOP:  10:02:11
+SUBDIR ======> imaginary/exp3_8, OUT=gj
+START: 10:02:11
+STOP:  10:02:13
+SUBDIR ======> spectral/awards, OUT=gj
+START: 10:02:13
+STOP:  10:02:47
+SUBDIR ======> spectral/cichelli, OUT=gj
+START: 10:02:47
+STOP:  10:04:12
+SUBDIR ======> spectral/boyer2, OUT=gj
+START: 10:04:12
+STOP:  10:09:43
+SUBDIR ======> spectral/sorting, OUT=gj
+START: 10:09:43
+STOP:  10:12:17
+SUBDIR ======> spectral/clausify, OUT=gj
+START: 10:12:17
+STOP:  10:14:55
+SUBDIR ======> spectral/hartel/event, OUT=gj
+START: 10:14:55
+STOP:  10:18:44
+SUBDIR ======> spectral/hartel/ida, OUT=gj
+START: 10:18:44
+STOP:  10:22:08
+SUBDIR ======> spectral/hartel/typecheck, OUT=gj
+START: 10:22:08
+STOP:  10:38:37
+SUBDIR ======> other/nfib, OUT=gk
+START: 10:38:37
+STOP:  10:38:38
+SUBDIR ======> other/tsumupto, OUT=gk
+START: 10:38:38
+STOP:  10:38:39
+SUBDIR ======> other/sieve, OUT=gk
+START: 10:38:39
+STOP:  10:38:41
+SUBDIR ======> other/queens, OUT=gk
+START: 10:38:41
+STOP:  10:38:45
+SUBDIR ======> other/words, OUT=gk
+START: 10:38:45
+STOP:  10:39:36
+SUBDIR ======> other/puzzle, OUT=gk
+START: 10:39:36
+STOP:  10:41:12
+SUBDIR ======> imaginary/tak, OUT=gk
+START: 10:41:12
+STOP:  10:41:13
+SUBDIR ======> imaginary/exp3_8, OUT=gk
+START: 10:41:13
+STOP:  10:41:16
+SUBDIR ======> spectral/awards, OUT=gk
+START: 10:41:16
+STOP:  10:41:50
+SUBDIR ======> spectral/cichelli, OUT=gk
+START: 10:41:50
+STOP:  10:43:14
+SUBDIR ======> spectral/boyer2, OUT=gk
+START: 10:43:14
+STOP:  10:49:36
+SUBDIR ======> spectral/sorting, OUT=gk
+START: 10:49:36
+STOP:  10:51:54
+SUBDIR ======> spectral/clausify, OUT=gk
+START: 10:51:54
+STOP:  10:54:37
+SUBDIR ======> spectral/hartel/event, OUT=gk
+START: 10:54:37
+STOP:  10:58:25
+SUBDIR ======> spectral/hartel/ida, OUT=gk
+START: 10:58:25
+STOP:  11:01:45
+SUBDIR ======> spectral/hartel/typecheck, OUT=gk
+START: 11:01:45
+STOP:  11:19:23

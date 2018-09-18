@@ -1,0 +1,2425 @@
+SUBDIR ======> other/nfib
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> other/tsumupto
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> other/sieve
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> other/queens
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> other/words
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> other/puzzle
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> imaginary/tak
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> imaginary/exp3_8
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> spectral/awards
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> spectral/cichelli
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> spectral/boyer2
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> spectral/sorting
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> spectral/clausify
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> spectral/hartel/event
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> spectral/hartel/ida
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+SUBDIR ======> spectral/hartel/typecheck
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc 3.s
+3.s: No such file or directory
+gmake: *** [link] Error 1
+*************** spectral/hartel/typecheck FAIL ***************
+SUBDIR ======> other/nfib
+ulimit -t 30; ./1 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./2 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./3 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+SUBDIR ======> other/tsumupto
+ulimit -t 30; ./1 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./2 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./3 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+SUBDIR ======> other/sieve
+ulimit -t 30; ./1 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./2 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./3 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+SUBDIR ======> other/queens
+ulimit -t 30; ./1 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./2 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./3 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+SUBDIR ======> other/words
+ulimit -t 30; ./1 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./2 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./3 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 
+gmake: *** [run_hgc] Error 1
+*************** other/words FAIL ***************
+SUBDIR ======> other/puzzle
+ulimit -t 30; ./1 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./2 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./3 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+Bus Error
+gmake: *** [run_hgc] Error 138
+*************** other/puzzle FAIL ***************
+SUBDIR ======> imaginary/tak
+ulimit -t 30; ./1 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./2 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./3 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+SUBDIR ======> imaginary/exp3_8
+ulimit -t 30; ./1 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./2 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./3 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+SUBDIR ======> spectral/awards
+ulimit -t 30; ./1 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./2 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./3 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+SUBDIR ======> spectral/cichelli
+ulimit -t 30; ./1 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./2 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./3 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+SUBDIR ======> spectral/boyer2
+ulimit -t 30; ./1 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./2 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./3 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+Fatal error, heap full during GC!
+gmake: *** [run_hgc] Error 1
+*************** spectral/boyer2 FAIL ***************
+SUBDIR ======> spectral/sorting
+ulimit -t 30; ./1 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./2 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./3 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+SUBDIR ======> spectral/clausify
+ulimit -t 30; ./1 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./2 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./3 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+Segmentation Fault
+gmake: *** [run_hgc] Error 139
+*************** spectral/clausify FAIL ***************
+SUBDIR ======> spectral/hartel/event
+ulimit -t 30; ./1 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./2 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./3 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+SUBDIR ======> spectral/hartel/ida
+ulimit -t 30; ./1 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./2 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./3 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+SUBDIR ======> spectral/hartel/typecheck
+ulimit -t 30; ./1 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./2 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./3 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+/bin/sh: ./3: not found
+gmake: *** [run_hgc] Error 1
+*************** spectral/hartel/typecheck FAIL ***************
+SUBDIR ======> other/nfib
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:33:38 1,999
+Application: ./1 -H5M
+29,860,703 
+Application Instructions: 343,401,132
+Stop: Thu Feb 18 10:33:57 1,999
+Instructions: 343,401,132
+Time: 17.850 usr  0.010 sys  18.270 real  97.756%
+Speed: 19,227.387 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:33:57 1,999
+Application: ./2 -H5M
+29,860,703 
+Application Instructions: 343,401,132
+Stop: Thu Feb 18 10:34:15 1,999
+Instructions: 343,401,132
+Time: 17.860 usr  0.000 sys  18.578 real  96.133%
+Speed: 19,227.387 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:34:15 1,999
+Application: ./3 -H5M
+29,860,703 
+Application Instructions: 343,401,132
+Stop: Thu Feb 18 10:34:33 1,999
+Instructions: 343,401,132
+Time: 17.780 usr  0.010 sys  17.957 real  99.070%
+Speed: 19,303.043 KIPS
+SUBDIR ======> other/tsumupto
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:34:33 1,999
+Application: ./1 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,549
+Stop: Thu Feb 18 10:34:36 1,999
+Instructions: 70,003,549
+Time: 2.540 usr  0.000 sys  2.559 real  99.257%
+Speed: 27,560.452 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:34:36 1,999
+Application: ./2 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,549
+Stop: Thu Feb 18 10:34:39 1,999
+Instructions: 70,003,549
+Time: 2.570 usr  0.000 sys  2.642 real  97.268%
+Speed: 27,238.735 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:34:39 1,999
+Application: ./3 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,549
+Stop: Thu Feb 18 10:34:41 1,999
+Instructions: 70,003,549
+Time: 2.520 usr  0.010 sys  2.533 real  99.864%
+Speed: 27,669.387 KIPS
+SUBDIR ======> other/sieve
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:34:41 1,999
+Application: ./1 -H40M
+121,013,308 
+Application Instructions: 445,471,996
+Stop: Thu Feb 18 10:35:08 1,999
+Instructions: 445,471,996
+Time: 25.240 usr  0.270 sys  26.065 real  97.872%
+Speed: 17,462.642 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:35:08 1,999
+Application: ./2 -H40M
+121,013,308 
+Application Instructions: 445,471,996
+Stop: Thu Feb 18 10:35:33 1,999
+Instructions: 445,471,996
+Time: 25.110 usr  0.370 sys  25.769 real  98.878%
+Speed: 17,483.202 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:35:34 1,999
+Application: ./3 -H40M
+121,013,308 
+Application Instructions: 445,471,996
+Stop: Thu Feb 18 10:36:00 1,999
+Instructions: 445,471,996
+Time: 25.290 usr  0.250 sys  26.006 real  98.209%
+Speed: 17,442.130 KIPS
+SUBDIR ======> other/queens
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:36:00 1,999
+Application: ./1 -H60M
+14,200 
+Application Instructions: 1,351,158,413
+Stop: Thu Feb 18 10:37:22 1,999
+Instructions: 1,351,158,413
+Time: 79.680 usr  0.760 sys  82.528 real  97.470%
+Speed: 16,797.096 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:37:23 1,999
+Application: ./2 -H60M
+14,200 
+Application Instructions: 1,351,158,413
+Stop: Thu Feb 18 10:38:47 1,999
+Instructions: 1,351,158,413
+Time: 80.170 usr  0.670 sys  84.772 real  95.361%
+Speed: 16,713.983 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:38:48 1,999
+Application: ./3 -H60M
+14,200 
+Application Instructions: 1,351,158,413
+Stop: Thu Feb 18 10:40:14 1,999
+Instructions: 1,351,158,413
+Time: 79.910 usr  0.420 sys  86.013 real  93.393%
+Speed: 16,820.097 KIPS
+SUBDIR ======> other/words
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:40:14 1,999
+Application: ./1 -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 223,712,401
+Stop: Thu Feb 18 10:40:27 1,999
+Instructions: 223,712,401
+Time: 12.750 usr  0.530 sys  13.424 real  98.926%
+Speed: 16,845.813 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:40:28 1,999
+Application: ./2 -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 221,588,335
+Stop: Thu Feb 18 10:40:42 1,999
+Instructions: 221,588,335
+Time: 13.140 usr  0.570 sys  14.244 real  96.249%
+Speed: 16,162.534 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:40:42 1,999
+Application: ./3 -H60M
+3,276 
+Application Instructions: 191,075,556
+Stop: Thu Feb 18 10:40:54 1,999
+Instructions: 191,075,556
+Time: 11.550 usr  0.560 sys  12.247 real  98.881%
+Speed: 15,778.328 KIPS
+SUBDIR ======> other/puzzle
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:40:55 1,999
+Application: ./1 -H60M
+128 
+Application Instructions: 1,929,243,056
+Stop: Thu Feb 18 10:42:41 1,999
+Instructions: 1,929,243,056
+Time: 103.750 usr  0.600 sys  106.093 real  98.357%
+Speed: 18,488.194 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:42:41 1,999
+Application: ./2 -H60M
+128 
+Application Instructions: 1,694,104,211
+Stop: Thu Feb 18 10:44:23 1,999
+Instructions: 1,694,104,211
+Time: 97.430 usr  0.560 sys  102.248 real  95.836%
+Speed: 17,288.542 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:44:23 1,999
+Application: ./3 -H60M
+SUBDIR ======> imaginary/tak
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:44:24 1,999
+Application: ./1 -H5M
+9 
+Application Instructions: 36,155,782
+Stop: Thu Feb 18 10:44:25 1,999
+Instructions: 36,155,782
+Time: 1.460 usr  0.010 sys  1.507 real  97.558%
+Speed: 24,595.770 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:44:25 1,999
+Application: ./2 -H5M
+9 
+Application Instructions: 36,155,782
+Stop: Thu Feb 18 10:44:27 1,999
+Instructions: 36,155,782
+Time: 1.430 usr  0.010 sys  1.518 real  94.835%
+Speed: 25,108.182 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:44:27 1,999
+Application: ./3 -H5M
+9 
+Application Instructions: 36,155,782
+Stop: Thu Feb 18 10:44:28 1,999
+Instructions: 36,155,782
+Time: 1.400 usr  0.010 sys  1.520 real  92.782%
+Speed: 25,642.399 KIPS
+SUBDIR ======> imaginary/exp3_8
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:44:28 1,999
+Application: ./1 -H60M
+6,561 
+Application Instructions: 267,097,369
+Stop: Thu Feb 18 10:44:43 1,999
+Instructions: 267,097,369
+Time: 13.500 usr  0.570 sys  14.713 real  95.631%
+Speed: 18,983.466 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:44:44 1,999
+Application: ./2 -H60M
+6,561 
+Application Instructions: 267,097,369
+Stop: Thu Feb 18 10:44:58 1,999
+Instructions: 267,097,369
+Time: 13.660 usr  0.540 sys  14.587 real  97.345%
+Speed: 18,809.674 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:44:58 1,999
+Application: ./3 -H60M
+6,561 
+Application Instructions: 267,097,369
+Stop: Thu Feb 18 10:45:13 1,999
+Instructions: 267,097,369
+Time: 13.860 usr  0.360 sys  14.413 real  98.664%
+Speed: 18,783.219 KIPS
+SUBDIR ======> spectral/awards
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:45:13 1,999
+Application: ./1 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 226,481
+Stop: Thu Feb 18 10:45:13 1,999
+Instructions: 226,481
+Time: 0.050 usr  0.000 sys  0.056 real  88.993%
+Speed: 4,529.620 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:45:13 1,999
+Application: ./2 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 195,504
+Stop: Thu Feb 18 10:45:13 1,999
+Instructions: 195,504
+Time: 0.040 usr  0.020 sys  0.056 real  108.032%
+Speed: 3,258.400 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:45:13 1,999
+Application: ./3 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 194,390
+Stop: Thu Feb 18 10:45:13 1,999
+Instructions: 194,390
+Time: 0.050 usr  0.000 sys  0.056 real  89.112%
+Speed: 3,887.800 KIPS
+SUBDIR ======> spectral/cichelli
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:45:13 1,999
+Application: ./1 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 19,168,252
+Stop: Thu Feb 18 10:45:15 1,999
+Instructions: 19,168,252
+Time: 1.090 usr  0.030 sys  1.167 real  95.950%
+Speed: 17,114.511 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:45:15 1,999
+Application: ./2 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 16,837,113
+Stop: Thu Feb 18 10:45:16 1,999
+Instructions: 16,837,113
+Time: 1.110 usr  0.020 sys  1.192 real  94.759%
+Speed: 14,900.100 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:45:16 1,999
+Application: ./3 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 18,215,690
+Stop: Thu Feb 18 10:45:17 1,999
+Instructions: 18,215,690
+Time: 1.080 usr  0.030 sys  1.252 real  88.684%
+Speed: 16,410.532 KIPS
+SUBDIR ======> spectral/boyer2
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:45:17 1,999
+Application: ./1 -H10M
+The term is a tautology
+
+Application Instructions: 14,127,966
+Stop: Thu Feb 18 10:45:18 1,999
+Instructions: 14,127,966
+Time: 0.850 usr  0.040 sys  0.943 real  94.332%
+Speed: 15,874.119 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:45:19 1,999
+Application: ./2 -H10M
+The term is a tautology
+
+Application Instructions: 13,297,427
+Stop: Thu Feb 18 10:45:19 1,999
+Instructions: 13,297,427
+Time: 0.830 usr  0.070 sys  0.910 real  98.859%
+Speed: 14,774.919 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Fatal error, heap full during GC!
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:45:20 1,999
+Application: ./3 -H10M
+Application Instructions: 464,923,880
+Stop: Thu Feb 18 10:45:50 1,999
+Instructions: 464,923,880
+Time: 30.020 usr  0.180 sys  30.822 real  97.983%
+Speed: 15,394.830 KIPS
+SUBDIR ======> spectral/sorting
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:45:50 1,999
+Application: ./1 -H60M
+3,849,600 
+Application Instructions: 309,231,502
+Stop: Thu Feb 18 10:46:08 1,999
+Instructions: 309,231,502
+Time: 16.520 usr  0.510 sys  17.181 real  99.123%
+Speed: 18,158.045 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:46:08 1,999
+Application: ./2 -H60M
+3,849,600 
+Application Instructions: 289,382,761
+Stop: Thu Feb 18 10:46:25 1,999
+Instructions: 289,382,761
+Time: 16.240 usr  0.410 sys  16.894 real  98.557%
+Speed: 17,380.346 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:46:25 1,999
+Application: ./3 -H60M
+3,849,600 
+Application Instructions: 288,867,510
+Stop: Thu Feb 18 10:46:42 1,999
+Instructions: 288,867,510
+Time: 15.990 usr  0.450 sys  16.648 real  98.753%
+Speed: 17,571.016 KIPS
+SUBDIR ======> spectral/clausify
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:46:42 1,999
+Application: ./1 -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 116,092,955
+Stop: Thu Feb 18 10:46:48 1,999
+Instructions: 116,092,955
+Time: 6.210 usr  0.170 sys  6.467 real  98.651%
+Speed: 18,196.388 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:46:49 1,999
+Application: ./2 -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 111,204,076
+Stop: Thu Feb 18 10:46:55 1,999
+Instructions: 111,204,076
+Time: 6.200 usr  0.090 sys  6.585 real  95.513%
+Speed: 17,679.503 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:46:55 1,999
+Application: ./3 -H20M
+SUBDIR ======> spectral/hartel/event
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:46:56 1,999
+Application: ./1 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 81,490,261
+Stop: Thu Feb 18 10:47:00 1,999
+Instructions: 81,490,261
+Time: 4.120 usr  0.230 sys  4.362 real  99.714%
+Speed: 18,733.393 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:47:00 1,999
+Application: ./2 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,264,326
+Stop: Thu Feb 18 10:47:04 1,999
+Instructions: 73,264,326
+Time: 3.790 usr  0.290 sys  4.125 real  98.918%
+Speed: 17,956.943 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:47:04 1,999
+Application: ./3 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 72,603,477
+Stop: Thu Feb 18 10:47:08 1,999
+Instructions: 72,603,477
+Time: 3.900 usr  0.170 sys  4.071 real  99.969%
+Speed: 17,838.692 KIPS
+SUBDIR ======> spectral/hartel/ida
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:47:09 1,999
+Application: ./1 -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 31,948,435
+Stop: Thu Feb 18 10:47:10 1,999
+Instructions: 31,948,435
+Time: 1.660 usr  0.100 sys  1.766 real  99.682%
+Speed: 18,152.520 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:47:11 1,999
+Application: ./2 -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,567,268
+Stop: Thu Feb 18 10:47:12 1,999
+Instructions: 26,567,268
+Time: 1.500 usr  0.110 sys  1.630 real  98.784%
+Speed: 16,501.409 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:47:12 1,999
+Application: ./3 -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,567,136
+Stop: Thu Feb 18 10:47:14 1,999
+Instructions: 26,567,136
+Time: 1.520 usr  0.150 sys  1.727 real  96.703%
+Speed: 15,908.465 KIPS
+SUBDIR ======> spectral/hartel/typecheck
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./1 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:47:14 1,999
+Application: ./1 -H20M
+2,904,400/47,800
+
+Application Instructions: 178,689,175
+Stop: Thu Feb 18 10:47:24 1,999
+Instructions: 178,689,175
+Time: 8.950 usr  0.120 sys  9.510 real  95.369%
+Speed: 19,701.122 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./2 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:47:24 1,999
+Application: ./2 -H20M
+2,904,400/47,800
+
+Application Instructions: 162,833,184
+Stop: Thu Feb 18 10:47:33 1,999
+Instructions: 162,833,184
+Time: 8.310 usr  0.160 sys  8.946 real  94.681%
+Speed: 19,224.697 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./3 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+/users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount: ./3: program not found
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Thu Feb 18 10:47:33 1,999
+Stop: Thu Feb 18 10:47:33 1,999
+Time: 0.000 usr  0.000 sys  0.002 real  0.000%
+SUBDIR ======> other/nfib
+
+OUT=1
+Codegen summary, procedures: 2
+Codegen summary, used registers: 115
+Codegen summary, used basic blocks: 14
+Build graph size: 15 nodes (2 pre-coloured, 10 connected), 9 edges.
+ALLOC Coalesce:
+Coalesce done, total: 9 moves, 9 coalesced.
+Coalesce graph size: 6 nodes (2 pre-coloured, 6 connected), 6 edges.
+ALLOC Coalesce:
+Coalesce done, total: 0 moves, 0 coalesced.
+Coalesce graph size: 6 nodes (2 pre-coloured, 6 connected), 6 edges.
+ALLOC Simplify(1):
+Simplify graph size: 6 nodes (2 pre-coloured, 6 connected), 6 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 2
+Codegen summary, used registers: 115
+Codegen summary, used basic blocks: 14
+Build graph size: 15 nodes (2 pre-coloured, 10 connected), 9 edges.
+ALLOC Coalesce:
+Coalesce done, total: 9 moves, 9 coalesced.
+Coalesce graph size: 6 nodes (2 pre-coloured, 6 connected), 6 edges.
+ALLOC Coalesce:
+Coalesce done, total: 0 moves, 0 coalesced.
+Coalesce graph size: 6 nodes (2 pre-coloured, 6 connected), 6 edges.
+ALLOC Simplify(1):
+Simplify graph size: 6 nodes (2 pre-coloured, 6 connected), 6 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 2
+Codegen summary, used registers: 115
+Codegen summary, used basic blocks: 14
+Build graph size: 15 nodes (2 pre-coloured, 10 connected), 9 edges.
+ALLOC Coalesce:
+Coalesce done, total: 9 moves, 9 coalesced.
+Coalesce graph size: 6 nodes (2 pre-coloured, 6 connected), 6 edges.
+ALLOC Coalesce:
+Coalesce done, total: 0 moves, 0 coalesced.
+Coalesce graph size: 6 nodes (2 pre-coloured, 6 connected), 6 edges.
+ALLOC Simplify(1):
+Simplify graph size: 6 nodes (2 pre-coloured, 6 connected), 6 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+SUBDIR ======> other/tsumupto
+
+OUT=1
+Codegen summary, procedures: 2
+Codegen summary, used registers: 117
+Codegen summary, used basic blocks: 12
+Build graph size: 18 nodes (2 pre-coloured, 16 connected), 28 edges.
+ALLOC Coalesce:
+Coalesce done, total: 11 moves, 10 coalesced.
+Coalesce graph size: 8 nodes (2 pre-coloured, 8 connected), 11 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1 moves, 0 coalesced.
+Coalesce graph size: 8 nodes (2 pre-coloured, 8 connected), 11 edges.
+ALLOC Simplify(1):
+Simplify graph size: 8 nodes (2 pre-coloured, 8 connected), 11 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 2
+Codegen summary, used registers: 117
+Codegen summary, used basic blocks: 12
+Build graph size: 18 nodes (2 pre-coloured, 16 connected), 28 edges.
+ALLOC Coalesce:
+Coalesce done, total: 11 moves, 10 coalesced.
+Coalesce graph size: 8 nodes (2 pre-coloured, 8 connected), 11 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1 moves, 0 coalesced.
+Coalesce graph size: 8 nodes (2 pre-coloured, 8 connected), 11 edges.
+ALLOC Simplify(1):
+Simplify graph size: 8 nodes (2 pre-coloured, 8 connected), 11 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 2
+Codegen summary, used registers: 117
+Codegen summary, used basic blocks: 12
+Build graph size: 18 nodes (2 pre-coloured, 16 connected), 28 edges.
+ALLOC Coalesce:
+Coalesce done, total: 11 moves, 10 coalesced.
+Coalesce graph size: 8 nodes (2 pre-coloured, 8 connected), 11 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1 moves, 0 coalesced.
+Coalesce graph size: 8 nodes (2 pre-coloured, 8 connected), 11 edges.
+ALLOC Simplify(1):
+Simplify graph size: 8 nodes (2 pre-coloured, 8 connected), 11 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+SUBDIR ======> other/sieve
+
+OUT=1
+Codegen summary, procedures: 5
+Codegen summary, used registers: 194
+Codegen summary, used basic blocks: 63
+Build graph size: 92 nodes (2 pre-coloured, 89 connected), 314 edges.
+ALLOC Coalesce:
+Coalesce done, total: 57 moves, 53 coalesced.
+Coalesce graph size: 39 nodes (2 pre-coloured, 37 connected), 137 edges.
+ALLOC Coalesce:
+Coalesce done, total: 4 moves, 0 coalesced.
+Coalesce graph size: 39 nodes (2 pre-coloured, 37 connected), 137 edges.
+ALLOC Simplify(1):
+Simplify graph size: 39 nodes (2 pre-coloured, 37 connected), 137 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 5
+Codegen summary, used registers: 194
+Codegen summary, used basic blocks: 63
+Build graph size: 92 nodes (2 pre-coloured, 89 connected), 314 edges.
+ALLOC Coalesce:
+Coalesce done, total: 57 moves, 53 coalesced.
+Coalesce graph size: 39 nodes (2 pre-coloured, 37 connected), 137 edges.
+ALLOC Coalesce:
+Coalesce done, total: 4 moves, 0 coalesced.
+Coalesce graph size: 39 nodes (2 pre-coloured, 37 connected), 137 edges.
+ALLOC Simplify(1):
+Simplify graph size: 39 nodes (2 pre-coloured, 37 connected), 137 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 5
+Codegen summary, used registers: 194
+Codegen summary, used basic blocks: 63
+Build graph size: 92 nodes (2 pre-coloured, 89 connected), 314 edges.
+ALLOC Coalesce:
+Coalesce done, total: 57 moves, 53 coalesced.
+Coalesce graph size: 39 nodes (2 pre-coloured, 37 connected), 137 edges.
+ALLOC Coalesce:
+Coalesce done, total: 4 moves, 0 coalesced.
+Coalesce graph size: 39 nodes (2 pre-coloured, 37 connected), 137 edges.
+ALLOC Simplify(1):
+Simplify graph size: 39 nodes (2 pre-coloured, 37 connected), 137 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+SUBDIR ======> other/queens
+
+OUT=1
+Codegen summary, procedures: 10
+Codegen summary, used registers: 282
+Codegen summary, used basic blocks: 132
+Build graph size: 176 nodes (2 pre-coloured, 174 connected), 576 edges.
+ALLOC Coalesce:
+Coalesce done, total: 120 moves, 119 coalesced.
+Coalesce graph size: 57 nodes (2 pre-coloured, 57 connected), 214 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1 moves, 0 coalesced.
+Coalesce graph size: 57 nodes (2 pre-coloured, 57 connected), 214 edges.
+ALLOC Simplify(1):
+Simplify graph size: 57 nodes (2 pre-coloured, 57 connected), 214 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 10
+Codegen summary, used registers: 282
+Codegen summary, used basic blocks: 132
+Build graph size: 176 nodes (2 pre-coloured, 174 connected), 576 edges.
+ALLOC Coalesce:
+Coalesce done, total: 120 moves, 119 coalesced.
+Coalesce graph size: 57 nodes (2 pre-coloured, 57 connected), 214 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1 moves, 0 coalesced.
+Coalesce graph size: 57 nodes (2 pre-coloured, 57 connected), 214 edges.
+ALLOC Simplify(1):
+Simplify graph size: 57 nodes (2 pre-coloured, 57 connected), 214 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 10
+Codegen summary, used registers: 282
+Codegen summary, used basic blocks: 132
+Build graph size: 176 nodes (2 pre-coloured, 174 connected), 576 edges.
+ALLOC Coalesce:
+Coalesce done, total: 120 moves, 119 coalesced.
+Coalesce graph size: 57 nodes (2 pre-coloured, 57 connected), 214 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1 moves, 0 coalesced.
+Coalesce graph size: 57 nodes (2 pre-coloured, 57 connected), 214 edges.
+ALLOC Simplify(1):
+Simplify graph size: 57 nodes (2 pre-coloured, 57 connected), 214 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+SUBDIR ======> other/words
+
+OUT=1
+Codegen summary, procedures: 46
+Codegen summary, used registers: 1569
+Codegen summary, used basic blocks: 817
+Build graph size: 940 nodes (6 pre-coloured, 935 connected), 10626 edges.
+ALLOC Coalesce:
+Coalesce done, total: 674 moves, 502 coalesced.
+Coalesce graph size: 438 nodes (6 pre-coloured, 436 connected), 5921 edges.
+ALLOC Coalesce:
+Coalesce done, total: 172 moves, 0 coalesced.
+Coalesce graph size: 438 nodes (6 pre-coloured, 436 connected), 5921 edges.
+ALLOC Simplify(1):
+Simplify graph size: 438 nodes (6 pre-coloured, 436 connected), 5921 edges.
+Simplify done, spill candidates: [length 4]
+ALLOC Select(1):
+Select done, spills: [length 4]
+Build graph size: 458 nodes (6 pre-coloured, 446 connected), 4299 edges.
+ALLOC Coalesce:
+Coalesce done, total: 153 moves, 120 coalesced.
+Coalesce graph size: 338 nodes (6 pre-coloured, 328 connected), 2671 edges.
+ALLOC Coalesce:
+Coalesce done, total: 33 moves, 0 coalesced.
+Coalesce graph size: 338 nodes (6 pre-coloured, 328 connected), 2671 edges.
+ALLOC Simplify(2):
+Simplify graph size: 338 nodes (6 pre-coloured, 328 connected), 2671 edges.
+Simplify done, spill candidates: []
+ALLOC Select(2):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 46
+Codegen summary, used registers: 1569
+Codegen summary, used basic blocks: 817
+Build graph size: 940 nodes (6 pre-coloured, 935 connected), 10626 edges.
+ALLOC Coalesce:
+Coalesce done, total: 674 moves, 502 coalesced.
+Coalesce graph size: 438 nodes (6 pre-coloured, 436 connected), 5921 edges.
+ALLOC Coalesce:
+Coalesce done, total: 172 moves, 0 coalesced.
+Coalesce graph size: 438 nodes (6 pre-coloured, 436 connected), 5921 edges.
+ALLOC Simplify(1):
+Simplify graph size: 438 nodes (6 pre-coloured, 436 connected), 5921 edges.
+Simplify done, spill candidates: [length 4]
+ALLOC Select(1):
+Select done, spills: [length 4]
+Build graph size: 458 nodes (6 pre-coloured, 446 connected), 4299 edges.
+ALLOC Coalesce:
+Coalesce done, total: 150 moves, 133 coalesced.
+Coalesce graph size: 325 nodes (6 pre-coloured, 315 connected), 2552 edges.
+ALLOC Coalesce:
+Coalesce done, total: 17 moves, 0 coalesced.
+Coalesce graph size: 325 nodes (6 pre-coloured, 315 connected), 2552 edges.
+ALLOC Simplify(2):
+Simplify graph size: 325 nodes (6 pre-coloured, 315 connected), 2552 edges.
+Simplify done, spill candidates: []
+ALLOC Select(2):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 46
+Codegen summary, used registers: 1569
+Codegen summary, used basic blocks: 817
+Build graph size: 940 nodes (6 pre-coloured, 935 connected), 10626 edges.
+ALLOC Coalesce:
+Coalesce done, total: 659 moves, 628 coalesced.
+Coalesce graph size: 312 nodes (6 pre-coloured, 310 connected), 3702 edges.
+ALLOC Coalesce:
+Coalesce done, total: 31 moves, 0 coalesced.
+Coalesce graph size: 312 nodes (6 pre-coloured, 310 connected), 3702 edges.
+ALLOC Simplify(1):
+Simplify graph size: 312 nodes (6 pre-coloured, 310 connected), 3702 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): []
+ALLOC Select(1):
+Select done, splits: [length 3]
+Select, ignored spills: []
+Build graph size: 318 nodes (6 pre-coloured, 314 connected), 3713 edges.
+ALLOC Coalesce:
+Coalesce done, total: 35 moves, 5 coalesced.
+Coalesce graph size: 313 nodes (6 pre-coloured, 310 connected), 3677 edges.
+ALLOC Coalesce:
+Coalesce done, total: 30 moves, 0 coalesced.
+Coalesce graph size: 313 nodes (6 pre-coloured, 310 connected), 3677 edges.
+ALLOC Simplify(2):
+Simplify graph size: 313 nodes (6 pre-coloured, 310 connected), 3677 edges.
+Simplify done, split candidates: [length 1]
+Simplify, (spill candidates): [length 2]
+ALLOC Select(2):
+Select done, splits: [length 1]
+Select, ignored spills: [length 2]
+Build graph size: 315 nodes (6 pre-coloured, 312 connected), 3683 edges.
+ALLOC Coalesce:
+Coalesce done, total: 34 moves, 1 coalesced.
+Coalesce graph size: 314 nodes (6 pre-coloured, 311 connected), 3680 edges.
+ALLOC Coalesce:
+Coalesce done, total: 33 moves, 0 coalesced.
+Coalesce graph size: 314 nodes (6 pre-coloured, 311 connected), 3680 edges.
+ALLOC Simplify(3):
+Simplify graph size: 314 nodes (6 pre-coloured, 311 connected), 3680 edges.
+Simplify done, spill candidates: [length 3]
+ALLOC Select(3):
+Select done, spills: [length 3]
+Build graph size: 331 nodes (6 pre-coloured, 320 connected), 2834 edges.
+ALLOC Coalesce:
+Coalesce done, total: 33 moves, 10 coalesced.
+Coalesce graph size: 321 nodes (6 pre-coloured, 314 connected), 2824 edges.
+ALLOC Coalesce:
+Coalesce done, total: 23 moves, 0 coalesced.
+Coalesce graph size: 321 nodes (6 pre-coloured, 314 connected), 2824 edges.
+ALLOC Simplify(4):
+Simplify graph size: 321 nodes (6 pre-coloured, 314 connected), 2824 edges.
+Simplify done, spill candidates: []
+ALLOC Select(4):
+Select succeeded.
+SUBDIR ======> other/puzzle
+
+OUT=1
+Codegen summary, procedures: 49
+Codegen summary, used registers: 1398
+Codegen summary, used basic blocks: 885
+Build graph size: 1130 nodes (6 pre-coloured, 1127 connected), 30858 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1038 moves, 195 coalesced.
+Coalesce graph size: 935 nodes (6 pre-coloured, 933 connected), 28980 edges.
+ALLOC Coalesce:
+Coalesce done, total: 843 moves, 5 coalesced.
+Coalesce graph size: 930 nodes (6 pre-coloured, 928 connected), 28903 edges.
+ALLOC Simplify(1):
+Simplify graph size: 930 nodes (6 pre-coloured, 928 connected), 28903 edges.
+Simplify done, spill candidates: [length 50]
+ALLOC Select(1):
+Select done, spills: [length 40]
+Build graph size: 1078 nodes (6 pre-coloured, 1007 connected), 5877 edges.
+ALLOC Coalesce:
+Coalesce done, total: 709 moves, 493 coalesced.
+Coalesce graph size: 585 nodes (6 pre-coloured, 540 connected), 4135 edges.
+ALLOC Coalesce:
+Coalesce done, total: 216 moves, 0 coalesced.
+Coalesce graph size: 585 nodes (6 pre-coloured, 540 connected), 4135 edges.
+ALLOC Simplify(2):
+Simplify graph size: 585 nodes (6 pre-coloured, 540 connected), 4135 edges.
+Simplify done, spill candidates: [length 8]
+ALLOC Select(2):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 49
+Codegen summary, used registers: 1398
+Codegen summary, used basic blocks: 885
+Build graph size: 1130 nodes (6 pre-coloured, 1127 connected), 30858 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1038 moves, 195 coalesced.
+Coalesce graph size: 935 nodes (6 pre-coloured, 933 connected), 28980 edges.
+ALLOC Coalesce:
+Coalesce done, total: 843 moves, 5 coalesced.
+Coalesce graph size: 930 nodes (6 pre-coloured, 928 connected), 28903 edges.
+ALLOC Simplify(1):
+Simplify graph size: 930 nodes (6 pre-coloured, 928 connected), 28903 edges.
+Simplify done, spill candidates: [length 50]
+ALLOC Select(1):
+Select done, spills: [length 40]
+Build graph size: 1078 nodes (6 pre-coloured, 1007 connected), 5877 edges.
+ALLOC Coalesce:
+Coalesce done, total: 685 moves, 637 coalesced.
+Coalesce graph size: 441 nodes (6 pre-coloured, 396 connected), 1905 edges.
+ALLOC Coalesce:
+Coalesce done, total: 48 moves, 0 coalesced.
+Coalesce graph size: 441 nodes (6 pre-coloured, 396 connected), 1905 edges.
+ALLOC Simplify(2):
+Simplify graph size: 441 nodes (6 pre-coloured, 396 connected), 1905 edges.
+Simplify done, spill candidates: []
+ALLOC Select(2):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 49
+Codegen summary, used registers: 1398
+Codegen summary, used basic blocks: 885
+Build graph size: 1130 nodes (6 pre-coloured, 1127 connected), 30858 edges.
+ALLOC Coalesce:
+Coalesce done, total: 863 moves, 796 coalesced.
+Coalesce graph size: 334 nodes (6 pre-coloured, 332 connected), 7228 edges.
+ALLOC Coalesce:
+Coalesce done, total: 67 moves, 0 coalesced.
+Coalesce graph size: 334 nodes (6 pre-coloured, 332 connected), 7228 edges.
+ALLOC Simplify(1):
+Simplify graph size: 334 nodes (6 pre-coloured, 332 connected), 7228 edges.
+Simplify done, split candidates: [length 27]
+Simplify, (spill candidates): [length 2]
+ALLOC Select(1):
+Select done, splits: [length 25]
+Select, ignored spills: [length 2]
+Build graph size: 428 nodes (6 pre-coloured, 426 connected), 10515 edges.
+ALLOC Coalesce:
+Coalesce done, total: 228 moves, 24 coalesced.
+Coalesce graph size: 404 nodes (6 pre-coloured, 402 connected), 10198 edges.
+ALLOC Coalesce:
+Coalesce done, total: 204 moves, 0 coalesced.
+Coalesce graph size: 404 nodes (6 pre-coloured, 402 connected), 10198 edges.
+ALLOC Simplify(2):
+Simplify graph size: 404 nodes (6 pre-coloured, 402 connected), 10198 edges.
+Simplify done, split candidates: [length 6]
+Simplify, (spill candidates): [length 33]
+ALLOC Select(2):
+Select done, splits: [length 5]
+Select, ignored spills: [length 27]
+Build graph size: 417 nodes (6 pre-coloured, 415 connected), 10378 edges.
+ALLOC Coalesce:
+Coalesce done, total: 230 moves, 5 coalesced.
+Coalesce graph size: 412 nodes (6 pre-coloured, 410 connected), 10334 edges.
+ALLOC Coalesce:
+Coalesce done, total: 225 moves, 0 coalesced.
+Coalesce graph size: 412 nodes (6 pre-coloured, 410 connected), 10334 edges.
+ALLOC Simplify(3):
+Simplify graph size: 412 nodes (6 pre-coloured, 410 connected), 10334 edges.
+Simplify done, split candidates: [length 1]
+Simplify, (spill candidates): [length 38]
+ALLOC Select(3):
+Select done, spills: [length 32]
+Build graph size: 511 nodes (6 pre-coloured, 496 connected), 3940 edges.
+ALLOC Coalesce:
+Coalesce done, total: 193 moves, 120 coalesced.
+Coalesce graph size: 391 nodes (6 pre-coloured, 376 connected), 3478 edges.
+ALLOC Coalesce:
+Coalesce done, total: 73 moves, 0 coalesced.
+Coalesce graph size: 391 nodes (6 pre-coloured, 376 connected), 3478 edges.
+ALLOC Simplify(4):
+Simplify graph size: 391 nodes (6 pre-coloured, 376 connected), 3478 edges.
+Simplify done, split candidates: [length 1]
+Simplify, (spill candidates): [length 7]
+ALLOC Select(4):
+Select done, spills: [length 3]
+Build graph size: 415 nodes (6 pre-coloured, 400 connected), 3089 edges.
+ALLOC Coalesce:
+Coalesce done, total: 73 moves, 8 coalesced.
+Coalesce graph size: 407 nodes (6 pre-coloured, 392 connected), 3072 edges.
+ALLOC Coalesce:
+Coalesce done, total: 65 moves, 0 coalesced.
+Coalesce graph size: 407 nodes (6 pre-coloured, 392 connected), 3072 edges.
+ALLOC Simplify(5):
+Simplify graph size: 407 nodes (6 pre-coloured, 392 connected), 3072 edges.
+Simplify done, split candidates: [length 1]
+Simplify, (spill candidates): [length 4]
+ALLOC Select(5):
+Select succeeded.
+SUBDIR ======> imaginary/tak
+
+OUT=1
+Codegen summary, procedures: 2
+Codegen summary, used registers: 122
+Codegen summary, used basic blocks: 18
+Build graph size: 21 nodes (2 pre-coloured, 20 connected), 46 edges.
+ALLOC Coalesce:
+Coalesce done, total: 23 moves, 12 coalesced.
+Coalesce graph size: 9 nodes (2 pre-coloured, 9 connected), 18 edges.
+ALLOC Coalesce:
+Coalesce done, total: 11 moves, 0 coalesced.
+Coalesce graph size: 9 nodes (2 pre-coloured, 9 connected), 18 edges.
+ALLOC Simplify(1):
+Simplify graph size: 9 nodes (2 pre-coloured, 9 connected), 18 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 2
+Codegen summary, used registers: 122
+Codegen summary, used basic blocks: 18
+Build graph size: 21 nodes (2 pre-coloured, 20 connected), 46 edges.
+ALLOC Coalesce:
+Coalesce done, total: 23 moves, 12 coalesced.
+Coalesce graph size: 9 nodes (2 pre-coloured, 9 connected), 18 edges.
+ALLOC Coalesce:
+Coalesce done, total: 11 moves, 0 coalesced.
+Coalesce graph size: 9 nodes (2 pre-coloured, 9 connected), 18 edges.
+ALLOC Simplify(1):
+Simplify graph size: 9 nodes (2 pre-coloured, 9 connected), 18 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 2
+Codegen summary, used registers: 122
+Codegen summary, used basic blocks: 18
+Build graph size: 21 nodes (2 pre-coloured, 20 connected), 46 edges.
+ALLOC Coalesce:
+Coalesce done, total: 23 moves, 12 coalesced.
+Coalesce graph size: 9 nodes (2 pre-coloured, 9 connected), 18 edges.
+ALLOC Coalesce:
+Coalesce done, total: 11 moves, 0 coalesced.
+Coalesce graph size: 9 nodes (2 pre-coloured, 9 connected), 18 edges.
+ALLOC Simplify(1):
+Simplify graph size: 9 nodes (2 pre-coloured, 9 connected), 18 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+SUBDIR ======> imaginary/exp3_8
+
+OUT=1
+Codegen summary, procedures: 6
+Codegen summary, used registers: 194
+Codegen summary, used basic blocks: 108
+Build graph size: 95 nodes (2 pre-coloured, 88 connected), 269 edges.
+ALLOC Coalesce:
+Coalesce done, total: 69 moves, 67 coalesced.
+Coalesce graph size: 28 nodes (2 pre-coloured, 28 connected), 69 edges.
+ALLOC Coalesce:
+Coalesce done, total: 2 moves, 0 coalesced.
+Coalesce graph size: 28 nodes (2 pre-coloured, 28 connected), 69 edges.
+ALLOC Simplify(1):
+Simplify graph size: 28 nodes (2 pre-coloured, 28 connected), 69 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 6
+Codegen summary, used registers: 194
+Codegen summary, used basic blocks: 108
+Build graph size: 95 nodes (2 pre-coloured, 88 connected), 269 edges.
+ALLOC Coalesce:
+Coalesce done, total: 69 moves, 67 coalesced.
+Coalesce graph size: 28 nodes (2 pre-coloured, 28 connected), 69 edges.
+ALLOC Coalesce:
+Coalesce done, total: 2 moves, 0 coalesced.
+Coalesce graph size: 28 nodes (2 pre-coloured, 28 connected), 69 edges.
+ALLOC Simplify(1):
+Simplify graph size: 28 nodes (2 pre-coloured, 28 connected), 69 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 6
+Codegen summary, used registers: 194
+Codegen summary, used basic blocks: 108
+Build graph size: 95 nodes (2 pre-coloured, 88 connected), 269 edges.
+ALLOC Coalesce:
+Coalesce done, total: 69 moves, 67 coalesced.
+Coalesce graph size: 28 nodes (2 pre-coloured, 28 connected), 69 edges.
+ALLOC Coalesce:
+Coalesce done, total: 2 moves, 0 coalesced.
+Coalesce graph size: 28 nodes (2 pre-coloured, 28 connected), 69 edges.
+ALLOC Simplify(1):
+Simplify graph size: 28 nodes (2 pre-coloured, 28 connected), 69 edges.
+Simplify done, spill candidates: []
+ALLOC Select(1):
+Select succeeded.
+SUBDIR ======> spectral/awards
+
+OUT=1
+Codegen summary, procedures: 32
+Codegen summary, used registers: 1126
+Codegen summary, used basic blocks: 659
+Build graph size: 760 nodes (6 pre-coloured, 756 connected), 7568 edges.
+ALLOC Coalesce:
+Coalesce done, total: 609 moves, 427 coalesced.
+Coalesce graph size: 333 nodes (6 pre-coloured, 333 connected), 4016 edges.
+ALLOC Coalesce:
+Coalesce done, total: 178 moves, 2 coalesced.
+Coalesce graph size: 331 nodes (6 pre-coloured, 331 connected), 3994 edges.
+ALLOC Simplify(1):
+Simplify graph size: 331 nodes (6 pre-coloured, 331 connected), 3994 edges.
+Simplify done, spill candidates: [length 10]
+ALLOC Select(1):
+Select done, spills: [length 5]
+Build graph size: 353 nodes (6 pre-coloured, 336 connected), 2520 edges.
+ALLOC Coalesce:
+Coalesce done, total: 175 moves, 5 coalesced.
+Coalesce graph size: 348 nodes (6 pre-coloured, 332 connected), 2485 edges.
+ALLOC Coalesce:
+Coalesce done, total: 170 moves, 0 coalesced.
+Coalesce graph size: 348 nodes (6 pre-coloured, 332 connected), 2485 edges.
+ALLOC Simplify(2):
+Simplify graph size: 348 nodes (6 pre-coloured, 332 connected), 2485 edges.
+Simplify done, spill candidates: [length 5]
+ALLOC Select(2):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 32
+Codegen summary, used registers: 1126
+Codegen summary, used basic blocks: 659
+Build graph size: 760 nodes (6 pre-coloured, 756 connected), 7568 edges.
+ALLOC Coalesce:
+Coalesce done, total: 609 moves, 427 coalesced.
+Coalesce graph size: 333 nodes (6 pre-coloured, 333 connected), 4016 edges.
+ALLOC Coalesce:
+Coalesce done, total: 178 moves, 2 coalesced.
+Coalesce graph size: 331 nodes (6 pre-coloured, 331 connected), 3994 edges.
+ALLOC Simplify(1):
+Simplify graph size: 331 nodes (6 pre-coloured, 331 connected), 3994 edges.
+Simplify done, spill candidates: [length 10]
+ALLOC Select(1):
+Select done, spills: [length 5]
+Build graph size: 353 nodes (6 pre-coloured, 336 connected), 2520 edges.
+ALLOC Coalesce:
+Coalesce done, total: 159 moves, 94 coalesced.
+Coalesce graph size: 259 nodes (6 pre-coloured, 245 connected), 1249 edges.
+ALLOC Coalesce:
+Coalesce done, total: 65 moves, 0 coalesced.
+Coalesce graph size: 259 nodes (6 pre-coloured, 245 connected), 1249 edges.
+ALLOC Simplify(2):
+Simplify graph size: 259 nodes (6 pre-coloured, 245 connected), 1249 edges.
+Simplify done, spill candidates: []
+ALLOC Select(2):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 32
+Codegen summary, used registers: 1126
+Codegen summary, used basic blocks: 659
+Build graph size: 760 nodes (6 pre-coloured, 756 connected), 7568 edges.
+ALLOC Coalesce:
+Coalesce done, total: 588 moves, 522 coalesced.
+Coalesce graph size: 238 nodes (6 pre-coloured, 238 connected), 2239 edges.
+ALLOC Coalesce:
+Coalesce done, total: 66 moves, 0 coalesced.
+Coalesce graph size: 238 nodes (6 pre-coloured, 238 connected), 2239 edges.
+ALLOC Simplify(1):
+Simplify graph size: 238 nodes (6 pre-coloured, 238 connected), 2239 edges.
+Simplify done, spill candidates: [length 4]
+ALLOC Select(1):
+Select done, spills: [length 4]
+Build graph size: 243 nodes (6 pre-coloured, 243 connected), 1441 edges.
+ALLOC Coalesce:
+Coalesce done, total: 66 moves, 3 coalesced.
+Coalesce graph size: 240 nodes (6 pre-coloured, 240 connected), 1401 edges.
+ALLOC Coalesce:
+Coalesce done, total: 63 moves, 0 coalesced.
+Coalesce graph size: 240 nodes (6 pre-coloured, 240 connected), 1401 edges.
+ALLOC Simplify(2):
+Simplify graph size: 240 nodes (6 pre-coloured, 240 connected), 1401 edges.
+Simplify done, spill candidates: []
+ALLOC Select(2):
+Select succeeded.
+SUBDIR ======> spectral/cichelli
+
+OUT=1
+Codegen summary, procedures: 52
+Codegen summary, used registers: 1703
+Codegen summary, used basic blocks: 972
+Build graph size: 1252 nodes (6 pre-coloured, 1248 connected), 18117 edges.
+ALLOC Coalesce:
+Coalesce done, total: 984 moves, 524 coalesced.
+Coalesce graph size: 728 nodes (6 pre-coloured, 728 connected), 13350 edges.
+ALLOC Coalesce:
+Coalesce done, total: 458 moves, 2 coalesced.
+Coalesce graph size: 726 nodes (6 pre-coloured, 726 connected), 13321 edges.
+ALLOC Simplify(1):
+Simplify graph size: 726 nodes (6 pre-coloured, 726 connected), 13321 edges.
+Simplify done, spill candidates: [length 51]
+ALLOC Select(1):
+Select done, spills: [length 18]
+Build graph size: 793 nodes (6 pre-coloured, 762 connected), 8393 edges.
+ALLOC Coalesce:
+Coalesce done, total: 431 moves, 122 coalesced.
+Coalesce graph size: 671 nodes (6 pre-coloured, 644 connected), 7238 edges.
+ALLOC Coalesce:
+Coalesce done, total: 309 moves, 1 coalesced.
+Coalesce graph size: 670 nodes (6 pre-coloured, 643 connected), 7228 edges.
+ALLOC Simplify(2):
+Simplify graph size: 670 nodes (6 pre-coloured, 643 connected), 7228 edges.
+Simplify done, spill candidates: [length 33]
+ALLOC Select(2):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 52
+Codegen summary, used registers: 1703
+Codegen summary, used basic blocks: 972
+Build graph size: 1252 nodes (6 pre-coloured, 1248 connected), 18117 edges.
+ALLOC Coalesce:
+Coalesce done, total: 984 moves, 524 coalesced.
+Coalesce graph size: 728 nodes (6 pre-coloured, 728 connected), 13350 edges.
+ALLOC Coalesce:
+Coalesce done, total: 458 moves, 2 coalesced.
+Coalesce graph size: 726 nodes (6 pre-coloured, 726 connected), 13321 edges.
+ALLOC Simplify(1):
+Simplify graph size: 726 nodes (6 pre-coloured, 726 connected), 13321 edges.
+Simplify done, spill candidates: [length 51]
+ALLOC Select(1):
+Select done, spills: [length 18]
+Build graph size: 793 nodes (6 pre-coloured, 762 connected), 8393 edges.
+ALLOC Coalesce:
+Coalesce done, total: 381 moves, 330 coalesced.
+Coalesce graph size: 463 nodes (6 pre-coloured, 438 connected), 3491 edges.
+ALLOC Coalesce:
+Coalesce done, total: 51 moves, 0 coalesced.
+Coalesce graph size: 463 nodes (6 pre-coloured, 438 connected), 3491 edges.
+ALLOC Simplify(2):
+Simplify graph size: 463 nodes (6 pre-coloured, 438 connected), 3491 edges.
+Simplify done, split candidates: [length 10]
+Simplify, (spill candidates): [length 17]
+ALLOC Select(2):
+Select done, splits: [length 3]
+Select, ignored spills: []
+Build graph size: 468 nodes (6 pre-coloured, 443 connected), 3458 edges.
+ALLOC Coalesce:
+Coalesce done, total: 58 moves, 5 coalesced.
+Coalesce graph size: 463 nodes (6 pre-coloured, 438 connected), 3436 edges.
+ALLOC Coalesce:
+Coalesce done, total: 53 moves, 0 coalesced.
+Coalesce graph size: 463 nodes (6 pre-coloured, 438 connected), 3436 edges.
+ALLOC Simplify(3):
+Simplify graph size: 463 nodes (6 pre-coloured, 438 connected), 3436 edges.
+Simplify done, split candidates: [length 7]
+Simplify, (spill candidates): [length 19]
+ALLOC Select(3):
+Select done, spills: [length 6]
+Build graph size: 473 nodes (6 pre-coloured, 448 connected), 2916 edges.
+ALLOC Coalesce:
+Coalesce done, total: 53 moves, 1 coalesced.
+Coalesce graph size: 472 nodes (6 pre-coloured, 447 connected), 2915 edges.
+ALLOC Simplify(4):
+Simplify graph size: 472 nodes (6 pre-coloured, 447 connected), 2915 edges.
+Simplify done, split candidates: [length 7]
+Simplify, (spill candidates): [length 13]
+ALLOC Select(4):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 52
+Codegen summary, used registers: 1703
+Codegen summary, used basic blocks: 972
+Build graph size: 1252 nodes (6 pre-coloured, 1248 connected), 18117 edges.
+ALLOC Coalesce:
+Coalesce done, total: 911 moves, 844 coalesced.
+Coalesce graph size: 408 nodes (6 pre-coloured, 408 connected), 5695 edges.
+ALLOC Coalesce:
+Coalesce done, total: 67 moves, 0 coalesced.
+Coalesce graph size: 408 nodes (6 pre-coloured, 408 connected), 5695 edges.
+ALLOC Simplify(1):
+Simplify graph size: 408 nodes (6 pre-coloured, 408 connected), 5695 edges.
+Simplify done, split candidates: [length 21]
+Simplify, (spill candidates): [length 21]
+ALLOC Select(1):
+Select done, splits: [length 14]
+Select, ignored spills: [length 12]
+Build graph size: 455 nodes (6 pre-coloured, 453 connected), 6400 edges.
+ALLOC Coalesce:
+Coalesce done, total: 151 moves, 26 coalesced.
+Coalesce graph size: 429 nodes (6 pre-coloured, 428 connected), 6263 edges.
+ALLOC Coalesce:
+Coalesce done, total: 125 moves, 0 coalesced.
+Coalesce graph size: 429 nodes (6 pre-coloured, 428 connected), 6263 edges.
+ALLOC Simplify(2):
+Simplify graph size: 429 nodes (6 pre-coloured, 428 connected), 6263 edges.
+Simplify done, split candidates: [length 9]
+Simplify, (spill candidates): [length 38]
+ALLOC Select(2):
+Select done, splits: [length 5]
+Select, ignored spills: [length 26]
+Build graph size: 442 nodes (6 pre-coloured, 441 connected), 6357 edges.
+ALLOC Coalesce:
+Coalesce done, total: 144 moves, 11 coalesced.
+Coalesce graph size: 431 nodes (6 pre-coloured, 430 connected), 6284 edges.
+ALLOC Coalesce:
+Coalesce done, total: 133 moves, 0 coalesced.
+Coalesce graph size: 431 nodes (6 pre-coloured, 430 connected), 6284 edges.
+ALLOC Simplify(3):
+Simplify graph size: 431 nodes (6 pre-coloured, 430 connected), 6284 edges.
+Simplify done, split candidates: [length 4]
+Simplify, (spill candidates): [length 43]
+ALLOC Select(3):
+Select done, spills: [length 29]
+Build graph size: 542 nodes (6 pre-coloured, 485 connected), 2773 edges.
+ALLOC Coalesce:
+Coalesce done, total: 125 moves, 50 coalesced.
+Coalesce graph size: 492 nodes (6 pre-coloured, 442 connected), 2676 edges.
+ALLOC Coalesce:
+Coalesce done, total: 75 moves, 0 coalesced.
+Coalesce graph size: 492 nodes (6 pre-coloured, 442 connected), 2676 edges.
+ALLOC Simplify(4):
+Simplify graph size: 492 nodes (6 pre-coloured, 442 connected), 2676 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 15]
+ALLOC Select(4):
+Select succeeded.
+SUBDIR ======> spectral/boyer2
+
+OUT=1
+Codegen summary, procedures: 51
+Codegen summary, used registers: 14980
+Codegen summary, used basic blocks: 1657
+Build graph size: 1382 nodes (6 pre-coloured, 1379 connected), 35956 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1365 moves, 327 coalesced.
+Coalesce graph size: 1055 nodes (6 pre-coloured, 1055 connected), 31849 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1037 moves, 1 coalesced.
+Coalesce graph size: 1054 nodes (6 pre-coloured, 1054 connected), 31835 edges.
+ALLOC Simplify(1):
+Simplify graph size: 1054 nodes (6 pre-coloured, 1054 connected), 31835 edges.
+Simplify done, spill candidates: [length 72]
+ALLOC Select(1):
+Select done, spills: [length 53]
+Build graph size: 1393 nodes (6 pre-coloured, 1108 connected), 5498 edges.
+ALLOC Coalesce:
+Coalesce done, total: 779 moves, 529 coalesced.
+Coalesce graph size: 864 nodes (6 pre-coloured, 692 connected), 4387 edges.
+ALLOC Coalesce:
+Coalesce done, total: 250 moves, 0 coalesced.
+Coalesce graph size: 864 nodes (6 pre-coloured, 692 connected), 4387 edges.
+ALLOC Simplify(2):
+Simplify graph size: 864 nodes (6 pre-coloured, 692 connected), 4387 edges.
+Simplify done, spill candidates: [length 19]
+ALLOC Select(2):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 51
+Codegen summary, used registers: 14980
+Codegen summary, used basic blocks: 1657
+Build graph size: 1382 nodes (6 pre-coloured, 1379 connected), 35956 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1365 moves, 327 coalesced.
+Coalesce graph size: 1055 nodes (6 pre-coloured, 1055 connected), 31849 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1037 moves, 1 coalesced.
+Coalesce graph size: 1054 nodes (6 pre-coloured, 1054 connected), 31835 edges.
+ALLOC Simplify(1):
+Simplify graph size: 1054 nodes (6 pre-coloured, 1054 connected), 31835 edges.
+Simplify done, spill candidates: [length 72]
+ALLOC Select(1):
+Select done, spills: [length 53]
+Build graph size: 1393 nodes (6 pre-coloured, 1108 connected), 5498 edges.
+ALLOC Coalesce:
+Coalesce done, total: 740 moves, 684 coalesced.
+Coalesce graph size: 709 nodes (6 pre-coloured, 538 connected), 1708 edges.
+ALLOC Coalesce:
+Coalesce done, total: 56 moves, 0 coalesced.
+Coalesce graph size: 709 nodes (6 pre-coloured, 538 connected), 1708 edges.
+ALLOC Simplify(2):
+Simplify graph size: 709 nodes (6 pre-coloured, 538 connected), 1708 edges.
+Simplify done, spill candidates: []
+ALLOC Select(2):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 51
+Codegen summary, used registers: 14980
+Codegen summary, used basic blocks: 1657
+Build graph size: 1382 nodes (6 pre-coloured, 1379 connected), 35956 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1042 moves, 952 coalesced.
+Coalesce graph size: 430 nodes (6 pre-coloured, 430 connected), 8429 edges.
+ALLOC Coalesce:
+Coalesce done, total: 90 moves, 0 coalesced.
+Coalesce graph size: 430 nodes (6 pre-coloured, 430 connected), 8429 edges.
+ALLOC Simplify(1):
+Simplify graph size: 430 nodes (6 pre-coloured, 430 connected), 8429 edges.
+Simplify done, split candidates: [length 25]
+Simplify, (spill candidates): [length 19]
+ALLOC Select(1):
+Select done, splits: [length 24]
+Select, ignored spills: [length 14]
+Build graph size: 624 nodes (6 pre-coloured, 624 connected), 13830 edges.
+ALLOC Coalesce:
+Coalesce done, total: 439 moves, 63 coalesced.
+Coalesce graph size: 561 nodes (6 pre-coloured, 561 connected), 13058 edges.
+ALLOC Coalesce:
+Coalesce done, total: 376 moves, 0 coalesced.
+Coalesce graph size: 561 nodes (6 pre-coloured, 561 connected), 13058 edges.
+ALLOC Simplify(2):
+Simplify graph size: 561 nodes (6 pre-coloured, 561 connected), 13058 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 55]
+ALLOC Select(2):
+Select done, splits: [length 2]
+Select, ignored spills: [length 48]
+Build graph size: 568 nodes (6 pre-coloured, 568 connected), 13184 edges.
+ALLOC Coalesce:
+Coalesce done, total: 396 moves, 6 coalesced.
+Coalesce graph size: 562 nodes (6 pre-coloured, 562 connected), 13086 edges.
+ALLOC Simplify(3):
+Simplify graph size: 562 nodes (6 pre-coloured, 562 connected), 13086 edges.
+Simplify done, split candidates: [length 1]
+Simplify, (spill candidates): [length 57]
+ALLOC Select(3):
+Select done, spills: [length 50]
+Build graph size: 972 nodes (6 pre-coloured, 710 connected), 2286 edges.
+ALLOC Coalesce:
+Coalesce done, total: 325 moves, 251 coalesced.
+Coalesce graph size: 721 nodes (6 pre-coloured, 557 connected), 2087 edges.
+ALLOC Coalesce:
+Coalesce done, total: 74 moves, 0 coalesced.
+Coalesce graph size: 721 nodes (6 pre-coloured, 557 connected), 2087 edges.
+ALLOC Simplify(4):
+Simplify graph size: 721 nodes (6 pre-coloured, 557 connected), 2087 edges.
+Simplify done, spill candidates: [length 6]
+ALLOC Select(4):
+Select done, spills: [length 2]
+Build graph size: 723 nodes (6 pre-coloured, 559 connected), 1978 edges.
+ALLOC Coalesce:
+Coalesce done, total: 74 moves, 2 coalesced.
+Coalesce graph size: 721 nodes (6 pre-coloured, 557 connected), 1976 edges.
+ALLOC Coalesce:
+Coalesce done, total: 72 moves, 0 coalesced.
+Coalesce graph size: 721 nodes (6 pre-coloured, 557 connected), 1976 edges.
+ALLOC Simplify(5):
+Simplify graph size: 721 nodes (6 pre-coloured, 557 connected), 1976 edges.
+Simplify done, spill candidates: [length 4]
+ALLOC Select(5):
+Select succeeded.
+SUBDIR ======> spectral/sorting
+
+OUT=1
+Codegen summary, procedures: 66
+Codegen summary, used registers: 1846
+Codegen summary, used basic blocks: 1403
+Build graph size: 1688 nodes (6 pre-coloured, 1688 connected), 24921 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1445 moves, 879 coalesced.
+Coalesce graph size: 809 nodes (6 pre-coloured, 809 connected), 17254 edges.
+ALLOC Coalesce:
+Coalesce done, total: 564 moves, 7 coalesced.
+Coalesce graph size: 802 nodes (6 pre-coloured, 802 connected), 17184 edges.
+ALLOC Simplify(1):
+Simplify graph size: 802 nodes (6 pre-coloured, 802 connected), 17184 edges.
+Simplify done, spill candidates: [length 54]
+ALLOC Select(1):
+Select done, spills: [length 17]
+Build graph size: 852 nodes (6 pre-coloured, 827 connected), 11416 edges.
+ALLOC Coalesce:
+Coalesce done, total: 537 moves, 65 coalesced.
+Coalesce graph size: 787 nodes (6 pre-coloured, 769 connected), 10856 edges.
+ALLOC Coalesce:
+Coalesce done, total: 472 moves, 1 coalesced.
+Coalesce graph size: 786 nodes (6 pre-coloured, 768 connected), 10851 edges.
+ALLOC Simplify(2):
+Simplify graph size: 786 nodes (6 pre-coloured, 768 connected), 10851 edges.
+Simplify done, spill candidates: [length 37]
+ALLOC Select(2):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 66
+Codegen summary, used registers: 1846
+Codegen summary, used basic blocks: 1403
+Build graph size: 1688 nodes (6 pre-coloured, 1688 connected), 24921 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1445 moves, 879 coalesced.
+Coalesce graph size: 809 nodes (6 pre-coloured, 809 connected), 17254 edges.
+ALLOC Coalesce:
+Coalesce done, total: 564 moves, 7 coalesced.
+Coalesce graph size: 802 nodes (6 pre-coloured, 802 connected), 17184 edges.
+ALLOC Simplify(1):
+Simplify graph size: 802 nodes (6 pre-coloured, 802 connected), 17184 edges.
+Simplify done, spill candidates: [length 54]
+ALLOC Select(1):
+Select done, spills: [length 17]
+Build graph size: 852 nodes (6 pre-coloured, 827 connected), 11416 edges.
+ALLOC Coalesce:
+Coalesce done, total: 421 moves, 343 coalesced.
+Coalesce graph size: 509 nodes (6 pre-coloured, 492 connected), 3053 edges.
+ALLOC Coalesce:
+Coalesce done, total: 78 moves, 0 coalesced.
+Coalesce graph size: 509 nodes (6 pre-coloured, 492 connected), 3053 edges.
+ALLOC Simplify(2):
+Simplify graph size: 509 nodes (6 pre-coloured, 492 connected), 3053 edges.
+Simplify done, split candidates: [length 25]
+Simplify, (spill candidates): [length 5]
+ALLOC Select(2):
+Select done, splits: [length 4]
+Select, ignored spills: [length 1]
+Build graph size: 519 nodes (6 pre-coloured, 501 connected), 3067 edges.
+ALLOC Coalesce:
+Coalesce done, total: 91 moves, 7 coalesced.
+Coalesce graph size: 512 nodes (6 pre-coloured, 495 connected), 3029 edges.
+ALLOC Coalesce:
+Coalesce done, total: 84 moves, 0 coalesced.
+Coalesce graph size: 512 nodes (6 pre-coloured, 495 connected), 3029 edges.
+ALLOC Simplify(3):
+Simplify graph size: 512 nodes (6 pre-coloured, 495 connected), 3029 edges.
+Simplify done, split candidates: [length 20]
+Simplify, (spill candidates): [length 9]
+ALLOC Select(3):
+Select done, spills: [length 3]
+Build graph size: 526 nodes (6 pre-coloured, 509 connected), 2842 edges.
+ALLOC Coalesce:
+Coalesce done, total: 84 moves, 8 coalesced.
+Coalesce graph size: 518 nodes (6 pre-coloured, 501 connected), 2826 edges.
+ALLOC Coalesce:
+Coalesce done, total: 76 moves, 0 coalesced.
+Coalesce graph size: 518 nodes (6 pre-coloured, 501 connected), 2826 edges.
+ALLOC Simplify(4):
+Simplify graph size: 518 nodes (6 pre-coloured, 501 connected), 2826 edges.
+Simplify done, split candidates: [length 20]
+Simplify, (spill candidates): [length 6]
+ALLOC Select(4):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 66
+Codegen summary, used registers: 1846
+Codegen summary, used basic blocks: 1403
+Build graph size: 1688 nodes (6 pre-coloured, 1688 connected), 24921 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1306 moves, 1222 coalesced.
+Coalesce graph size: 466 nodes (6 pre-coloured, 466 connected), 5424 edges.
+ALLOC Coalesce:
+Coalesce done, total: 84 moves, 0 coalesced.
+Coalesce graph size: 466 nodes (6 pre-coloured, 466 connected), 5424 edges.
+ALLOC Simplify(1):
+Simplify graph size: 466 nodes (6 pre-coloured, 466 connected), 5424 edges.
+Simplify done, split candidates: [length 39]
+Simplify, (spill candidates): [length 7]
+ALLOC Select(1):
+Select done, splits: [length 10]
+Select, ignored spills: [length 6]
+Build graph size: 503 nodes (6 pre-coloured, 503 connected), 5563 edges.
+ALLOC Coalesce:
+Coalesce done, total: 126 moves, 28 coalesced.
+Coalesce graph size: 475 nodes (6 pre-coloured, 475 connected), 5449 edges.
+ALLOC Coalesce:
+Coalesce done, total: 98 moves, 0 coalesced.
+Coalesce graph size: 475 nodes (6 pre-coloured, 475 connected), 5449 edges.
+ALLOC Simplify(2):
+Simplify graph size: 475 nodes (6 pre-coloured, 475 connected), 5449 edges.
+Simplify done, split candidates: [length 29]
+Simplify, (spill candidates): [length 17]
+ALLOC Select(2):
+Select done, splits: [length 1]
+Select, ignored spills: [length 15]
+Build graph size: 477 nodes (6 pre-coloured, 477 connected), 5455 edges.
+ALLOC Coalesce:
+Coalesce done, total: 101 moves, 1 coalesced.
+Coalesce graph size: 476 nodes (6 pre-coloured, 476 connected), 5452 edges.
+ALLOC Simplify(3):
+Simplify graph size: 476 nodes (6 pre-coloured, 476 connected), 5452 edges.
+Simplify done, split candidates: [length 28]
+Simplify, (spill candidates): [length 18]
+ALLOC Select(3):
+Select done, spills: [length 16]
+Build graph size: 523 nodes (6 pre-coloured, 505 connected), 3105 edges.
+ALLOC Coalesce:
+Coalesce done, total: 100 moves, 24 coalesced.
+Coalesce graph size: 499 nodes (6 pre-coloured, 487 connected), 3064 edges.
+ALLOC Coalesce:
+Coalesce done, total: 76 moves, 0 coalesced.
+Coalesce graph size: 499 nodes (6 pre-coloured, 487 connected), 3064 edges.
+ALLOC Simplify(4):
+Simplify graph size: 499 nodes (6 pre-coloured, 487 connected), 3064 edges.
+Simplify done, split candidates: [length 28]
+Simplify, (spill candidates): [length 2]
+ALLOC Select(4):
+Select done, spills: [length 1]
+Build graph size: 508 nodes (6 pre-coloured, 491 connected), 2977 edges.
+ALLOC Coalesce:
+Coalesce done, total: 76 moves, 3 coalesced.
+Coalesce graph size: 505 nodes (6 pre-coloured, 488 connected), 2974 edges.
+ALLOC Coalesce:
+Coalesce done, total: 73 moves, 0 coalesced.
+Coalesce graph size: 505 nodes (6 pre-coloured, 488 connected), 2974 edges.
+ALLOC Simplify(5):
+Simplify graph size: 505 nodes (6 pre-coloured, 488 connected), 2974 edges.
+Simplify done, split candidates: [length 28]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(5):
+Select succeeded.
+SUBDIR ======> spectral/clausify
+
+OUT=1
+Codegen summary, procedures: 52
+Codegen summary, used registers: 1765
+Codegen summary, used basic blocks: 1479
+Build graph size: 1407 nodes (6 pre-coloured, 1402 connected), 40183 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1427 moves, 338 coalesced.
+Coalesce graph size: 1069 nodes (6 pre-coloured, 1067 connected), 37388 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1089 moves, 0 coalesced.
+Coalesce graph size: 1069 nodes (6 pre-coloured, 1067 connected), 37388 edges.
+ALLOC Simplify(1):
+Simplify graph size: 1069 nodes (6 pre-coloured, 1067 connected), 37388 edges.
+Simplify done, spill candidates: [length 45]
+ALLOC Select(1):
+Select done, spills: [length 40]
+Build graph size: 1279 nodes (6 pre-coloured, 1194 connected), 8504 edges.
+ALLOC Coalesce:
+Coalesce done, total: 957 moves, 602 coalesced.
+Coalesce graph size: 677 nodes (6 pre-coloured, 648 connected), 4703 edges.
+ALLOC Coalesce:
+Coalesce done, total: 355 moves, 2 coalesced.
+Coalesce graph size: 675 nodes (6 pre-coloured, 646 connected), 4671 edges.
+ALLOC Simplify(2):
+Simplify graph size: 675 nodes (6 pre-coloured, 646 connected), 4671 edges.
+Simplify done, spill candidates: [length 5]
+ALLOC Select(2):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 52
+Codegen summary, used registers: 1765
+Codegen summary, used basic blocks: 1479
+Build graph size: 1407 nodes (6 pre-coloured, 1402 connected), 40183 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1427 moves, 338 coalesced.
+Coalesce graph size: 1069 nodes (6 pre-coloured, 1067 connected), 37388 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1089 moves, 0 coalesced.
+Coalesce graph size: 1069 nodes (6 pre-coloured, 1067 connected), 37388 edges.
+ALLOC Simplify(1):
+Simplify graph size: 1069 nodes (6 pre-coloured, 1067 connected), 37388 edges.
+Simplify done, spill candidates: [length 45]
+ALLOC Select(1):
+Select done, spills: [length 40]
+Build graph size: 1279 nodes (6 pre-coloured, 1194 connected), 8504 edges.
+ALLOC Coalesce:
+Coalesce done, total: 877 moves, 785 coalesced.
+Coalesce graph size: 494 nodes (6 pre-coloured, 465 connected), 2323 edges.
+ALLOC Coalesce:
+Coalesce done, total: 92 moves, 0 coalesced.
+Coalesce graph size: 494 nodes (6 pre-coloured, 465 connected), 2323 edges.
+ALLOC Simplify(2):
+Simplify graph size: 494 nodes (6 pre-coloured, 465 connected), 2323 edges.
+Simplify done, spill candidates: [length 1]
+ALLOC Select(2):
+Select done, spills: [length 1]
+Build graph size: 510 nodes (6 pre-coloured, 481 connected), 2189 edges.
+ALLOC Coalesce:
+Coalesce done, total: 92 moves, 6 coalesced.
+Coalesce graph size: 504 nodes (6 pre-coloured, 475 connected), 2177 edges.
+ALLOC Coalesce:
+Coalesce done, total: 86 moves, 0 coalesced.
+Coalesce graph size: 504 nodes (6 pre-coloured, 475 connected), 2177 edges.
+ALLOC Simplify(3):
+Simplify graph size: 504 nodes (6 pre-coloured, 475 connected), 2177 edges.
+Simplify done, spill candidates: []
+ALLOC Select(3):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 52
+Codegen summary, used registers: 1765
+Codegen summary, used basic blocks: 1479
+Build graph size: 1407 nodes (6 pre-coloured, 1402 connected), 40183 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1195 moves, 1060 coalesced.
+Coalesce graph size: 347 nodes (6 pre-coloured, 345 connected), 8733 edges.
+ALLOC Coalesce:
+Coalesce done, total: 135 moves, 0 coalesced.
+Coalesce graph size: 347 nodes (6 pre-coloured, 345 connected), 8733 edges.
+ALLOC Simplify(1):
+Simplify graph size: 347 nodes (6 pre-coloured, 345 connected), 8733 edges.
+Simplify done, split candidates: [length 22]
+Simplify, (spill candidates): [length 10]
+ALLOC Select(1):
+Select done, splits: [length 22]
+Select, ignored spills: [length 10]
+Build graph size: 443 nodes (6 pre-coloured, 439 connected), 12310 edges.
+ALLOC Coalesce:
+Coalesce done, total: 338 moves, 37 coalesced.
+Coalesce graph size: 406 nodes (6 pre-coloured, 403 connected), 12008 edges.
+ALLOC Coalesce:
+Coalesce done, total: 301 moves, 0 coalesced.
+Coalesce graph size: 406 nodes (6 pre-coloured, 403 connected), 12008 edges.
+ALLOC Simplify(2):
+Simplify graph size: 406 nodes (6 pre-coloured, 403 connected), 12008 edges.
+Simplify done, split candidates: [length 4]
+Simplify, (spill candidates): [length 38]
+ALLOC Select(2):
+Select done, splits: [length 4]
+Select, ignored spills: [length 37]
+Build graph size: 415 nodes (6 pre-coloured, 412 connected), 12100 edges.
+ALLOC Coalesce:
+Coalesce done, total: 326 moves, 6 coalesced.
+Coalesce graph size: 409 nodes (6 pre-coloured, 406 connected), 12047 edges.
+ALLOC Simplify(3):
+Simplify graph size: 409 nodes (6 pre-coloured, 406 connected), 12047 edges.
+Simplify done, spill candidates: [length 42]
+ALLOC Select(3):
+Select done, spills: [length 41]
+Build graph size: 687 nodes (6 pre-coloured, 641 connected), 3210 edges.
+ALLOC Coalesce:
+Coalesce done, total: 257 moves, 158 coalesced.
+Coalesce graph size: 529 nodes (6 pre-coloured, 499 connected), 2858 edges.
+ALLOC Coalesce:
+Coalesce done, total: 99 moves, 0 coalesced.
+Coalesce graph size: 529 nodes (6 pre-coloured, 499 connected), 2858 edges.
+ALLOC Simplify(4):
+Simplify graph size: 529 nodes (6 pre-coloured, 499 connected), 2858 edges.
+Simplify done, spill candidates: [length 3]
+ALLOC Select(4):
+Select done, spills: [length 3]
+Build graph size: 573 nodes (6 pre-coloured, 541 connected), 2549 edges.
+ALLOC Coalesce:
+Coalesce done, total: 98 moves, 20 coalesced.
+Coalesce graph size: 553 nodes (6 pre-coloured, 521 connected), 2487 edges.
+ALLOC Coalesce:
+Coalesce done, total: 78 moves, 0 coalesced.
+Coalesce graph size: 553 nodes (6 pre-coloured, 521 connected), 2487 edges.
+ALLOC Simplify(5):
+Simplify graph size: 553 nodes (6 pre-coloured, 521 connected), 2487 edges.
+Simplify done, spill candidates: []
+ALLOC Select(5):
+Select succeeded.
+SUBDIR ======> spectral/hartel/event
+
+OUT=1
+Codegen summary, procedures: 52
+Codegen summary, used registers: 2180
+Codegen summary, used basic blocks: 1620
+Build graph size: 1818 nodes (6 pre-coloured, 1815 connected), 46980 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1977 moves, 195 coalesced.
+Coalesce graph size: 1623 nodes (6 pre-coloured, 1623 connected), 45559 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1782 moves, 0 coalesced.
+Coalesce graph size: 1623 nodes (6 pre-coloured, 1623 connected), 45559 edges.
+ALLOC Simplify(1):
+Simplify graph size: 1623 nodes (6 pre-coloured, 1623 connected), 45559 edges.
+Simplify done, spill candidates: [length 35]
+ALLOC Select(1):
+Select done, spills: [length 22]
+Build graph size: 1823 nodes (6 pre-coloured, 1786 connected), 17922 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1694 moves, 755 coalesced.
+Coalesce graph size: 1068 nodes (6 pre-coloured, 1041 connected), 11387 edges.
+ALLOC Coalesce:
+Coalesce done, total: 939 moves, 2 coalesced.
+Coalesce graph size: 1066 nodes (6 pre-coloured, 1039 connected), 11362 edges.
+ALLOC Simplify(2):
+Simplify graph size: 1066 nodes (6 pre-coloured, 1039 connected), 11362 edges.
+Simplify done, spill candidates: [length 13]
+ALLOC Select(2):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 52
+Codegen summary, used registers: 2180
+Codegen summary, used basic blocks: 1620
+Build graph size: 1818 nodes (6 pre-coloured, 1815 connected), 46980 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1977 moves, 195 coalesced.
+Coalesce graph size: 1623 nodes (6 pre-coloured, 1623 connected), 45559 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1782 moves, 0 coalesced.
+Coalesce graph size: 1623 nodes (6 pre-coloured, 1623 connected), 45559 edges.
+ALLOC Simplify(1):
+Simplify graph size: 1623 nodes (6 pre-coloured, 1623 connected), 45559 edges.
+Simplify done, spill candidates: [length 35]
+ALLOC Select(1):
+Select done, spills: [length 22]
+Build graph size: 1823 nodes (6 pre-coloured, 1786 connected), 17922 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1242 moves, 1170 coalesced.
+Coalesce graph size: 653 nodes (6 pre-coloured, 630 connected), 5087 edges.
+ALLOC Coalesce:
+Coalesce done, total: 72 moves, 0 coalesced.
+Coalesce graph size: 653 nodes (6 pre-coloured, 630 connected), 5087 edges.
+ALLOC Simplify(2):
+Simplify graph size: 653 nodes (6 pre-coloured, 630 connected), 5087 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 4]
+ALLOC Select(2):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 52
+Codegen summary, used registers: 2180
+Codegen summary, used basic blocks: 1620
+Build graph size: 1818 nodes (6 pre-coloured, 1815 connected), 46980 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1435 moves, 1283 coalesced.
+Coalesce graph size: 535 nodes (6 pre-coloured, 535 connected), 12754 edges.
+ALLOC Coalesce:
+Coalesce done, total: 152 moves, 0 coalesced.
+Coalesce graph size: 535 nodes (6 pre-coloured, 535 connected), 12754 edges.
+ALLOC Simplify(1):
+Simplify graph size: 535 nodes (6 pre-coloured, 535 connected), 12754 edges.
+Simplify done, split candidates: [length 14]
+Simplify, (spill candidates): [length 14]
+ALLOC Select(1):
+Select done, splits: [length 10]
+Select, ignored spills: [length 7]
+Build graph size: 555 nodes (6 pre-coloured, 555 connected), 13065 edges.
+ALLOC Coalesce:
+Coalesce done, total: 190 moves, 11 coalesced.
+Coalesce graph size: 544 nodes (6 pre-coloured, 544 connected), 13001 edges.
+ALLOC Coalesce:
+Coalesce done, total: 179 moves, 0 coalesced.
+Coalesce graph size: 544 nodes (6 pre-coloured, 544 connected), 13001 edges.
+ALLOC Simplify(2):
+Simplify graph size: 544 nodes (6 pre-coloured, 544 connected), 13001 edges.
+Simplify done, split candidates: [length 7]
+Simplify, (spill candidates): [length 23]
+ALLOC Select(2):
+Select done, spills: [length 12]
+Build graph size: 648 nodes (6 pre-coloured, 636 connected), 8252 edges.
+ALLOC Coalesce:
+Coalesce done, total: 178 moves, 55 coalesced.
+Coalesce graph size: 593 nodes (6 pre-coloured, 584 connected), 8099 edges.
+ALLOC Coalesce:
+Coalesce done, total: 123 moves, 0 coalesced.
+Coalesce graph size: 593 nodes (6 pre-coloured, 584 connected), 8099 edges.
+ALLOC Simplify(3):
+Simplify graph size: 593 nodes (6 pre-coloured, 584 connected), 8099 edges.
+Simplify done, split candidates: [length 7]
+Simplify, (spill candidates): [length 11]
+ALLOC Select(3):
+Select succeeded.
+SUBDIR ======> spectral/hartel/ida
+
+OUT=1
+Codegen summary, procedures: 73
+Codegen summary, used registers: 2525
+Codegen summary, used basic blocks: 1643
+Build graph size: 2200 nodes (6 pre-coloured, 2197 connected), 35802 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1992 moves, 523 coalesced.
+Coalesce graph size: 1677 nodes (6 pre-coloured, 1677 connected), 31630 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1468 moves, 0 coalesced.
+Coalesce graph size: 1677 nodes (6 pre-coloured, 1677 connected), 31630 edges.
+ALLOC Simplify(1):
+Simplify graph size: 1677 nodes (6 pre-coloured, 1677 connected), 31630 edges.
+Simplify done, spill candidates: [length 12]
+ALLOC Select(1):
+Select done, spills: [length 3]
+Build graph size: 1686 nodes (6 pre-coloured, 1681 connected), 26941 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1444 moves, 213 coalesced.
+Coalesce graph size: 1473 nodes (6 pre-coloured, 1469 connected), 23744 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1230 moves, 5 coalesced.
+Coalesce graph size: 1468 nodes (6 pre-coloured, 1464 connected), 23691 edges.
+ALLOC Simplify(2):
+Simplify graph size: 1468 nodes (6 pre-coloured, 1464 connected), 23691 edges.
+Simplify done, spill candidates: [length 9]
+ALLOC Select(2):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 73
+Codegen summary, used registers: 2525
+Codegen summary, used basic blocks: 1643
+Build graph size: 2200 nodes (6 pre-coloured, 2197 connected), 35802 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1992 moves, 523 coalesced.
+Coalesce graph size: 1677 nodes (6 pre-coloured, 1677 connected), 31630 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1468 moves, 0 coalesced.
+Coalesce graph size: 1677 nodes (6 pre-coloured, 1677 connected), 31630 edges.
+ALLOC Simplify(1):
+Simplify graph size: 1677 nodes (6 pre-coloured, 1677 connected), 31630 edges.
+Simplify done, spill candidates: [length 12]
+ALLOC Select(1):
+Select done, spills: [length 3]
+Build graph size: 1686 nodes (6 pre-coloured, 1681 connected), 26941 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1114 moves, 1021 coalesced.
+Coalesce graph size: 665 nodes (6 pre-coloured, 661 connected), 9381 edges.
+ALLOC Coalesce:
+Coalesce done, total: 93 moves, 0 coalesced.
+Coalesce graph size: 665 nodes (6 pre-coloured, 661 connected), 9381 edges.
+ALLOC Simplify(2):
+Simplify graph size: 665 nodes (6 pre-coloured, 661 connected), 9381 edges.
+Simplify done, split candidates: [length 5]
+Simplify, (spill candidates): [length 4]
+ALLOC Select(2):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 73
+Codegen summary, used registers: 2525
+Codegen summary, used basic blocks: 1643
+Build graph size: 2200 nodes (6 pre-coloured, 2197 connected), 35802 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1647 moves, 1547 coalesced.
+Coalesce graph size: 653 nodes (6 pre-coloured, 653 connected), 11035 edges.
+ALLOC Coalesce:
+Coalesce done, total: 100 moves, 0 coalesced.
+Coalesce graph size: 653 nodes (6 pre-coloured, 653 connected), 11035 edges.
+ALLOC Simplify(1):
+Simplify graph size: 653 nodes (6 pre-coloured, 653 connected), 11035 edges.
+Simplify done, split candidates: [length 8]
+Simplify, (spill candidates): [length 4]
+ALLOC Select(1):
+Select done, splits: [length 3]
+Select, ignored spills: []
+Build graph size: 662 nodes (6 pre-coloured, 662 connected), 11470 edges.
+ALLOC Coalesce:
+Coalesce done, total: 112 moves, 6 coalesced.
+Coalesce graph size: 656 nodes (6 pre-coloured, 656 connected), 11460 edges.
+ALLOC Coalesce:
+Coalesce done, total: 106 moves, 0 coalesced.
+Coalesce graph size: 656 nodes (6 pre-coloured, 656 connected), 11460 edges.
+ALLOC Simplify(2):
+Simplify graph size: 656 nodes (6 pre-coloured, 656 connected), 11460 edges.
+Simplify done, split candidates: [length 6]
+Simplify, (spill candidates): [length 7]
+ALLOC Select(2):
+Select done, spills: [length 3]
+Build graph size: 669 nodes (6 pre-coloured, 664 connected), 9832 edges.
+ALLOC Coalesce:
+Coalesce done, total: 106 moves, 3 coalesced.
+Coalesce graph size: 666 nodes (6 pre-coloured, 662 connected), 9830 edges.
+ALLOC Coalesce:
+Coalesce done, total: 103 moves, 0 coalesced.
+Coalesce graph size: 666 nodes (6 pre-coloured, 662 connected), 9830 edges.
+ALLOC Simplify(3):
+Simplify graph size: 666 nodes (6 pre-coloured, 662 connected), 9830 edges.
+Simplify done, split candidates: [length 6]
+Simplify, (spill candidates): [length 4]
+ALLOC Select(3):
+Select succeeded.
+SUBDIR ======> spectral/hartel/typecheck
+
+OUT=1
+Codegen summary, procedures: 126
+Codegen summary, used registers: 4869
+Codegen summary, used basic blocks: 3070
+Build graph size: 3886 nodes (6 pre-coloured, 3883 connected), 124048 edges.
+ALLOC Coalesce:
+Coalesce done, total: 3919 moves, 765 coalesced.
+Coalesce graph size: 3121 nodes (6 pre-coloured, 3121 connected), 117079 edges.
+ALLOC Coalesce:
+Coalesce done, total: 3154 moves, 3 coalesced.
+Coalesce graph size: 3118 nodes (6 pre-coloured, 3118 connected), 117034 edges.
+ALLOC Simplify(1):
+Simplify graph size: 3118 nodes (6 pre-coloured, 3118 connected), 117034 edges.
+Simplify done, spill candidates: [length 69]
+ALLOC Select(1):
+Select done, spills: [length 49]
+Build graph size: 3504 nodes (6 pre-coloured, 3302 connected), 16974 edges.
+ALLOC Coalesce:
+Coalesce done, total: 2592 moves, 1567 coalesced.
+Coalesce graph size: 1937 nodes (6 pre-coloured, 1844 connected), 10657 edges.
+ALLOC Coalesce:
+Coalesce done, total: 1023 moves, 2 coalesced.
+Coalesce graph size: 1935 nodes (6 pre-coloured, 1842 connected), 10651 edges.
+ALLOC Simplify(2):
+Simplify graph size: 1935 nodes (6 pre-coloured, 1842 connected), 10651 edges.
+Simplify done, spill candidates: [length 17]
+ALLOC Select(2):
+Select succeeded.
+
+OUT=2
+Codegen summary, procedures: 126
+Codegen summary, used registers: 4869
+Codegen summary, used basic blocks: 3070
+Build graph size: 3886 nodes (6 pre-coloured, 3883 connected), 124048 edges.
+ALLOC Coalesce:
+Coalesce done, total: 3919 moves, 765 coalesced.
+Coalesce graph size: 3121 nodes (6 pre-coloured, 3121 connected), 117079 edges.
+ALLOC Coalesce:
+Coalesce done, total: 3154 moves, 3 coalesced.
+Coalesce graph size: 3118 nodes (6 pre-coloured, 3118 connected), 117034 edges.
+ALLOC Simplify(1):
+Simplify graph size: 3118 nodes (6 pre-coloured, 3118 connected), 117034 edges.
+Simplify done, spill candidates: [length 69]
+ALLOC Select(1):
+Select done, spills: [length 49]
+Build graph size: 3504 nodes (6 pre-coloured, 3302 connected), 16974 edges.
+ALLOC Coalesce:
+Coalesce done, total: 2106 moves, 1969 coalesced.
+Coalesce graph size: 1535 nodes (6 pre-coloured, 1455 connected), 6783 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1535 nodes (6 pre-coloured, 1455 connected), 6783 edges.
+ALLOC Simplify(2):
+Simplify graph size: 1535 nodes (6 pre-coloured, 1455 connected), 6783 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(2):
+Select done, spills: [length 1]
+Build graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Simplify(3):
+Simplify graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(3):
+Select done, spills: [length 1]
+Build graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Simplify(4):
+Simplify graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(4):
+Select done, spills: [length 1]
+Build graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Simplify(5):
+Simplify graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(5):
+Select done, spills: [length 1]
+Build graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Simplify(6):
+Simplify graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(6):
+Select done, spills: [length 1]
+Build graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Simplify(7):
+Simplify graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(7):
+Select done, spills: [length 1]
+Build graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Simplify(8):
+Simplify graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(8):
+Select done, spills: [length 1]
+Build graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Simplify(9):
+Simplify graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(9):
+Select done, spills: [length 1]
+Build graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Simplify(10):
+Simplify graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(10):
+Select done, spills: [length 1]
+Build graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Simplify(11):
+Simplify graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(11):
+Select done, spills: [length 1]
+Build graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Simplify(12):
+Simplify graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(12):
+Select done, spills: [length 1]
+Build graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Simplify(13):
+Simplify graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+Simplify done, split candidates: [length 3]
+Simplify, (spill candidates): [length 1]
+ALLOC Select(13):
+Select done, spills: [length 1]
+Build graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Coalesce:
+Coalesce done, total: 137 moves, 0 coalesced.
+Coalesce graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+ALLOC Simplify(14):
+Simplify graph size: 1533 nodes (6 pre-coloured, 1453 connected), 6776 edges.
+Simplify done, split candidates: [length 4]
+Simplify, (spill candidates): []
+ALLOC Select(14):
+Select succeeded.
+
+OUT=3
+Codegen summary, procedures: 126
+Codegen summary, used registers: 4869
+Codegen summary, used basic blocks: 3070
+Build graph size: 3886 nodes (6 pre-coloured, 3883 connected), 124048 edges.
+ALLOC Coalesce:

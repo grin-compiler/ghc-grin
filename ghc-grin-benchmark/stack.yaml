@@ -1,0 +1,20 @@
+resolver: lts-11.12
+
+packages:
+- 'app'
+- 'lib'
+- 'sum-list'
+#- 'boquist-grin-bench'
+
+extra-path:
+- /home/csaba/haskell/ghc-8.2.2/inplace/bin
+
+# Turn on system GHC
+system-ghc: true
+skip-ghc-check: true
+
+dump-logs: all
+
+build:
+  keep-tmp-files: true
+  #cabal-verbose: true

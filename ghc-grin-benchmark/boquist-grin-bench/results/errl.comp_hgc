@@ -1,0 +1,48 @@
+SUBDIR ======> other/nfib
+START: 23:33:37
+STOP:  23:33:40
+SUBDIR ======> other/tsumupto
+START: 23:33:41
+STOP:  23:33:42
+SUBDIR ======> other/sieve
+START: 23:33:42
+STOP:  23:33:44
+SUBDIR ======> other/queens
+START: 23:33:44
+STOP:  23:33:48
+SUBDIR ======> other/words
+START: 23:33:48
+STOP:  23:34:39
+SUBDIR ======> other/puzzle
+START: 23:34:39
+STOP:  23:36:12
+SUBDIR ======> imaginary/tak
+START: 23:36:12
+STOP:  23:36:13
+SUBDIR ======> imaginary/exp3_8
+START: 23:36:14
+STOP:  23:36:16
+SUBDIR ======> spectral/awards
+START: 23:36:16
+STOP:  23:36:50
+SUBDIR ======> spectral/sorting
+START: 23:36:50
+STOP:  23:39:13
+SUBDIR ======> spectral/cichelli
+START: 23:39:13
+STOP:  23:40:39
+SUBDIR ======> spectral/hartel/event
+START: 23:40:39
+STOP:  23:44:28
+SUBDIR ======> spectral/clausify
+START: 23:44:28
+STOP:  23:47:08
+SUBDIR ======> spectral/hartel/ida
+START: 23:47:09
+STOP:  23:50:35
+SUBDIR ======> spectral/hartel/typecheck
+START: 23:50:35
+STOP:  00:07:14
+SUBDIR ======> spectral/boyer2
+START: 00:07:14
+STOP:  00:12:50

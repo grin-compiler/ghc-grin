@@ -1,0 +1,10 @@
+PROG=typecheck
+HBCCFLAGS=
+HGC1=-dall
+HGC2=-H250M
+HGC3=
+HBCFLAGS=
+GHCFLAGS=
+RUNFLAGS=-H20M
+
+include ../../../hgc.mk

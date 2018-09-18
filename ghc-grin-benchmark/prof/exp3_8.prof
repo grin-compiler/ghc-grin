@@ -1,0 +1,9 @@
+# started on Wed Aug  1 10:26:30 2018
+
+
+ Performance counter stats for 'exp3_8':
+
+       932,101,983      instructions:u                                              
+
+       0.143487261 seconds time elapsed
+

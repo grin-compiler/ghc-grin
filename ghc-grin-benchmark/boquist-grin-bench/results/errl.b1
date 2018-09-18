@@ -1,0 +1,232 @@
+SUBDIR ======> other/nfib
+OUT=1
+TIME: 16:02:44
+SUBDIR ======> other/tsumupto
+OUT=1
+TIME: 16:02:45
+SUBDIR ======> other/sieve
+OUT=1
+TIME: 16:02:46
+SUBDIR ======> other/queens
+OUT=1
+TIME: 16:02:48
+SUBDIR ======> other/words
+OUT=1
+TIME: 16:02:53
+SUBDIR ======> other/puzzle
+OUT=1
+TIME: 16:04:00
+SUBDIR ======> imaginary/tak
+OUT=1
+TIME: 16:06:40
+SUBDIR ======> imaginary/exp3_8
+OUT=1
+TIME: 16:06:41
+SUBDIR ======> spectral/awards
+OUT=1
+TIME: 16:06:44
+SUBDIR ======> spectral/cichelli
+OUT=1
+TIME: 16:07:23
+SUBDIR ======> spectral/boyer2
+OUT=1
+TIME: 16:09:24
+SUBDIR ======> spectral/clausify
+OUT=1
+TIME: 16:27:56
+SUBDIR ======> spectral/hartel/event
+OUT=1
+TIME: 16:33:17
+SUBDIR ======> spectral/hartel/typecheck
+OUT=1
+TIME: 16:40:25
+SUBDIR ======> spectral/sorting
+OUT=1
+TIME: 17:09:21
+TIME: 17:12:18
+SUBDIR ======> other/nfib
+OUT=2
+TIME: 17:12:18
+SUBDIR ======> other/tsumupto
+OUT=2
+TIME: 17:12:19
+SUBDIR ======> other/sieve
+OUT=2
+TIME: 17:12:21
+SUBDIR ======> other/queens
+OUT=2
+TIME: 17:12:23
+SUBDIR ======> other/words
+OUT=2
+TIME: 17:12:27
+SUBDIR ======> other/puzzle
+OUT=2
+TIME: 17:13:20
+SUBDIR ======> imaginary/tak
+OUT=2
+TIME: 17:15:21
+SUBDIR ======> imaginary/exp3_8
+OUT=2
+TIME: 17:15:22
+SUBDIR ======> spectral/awards
+OUT=2
+TIME: 17:15:24
+SUBDIR ======> spectral/cichelli
+OUT=2
+TIME: 17:15:59
+SUBDIR ======> spectral/boyer2
+OUT=2
+TIME: 17:17:24
+SUBDIR ======> spectral/clausify
+OUT=2
+TIME: 17:29:26
+SUBDIR ======> spectral/hartel/event
+OUT=2
+TIME: 17:33:22
+SUBDIR ======> spectral/hartel/typecheck
+OUT=2
+TIME: 17:39:26
+SUBDIR ======> spectral/sorting
+OUT=2
+TIME: 18:01:55
+TIME: 18:04:31
+SUBDIR ======> other/nfib
+OUT=3
+TIME: 18:04:31
+SUBDIR ======> other/tsumupto
+OUT=3
+TIME: 18:04:32
+SUBDIR ======> other/sieve
+OUT=3
+TIME: 18:04:34
+SUBDIR ======> other/queens
+OUT=3
+TIME: 18:04:36
+SUBDIR ======> other/words
+OUT=3
+TIME: 18:04:40
+SUBDIR ======> other/puzzle
+OUT=3
+TIME: 18:05:33
+SUBDIR ======> imaginary/tak
+OUT=3
+TIME: 18:07:36
+SUBDIR ======> imaginary/exp3_8
+OUT=3
+TIME: 18:07:38
+SUBDIR ======> spectral/awards
+OUT=3
+TIME: 18:07:40
+SUBDIR ======> spectral/cichelli
+OUT=3
+TIME: 18:08:17
+SUBDIR ======> spectral/boyer2
+OUT=3
+TIME: 18:09:45
+SUBDIR ======> spectral/clausify
+OUT=3
+TIME: 18:20:38
+SUBDIR ======> spectral/hartel/event
+OUT=3
+TIME: 18:24:06
+SUBDIR ======> spectral/hartel/typecheck
+OUT=3
+TIME: 18:29:43
+SUBDIR ======> spectral/sorting
+OUT=3
+TIME: 18:51:16
+TIME: 18:53:27
+SUBDIR ======> other/nfib
+OUT=4
+TIME: 18:53:27
+SUBDIR ======> other/tsumupto
+OUT=4
+TIME: 18:53:28
+SUBDIR ======> other/sieve
+OUT=4
+TIME: 18:53:29
+SUBDIR ======> other/queens
+OUT=4
+TIME: 18:53:31
+SUBDIR ======> other/words
+OUT=4
+TIME: 18:53:35
+SUBDIR ======> other/puzzle
+OUT=4
+TIME: 18:54:28
+SUBDIR ======> imaginary/tak
+OUT=4
+TIME: 18:56:30
+SUBDIR ======> imaginary/exp3_8
+OUT=4
+TIME: 18:56:31
+SUBDIR ======> spectral/awards
+OUT=4
+TIME: 18:56:34
+SUBDIR ======> spectral/cichelli
+OUT=4
+TIME: 18:57:09
+SUBDIR ======> spectral/boyer2
+OUT=4
+TIME: 18:58:38
+SUBDIR ======> spectral/clausify
+OUT=4
+TIME: 19:09:19
+SUBDIR ======> spectral/hartel/event
+OUT=4
+TIME: 19:12:47
+gmake: *** [event.s] Error 1
+*************** spectral/hartel/event FAIL ***************
+SUBDIR ======> spectral/hartel/typecheck
+OUT=4
+TIME: 19:18:23
+SUBDIR ======> spectral/sorting
+OUT=4
+TIME: 19:39:53
+TIME: 19:42:02
+SUBDIR ======> other/nfib
+OUT=5
+TIME: 19:42:02
+SUBDIR ======> other/tsumupto
+OUT=5
+TIME: 19:42:04
+SUBDIR ======> other/sieve
+OUT=5
+TIME: 19:42:05
+SUBDIR ======> other/queens
+OUT=5
+TIME: 19:42:07
+SUBDIR ======> other/words
+OUT=5
+TIME: 19:42:11
+SUBDIR ======> other/puzzle
+OUT=5
+TIME: 19:43:04
+SUBDIR ======> imaginary/tak
+OUT=5
+TIME: 19:45:04
+SUBDIR ======> imaginary/exp3_8
+OUT=5
+TIME: 19:45:05
+SUBDIR ======> spectral/awards
+OUT=5
+TIME: 19:45:08
+SUBDIR ======> spectral/cichelli
+OUT=5
+TIME: 19:45:45
+SUBDIR ======> spectral/boyer2
+OUT=5
+TIME: 19:47:09
+SUBDIR ======> spectral/clausify
+OUT=5
+TIME: 19:57:47
+SUBDIR ======> spectral/hartel/event
+OUT=5
+TIME: 20:01:15
+SUBDIR ======> spectral/hartel/typecheck
+OUT=5
+TIME: 20:07:41
+SUBDIR ======> spectral/sorting
+OUT=5
+TIME: 20:29:17
+TIME: 20:31:26

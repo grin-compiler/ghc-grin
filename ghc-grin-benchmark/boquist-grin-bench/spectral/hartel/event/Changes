@@ -1,0 +1,6 @@
+- no ../Fast2haskell.
+- remove all unused.
+- remove miraseq.
+- add hbcc prelude.
+- exhaustive pattern matching (fnandfun, f_threestate_cmp).
+- add pair, upto (no Enum).

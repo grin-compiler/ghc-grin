@@ -1,0 +1,33 @@
+SUBDIR ======> spectral/sorting, OUT=a81
+START: 02:35:21
+STOP:  02:38:08
+SUBDIR ======> spectral/cichelli, OUT=a81
+START: 02:38:09
+gmake: *** [cichelli.s] Error 1
+*************** spectral/cichelli FAIL ***************
+SUBDIR ======> spectral/boyer2, OUT=a81
+START: 02:39:12
+STOP:  02:45:34
+SUBDIR ======> spectral/sorting, OUT=a82
+START: 02:45:34
+gmake: *** [sorting.s] Error 1
+*************** spectral/sorting FAIL ***************
+SUBDIR ======> spectral/cichelli, OUT=a82
+START: 02:47:24
+gmake: *** [cichelli.s] Error 1
+*************** spectral/cichelli FAIL ***************
+SUBDIR ======> spectral/boyer2, OUT=a82
+START: 02:48:31
+STOP:  02:54:57
+SUBDIR ======> spectral/sorting, OUT=a83
+START: 02:54:57
+gmake: *** [sorting.s] Error 1
+*************** spectral/sorting FAIL ***************
+SUBDIR ======> spectral/cichelli, OUT=a83
+START: 03:06:52
+gmake: *** [cichelli.s] Error 1
+*************** spectral/cichelli FAIL ***************
+SUBDIR ======> spectral/boyer2, OUT=a83
+START: 03:08:03
+gmake: *** [boyer2.s] Error 1
+*************** spectral/boyer2 FAIL ***************

@@ -1,0 +1,5 @@
+- all in one file.
+- no Show.
+- no Eq Lisplist, add String equality and ordering.
+- exhaustive patterns.
+- add hbcc prelude.

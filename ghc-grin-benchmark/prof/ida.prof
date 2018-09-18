@@ -1,0 +1,9 @@
+# started on Wed Aug  1 10:26:31 2018
+
+
+ Performance counter stats for 'ida':
+
+        46,048,007      instructions:u                                              
+
+       0.011837482 seconds time elapsed
+

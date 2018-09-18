@@ -1,0 +1,1871 @@
+SUBDIR ======> other/nfib
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> other/tsumupto
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> other/sieve
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> other/queens
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> other/words
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> other/puzzle
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> imaginary/tak
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> imaginary/exp3_8
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> spectral/awards
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> spectral/cichelli
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> spectral/boyer2
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+gi.s: No such file or directory
+gmake: *** [link] Error 1
+*************** spectral/boyer2 FAIL ***************
+SUBDIR ======> spectral/sorting
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> spectral/clausify
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+gi.s: No such file or directory
+gmake: *** [link] Error 1
+*************** spectral/clausify FAIL ***************
+SUBDIR ======> spectral/hartel/event
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> spectral/hartel/ida
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+SUBDIR ======> spectral/hartel/typecheck
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gg.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gh.s
+gh.s: No such file or directory
+gmake: *** [link] Error 1
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gi.s
+gi.s: No such file or directory
+gmake: *** [link] Error 1
+*************** spectral/hartel/typecheck FAIL ***************
+SUBDIR ======> other/nfib
+ulimit -t 30; ./gg -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./gh -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./gi -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+SUBDIR ======> other/tsumupto
+ulimit -t 30; ./gg -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./gh -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./gi -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+SUBDIR ======> other/sieve
+ulimit -t 30; ./gg -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./gh -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./gi -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+SUBDIR ======> other/queens
+ulimit -t 30; ./gg -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./gh -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./gi -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+SUBDIR ======> other/words
+ulimit -t 30; ./gg -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./gh -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./gi -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+SUBDIR ======> other/puzzle
+ulimit -t 30; ./gg -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./gh -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./gi -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+SUBDIR ======> imaginary/tak
+ulimit -t 30; ./gg -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./gh -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./gi -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+SUBDIR ======> imaginary/exp3_8
+ulimit -t 30; ./gg -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./gh -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./gi -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+SUBDIR ======> spectral/awards
+ulimit -t 30; ./gg -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./gh -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./gi -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+SUBDIR ======> spectral/cichelli
+ulimit -t 30; ./gg -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./gh -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./gi -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+SUBDIR ======> spectral/boyer2
+ulimit -t 30; ./gg -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./gh -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./gi -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+/bin/sh: ./gi: not found
+gmake: *** [run_hgc] Error 1
+*************** spectral/boyer2 FAIL ***************
+SUBDIR ======> spectral/sorting
+ulimit -t 30; ./gg -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./gh -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./gi -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+SUBDIR ======> spectral/clausify
+ulimit -t 30; ./gg -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./gh -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./gi -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+/bin/sh: ./gi: not found
+gmake: *** [run_hgc] Error 1
+*************** spectral/clausify FAIL ***************
+SUBDIR ======> spectral/hartel/event
+ulimit -t 30; ./gg -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./gh -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./gi -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+SUBDIR ======> spectral/hartel/ida
+ulimit -t 30; ./gg -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./gh -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./gi -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+SUBDIR ======> spectral/hartel/typecheck
+ulimit -t 30; ./gg -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./gh -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+/bin/sh: ./gh: not found
+gmake: *** [run_hgc] Error 1
+ulimit -t 30; ./gi -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+/bin/sh: ./gi: not found
+gmake: *** [run_hgc] Error 1
+*************** spectral/hartel/typecheck FAIL ***************
+SUBDIR ======> other/nfib
+size gg.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	gi.o
+SUBDIR ======> other/tsumupto
+size gg.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	gi.o
+SUBDIR ======> other/sieve
+size gg.o
+text	data	bss	dec	hex	filename
+894    	20     	0      	914    	392    	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+894    	20     	0      	914    	392    	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+1162   	20     	0      	1182   	49e    	gi.o
+SUBDIR ======> other/queens
+size gg.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+2422   	28     	0      	2450   	992    	gi.o
+SUBDIR ======> other/words
+size gg.o
+text	data	bss	dec	hex	filename
+9560   	2652   	0      	12212  	2fb4   	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+11092  	2912   	0      	14004  	36b4   	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+12564  	2920   	0      	15484  	3c7c   	gi.o
+SUBDIR ======> other/puzzle
+size gg.o
+text	data	bss	dec	hex	filename
+12742  	840    	0      	13582  	350e   	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+12834  	840    	0      	13674  	356a   	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+17156  	1472   	0      	18628  	48c4   	gi.o
+SUBDIR ======> imaginary/tak
+size gg.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	gi.o
+SUBDIR ======> imaginary/exp3_8
+size gg.o
+text	data	bss	dec	hex	filename
+1462   	12     	0      	1474   	5c2    	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+1594   	16     	0      	1610   	64a    	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+1594   	16     	0      	1610   	64a    	gi.o
+SUBDIR ======> spectral/awards
+size gg.o
+text	data	bss	dec	hex	filename
+9852   	1432   	0      	11284  	2c14   	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+10464  	1532   	0      	11996  	2edc   	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+16462  	1540   	0      	18002  	4652   	gi.o
+SUBDIR ======> spectral/cichelli
+size gg.o
+text	data	bss	dec	hex	filename
+13882  	1868   	0      	15750  	3d86   	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+15918  	2272   	0      	18190  	470e   	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+19038  	2312   	0      	21350  	5366   	gi.o
+SUBDIR ======> spectral/boyer2
+size gg.o
+text	data	bss	dec	hex	filename
+22954  	80184  	0      	103138 	192e2  	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+28950  	81180  	0      	110130 	1ae32  	gh.o
+size gi.o
+size: gi.o: No such file or directory
+gmake: *** [size_hgc] Error 1
+*************** spectral/boyer2 FAIL ***************
+SUBDIR ======> spectral/sorting
+size gg.o
+text	data	bss	dec	hex	filename
+20282  	312    	0      	20594  	5072   	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+21394  	324    	0      	21718  	54d6   	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+32004  	644    	0      	32648  	7f88   	gi.o
+SUBDIR ======> spectral/clausify
+size gg.o
+text	data	bss	dec	hex	filename
+19734  	1288   	0      	21022  	521e   	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+28954  	1300   	0      	30254  	762e   	gh.o
+size gi.o
+size: gi.o: No such file or directory
+gmake: *** [size_hgc] Error 1
+*************** spectral/clausify FAIL ***************
+SUBDIR ======> spectral/hartel/event
+size gg.o
+text	data	bss	dec	hex	filename
+27358  	1348   	0      	28706  	7022   	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+28022  	1348   	0      	29370  	72ba   	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+29882  	1348   	0      	31230  	79fe   	gi.o
+SUBDIR ======> spectral/hartel/ida
+size gg.o
+text	data	bss	dec	hex	filename
+27622  	780    	0      	28402  	6ef2   	gg.o
+size gh.o
+text	data	bss	dec	hex	filename
+32938  	1268   	0      	34206  	859e   	gh.o
+size gi.o
+text	data	bss	dec	hex	filename
+38074  	1428   	0      	39502  	9a4e   	gi.o
+SUBDIR ======> spectral/hartel/typecheck
+size gg.o
+text	data	bss	dec	hex	filename
+62124  	4944   	0      	67068  	105fc  	gg.o
+size gh.o
+size: gh.o: No such file or directory
+gmake: *** [size_hgc] Error 1
+size gi.o
+size: gi.o: No such file or directory
+gmake: *** [size_hgc] Error 1
+*************** spectral/hartel/typecheck FAIL ***************
+SUBDIR ======> other/nfib
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:15:08 1,999
+Application: ./gg -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 22:15:25 1,999
+Instructions: 343,401,138
+Time: 16.670 usr  0.020 sys  16.955 real  98.436%
+Speed: 20,575.263 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:15:25 1,999
+Application: ./gh -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 22:15:42 1,999
+Instructions: 343,401,138
+Time: 16.630 usr  0.010 sys  17.014 real  97.802%
+Speed: 20,637.088 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:15:42 1,999
+Application: ./gi -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 22:15:59 1,999
+Instructions: 343,401,138
+Time: 16.480 usr  0.000 sys  16.814 real  98.013%
+Speed: 20,837.448 KIPS
+SUBDIR ======> other/tsumupto
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:15:59 1,999
+Application: ./gg -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 22:16:02 1,999
+Instructions: 70,003,555
+Time: 2.590 usr  0.020 sys  2.691 real  97.008%
+Speed: 26,821.285 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:16:02 1,999
+Application: ./gh -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 22:16:04 1,999
+Instructions: 70,003,555
+Time: 2.580 usr  0.000 sys  2.583 real  99.894%
+Speed: 27,133.161 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:16:04 1,999
+Application: ./gi -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 22:16:07 1,999
+Instructions: 70,003,555
+Time: 2.530 usr  0.010 sys  2.542 real  99.928%
+Speed: 27,560.455 KIPS
+SUBDIR ======> other/sieve
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:16:07 1,999
+Application: ./gg -H40M
+121,013,308 
+Application Instructions: 445,472,012
+Stop: Wed Feb 17 22:16:32 1,999
+Instructions: 445,472,012
+Time: 24.510 usr  0.380 sys  25.247 real  98.588%
+Speed: 17,897.630 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:16:33 1,999
+Application: ./gh -H40M
+121,013,308 
+Application Instructions: 445,472,012
+Stop: Wed Feb 17 22:16:58 1,999
+Instructions: 445,472,012
+Time: 24.560 usr  0.430 sys  25.257 real  98.942%
+Speed: 17,826.011 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:16:58 1,999
+Application: ./gi -H40M
+121,013,308 
+Application Instructions: 445,416,712
+Stop: Wed Feb 17 22:17:24 1,999
+Instructions: 445,416,712
+Time: 25.160 usr  0.340 sys  25.874 real  98.553%
+Speed: 17,467.322 KIPS
+SUBDIR ======> other/queens
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:17:24 1,999
+Application: ./gg -H60M
+14,200 
+Application Instructions: 1,351,158,429
+Stop: Wed Feb 17 22:18:49 1,999
+Instructions: 1,351,158,429
+Time: 83.070 usr  0.610 sys  85.146 real  98.278%
+Speed: 16,146.731 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:18:49 1,999
+Application: ./gh -H60M
+14,200 
+Application Instructions: 1,351,158,429
+Stop: Wed Feb 17 22:20:15 1,999
+Instructions: 1,351,158,429
+Time: 83.200 usr  0.540 sys  85.503 real  97.938%
+Speed: 16,135.162 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:20:15 1,999
+Application: ./gi -H60M
+14,200 
+Application Instructions: 1,329,266,714
+Stop: Wed Feb 17 22:21:39 1,999
+Instructions: 1,329,266,714
+Time: 82.390 usr  0.680 sys  84.133 real  98.736%
+Speed: 16,001.766 KIPS
+SUBDIR ======> other/words
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:21:40 1,999
+Application: ./gg -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 221,588,351
+Stop: Wed Feb 17 22:21:54 1,999
+Instructions: 221,588,351
+Time: 12.980 usr  0.600 sys  13.895 real  97.731%
+Speed: 16,317.257 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:21:54 1,999
+Application: ./gh -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 225,326,255
+Stop: Wed Feb 17 22:22:08 1,999
+Instructions: 225,326,255
+Time: 13.150 usr  0.630 sys  14.142 real  97.438%
+Speed: 16,351.688 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:22:08 1,999
+Application: ./gi -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 229,699,177
+Stop: Wed Feb 17 22:22:23 1,999
+Instructions: 229,699,177
+Time: 13.320 usr  0.510 sys  14.564 real  94.957%
+Speed: 16,608.762 KIPS
+SUBDIR ======> other/puzzle
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:22:23 1,999
+Application: ./gg -H60M
+128 
+Application Instructions: 1,694,104,227
+Stop: Wed Feb 17 22:24:07 1,999
+Instructions: 1,694,104,227
+Time: 99.940 usr  0.670 sys  103.608 real  97.106%
+Speed: 16,838.328 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:24:07 1,999
+Application: ./gh -H60M
+128 
+Application Instructions: 1,662,536,741
+Stop: Wed Feb 17 22:25:49 1,999
+Instructions: 1,662,536,741
+Time: 98.330 usr  0.480 sys  101.723 real  97.136%
+Speed: 16,825.592 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:25:49 1,999
+Application: ./gi -H60M
+128 
+Application Instructions: 1,654,775,555
+Stop: Wed Feb 17 22:27:30 1,999
+Instructions: 1,654,775,555
+Time: 97.980 usr  0.530 sys  100.697 real  97.828%
+Speed: 16,798.046 KIPS
+SUBDIR ======> imaginary/tak
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:27:30 1,999
+Application: ./gg -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 22:27:32 1,999
+Instructions: 36,155,788
+Time: 1.540 usr  0.000 sys  1.560 real  98.747%
+Speed: 23,477.784 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:27:32 1,999
+Application: ./gh -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 22:27:33 1,999
+Instructions: 36,155,788
+Time: 1.570 usr  0.010 sys  1.602 real  98.623%
+Speed: 22,883.410 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:27:33 1,999
+Application: ./gi -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 22:27:35 1,999
+Instructions: 36,155,788
+Time: 1.510 usr  0.010 sys  1.596 real  95.238%
+Speed: 23,786.703 KIPS
+SUBDIR ======> imaginary/exp3_8
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:27:35 1,999
+Application: ./gg -H60M
+6,561 
+Application Instructions: 267,097,385
+Stop: Wed Feb 17 22:27:50 1,999
+Instructions: 267,097,385
+Time: 13.790 usr  0.530 sys  14.834 real  96.538%
+Speed: 18,652.052 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:27:50 1,999
+Application: ./gh -H60M
+6,561 
+Application Instructions: 267,100,655
+Stop: Wed Feb 17 22:28:05 1,999
+Instructions: 267,100,655
+Time: 13.650 usr  0.670 sys  15.029 real  95.280%
+Speed: 18,652.280 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:28:06 1,999
+Application: ./gi -H60M
+6,561 
+Application Instructions: 267,100,655
+Stop: Wed Feb 17 22:28:20 1,999
+Instructions: 267,100,655
+Time: 13.760 usr  0.530 sys  14.495 real  98.583%
+Speed: 18,691.438 KIPS
+SUBDIR ======> spectral/awards
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:28:21 1,999
+Application: ./gg -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 195,510
+Stop: Wed Feb 17 22:28:21 1,999
+Instructions: 195,510
+Time: 0.040 usr  0.000 sys  0.058 real  69.454%
+Speed: 4,887.750 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:28:21 1,999
+Application: ./gh -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 195,317
+Stop: Wed Feb 17 22:28:21 1,999
+Instructions: 195,317
+Time: 0.030 usr  0.020 sys  0.054 real  92.759%
+Speed: 3,906.340 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:28:21 1,999
+Application: ./gi -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 193,433
+Stop: Wed Feb 17 22:28:21 1,999
+Instructions: 193,433
+Time: 0.040 usr  0.020 sys  0.057 real  106.077%
+Speed: 3,223.883 KIPS
+SUBDIR ======> spectral/cichelli
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:28:21 1,999
+Application: ./gg -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 16,837,129
+Stop: Wed Feb 17 22:28:22 1,999
+Instructions: 16,837,129
+Time: 1.040 usr  0.030 sys  1.075 real  99.490%
+Speed: 15,735.635 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:28:22 1,999
+Application: ./gh -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 18,793,799
+Stop: Wed Feb 17 22:28:23 1,999
+Instructions: 18,793,799
+Time: 1.040 usr  0.050 sys  1.091 real  99.947%
+Speed: 17,242.017 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:28:23 1,999
+Application: ./gi -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 18,819,012
+Stop: Wed Feb 17 22:28:24 1,999
+Instructions: 18,819,012
+Time: 1.070 usr  0.020 sys  1.090 real  100.015%
+Speed: 17,265.149 KIPS
+SUBDIR ======> spectral/boyer2
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:28:25 1,999
+Application: ./gg -H10M
+The term is a tautology
+
+Application Instructions: 13,297,443
+Stop: Wed Feb 17 22:28:26 1,999
+Instructions: 13,297,443
+Time: 0.880 usr  0.040 sys  0.962 real  95.625%
+Speed: 14,453.742 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:28:26 1,999
+Application: ./gh -H10M
+The term is a tautology
+
+Application Instructions: 13,315,945
+Stop: Wed Feb 17 22:28:27 1,999
+Instructions: 13,315,945
+Time: 0.920 usr  0.010 sys  1.000 real  92.956%
+Speed: 14,318.220 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+/users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount: ./gi: program not found
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:28:27 1,999
+Stop: Wed Feb 17 22:28:27 1,999
+Time: 0.000 usr  0.000 sys  0.002 real  0.000%
+SUBDIR ======> spectral/sorting
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:28:27 1,999
+Application: ./gg -H60M
+3,849,600 
+Application Instructions: 289,382,777
+Stop: Wed Feb 17 22:28:45 1,999
+Instructions: 289,382,777
+Time: 16.520 usr  0.420 sys  17.687 real  95.777%
+Speed: 17,082.809 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:28:45 1,999
+Application: ./gh -H60M
+3,849,600 
+Application Instructions: 289,386,351
+Stop: Wed Feb 17 22:29:03 1,999
+Instructions: 289,386,351
+Time: 16.760 usr  0.490 sys  18.424 real  93.626%
+Speed: 16,776.020 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:29:04 1,999
+Application: ./gi -H60M
+3,849,600 
+Application Instructions: 312,355,076
+Stop: Wed Feb 17 22:29:22 1,999
+Instructions: 312,355,076
+Time: 16.910 usr  0.570 sys  18.518 real  94.397%
+Speed: 17,869.284 KIPS
+SUBDIR ======> spectral/clausify
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:29:22 1,999
+Application: ./gg -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 111,204,092
+Stop: Wed Feb 17 22:29:29 1,999
+Instructions: 111,204,092
+Time: 6.060 usr  0.240 sys  6.522 real  96.598%
+Speed: 17,651.443 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:29:29 1,999
+Application: ./gh -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 110,366,526
+Stop: Wed Feb 17 22:29:36 1,999
+Instructions: 110,366,526
+Time: 6.220 usr  0.140 sys  6.583 real  96.608%
+Speed: 17,353.227 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+/users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount: ./gi: program not found
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:29:36 1,999
+Stop: Wed Feb 17 22:29:36 1,999
+Time: 0.000 usr  0.000 sys  0.002 real  0.000%
+SUBDIR ======> spectral/hartel/event
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:29:36 1,999
+Application: ./gg -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,264,342
+Stop: Wed Feb 17 22:29:40 1,999
+Instructions: 73,264,342
+Time: 4.080 usr  0.170 sys  4.379 real  97.058%
+Speed: 17,238.669 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:29:41 1,999
+Application: ./gh -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,267,990
+Stop: Wed Feb 17 22:29:45 1,999
+Instructions: 73,267,990
+Time: 4.010 usr  0.170 sys  4.304 real  97.113%
+Speed: 17,528.227 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:29:45 1,999
+Application: ./gi -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,210,912
+Stop: Wed Feb 17 22:29:49 1,999
+Instructions: 73,210,912
+Time: 4.100 usr  0.220 sys  4.366 real  98.939%
+Speed: 16,946.970 KIPS
+SUBDIR ======> spectral/hartel/ida
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:29:50 1,999
+Application: ./gg -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,567,284
+Stop: Wed Feb 17 22:29:51 1,999
+Instructions: 26,567,284
+Time: 1.570 usr  0.110 sys  1.702 real  98.692%
+Speed: 15,813.860 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:29:52 1,999
+Application: ./gh -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,590,497
+Stop: Wed Feb 17 22:29:53 1,999
+Instructions: 26,590,497
+Time: 1.590 usr  0.110 sys  1.714 real  99.211%
+Speed: 15,641.469 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:29:53 1,999
+Application: ./gi -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,017,123
+Stop: Wed Feb 17 22:29:55 1,999
+Instructions: 26,017,123
+Time: 1.510 usr  0.140 sys  1.687 real  97.778%
+Speed: 15,767.953 KIPS
+SUBDIR ======> spectral/hartel/typecheck
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gg -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:29:55 1,999
+Application: ./gg -H20M
+2,904,400/47,800
+
+Application Instructions: 162,833,200
+Stop: Wed Feb 17 22:30:04 1,999
+Instructions: 162,833,200
+Time: 8.260 usr  0.270 sys  8.945 real  95.361%
+Speed: 19,089.472 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gh -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+/users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount: ./gh: program not found
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:30:04 1,999
+Stop: Wed Feb 17 22:30:04 1,999
+Time: 0.000 usr  0.000 sys  0.001 real  0.000%
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gi -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+/users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount: ./gi: program not found
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 22:30:04 1,999
+Stop: Wed Feb 17 22:30:04 1,999
+Time: 0.000 usr  0.000 sys  0.002 real  0.000%
+SUBDIR ======> other/nfib
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+29860703 
+1.67u 0.00s 0:01.73 96.5%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+29860703 
+1.70u 0.00s 0:01.86 91.3%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+29860703 
+1.68u 0.01s 0:01.78 94.9%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+29860703 
+1.68u 0.01s 0:01.83 92.3%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+29860703 
+1.76u 0.00s 0:01.88 93.6%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+29860703 
+1.71u 0.01s 0:01.81 95.0%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+29860703 
+1.73u 0.00s 0:01.86 93.0%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+29860703 
+1.72u 0.01s 0:01.83 94.5%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+29860703 
+1.66u 0.01s 0:01.77 94.3%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+29860703 
+1.70u 0.01s 0:01.77 96.6%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+29860703 
+1.66u 0.00s 0:01.71 97.0%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+29860703 
+1.62u 0.01s 0:01.77 92.0%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+29860703 
+1.66u 0.01s 0:01.74 95.9%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+29860703 
+1.70u 0.01s 0:01.82 93.9%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+29860703 
+1.65u 0.01s 0:01.83 90.7%
+SUBDIR ======> other/tsumupto
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+-2004260032 
+0.10u 0.00s 0:00.12 83.3%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+-2004260032 
+0.11u 0.00s 0:00.13 84.6%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+-2004260032 
+0.09u 0.00s 0:00.15 60.0%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+-2004260032 
+0.11u 0.00s 0:00.12 91.6%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+-2004260032 
+0.09u 0.00s 0:00.12 75.0%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+-2004260032 
+0.10u 0.01s 0:00.12 91.6%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+-2004260032 
+0.10u 0.00s 0:00.13 76.9%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+-2004260032 
+0.10u 0.01s 0:00.12 91.6%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+-2004260032 
+0.11u 0.00s 0:00.13 84.6%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+-2004260032 
+0.11u 0.00s 0:00.13 84.6%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+-2004260032 
+0.11u 0.01s 0:00.12 100.0%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+-2004260032 
+0.10u 0.01s 0:00.12 91.6%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+-2004260032 
+0.10u 0.01s 0:00.12 91.6%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+-2004260032 
+0.10u 0.01s 0:00.13 84.6%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+-2004260032 
+0.10u 0.01s 0:00.12 91.6%
+SUBDIR ======> other/sieve
+tcsh -f -c "limit cputime 30; time ./gg -H40M"
+121013308 
+4.58u 0.29s 0:05.22 93.2%
+tcsh -f -c "limit cputime 30; time ./gg -H40M"
+121013308 
+4.65u 0.22s 0:05.08 95.8%
+tcsh -f -c "limit cputime 30; time ./gg -H40M"
+121013308 
+4.49u 0.34s 0:05.04 95.8%
+tcsh -f -c "limit cputime 30; time ./gg -H40M"
+121013308 
+4.43u 0.38s 0:05.07 94.8%
+tcsh -f -c "limit cputime 30; time ./gg -H40M"
+121013308 
+4.56u 0.28s 0:05.21 92.8%
+tcsh -f -c "limit cputime 30; time ./gh -H40M"
+121013308 
+4.44u 0.41s 0:05.08 95.4%
+tcsh -f -c "limit cputime 30; time ./gh -H40M"
+121013308 
+4.54u 0.42s 0:06.18 80.2%
+tcsh -f -c "limit cputime 30; time ./gh -H40M"
+121013308 
+4.67u 0.29s 0:05.26 94.2%
+tcsh -f -c "limit cputime 30; time ./gh -H40M"
+121013308 
+4.42u 0.41s 0:05.09 94.8%
+tcsh -f -c "limit cputime 30; time ./gh -H40M"
+121013308 
+4.64u 0.28s 0:05.10 96.4%
+tcsh -f -c "limit cputime 30; time ./gi -H40M"
+121013308 
+4.47u 0.42s 0:05.28 92.6%
+tcsh -f -c "limit cputime 30; time ./gi -H40M"
+121013308 
+4.60u 0.30s 0:05.05 97.0%
+tcsh -f -c "limit cputime 30; time ./gi -H40M"
+121013308 
+4.51u 0.38s 0:05.12 95.5%
+tcsh -f -c "limit cputime 30; time ./gi -H40M"
+121013308 
+4.60u 0.30s 0:05.11 95.8%
+tcsh -f -c "limit cputime 30; time ./gi -H40M"
+121013308 
+4.61u 0.29s 0:05.11 95.8%
+SUBDIR ======> other/queens
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+14200 
+6.82u 0.51s 0:07.80 93.9%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+14200 
+6.39u 0.68s 0:07.45 94.8%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+14200 
+6.62u 0.52s 0:07.73 92.3%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+14200 
+6.61u 0.48s 0:07.54 94.0%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+14200 
+6.67u 0.44s 0:07.55 94.1%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+14200 
+6.75u 0.47s 0:08.11 89.0%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+14200 
+6.64u 0.49s 0:07.78 91.6%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+14200 
+6.71u 0.52s 0:07.63 94.7%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+14200 
+6.73u 0.48s 0:07.64 94.3%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+14200 
+6.73u 0.54s 0:08.71 83.4%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+14200 
+6.44u 0.49s 0:07.23 95.8%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+14200 
+6.27u 0.54s 0:07.00 97.2%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+14200 
+6.31u 0.55s 0:07.08 96.8%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+14200 
+6.38u 0.48s 0:07.23 94.8%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+14200 
+6.44u 0.49s 0:07.45 93.0%
+SUBDIR ======> other/words
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.33u 0.42s 0:01.94 90.2%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.29u 0.45s 0:01.91 91.0%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.28u 0.50s 0:02.00 89.0%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.28u 0.48s 0:02.15 81.8%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.31u 0.48s 0:02.00 89.5%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.24u 0.56s 0:02.04 88.2%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.37u 0.45s 0:02.05 88.7%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.27u 0.52s 0:01.98 90.4%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.27u 0.54s 0:02.07 87.4%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.39u 0.42s 0:02.09 86.6%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.38u 0.40s 0:01.94 91.7%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.24u 0.56s 0:01.98 90.9%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.40u 0.39s 0:01.94 92.2%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.29u 0.50s 0:01.92 93.2%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.38u 0.43s 0:01.93 93.7%
+SUBDIR ======> other/puzzle
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+128 
+8.77u 0.53s 0:09.55 97.3%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+128 
+8.81u 0.45s 0:09.50 97.4%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+128 
+8.77u 0.53s 0:09.79 94.9%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+128 
+8.87u 0.47s 0:09.66 96.6%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+128 
+8.82u 0.46s 0:09.65 96.1%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+128 
+8.82u 0.48s 0:10.17 91.4%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+128 
+8.73u 0.43s 0:09.37 97.7%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+128 
+8.70u 0.44s 0:09.31 98.1%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+128 
+8.59u 0.49s 0:09.20 98.6%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+128 
+8.68u 0.49s 0:09.54 96.1%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+128 
+8.82u 0.55s 0:09.62 97.4%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+128 
+8.94u 0.33s 0:09.39 98.7%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+128 
+8.89u 0.52s 0:09.68 97.2%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+128 
+8.75u 0.55s 0:09.78 95.0%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+128 
+8.87u 0.58s 0:10.13 93.2%
+SUBDIR ======> imaginary/tak
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+9 
+0.15u 0.01s 0:00.18 88.8%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+9 
+0.14u 0.00s 0:00.16 87.5%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+9 
+0.15u 0.00s 0:00.16 93.7%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+9 
+0.14u 0.00s 0:00.16 87.5%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+9 
+0.15u 0.00s 0:00.18 83.3%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+9 
+0.15u 0.00s 0:00.18 83.3%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+9 
+0.14u 0.01s 0:00.16 93.7%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+9 
+0.15u 0.00s 0:00.17 88.2%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+9 
+0.13u 0.01s 0:00.14 100.0%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+9 
+0.16u 0.00s 0:00.21 76.1%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+9 
+0.16u 0.00s 0:00.19 84.2%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+9 
+0.13u 0.01s 0:00.16 87.5%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+9 
+0.15u 0.01s 0:00.17 94.1%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+9 
+0.17u 0.00s 0:00.20 85.0%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+9 
+0.16u 0.00s 0:00.18 88.8%
+SUBDIR ======> imaginary/exp3_8
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+6561 
+1.43u 0.50s 0:02.11 91.4%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+6561 
+1.40u 0.48s 0:02.10 89.5%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+6561 
+1.41u 0.48s 0:02.03 93.1%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+6561 
+1.37u 0.53s 0:02.14 88.7%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+6561 
+1.49u 0.41s 0:02.01 94.5%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+6561 
+1.44u 0.43s 0:01.98 94.4%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+6561 
+1.46u 0.43s 0:02.01 94.0%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+6561 
+1.37u 0.52s 0:02.00 94.5%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+6561 
+1.35u 0.51s 0:01.98 93.9%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+6561 
+1.45u 0.44s 0:01.99 94.9%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+6561 
+1.41u 0.46s 0:01.98 94.4%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+6561 
+1.35u 0.54s 0:02.01 94.0%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+6561 
+1.36u 0.54s 0:02.05 92.6%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+6561 
+1.28u 0.60s 0:02.05 91.7%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+6561 
+1.42u 0.51s 0:02.08 92.7%
+SUBDIR ======> spectral/awards
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.00s 0:00.02 0.0%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.01s 0:00.02 50.0%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.01s 0:00.03 33.3%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.01s 0:00.03 33.3%
+tcsh -f -c "limit cputime 30; time ./gg -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.01u 0.00s 0:00.03 33.3%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.01s 0:00.02 50.0%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.00s 0:00.02 0.0%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.01u 0.00s 0:00.03 33.3%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.01s 0:00.03 33.3%
+tcsh -f -c "limit cputime 30; time ./gh -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.01s 0:00.03 33.3%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.00s 0:00.03 0.0%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.01s 0:00.02 50.0%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.00s 0:00.03 0.0%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.00s 0:00.02 0.0%
+tcsh -f -c "limit cputime 30; time ./gi -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.00s 0:00.03 0.0%
+SUBDIR ======> spectral/cichelli
+tcsh -f -c "limit cputime 30; time ./gg -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.09u 0.01s 0:00.13 76.9%
+tcsh -f -c "limit cputime 30; time ./gg -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.07u 0.03s 0:00.13 76.9%
+tcsh -f -c "limit cputime 30; time ./gg -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.09u 0.02s 0:00.14 78.5%
+tcsh -f -c "limit cputime 30; time ./gg -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.08u 0.03s 0:00.14 78.5%
+tcsh -f -c "limit cputime 30; time ./gg -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.07u 0.04s 0:00.13 84.6%
+tcsh -f -c "limit cputime 30; time ./gh -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.11u 0.02s 0:00.15 86.6%
+tcsh -f -c "limit cputime 30; time ./gh -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.09u 0.03s 0:00.15 80.0%
+tcsh -f -c "limit cputime 30; time ./gh -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.10u 0.02s 0:00.14 85.7%
+tcsh -f -c "limit cputime 30; time ./gh -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.11u 0.01s 0:00.14 85.7%
+tcsh -f -c "limit cputime 30; time ./gh -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.10u 0.03s 0:00.15 86.6%
+tcsh -f -c "limit cputime 30; time ./gi -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.07u 0.04s 0:00.15 73.3%
+tcsh -f -c "limit cputime 30; time ./gi -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.10u 0.01s 0:00.14 78.5%
+tcsh -f -c "limit cputime 30; time ./gi -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.06u 0.05s 0:00.14 78.5%
+tcsh -f -c "limit cputime 30; time ./gi -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.12u 0.00s 0:00.14 85.7%
+tcsh -f -c "limit cputime 30; time ./gi -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.10u 0.02s 0:00.14 85.7%
+SUBDIR ======> spectral/boyer2
+SUBDIR ======> spectral/sorting
+tcsh -f -c "limit cputime 30; time ./gg -H10M"
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+The term is a tautology
+
+0.10u 0.02s 0:00.13 92.3%
+tcsh -f -c "limit cputime 30; time ./gg -H10M"
+The term is a tautology
+
+0.09u 0.03s 0:00.12 100.0%
+tcsh -f -c "limit cputime 30; time ./gg -H10M"
+The term is a tautology
+
+0.11u 0.01s 0:00.13 92.3%
+tcsh -f -c "limit cputime 30; time ./gg -H10M"
+The term is a tautology
+
+0.08u 0.05s 0:00.14 92.8%
+tcsh -f -c "limit cputime 30; time ./gg -H10M"
+The term is a tautology
+
+0.10u 0.02s 0:00.14 85.7%
+tcsh -f -c "limit cputime 30; time ./gh -H10M"
+The term is a tautology
+
+0.08u 0.05s 0:00.15 86.6%
+tcsh -f -c "limit cputime 30; time ./gh -H10M"
+The term is a tautology
+
+0.10u 0.03s 0:00.14 92.8%
+tcsh -f -c "limit cputime 30; time ./gh -H10M"
+The term is a tautology
+
+0.11u 0.02s 0:00.16 81.2%
+tcsh -f -c "limit cputime 30; time ./gh -H10M"
+The term is a tautology
+
+0.10u 0.02s 0:00.13 92.3%
+tcsh -f -c "limit cputime 30; time ./gh -H10M"
+The term is a tautology
+
+0.06u 0.06s 0:00.13 92.3%
+tcsh -f -c "limit cputime 30; time ./gi -H10M"
+./gi: Command not found.
+0.00u 0.01s 0:00.01 100.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gi -H10M"
+./gi: Command not found.
+0.00u 0.01s 0:00.01 100.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gi -H10M"
+./gi: Command not found.
+0.00u 0.01s 0:00.02 50.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gi -H10M"
+./gi: Command not found.
+0.00u 0.00s 0:00.01 0.0%
+gmake: *** [time_hgc] Error 1
+3849600 
+tcsh -f -c "limit cputime 30; time ./gi -H10M"
+1.60u 0.64s 0:02.81 79.7%
+./gi: Command not found.
+0.00u 0.01s 0:00.01 100.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+3849600 
+1.61u 0.50s 0:02.22 95.0%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+3849600 
+1.68u 0.42s 0:02.22 94.5%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+3849600 
+1.61u 0.51s 0:02.23 95.0%
+tcsh -f -c "limit cputime 30; time ./gg -H60M"
+3849600 
+1.54u 0.54s 0:02.21 94.1%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+3849600 
+1.66u 0.50s 0:02.44 88.5%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+3849600 
+1.70u 0.42s 0:02.34 90.5%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+3849600 
+1.66u 0.44s 0:02.25 93.3%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+3849600 
+1.67u 0.43s 0:02.22 94.5%
+tcsh -f -c "limit cputime 30; time ./gh -H60M"
+3849600 
+1.56u 0.54s 0:02.22 94.5%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+3849600 
+1.77u 0.55s 0:02.46 94.3%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+3849600 
+1.76u 0.50s 0:02.37 95.3%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+3849600 
+1.78u 0.49s 0:02.44 93.0%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+3849600 
+1.88u 0.40s 0:02.39 95.3%
+tcsh -f -c "limit cputime 30; time ./gi -H60M"
+3849600 
+1.87u 0.40s 0:02.47 91.9%
+SUBDIR ======> spectral/clausify
+tcsh -f -c "limit cputime 30; time ./gg -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.67u 0.17s 0:00.92 91.3%
+tcsh -f -c "limit cputime 30; time ./gg -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.66u 0.16s 0:00.88 93.1%
+tcsh -f -c "limit cputime 30; time ./gg -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.65u 0.19s 0:00.88 95.4%
+tcsh -f -c "limit cputime 30; time ./gg -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.70u 0.13s 0:00.87 95.4%
+tcsh -f -c "limit cputime 30; time ./gg -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.73u 0.10s 0:00.88 94.3%
+tcsh -f -c "limit cputime 30; time ./gh -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.73u 0.10s 0:00.87 95.4%
+tcsh -f -c "limit cputime 30; time ./gh -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.66u 0.16s 0:00.86 95.3%
+tcsh -f -c "limit cputime 30; time ./gh -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.68u 0.14s 0:00.88 93.1%
+tcsh -f -c "limit cputime 30; time ./gh -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.67u 0.16s 0:00.87 95.4%
+tcsh -f -c "limit cputime 30; time ./gh -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.61u 0.21s 0:00.87 94.2%
+tcsh -f -c "limit cputime 30; time ./gi -H20M"
+./gi: Command not found.
+0.01u 0.00s 0:00.01 100.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gi -H20M"
+./gi: Command not found.
+0.00u 0.00s 0:00.01 0.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gi -H20M"
+./gi: Command not found.
+0.00u 0.00s 0:00.00 0.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gi -H20M"
+./gi: Command not found.
+0.00u 0.01s 0:00.01 100.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gi -H20M"
+./gi: Command not found.
+0.00u 0.00s 0:00.00 0.0%
+gmake: *** [time_hgc] Error 1
+SUBDIR ======> spectral/hartel/event
+tcsh -f -c "limit cputime 30; time ./gg -H80M"
+HHxLLHHLLHHLH
+
+0.48u 0.20s 0:00.72 94.4%
+tcsh -f -c "limit cputime 30; time ./gg -H80M"
+HHxLLHHLLHHLH
+
+0.51u 0.17s 0:00.73 93.1%
+tcsh -f -c "limit cputime 30; time ./gg -H80M"
+HHxLLHHLLHHLH
+
+0.46u 0.21s 0:00.73 91.7%
+tcsh -f -c "limit cputime 30; time ./gg -H80M"
+HHxLLHHLLHHLH
+
+0.44u 0.22s 0:00.73 90.4%
+tcsh -f -c "limit cputime 30; time ./gg -H80M"
+HHxLLHHLLHHLH
+
+0.40u 0.28s 0:00.72 94.4%
+tcsh -f -c "limit cputime 30; time ./gh -H80M"
+HHxLLHHLLHHLH
+
+0.56u 0.12s 0:00.73 93.1%
+tcsh -f -c "limit cputime 30; time ./gh -H80M"
+HHxLLHHLLHHLH
+
+0.55u 0.13s 0:00.74 91.8%
+tcsh -f -c "limit cputime 30; time ./gh -H80M"
+HHxLLHHLLHHLH
+
+0.42u 0.25s 0:00.73 91.7%
+tcsh -f -c "limit cputime 30; time ./gh -H80M"
+HHxLLHHLLHHLH
+
+0.46u 0.21s 0:00.73 91.7%
+tcsh -f -c "limit cputime 30; time ./gh -H80M"
+HHxLLHHLLHHLH
+
+0.45u 0.22s 0:00.72 93.0%
+tcsh -f -c "limit cputime 30; time ./gi -H80M"
+HHxLLHHLLHHLH
+
+0.48u 0.22s 0:00.75 93.3%
+tcsh -f -c "limit cputime 30; time ./gi -H80M"
+HHxLLHHLLHHLH
+
+0.51u 0.18s 0:00.74 93.2%
+tcsh -f -c "limit cputime 30; time ./gi -H80M"
+HHxLLHHLLHHLH
+
+0.54u 0.13s 0:00.73 91.7%
+tcsh -f -c "limit cputime 30; time ./gi -H80M"
+HHxLLHHLLHHLH
+
+0.46u 0.23s 0:00.78 88.4%
+tcsh -f -c "limit cputime 30; time ./gi -H80M"
+HHxLLHHLLHHLH
+
+0.49u 0.18s 0:00.74 90.5%
+SUBDIR ======> spectral/hartel/ida
+tcsh -f -c "limit cputime 30; time ./gg -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.20u 0.06s 0:00.29 89.6%
+tcsh -f -c "limit cputime 30; time ./gg -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.20u 0.07s 0:00.30 90.0%
+tcsh -f -c "limit cputime 30; time ./gg -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.18u 0.08s 0:00.29 89.6%
+tcsh -f -c "limit cputime 30; time ./gg -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.18u 0.08s 0:00.30 86.6%
+tcsh -f -c "limit cputime 30; time ./gg -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.20u 0.10s 0:00.34 88.2%
+tcsh -f -c "limit cputime 30; time ./gh -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.19u 0.08s 0:00.28 96.4%
+tcsh -f -c "limit cputime 30; time ./gh -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.21u 0.05s 0:00.28 92.8%
+tcsh -f -c "limit cputime 30; time ./gh -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.20u 0.06s 0:00.28 92.8%
+tcsh -f -c "limit cputime 30; time ./gh -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.18u 0.08s 0:00.28 92.8%
+tcsh -f -c "limit cputime 30; time ./gh -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.17u 0.10s 0:00.29 93.1%
+tcsh -f -c "limit cputime 30; time ./gi -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.17u 0.10s 0:00.29 93.1%
+tcsh -f -c "limit cputime 30; time ./gi -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.18u 0.08s 0:00.30 86.6%
+tcsh -f -c "limit cputime 30; time ./gi -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.19u 0.08s 0:00.32 84.3%
+tcsh -f -c "limit cputime 30; time ./gi -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.17u 0.10s 0:00.30 90.0%
+tcsh -f -c "limit cputime 30; time ./gi -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.14u 0.13s 0:00.29 93.1%
+SUBDIR ======> spectral/hartel/typecheck
+tcsh -f -c "limit cputime 30; time ./gg -H20M"
+2904400/47800
+
+1.05u 0.16s 0:01.25 96.8%
+tcsh -f -c "limit cputime 30; time ./gg -H20M"
+2904400/47800
+
+0.98u 0.23s 0:01.26 96.0%
+tcsh -f -c "limit cputime 30; time ./gg -H20M"
+2904400/47800
+
+1.07u 0.14s 0:01.25 96.8%
+tcsh -f -c "limit cputime 30; time ./gg -H20M"
+2904400/47800
+
+1.02u 0.18s 0:01.25 96.0%
+tcsh -f -c "limit cputime 30; time ./gg -H20M"
+2904400/47800
+
+1.01u 0.18s 0:01.24 95.9%
+tcsh -f -c "limit cputime 30; time ./gh -H20M"
+./gh: Command not found.
+0.00u 0.01s 0:00.01 100.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gh -H20M"
+./gh: Command not found.
+0.00u 0.00s 0:00.00 0.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gh -H20M"
+./gh: Command not found.
+0.00u 0.00s 0:00.00 0.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gh -H20M"
+./gh: Command not found.
+0.00u 0.01s 0:00.01 100.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gh -H20M"
+./gh: Command not found.
+0.00u 0.01s 0:00.01 100.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gi -H20M"
+./gi: Command not found.
+0.00u 0.00s 0:00.00 0.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gi -H20M"
+./gi: Command not found.
+0.00u 0.00s 0:00.00 0.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gi -H20M"
+./gi: Command not found.
+0.00u 0.01s 0:00.01 100.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gi -H20M"
+./gi: Command not found.
+0.00u 0.00s 0:00.00 0.0%
+gmake: *** [time_hgc] Error 1
+tcsh -f -c "limit cputime 30; time ./gi -H20M"
+./gi: Command not found.
+0.00u 0.00s 0:00.00 0.0%
+gmake: *** [time_hgc] Error 1

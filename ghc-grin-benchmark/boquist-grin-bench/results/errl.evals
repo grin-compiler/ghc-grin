@@ -1,0 +1,32 @@
+SUBDIR ======> other/nfib
+STATS: 1 eval, mean=1.0, min=1, max=[1]
+SUBDIR ======> other/tsumupto
+STATS: 3 eval, mean=1.0, min=1, max=[1, 1, 1]
+SUBDIR ======> other/sieve
+STATS: 9 eval, mean=1.5555556, min=1, max=[2, 2, 2, 2, 2, 1, 1, 1, 1]
+SUBDIR ======> other/queens
+STATS: 15 eval, mean=1.6666666, min=1, max=[3, 3, 2, 2, 2, 2, 2, 2, 1, 1]
+SUBDIR ======> other/words
+STATS: 115 eval, mean=1.9130435, min=1, max=[7, 6, 4, 4, 4, 4, 4, 3, 3, 3]
+SUBDIR ======> other/puzzle
+STATS: 76 eval, mean=2.5921052, min=1, max=[14, 12, 7, 5, 5, 5, 5, 5, 5, 4]
+SUBDIR ======> imaginary/tak
+STATS: 1 eval, mean=1.0, min=1, max=[1]
+SUBDIR ======> imaginary/exp3_8
+STATS: 6 eval, mean=3.6666667, min=1, max=[5, 5, 5, 3, 3, 1]
+SUBDIR ======> spectral/awards
+STATS: 64 eval, mean=2.546875, min=1, max=[12, 5, 5, 5, 5, 4, 4, 4, 4, 4]
+SUBDIR ======> spectral/sorting
+STATS: 145 eval, mean=2.3517241, min=1, max=[6, 6, 6, 6, 6, 6, 5, 5, 5, 5]
+SUBDIR ======> spectral/cichelli
+STATS: 95 eval, mean=2.4421053, min=1, max=[11, 8, 5, 5, 5, 4, 4, 4, 4, 4]
+SUBDIR ======> spectral/hartel/event
+STATS: 95 eval, mean=4.2526317, min=1, max=[18, 18, 13, 13, 13, 13, 12, 12, 12, 11]
+SUBDIR ======> spectral/clausify
+STATS: 116 eval, mean=2.663793, min=1, max=[7, 7, 7, 7, 7, 7, 6, 5, 5, 5]
+SUBDIR ======> spectral/hartel/ida
+STATS: 163 eval, mean=2.619632, min=1, max=[14, 9, 7, 7, 7, 7, 7, 6, 6, 6]
+SUBDIR ======> spectral/hartel/typecheck
+STATS: 217 eval, mean=3.981567, min=1, max=[40, 21, 21, 21, 20, 19, 19, 18, 18, 18]
+SUBDIR ======> spectral/boyer2
+STATS: 133 eval, mean=2.9323308, min=1, max=[14, 12, 10, 10, 8, 7, 7, 7, 7, 6]

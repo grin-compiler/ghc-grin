@@ -1,0 +1,12 @@
+SRCS_HS=Main.hs Prog.hs Aux.hs Key.lhs Interval.hs
+OBJS_O= Main.o  Prog.o  Aux.o  Key.o   Interval.o
+
+NoFibMultiModuleCompileAndRun(cichelli,-o1 cichelli.stdout)
+
+NoFibHaskellCompile(cichelli,Main,hs)
+NoFibHaskellCompile(cichelli,Prog,hs)
+NoFibHaskellCompile(cichelli,Aux,hs)
+NoFibHaskellCompile(cichelli,Key,lhs)
+NoFibHaskellCompile(cichelli,Interval,hs)
+
+NoFibDependTarget(cichelli, $(SRCS_HS))

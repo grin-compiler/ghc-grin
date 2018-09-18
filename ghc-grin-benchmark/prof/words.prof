@@ -1,0 +1,9 @@
+# started on Wed Aug  1 10:26:29 2018
+
+
+ Performance counter stats for 'words':
+
+       778,303,407      instructions:u                                              
+
+       0.108151235 seconds time elapsed
+

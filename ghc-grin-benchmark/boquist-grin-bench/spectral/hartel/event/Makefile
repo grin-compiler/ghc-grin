@@ -1,0 +1,10 @@
+PROG=event
+HBCCFLAGS=
+HGC1=-dall
+HGC2=-H150M
+HGC3=
+HBCFLAGS=
+GHCFLAGS=
+RUNFLAGS=-H80M
+
+include ../../../hgc.mk

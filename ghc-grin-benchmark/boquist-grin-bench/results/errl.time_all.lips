@@ -1,0 +1,876 @@
+SUBDIR ======> other/nfib
+tcsh -f -c "time ./nfib.hbc -A200k -H5M"
+29860703
+6.65u 0.03s 0:07.52 88.8%
+tcsh -f -c "time ./nfib.hbc -A200k -H5M"
+29860703
+6.34u 0.06s 0:06.43 99.5%
+tcsh -f -c "time ./nfib.hbc -A200k -H5M"
+29860703
+6.37u 0.06s 0:06.49 99.0%
+tcsh -f -c "time ./nfib.hbc -A200k -H5M"
+29860703
+6.53u 0.04s 0:06.75 97.3%
+tcsh -f -c "time ./nfib.hbc -A200k -H5M"
+29860703
+6.44u 0.06s 0:07.00 92.8%
+tcsh -f -c "time ./nfib.ghc +RTS -H5M"
+29860703
+2.92u 0.03s 0:03.28 89.9%
+tcsh -f -c "time ./nfib.ghc +RTS -H5M"
+29860703
+2.94u 0.01s 0:02.99 98.6%
+tcsh -f -c "time ./nfib.ghc +RTS -H5M"
+29860703
+2.93u 0.02s 0:02.98 98.9%
+tcsh -f -c "time ./nfib.ghc +RTS -H5M"
+29860703
+2.93u 0.03s 0:03.01 98.3%
+tcsh -f -c "time ./nfib.ghc +RTS -H5M"
+29860703
+2.90u 0.00s 0:02.93 98.9%
+tcsh -f -c "limit cputime 30; time ./nfib -H5M"
+29860703 
+1.72u 0.00s 0:01.75 98.2%
+tcsh -f -c "limit cputime 30; time ./nfib -H5M"
+29860703 
+1.73u 0.01s 0:01.74 100.0%
+tcsh -f -c "limit cputime 30; time ./nfib -H5M"
+29860703 
+1.71u 0.00s 0:01.78 96.0%
+tcsh -f -c "limit cputime 30; time ./nfib -H5M"
+29860703 
+1.73u 0.01s 0:01.75 99.4%
+tcsh -f -c "limit cputime 30; time ./nfib -H5M"
+29860703 
+1.72u 0.01s 0:01.76 98.2%
+SUBDIR ======> other/tsumupto
+tcsh -f -c "time ./tsumupto.hbc -A200k -H5M"
+-2004260032
+6.33u 0.04s 0:06.74 94.5%
+tcsh -f -c "time ./tsumupto.hbc -A200k -H5M"
+-2004260032
+6.22u 0.03s 0:06.32 98.8%
+tcsh -f -c "time ./tsumupto.hbc -A200k -H5M"
+-2004260032
+6.26u 0.02s 0:06.39 98.2%
+tcsh -f -c "time ./tsumupto.hbc -A200k -H5M"
+-2004260032
+6.30u 0.01s 0:06.66 94.7%
+tcsh -f -c "time ./tsumupto.hbc -A200k -H5M"
+-2004260032
+6.04u 0.07s 0:06.39 95.6%
+tcsh -f -c "time ./tsumupto.ghc +RTS -H5M"
+-2004260032
+4.03u 0.01s 0:05.06 79.8%
+tcsh -f -c "time ./tsumupto.ghc +RTS -H5M"
+-2004260032
+3.93u 0.03s 0:03.97 99.7%
+tcsh -f -c "time ./tsumupto.ghc +RTS -H5M"
+-2004260032
+3.99u 0.00s 0:04.11 97.0%
+tcsh -f -c "time ./tsumupto.ghc +RTS -H5M"
+-2004260032
+3.91u 0.03s 0:03.97 99.2%
+tcsh -f -c "time ./tsumupto.ghc +RTS -H5M"
+-2004260032
+4.02u 0.00s 0:04.03 99.7%
+tcsh -f -c "limit cputime 30; time ./tsumupto -H5M"
+-2004260032 
+0.11u 0.01s 0:00.14 85.7%
+tcsh -f -c "limit cputime 30; time ./tsumupto -H5M"
+-2004260032 
+0.11u 0.00s 0:00.12 91.6%
+tcsh -f -c "limit cputime 30; time ./tsumupto -H5M"
+-2004260032 
+0.11u 0.00s 0:00.12 91.6%
+tcsh -f -c "limit cputime 30; time ./tsumupto -H5M"
+-2004260032 
+0.11u 0.00s 0:00.12 91.6%
+tcsh -f -c "limit cputime 30; time ./tsumupto -H5M"
+-2004260032 
+0.10u 0.01s 0:00.12 91.6%
+SUBDIR ======> other/sieve
+tcsh -f -c "time ./sieve.hbc -A200k -H40M"
+121013308
+9.82u 0.24s 0:11.69 86.0%
+tcsh -f -c "time ./sieve.hbc -A200k -H40M"
+121013308
+9.77u 0.29s 0:10.51 95.7%
+tcsh -f -c "time ./sieve.hbc -A200k -H40M"
+121013308
+9.94u 0.18s 0:10.52 96.1%
+tcsh -f -c "time ./sieve.hbc -A200k -H40M"
+121013308
+10.04u 0.17s 0:10.75 94.9%
+tcsh -f -c "time ./sieve.hbc -A200k -H40M"
+121013308
+10.05u 0.17s 0:10.27 99.5%
+tcsh -f -c "time ./sieve.ghc +RTS -H40M"
+121013308
+15.18u 0.02s 0:15.59 97.4%
+tcsh -f -c "time ./sieve.ghc +RTS -H40M"
+121013308
+15.13u 0.05s 0:16.76 90.5%
+tcsh -f -c "time ./sieve.ghc +RTS -H40M"
+121013308
+15.11u 0.00s 0:15.92 94.9%
+tcsh -f -c "time ./sieve.ghc +RTS -H40M"
+121013308
+15.18u 0.02s 0:15.48 98.1%
+tcsh -f -c "time ./sieve.ghc +RTS -H40M"
+121013308
+15.01u 0.01s 0:15.78 95.1%
+tcsh -f -c "limit cputime 30; time ./sieve -H40M"
+121013308 
+4.58u 0.25s 0:05.59 86.4%
+tcsh -f -c "limit cputime 30; time ./sieve -H40M"
+121013308 
+4.46u 0.31s 0:04.92 96.9%
+tcsh -f -c "limit cputime 30; time ./sieve -H40M"
+121013308 
+4.45u 0.35s 0:05.12 93.7%
+tcsh -f -c "limit cputime 30; time ./sieve -H40M"
+121013308 
+4.46u 0.32s 0:05.49 87.0%
+tcsh -f -c "limit cputime 30; time ./sieve -H40M"
+121013308 
+4.41u 0.38s 0:04.86 98.5%
+SUBDIR ======> other/queens
+tcsh -f -c "time ./queens.hbc -A200k -H60M"
+14200
+30.66u 0.20s 0:32.24 95.7%
+tcsh -f -c "time ./queens.hbc -A200k -H60M"
+14200
+31.05u 0.33s 0:33.77 92.9%
+tcsh -f -c "time ./queens.hbc -A200k -H60M"
+14200
+31.18u 0.20s 0:33.21 94.4%
+tcsh -f -c "time ./queens.hbc -A200k -H60M"
+14200
+31.27u 0.21s 0:32.89 95.7%
+tcsh -f -c "time ./queens.hbc -A200k -H60M"
+14200
+31.33u 0.27s 0:33.09 95.4%
+tcsh -f -c "time ./queens.ghc +RTS -H60M"
+14200
+37.32u 0.01s 0:49.32 75.6%
+tcsh -f -c "time ./queens.ghc +RTS -H60M"
+14200
+37.00u 0.06s 0:47.24 78.4%
+tcsh -f -c "time ./queens.ghc +RTS -H60M"
+14200
+37.22u 0.01s 0:49.58 75.0%
+tcsh -f -c "time ./queens.ghc +RTS -H60M"
+14200
+37.07u 0.00s 0:38.72 95.7%
+tcsh -f -c "time ./queens.ghc +RTS -H60M"
+14200
+37.05u 0.01s 0:38.29 96.7%
+tcsh -f -c "limit cputime 30; time ./queens -H60M"
+14200 
+6.46u 0.53s 0:07.49 93.3%
+tcsh -f -c "limit cputime 30; time ./queens -H60M"
+14200 
+6.48u 0.50s 0:07.21 96.8%
+tcsh -f -c "limit cputime 30; time ./queens -H60M"
+14200 
+6.72u 0.48s 0:09.32 77.2%
+tcsh -f -c "limit cputime 30; time ./queens -H60M"
+14200 
+6.53u 0.42s 0:07.64 90.9%
+tcsh -f -c "limit cputime 30; time ./queens -H60M"
+14200 
+6.46u 0.44s 0:07.12 96.9%
+SUBDIR ======> other/words
+tcsh -f -c "time ./words.hbc -A200k -H60M"
+[3276, 96, 4716, 0, 6300, 0, 696, 5064, 5196, 84, 480, 1836, 672, 4188, 348, 0, 0, 11004, 6072, 6900, 744, 336, 0, 0, 0, 0]
+3.80u 0.30s 0:04.16 98.5%
+tcsh -f -c "time ./words.hbc -A200k -H60M"
+[3276, 96, 4716, 0, 6300, 0, 696, 5064, 5196, 84, 480, 1836, 672, 4188, 348, 0, 0, 11004, 6072, 6900, 744, 336, 0, 0, 0, 0]
+3.71u 0.34s 0:04.11 98.5%
+tcsh -f -c "time ./words.hbc -A200k -H60M"
+[3276, 96, 4716, 0, 6300, 0, 696, 5064, 5196, 84, 480, 1836, 672, 4188, 348, 0, 0, 11004, 6072, 6900, 744, 336, 0, 0, 0, 0]
+3.84u 0.32s 0:05.13 81.0%
+tcsh -f -c "time ./words.hbc -A200k -H60M"
+[3276, 96, 4716, 0, 6300, 0, 696, 5064, 5196, 84, 480, 1836, 672, 4188, 348, 0, 0, 11004, 6072, 6900, 744, 336, 0, 0, 0, 0]
+3.85u 0.25s 0:04.27 96.0%
+tcsh -f -c "time ./words.hbc -A200k -H60M"
+[3276, 96, 4716, 0, 6300, 0, 696, 5064, 5196, 84, 480, 1836, 672, 4188, 348, 0, 0, 11004, 6072, 6900, 744, 336, 0, 0, 0, 0]
+3.85u 0.30s 0:04.21 98.5%
+tcsh -f -c "time ./words.ghc +RTS -H60M"
+[3276,96,4716,0,6300,0,696,5064,5196,84,480,1836,672,4188,348,0,0,11004,6072,6900,744,336,0,0,0,0]
+6.89u 0.05s 0:07.17 96.7%
+tcsh -f -c "time ./words.ghc +RTS -H60M"
+[3276,96,4716,0,6300,0,696,5064,5196,84,480,1836,672,4188,348,0,0,11004,6072,6900,744,336,0,0,0,0]
+6.94u 0.05s 0:07.10 98.4%
+tcsh -f -c "time ./words.ghc +RTS -H60M"
+[3276,96,4716,0,6300,0,696,5064,5196,84,480,1836,672,4188,348,0,0,11004,6072,6900,744,336,0,0,0,0]
+6.95u 0.05s 0:07.76 90.2%
+tcsh -f -c "time ./words.ghc +RTS -H60M"
+[3276,96,4716,0,6300,0,696,5064,5196,84,480,1836,672,4188,348,0,0,11004,6072,6900,744,336,0,0,0,0]
+6.86u 0.02s 0:06.93 99.2%
+tcsh -f -c "time ./words.ghc +RTS -H60M"
+[3276,96,4716,0,6300,0,696,5064,5196,84,480,1836,672,4188,348,0,0,11004,6072,6900,744,336,0,0,0,0]
+6.89u 0.03s 0:07.17 96.5%
+tcsh -f -c "limit cputime 30; time ./words -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.22u 0.49s 0:02.21 77.3%
+tcsh -f -c "limit cputime 30; time ./words -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.18u 0.57s 0:02.53 69.1%
+tcsh -f -c "limit cputime 30; time ./words -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.28u 0.44s 0:01.99 86.4%
+tcsh -f -c "limit cputime 30; time ./words -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.21u 0.51s 0:02.00 86.0%
+tcsh -f -c "limit cputime 30; time ./words -H60M"
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+1.18u 0.57s 0:02.56 68.3%
+SUBDIR ======> other/puzzle
+tcsh -f -c "time ./puzzle.hbc -A200k -H60M"
+128
+21.45u 0.33s 0:32.88 66.2%
+tcsh -f -c "time ./puzzle.hbc -A200k -H60M"
+128
+21.92u 0.36s 0:31.24 71.3%
+tcsh -f -c "time ./puzzle.hbc -A200k -H60M"
+128
+21.24u 0.35s 0:23.25 92.8%
+tcsh -f -c "time ./puzzle.hbc -A200k -H60M"
+128
+21.13u 0.22s 0:23.94 89.1%
+tcsh -f -c "time ./puzzle.hbc -A200k -H60M"
+128
+21.11u 0.32s 0:22.54 95.0%
+tcsh -f -c "time ./puzzle.ghc +RTS -H60M"
+128
+21.39u 0.00s 0:22.30 95.9%
+tcsh -f -c "time ./puzzle.ghc +RTS -H60M"
+128
+21.62u 0.01s 0:22.98 94.1%
+tcsh -f -c "time ./puzzle.ghc +RTS -H60M"
+128
+21.55u 0.01s 0:21.95 98.2%
+tcsh -f -c "time ./puzzle.ghc +RTS -H60M"
+128
+21.59u 0.01s 0:23.16 93.2%
+tcsh -f -c "time ./puzzle.ghc +RTS -H60M"
+128
+21.52u 0.04s 0:22.05 97.7%
+tcsh -f -c "limit cputime 30; time ./puzzle -H60M"
+128 
+8.83u 0.54s 0:10.05 93.2%
+tcsh -f -c "limit cputime 30; time ./puzzle -H60M"
+128 
+8.69u 0.59s 0:09.90 93.7%
+tcsh -f -c "limit cputime 30; time ./puzzle -H60M"
+128 
+8.72u 0.55s 0:09.87 93.9%
+tcsh -f -c "limit cputime 30; time ./puzzle -H60M"
+128 
+9.12u 0.39s 0:10.39 91.5%
+tcsh -f -c "limit cputime 30; time ./puzzle -H60M"
+128 
+8.76u 0.37s 0:09.50 96.1%
+SUBDIR ======> imaginary/tak
+tcsh -f -c "time ./tak.hbc -A200k -H5M"
+9
+0.61u 0.04s 0:00.67 97.0%
+tcsh -f -c "time ./tak.hbc -A200k -H5M"
+9
+0.61u 0.02s 0:00.66 95.4%
+tcsh -f -c "time ./tak.hbc -A200k -H5M"
+9
+0.58u 0.06s 0:00.67 95.5%
+tcsh -f -c "time ./tak.hbc -A200k -H5M"
+9
+0.63u 0.03s 0:00.68 97.0%
+tcsh -f -c "time ./tak.hbc -A200k -H5M"
+9
+0.63u 0.02s 0:00.67 97.0%
+tcsh -f -c "time ./tak.ghc +RTS -H5M"
+9
+0.22u 0.01s 0:00.42 54.7%
+tcsh -f -c "time ./tak.ghc +RTS -H5M"
+9
+0.22u 0.01s 0:00.26 88.4%
+tcsh -f -c "time ./tak.ghc +RTS -H5M"
+9
+0.23u 0.00s 0:00.25 92.0%
+tcsh -f -c "time ./tak.ghc +RTS -H5M"
+9
+0.22u 0.02s 0:00.25 96.0%
+tcsh -f -c "time ./tak.ghc +RTS -H5M"
+9
+0.22u 0.01s 0:00.25 92.0%
+tcsh -f -c "limit cputime 30; time ./tak -H5M"
+9 
+0.14u 0.00s 0:00.15 93.3%
+tcsh -f -c "limit cputime 30; time ./tak -H5M"
+9 
+0.14u 0.00s 0:00.16 87.5%
+tcsh -f -c "limit cputime 30; time ./tak -H5M"
+9 
+0.14u 0.00s 0:00.16 87.5%
+tcsh -f -c "limit cputime 30; time ./tak -H5M"
+9 
+0.15u 0.00s 0:00.17 88.2%
+tcsh -f -c "limit cputime 30; time ./tak -H5M"
+9 
+0.13u 0.00s 0:00.15 86.6%
+SUBDIR ======> imaginary/exp3_8
+tcsh -f -c "time ./exp3_8.hbc -A200k -H60M"
+6561
+3.30u 0.21s 0:03.60 97.5%
+tcsh -f -c "time ./exp3_8.hbc -A200k -H60M"
+6561
+3.19u 0.26s 0:03.50 98.5%
+tcsh -f -c "time ./exp3_8.hbc -A200k -H60M"
+6561
+3.26u 0.26s 0:04.29 82.0%
+tcsh -f -c "time ./exp3_8.hbc -A200k -H60M"
+6561
+3.19u 0.27s 0:04.05 85.4%
+tcsh -f -c "time ./exp3_8.hbc -A200k -H60M"
+6561
+3.27u 0.25s 0:03.62 97.2%
+tcsh -f -c "time ./exp3_8.ghc +RTS -H60M"
+6561
+3.60u 0.02s 0:04.09 88.5%
+tcsh -f -c "time ./exp3_8.ghc +RTS -H60M"
+6561
+3.63u 0.01s 0:03.84 94.7%
+tcsh -f -c "time ./exp3_8.ghc +RTS -H60M"
+6561
+3.62u 0.02s 0:03.87 94.0%
+tcsh -f -c "time ./exp3_8.ghc +RTS -H60M"
+6561
+3.62u 0.04s 0:05.49 66.6%
+tcsh -f -c "time ./exp3_8.ghc +RTS -H60M"
+6561
+3.85u 0.01s 0:05.74 67.2%
+tcsh -f -c "limit cputime 30; time ./exp3_8 -H60M"
+6561 
+1.40u 0.51s 0:02.65 72.0%
+tcsh -f -c "limit cputime 30; time ./exp3_8 -H60M"
+6561 
+1.40u 0.50s 0:02.88 65.9%
+tcsh -f -c "limit cputime 30; time ./exp3_8 -H60M"
+6561 
+1.39u 0.49s 0:02.47 76.1%
+tcsh -f -c "limit cputime 30; time ./exp3_8 -H60M"
+6561 
+1.32u 0.56s 0:02.31 81.3%
+tcsh -f -c "limit cputime 30; time ./exp3_8 -H60M"
+6561 
+1.38u 0.50s 0:03.51 53.5%
+SUBDIR ======> spectral/awards
+tcsh -f -c "time ./awards.hbc -A200k -H5M"
+[("Simon", [("Gold", (74, [19, 34, 21])), ("Gold", (102, [35, 27, 40]))]), ("Hans", [("Gold", (70, [45, 17, 8])), ("Bronze", (52, [23, 19, 10]))]), ("Phil", [("Gold", (70, [1, 35, 34])), ("Silver", (60, [18, 21, 21])), ("Bronze", (55, [20, 19, 16]))]), ("Kevin", [("Gold", (72, [9, 54, 9])), ("Gold", (72, [17, 41, 14])), ("Bronze", (59, [23, 18, 18]))])]
+0.02u 0.01s 0:00.05 60.0%
+tcsh -f -c "time ./awards.hbc -A200k -H5M"
+[("Simon", [("Gold", (74, [19, 34, 21])), ("Gold", (102, [35, 27, 40]))]), ("Hans", [("Gold", (70, [45, 17, 8])), ("Bronze", (52, [23, 19, 10]))]), ("Phil", [("Gold", (70, [1, 35, 34])), ("Silver", (60, [18, 21, 21])), ("Bronze", (55, [20, 19, 16]))]), ("Kevin", [("Gold", (72, [9, 54, 9])), ("Gold", (72, [17, 41, 14])), ("Bronze", (59, [23, 18, 18]))])]
+0.01u 0.00s 0:00.04 25.0%
+tcsh -f -c "time ./awards.hbc -A200k -H5M"
+[("Simon", [("Gold", (74, [19, 34, 21])), ("Gold", (102, [35, 27, 40]))]), ("Hans", [("Gold", (70, [45, 17, 8])), ("Bronze", (52, [23, 19, 10]))]), ("Phil", [("Gold", (70, [1, 35, 34])), ("Silver", (60, [18, 21, 21])), ("Bronze", (55, [20, 19, 16]))]), ("Kevin", [("Gold", (72, [9, 54, 9])), ("Gold", (72, [17, 41, 14])), ("Bronze", (59, [23, 18, 18]))])]
+0.00u 0.01s 0:00.03 33.3%
+tcsh -f -c "time ./awards.hbc -A200k -H5M"
+[("Simon", [("Gold", (74, [19, 34, 21])), ("Gold", (102, [35, 27, 40]))]), ("Hans", [("Gold", (70, [45, 17, 8])), ("Bronze", (52, [23, 19, 10]))]), ("Phil", [("Gold", (70, [1, 35, 34])), ("Silver", (60, [18, 21, 21])), ("Bronze", (55, [20, 19, 16]))]), ("Kevin", [("Gold", (72, [9, 54, 9])), ("Gold", (72, [17, 41, 14])), ("Bronze", (59, [23, 18, 18]))])]
+0.01u 0.02s 0:00.03 100.0%
+tcsh -f -c "time ./awards.hbc -A200k -H5M"
+[("Simon", [("Gold", (74, [19, 34, 21])), ("Gold", (102, [35, 27, 40]))]), ("Hans", [("Gold", (70, [45, 17, 8])), ("Bronze", (52, [23, 19, 10]))]), ("Phil", [("Gold", (70, [1, 35, 34])), ("Silver", (60, [18, 21, 21])), ("Bronze", (55, [20, 19, 16]))]), ("Kevin", [("Gold", (72, [9, 54, 9])), ("Gold", (72, [17, 41, 14])), ("Bronze", (59, [23, 18, 18]))])]
+0.00u 0.01s 0:00.03 33.3%
+tcsh -f -c "time ./awards.ghc +RTS -H5M"
+[("Simon",[("Gold",(74,[19,34,21])),("Gold",(102,[35,27,40]))]),("Hans",[("Gold",(70,[45,17,8])),("Bronze",(52,[23,19,10]))]),("Phil",[("Gold",(70,[1,35,34])),("Silver",(60,[18,21,21])),("Bronze",(55,[20,19,16]))]),("Kevin",[("Gold",(72,[9,54,9])),("Gold",(72,[17,41,14])),("Bronze",(59,[23,18,18]))])]
+0.01u 0.01s 0:00.15 13.3%
+tcsh -f -c "time ./awards.ghc +RTS -H5M"
+[("Simon",[("Gold",(74,[19,34,21])),("Gold",(102,[35,27,40]))]),("Hans",[("Gold",(70,[45,17,8])),("Bronze",(52,[23,19,10]))]),("Phil",[("Gold",(70,[1,35,34])),("Silver",(60,[18,21,21])),("Bronze",(55,[20,19,16]))]),("Kevin",[("Gold",(72,[9,54,9])),("Gold",(72,[17,41,14])),("Bronze",(59,[23,18,18]))])]
+0.01u 0.00s 0:00.02 50.0%
+tcsh -f -c "time ./awards.ghc +RTS -H5M"
+[("Simon",[("Gold",(74,[19,34,21])),("Gold",(102,[35,27,40]))]),("Hans",[("Gold",(70,[45,17,8])),("Bronze",(52,[23,19,10]))]),("Phil",[("Gold",(70,[1,35,34])),("Silver",(60,[18,21,21])),("Bronze",(55,[20,19,16]))]),("Kevin",[("Gold",(72,[9,54,9])),("Gold",(72,[17,41,14])),("Bronze",(59,[23,18,18]))])]
+0.02u 0.00s 0:00.02 100.0%
+tcsh -f -c "time ./awards.ghc +RTS -H5M"
+[("Simon",[("Gold",(74,[19,34,21])),("Gold",(102,[35,27,40]))]),("Hans",[("Gold",(70,[45,17,8])),("Bronze",(52,[23,19,10]))]),("Phil",[("Gold",(70,[1,35,34])),("Silver",(60,[18,21,21])),("Bronze",(55,[20,19,16]))]),("Kevin",[("Gold",(72,[9,54,9])),("Gold",(72,[17,41,14])),("Bronze",(59,[23,18,18]))])]
+0.00u 0.02s 0:00.17 11.7%
+tcsh -f -c "time ./awards.ghc +RTS -H5M"
+[("Simon",[("Gold",(74,[19,34,21])),("Gold",(102,[35,27,40]))]),("Hans",[("Gold",(70,[45,17,8])),("Bronze",(52,[23,19,10]))]),("Phil",[("Gold",(70,[1,35,34])),("Silver",(60,[18,21,21])),("Bronze",(55,[20,19,16]))]),("Kevin",[("Gold",(72,[9,54,9])),("Gold",(72,[17,41,14])),("Bronze",(59,[23,18,18]))])]
+0.01u 0.00s 0:00.00 0.0%
+tcsh -f -c "limit cputime 30; time ./awards -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.00s 0:00.04 0.0%
+tcsh -f -c "limit cputime 30; time ./awards -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.01s 0:00.00 0.0%
+tcsh -f -c "limit cputime 30; time ./awards -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.01u 0.00s 0:00.02 50.0%
+tcsh -f -c "limit cputime 30; time ./awards -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.01u 0.01s 0:00.21 9.5%
+tcsh -f -c "limit cputime 30; time ./awards -H5M"
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+0.00u 0.01s 0:00.02 50.0%
+SUBDIR ======> spectral/sorting
+tcsh -f -c "time ./sorting.hbc -A200k -H60M"
+3849600
+10.26u 0.26s 0:14.35 73.3%
+tcsh -f -c "time ./sorting.hbc -A200k -H60M"
+3849600
+10.04u 0.33s 0:14.16 73.2%
+tcsh -f -c "time ./sorting.hbc -A200k -H60M"
+3849600
+10.35u 0.30s 0:15.61 68.2%
+tcsh -f -c "time ./sorting.hbc -A200k -H60M"
+3849600
+9.88u 0.27s 0:15.45 65.6%
+tcsh -f -c "time ./sorting.hbc -A200k -H60M"
+3849600
+9.80u 0.31s 0:15.23 66.3%
+tcsh -f -c "time ./sorting.ghc +RTS -H60M"
+3849600
+6.66u 0.04s 0:09.14 73.3%
+tcsh -f -c "time ./sorting.ghc +RTS -H60M"
+3849600
+6.59u 0.01s 0:08.45 78.1%
+tcsh -f -c "time ./sorting.ghc +RTS -H60M"
+3849600
+6.55u 0.00s 0:06.60 99.2%
+tcsh -f -c "time ./sorting.ghc +RTS -H60M"
+3849600
+6.66u 0.02s 0:09.04 73.8%
+tcsh -f -c "time ./sorting.ghc +RTS -H60M"
+3849600
+6.55u 0.02s 0:06.72 97.7%
+tcsh -f -c "limit cputime 30; time ./sorting -H60M"
+3849600 
+1.53u 0.56s 0:02.20 95.0%
+tcsh -f -c "limit cputime 30; time ./sorting -H60M"
+3849600 
+1.54u 0.53s 0:02.19 94.5%
+tcsh -f -c "limit cputime 30; time ./sorting -H60M"
+3849600 
+1.56u 0.51s 0:02.18 94.9%
+tcsh -f -c "limit cputime 30; time ./sorting -H60M"
+3849600 
+1.73u 0.41s 0:02.27 94.2%
+tcsh -f -c "limit cputime 30; time ./sorting -H60M"
+3849600 
+1.65u 0.45s 0:02.19 95.8%
+SUBDIR ======> spectral/cichelli
+tcsh -f -c "time ./cichelli.hbc -A200k -H10M"
+("YesIts ", (16948, [('a', 5), ('i', 8), ('l', 8), ('c', 7), ('b', 8), ('y', 10), ('k', 3), ('t', 1), ('e', 1), ('j', 0), ('n', 0)]))
+0.24u 0.05s 0:00.35 82.8%
+tcsh -f -c "time ./cichelli.hbc -A200k -H10M"
+("YesIts ", (16948, [('a', 5), ('i', 8), ('l', 8), ('c', 7), ('b', 8), ('y', 10), ('k', 3), ('t', 1), ('e', 1), ('j', 0), ('n', 0)]))
+0.26u 0.03s 0:00.32 90.6%
+tcsh -f -c "time ./cichelli.hbc -A200k -H10M"
+("YesIts ", (16948, [('a', 5), ('i', 8), ('l', 8), ('c', 7), ('b', 8), ('y', 10), ('k', 3), ('t', 1), ('e', 1), ('j', 0), ('n', 0)]))
+0.27u 0.03s 0:00.32 93.7%
+tcsh -f -c "time ./cichelli.hbc -A200k -H10M"
+("YesIts ", (16948, [('a', 5), ('i', 8), ('l', 8), ('c', 7), ('b', 8), ('y', 10), ('k', 3), ('t', 1), ('e', 1), ('j', 0), ('n', 0)]))
+0.25u 0.05s 0:00.32 93.7%
+tcsh -f -c "time ./cichelli.hbc -A200k -H10M"
+("YesIts ", (16948, [('a', 5), ('i', 8), ('l', 8), ('c', 7), ('b', 8), ('y', 10), ('k', 3), ('t', 1), ('e', 1), ('j', 0), ('n', 0)]))
+0.20u 0.09s 0:00.32 90.6%
+tcsh -f -c "time ./cichelli.ghc +RTS -H10M"
+("YesIts ",(16948,[('a',5),('i',8),('l',8),('c',7),('b',8),('y',10),('k',3),('t',1),('e',1),('j',0),('n',0)]))
+0.33u 0.01s 0:00.50 68.0%
+tcsh -f -c "time ./cichelli.ghc +RTS -H10M"
+("YesIts ",(16948,[('a',5),('i',8),('l',8),('c',7),('b',8),('y',10),('k',3),('t',1),('e',1),('j',0),('n',0)]))
+0.33u 0.00s 0:00.37 89.1%
+tcsh -f -c "time ./cichelli.ghc +RTS -H10M"
+("YesIts ",(16948,[('a',5),('i',8),('l',8),('c',7),('b',8),('y',10),('k',3),('t',1),('e',1),('j',0),('n',0)]))
+0.33u 0.00s 0:00.35 94.2%
+tcsh -f -c "time ./cichelli.ghc +RTS -H10M"
+("YesIts ",(16948,[('a',5),('i',8),('l',8),('c',7),('b',8),('y',10),('k',3),('t',1),('e',1),('j',0),('n',0)]))
+0.30u 0.04s 0:00.36 94.4%
+tcsh -f -c "time ./cichelli.ghc +RTS -H10M"
+("YesIts ",(16948,[('a',5),('i',8),('l',8),('c',7),('b',8),('y',10),('k',3),('t',1),('e',1),('j',0),('n',0)]))
+0.34u 0.02s 0:00.36 100.0%
+tcsh -f -c "limit cputime 30; time ./cichelli -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.07u 0.03s 0:00.15 66.6%
+tcsh -f -c "limit cputime 30; time ./cichelli -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.09u 0.02s 0:00.14 78.5%
+tcsh -f -c "limit cputime 30; time ./cichelli -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.11u 0.01s 0:00.13 92.3%
+tcsh -f -c "limit cputime 30; time ./cichelli -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.08u 0.04s 0:00.15 80.0%
+tcsh -f -c "limit cputime 30; time ./cichelli -H10M"
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+0.10u 0.01s 0:00.14 78.5%
+SUBDIR ======> spectral/hartel/event
+tcsh -f -c "time ./event.hbc -A200k -H80M"
+HHxLLHHLLHHLH
+1.14u 0.29s 0:01.67 85.6%
+tcsh -f -c "time ./event.hbc -A200k -H80M"
+HHxLLHHLLHHLH
+1.16u 0.24s 0:01.63 85.8%
+tcsh -f -c "time ./event.hbc -A200k -H80M"
+HHxLLHHLLHHLH
+1.06u 0.32s 0:01.60 86.2%
+tcsh -f -c "time ./event.hbc -A200k -H80M"
+HHxLLHHLLHHLH
+1.09u 0.26s 0:01.57 85.9%
+tcsh -f -c "time ./event.hbc -A200k -H80M"
+HHxLLHHLLHHLH
+1.05u 0.36s 0:01.60 88.1%
+tcsh -f -c "time ./event.ghc +RTS -H80M"
+HHxLLHHLLHHLH
+1.27u 0.01s 0:01.52 84.2%
+tcsh -f -c "time ./event.ghc +RTS -H80M"
+HHxLLHHLLHHLH
+1.19u 0.06s 0:01.38 90.5%
+tcsh -f -c "time ./event.ghc +RTS -H80M"
+HHxLLHHLLHHLH
+1.10u 0.02s 0:01.38 81.1%
+tcsh -f -c "time ./event.ghc +RTS -H80M"
+HHxLLHHLLHHLH
+1.24u 0.06s 0:01.34 97.0%
+tcsh -f -c "time ./event.ghc +RTS -H80M"
+HHxLLHHLLHHLH
+1.19u 0.08s 0:01.29 98.4%
+tcsh -f -c "limit cputime 30; time ./event -H80M"
+HHxLLHHLLHHLH
+
+0.46u 0.20s 0:00.72 91.6%
+tcsh -f -c "limit cputime 30; time ./event -H80M"
+HHxLLHHLLHHLH
+
+0.55u 0.15s 0:00.86 81.3%
+tcsh -f -c "limit cputime 30; time ./event -H80M"
+HHxLLHHLLHHLH
+
+0.41u 0.28s 0:00.89 77.5%
+tcsh -f -c "limit cputime 30; time ./event -H80M"
+HHxLLHHLLHHLH
+
+0.49u 0.19s 0:00.74 91.8%
+tcsh -f -c "limit cputime 30; time ./event -H80M"
+HHxLLHHLLHHLH
+
+0.52u 0.15s 0:00.79 84.8%
+SUBDIR ======> spectral/clausify
+tcsh -f -c "time ./clausify.hbc -A200k -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+1.44u 0.10s 0:01.70 90.5%
+tcsh -f -c "time ./clausify.hbc -A200k -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+1.42u 0.09s 0:01.68 89.8%
+tcsh -f -c "time ./clausify.hbc -A200k -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+1.43u 0.11s 0:02.05 75.1%
+tcsh -f -c "time ./clausify.hbc -A200k -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+1.44u 0.10s 0:01.73 89.0%
+tcsh -f -c "time ./clausify.hbc -A200k -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+1.49u 0.10s 0:01.73 91.9%
+tcsh -f -c "time ./clausify.ghc +RTS -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+0.91u 0.06s 0:01.05 92.3%
+tcsh -f -c "time ./clausify.ghc +RTS -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+0.91u 0.02s 0:00.95 97.8%
+tcsh -f -c "time ./clausify.ghc +RTS -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+0.90u 0.03s 0:00.94 98.9%
+tcsh -f -c "time ./clausify.ghc +RTS -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+0.92u 0.03s 0:01.36 69.8%
+tcsh -f -c "time ./clausify.ghc +RTS -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+0.94u 0.02s 0:01.56 61.5%
+tcsh -f -c "limit cputime 30; time ./clausify -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.68u 0.15s 0:01.09 76.1%
+tcsh -f -c "limit cputime 30; time ./clausify -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.65u 0.17s 0:00.88 93.1%
+tcsh -f -c "limit cputime 30; time ./clausify -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.63u 0.19s 0:00.86 95.3%
+tcsh -f -c "limit cputime 30; time ./clausify -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.65u 0.18s 0:01.02 81.3%
+tcsh -f -c "limit cputime 30; time ./clausify -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+0.69u 0.15s 0:00.88 95.4%
+SUBDIR ======> spectral/hartel/ida
+tcsh -f -c "time ./ida.hbc -A200k -H30M"
+
+Out of heap space
+(1,3)((1,2)-(4,1))((2,3)-(3,3))((1,4)-(3,1))((2,4)-(3,2))((3,4)-(2,1))((3,3)-(2,2))((4,4)-(1,2))((4,3)-(1,4))((4,2)-(2,4))((3,2)-(2,3))((4,1)-(4,4))((3,1)-(1,3))((2,1)-(4,3))((2,2)-(3,4))((1,1)-(4,2))
+9.38u 0.34s 0:10.03 96.9%
+gmake: *** [time_hbc] Error 1
+tcsh -f -c "time ./ida.hbc -A200k -H30M"
+
+Out of heap space
+(1,3)((1,2)-(4,1))((2,3)-(3,3))((1,4)-(3,1))((2,4)-(3,2))((3,4)-(2,1))((3,3)-(2,2))((4,4)-(1,2))((4,3)-(1,4))((4,2)-(2,4))((3,2)-(2,3))((4,1)-(4,4))((3,1)-(1,3))((2,1)-(4,3))((2,2)-(3,4))((1,1)-(4,2))
+8.99u 0.21s 0:10.16 90.5%
+gmake: *** [time_hbc] Error 1
+tcsh -f -c "time ./ida.hbc -A200k -H30M"
+
+Out of heap space
+(1,3)((1,2)-(4,1))((2,3)-(3,3))((1,4)-(3,1))((2,4)-(3,2))((3,4)-(2,1))((3,3)-(2,2))((4,4)-(1,2))((4,3)-(1,4))((4,2)-(2,4))((3,2)-(2,3))((4,1)-(4,4))((3,1)-(1,3))((2,1)-(4,3))((2,2)-(3,4))((1,1)-(4,2))
+9.60u 0.24s 0:12.04 81.7%
+gmake: *** [time_hbc] Error 1
+tcsh -f -c "time ./ida.hbc -A200k -H30M"
+
+Out of heap space
+(1,3)((1,2)-(4,1))((2,3)-(3,3))((1,4)-(3,1))((2,4)-(3,2))((3,4)-(2,1))((3,3)-(2,2))((4,4)-(1,2))((4,3)-(1,4))((4,2)-(2,4))((3,2)-(2,3))((4,1)-(4,4))((3,1)-(1,3))((2,1)-(4,3))((2,2)-(3,4))((1,1)-(4,2))
+9.56u 0.24s 0:10.69 91.6%
+gmake: *** [time_hbc] Error 1
+tcsh -f -c "time ./ida.hbc -A200k -H30M"
+
+Out of heap space
+(1,3)((1,2)-(4,1))((2,3)-(3,3))((1,4)-(3,1))((2,4)-(3,2))((3,4)-(2,1))((3,3)-(2,2))((4,4)-(1,2))((4,3)-(1,4))((4,2)-(2,4))((3,2)-(2,3))((4,1)-(4,4))((3,1)-(1,3))((2,1)-(4,3))((2,2)-(3,4))((1,1)-(4,2))
+9.58u 0.28s 0:10.29 95.8%
+gmake: *** [time_hbc] Error 1
+tcsh -f -c "time ./ida.ghc +RTS -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+0.44u 0.03s 0:00.76 61.8%
+tcsh -f -c "time ./ida.ghc +RTS -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+0.60u 0.01s 0:00.97 62.8%
+tcsh -f -c "time ./ida.ghc +RTS -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+0.57u 0.00s 0:01.38 41.3%
+tcsh -f -c "time ./ida.ghc +RTS -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+0.56u 0.03s 0:00.61 96.7%
+tcsh -f -c "time ./ida.ghc +RTS -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+0.57u 0.01s 0:00.60 96.6%
+tcsh -f -c "limit cputime 30; time ./ida -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.21u 0.05s 0:00.41 63.4%
+tcsh -f -c "limit cputime 30; time ./ida -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.13u 0.08s 0:00.31 67.7%
+tcsh -f -c "limit cputime 30; time ./ida -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.17u 0.08s 0:00.31 80.6%
+tcsh -f -c "limit cputime 30; time ./ida -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.22u 0.05s 0:00.29 93.1%
+tcsh -f -c "limit cputime 30; time ./ida -H30M"
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+0.19u 0.08s 0:00.31 87.0%
+SUBDIR ======> spectral/hartel/typecheck
+tcsh -f -c "time ./typecheck.hbc -A200k -H20M"
+2904400/47800
+2.75u 0.15s 0:02.96 97.9%
+tcsh -f -c "time ./typecheck.hbc -A200k -H20M"
+2904400/47800
+2.54u 0.18s 0:02.95 92.2%
+tcsh -f -c "time ./typecheck.hbc -A200k -H20M"
+2904400/47800
+2.71u 0.16s 0:03.02 95.0%
+tcsh -f -c "time ./typecheck.hbc -A200k -H20M"
+2904400/47800
+2.74u 0.15s 0:03.21 90.0%
+tcsh -f -c "time ./typecheck.hbc -A200k -H20M"
+2904400/47800
+2.75u 0.22s 0:03.06 97.0%
+tcsh -f -c "time ./typecheck.ghc +RTS -H20M"
+2904400/47800
+1.93u 0.06s 0:02.20 90.4%
+tcsh -f -c "time ./typecheck.ghc +RTS -H20M"
+2904400/47800
+2.03u 0.01s 0:03.01 67.7%
+tcsh -f -c "time ./typecheck.ghc +RTS -H20M"
+2904400/47800
+1.97u 0.01s 0:02.25 88.0%
+tcsh -f -c "time ./typecheck.ghc +RTS -H20M"
+2904400/47800
+1.83u 0.01s 0:02.25 81.7%
+tcsh -f -c "time ./typecheck.ghc +RTS -H20M"
+2904400/47800
+2.03u 0.00s 0:02.77 73.2%
+tcsh -f -c "limit cputime 30; time ./typecheck -H20M"
+2904400/47800
+
+1.08u 0.17s 0:01.53 81.6%
+tcsh -f -c "limit cputime 30; time ./typecheck -H20M"
+2904400/47800
+
+1.13u 0.15s 0:01.42 90.1%
+tcsh -f -c "limit cputime 30; time ./typecheck -H20M"
+2904400/47800
+
+1.06u 0.10s 0:01.42 81.6%
+tcsh -f -c "limit cputime 30; time ./typecheck -H20M"
+2904400/47800
+
+1.06u 0.14s 0:01.50 80.0%
+tcsh -f -c "limit cputime 30; time ./typecheck -H20M"
+2904400/47800
+
+0.92u 0.23s 0:01.48 77.7%
+SUBDIR ======> spectral/boyer2
+tcsh -f -c "time ./boyer2.hbc -A200k -H10M"
+The term is a tautology
+0.17u 0.07s 0:00.37 64.8%
+tcsh -f -c "time ./boyer2.hbc -A200k -H10M"
+The term is a tautology
+0.18u 0.08s 0:00.31 83.8%
+tcsh -f -c "time ./boyer2.hbc -A200k -H10M"
+The term is a tautology
+0.22u 0.04s 0:00.31 83.8%
+tcsh -f -c "time ./boyer2.hbc -A200k -H10M"
+The term is a tautology
+0.19u 0.06s 0:00.29 86.2%
+tcsh -f -c "time ./boyer2.hbc -A200k -H10M"
+The term is a tautology
+0.24u 0.04s 0:00.34 82.3%
+tcsh -f -c "time ./boyer2.ghc +RTS -H10M"
+The term is a tautology
+0.22u 0.01s 0:00.39 58.9%
+tcsh -f -c "time ./boyer2.ghc +RTS -H10M"
+The term is a tautology
+0.24u 0.01s 0:00.27 92.5%
+tcsh -f -c "time ./boyer2.ghc +RTS -H10M"
+The term is a tautology
+0.21u 0.01s 0:00.25 88.0%
+tcsh -f -c "time ./boyer2.ghc +RTS -H10M"
+The term is a tautology
+0.22u 0.01s 0:00.25 92.0%
+tcsh -f -c "time ./boyer2.ghc +RTS -H10M"
+The term is a tautology
+0.21u 0.02s 0:00.25 92.0%
+tcsh -f -c "limit cputime 30; time ./boyer2 -H10M"
+The term is a tautology
+
+0.11u 0.03s 0:00.16 87.5%
+tcsh -f -c "limit cputime 30; time ./boyer2 -H10M"
+The term is a tautology
+
+0.07u 0.05s 0:00.12 100.0%
+tcsh -f -c "limit cputime 30; time ./boyer2 -H10M"
+The term is a tautology
+
+0.11u 0.01s 0:00.14 85.7%
+tcsh -f -c "limit cputime 30; time ./boyer2 -H10M"
+The term is a tautology
+
+0.08u 0.04s 0:00.14 85.7%
+tcsh -f -c "limit cputime 30; time ./boyer2 -H10M"
+The term is a tautology
+
+0.10u 0.03s 0:00.14 92.8%

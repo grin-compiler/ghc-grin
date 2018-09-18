@@ -1,0 +1,338 @@
+SUBDIR ======> other/nfib, OUT=a61
+START: 19:38:32
+STOP:  19:38:33
+SUBDIR ======> other/tsumupto, OUT=a61
+START: 19:38:33
+STOP:  19:38:34
+SUBDIR ======> other/sieve, OUT=a61
+START: 19:38:34
+STOP:  19:38:36
+SUBDIR ======> other/queens, OUT=a61
+START: 19:38:36
+STOP:  19:38:40
+SUBDIR ======> other/words, OUT=a61
+START: 19:38:40
+STOP:  19:39:30
+SUBDIR ======> other/puzzle, OUT=a61
+START: 19:39:30
+STOP:  19:41:01
+SUBDIR ======> imaginary/tak, OUT=a61
+START: 19:41:01
+STOP:  19:41:02
+SUBDIR ======> imaginary/exp3_8, OUT=a61
+START: 19:41:02
+STOP:  19:41:05
+SUBDIR ======> spectral/awards, OUT=a61
+START: 19:41:05
+STOP:  19:41:38
+SUBDIR ======> spectral/cichelli, OUT=a61
+START: 19:41:38
+STOP:  19:43:02
+SUBDIR ======> spectral/boyer2, OUT=a61
+START: 19:43:02
+STOP:  19:48:30
+SUBDIR ======> spectral/sorting, OUT=a61
+START: 19:48:30
+STOP:  19:50:48
+SUBDIR ======> spectral/clausify, OUT=a61
+START: 19:50:48
+STOP:  19:53:26
+SUBDIR ======> spectral/hartel/event, OUT=a61
+START: 19:53:26
+STOP:  19:57:11
+SUBDIR ======> spectral/hartel/ida, OUT=a61
+START: 19:57:11
+STOP:  20:00:34
+SUBDIR ======> spectral/hartel/typecheck, OUT=a61
+START: 20:00:34
+STOP:  20:17:00
+SUBDIR ======> other/nfib, OUT=a62
+START: 20:17:00
+STOP:  20:17:01
+SUBDIR ======> other/tsumupto, OUT=a62
+START: 20:17:01
+STOP:  20:17:02
+SUBDIR ======> other/sieve, OUT=a62
+START: 20:17:02
+STOP:  20:17:04
+SUBDIR ======> other/queens, OUT=a62
+START: 20:17:04
+STOP:  20:17:08
+SUBDIR ======> other/words, OUT=a62
+START: 20:17:08
+STOP:  20:17:58
+SUBDIR ======> other/puzzle, OUT=a62
+START: 20:17:58
+STOP:  20:19:29
+SUBDIR ======> imaginary/tak, OUT=a62
+START: 20:19:29
+STOP:  20:19:31
+SUBDIR ======> imaginary/exp3_8, OUT=a62
+START: 20:19:31
+STOP:  20:19:33
+SUBDIR ======> spectral/awards, OUT=a62
+START: 20:19:33
+STOP:  20:20:07
+SUBDIR ======> spectral/cichelli, OUT=a62
+START: 20:20:07
+STOP:  20:21:30
+SUBDIR ======> spectral/boyer2, OUT=a62
+START: 20:21:30
+STOP:  20:26:56
+SUBDIR ======> spectral/sorting, OUT=a62
+START: 20:26:56
+STOP:  20:29:07
+SUBDIR ======> spectral/clausify, OUT=a62
+START: 20:29:07
+STOP:  20:31:45
+SUBDIR ======> spectral/hartel/event, OUT=a62
+START: 20:31:45
+STOP:  20:35:27
+SUBDIR ======> spectral/hartel/ida, OUT=a62
+START: 20:35:27
+STOP:  20:38:57
+SUBDIR ======> spectral/hartel/typecheck, OUT=a62
+START: 20:38:57
+STOP:  20:54:38
+SUBDIR ======> other/nfib, OUT=a63
+START: 20:54:38
+STOP:  20:54:40
+SUBDIR ======> other/tsumupto, OUT=a63
+START: 20:54:40
+STOP:  20:54:41
+SUBDIR ======> other/sieve, OUT=a63
+START: 20:54:41
+STOP:  20:54:43
+SUBDIR ======> other/queens, OUT=a63
+START: 20:54:43
+STOP:  20:54:47
+SUBDIR ======> other/words, OUT=a63
+START: 20:54:47
+STOP:  20:55:37
+SUBDIR ======> other/puzzle, OUT=a63
+START: 20:55:37
+STOP:  20:57:10
+SUBDIR ======> imaginary/tak, OUT=a63
+START: 20:57:10
+STOP:  20:57:11
+SUBDIR ======> imaginary/exp3_8, OUT=a63
+START: 20:57:11
+STOP:  20:57:14
+SUBDIR ======> spectral/awards, OUT=a63
+START: 20:57:14
+STOP:  20:57:47
+SUBDIR ======> spectral/cichelli, OUT=a63
+START: 20:57:47
+STOP:  20:59:06
+SUBDIR ======> spectral/boyer2, OUT=a63
+START: 20:59:06
+STOP:  21:04:40
+SUBDIR ======> spectral/sorting, OUT=a63
+START: 21:04:40
+STOP:  21:06:44
+SUBDIR ======> spectral/clausify, OUT=a63
+START: 21:06:44
+STOP:  21:09:23
+SUBDIR ======> spectral/hartel/event, OUT=a63
+START: 21:09:23
+STOP:  21:13:16
+SUBDIR ======> spectral/hartel/ida, OUT=a63
+START: 21:13:16
+STOP:  21:16:47
+SUBDIR ======> spectral/hartel/typecheck, OUT=a63
+START: 21:16:47
+STOP:  21:32:26
+SUBDIR ======> other/nfib, OUT=a64
+START: 21:32:27
+STOP:  21:32:28
+SUBDIR ======> other/tsumupto, OUT=a64
+START: 21:32:28
+STOP:  21:32:29
+SUBDIR ======> other/sieve, OUT=a64
+START: 21:32:29
+STOP:  21:32:31
+SUBDIR ======> other/queens, OUT=a64
+START: 21:32:31
+STOP:  21:32:35
+SUBDIR ======> other/words, OUT=a64
+START: 21:32:35
+STOP:  21:33:25
+SUBDIR ======> other/puzzle, OUT=a64
+START: 21:33:25
+STOP:  21:34:58
+SUBDIR ======> imaginary/tak, OUT=a64
+START: 21:34:58
+STOP:  21:34:59
+SUBDIR ======> imaginary/exp3_8, OUT=a64
+START: 21:34:59
+STOP:  21:35:02
+SUBDIR ======> spectral/awards, OUT=a64
+START: 21:35:02
+STOP:  21:35:38
+SUBDIR ======> spectral/cichelli, OUT=a64
+START: 21:35:38
+STOP:  21:37:01
+SUBDIR ======> spectral/boyer2, OUT=a64
+START: 21:37:01
+STOP:  21:42:37
+SUBDIR ======> spectral/sorting, OUT=a64
+START: 21:42:37
+STOP:  21:45:12
+SUBDIR ======> spectral/clausify, OUT=a64
+START: 21:45:12
+STOP:  21:47:47
+SUBDIR ======> spectral/hartel/event, OUT=a64
+START: 21:47:47
+STOP:  21:51:43
+SUBDIR ======> spectral/hartel/ida, OUT=a64
+START: 21:51:43
+STOP:  21:55:44
+SUBDIR ======> spectral/hartel/typecheck, OUT=a64
+START: 21:55:44
+STOP:  22:11:42
+SUBDIR ======> other/nfib, OUT=a65
+START: 22:11:42
+STOP:  22:11:43
+SUBDIR ======> other/tsumupto, OUT=a65
+START: 22:11:43
+STOP:  22:11:44
+SUBDIR ======> other/sieve, OUT=a65
+START: 22:11:45
+STOP:  22:11:47
+SUBDIR ======> other/queens, OUT=a65
+START: 22:11:47
+STOP:  22:11:51
+SUBDIR ======> other/words, OUT=a65
+START: 22:11:51
+STOP:  22:12:41
+SUBDIR ======> other/puzzle, OUT=a65
+START: 22:12:41
+STOP:  22:14:22
+SUBDIR ======> imaginary/tak, OUT=a65
+START: 22:14:23
+STOP:  22:14:25
+SUBDIR ======> imaginary/exp3_8, OUT=a65
+START: 22:14:25
+STOP:  22:14:27
+SUBDIR ======> spectral/awards, OUT=a65
+START: 22:14:27
+STOP:  22:15:01
+SUBDIR ======> spectral/cichelli, OUT=a65
+START: 22:15:01
+STOP:  22:16:20
+SUBDIR ======> spectral/boyer2, OUT=a65
+START: 22:16:20
+STOP:  22:22:09
+SUBDIR ======> spectral/sorting, OUT=a65
+START: 22:22:09
+STOP:  22:24:27
+SUBDIR ======> spectral/clausify, OUT=a65
+START: 22:24:27
+STOP:  22:27:03
+SUBDIR ======> spectral/hartel/event, OUT=a65
+START: 22:27:03
+STOP:  22:30:51
+SUBDIR ======> spectral/hartel/ida, OUT=a65
+START: 22:30:51
+STOP:  22:34:54
+SUBDIR ======> spectral/hartel/typecheck, OUT=a65
+START: 22:34:54
+STOP:  22:51:58
+SUBDIR ======> other/nfib, OUT=a66
+START: 22:51:58
+STOP:  22:52:00
+SUBDIR ======> other/tsumupto, OUT=a66
+START: 22:52:00
+STOP:  22:52:01
+SUBDIR ======> other/sieve, OUT=a66
+START: 22:52:01
+STOP:  22:52:03
+SUBDIR ======> other/queens, OUT=a66
+START: 22:52:03
+STOP:  22:52:07
+SUBDIR ======> other/words, OUT=a66
+START: 22:52:07
+STOP:  22:52:58
+SUBDIR ======> other/puzzle, OUT=a66
+START: 22:52:58
+STOP:  22:54:34
+SUBDIR ======> imaginary/tak, OUT=a66
+START: 22:54:34
+STOP:  22:54:35
+SUBDIR ======> imaginary/exp3_8, OUT=a66
+START: 22:54:35
+STOP:  22:54:38
+SUBDIR ======> spectral/awards, OUT=a66
+START: 22:54:38
+STOP:  22:55:20
+SUBDIR ======> spectral/cichelli, OUT=a66
+START: 22:55:20
+STOP:  22:56:35
+SUBDIR ======> spectral/boyer2, OUT=a66
+START: 22:56:35
+STOP:  23:02:17
+SUBDIR ======> spectral/sorting, OUT=a66
+START: 23:02:17
+STOP:  23:04:36
+SUBDIR ======> spectral/clausify, OUT=a66
+START: 23:04:36
+STOP:  23:07:22
+SUBDIR ======> spectral/hartel/event, OUT=a66
+START: 23:07:22
+STOP:  23:11:09
+SUBDIR ======> spectral/hartel/ida, OUT=a66
+START: 23:11:09
+STOP:  23:14:44
+SUBDIR ======> spectral/hartel/typecheck, OUT=a66
+START: 23:14:44
+gmake: *** [typecheck.s] Error 1
+*************** spectral/hartel/typecheck FAIL ***************
+SUBDIR ======> other/nfib, OUT=a67
+START: 23:28:43
+STOP:  23:28:45
+SUBDIR ======> other/tsumupto, OUT=a67
+START: 23:28:45
+STOP:  23:28:46
+SUBDIR ======> other/sieve, OUT=a67
+START: 23:28:46
+STOP:  23:28:48
+SUBDIR ======> other/queens, OUT=a67
+START: 23:28:48
+STOP:  23:28:52
+SUBDIR ======> other/words, OUT=a67
+START: 23:28:52
+STOP:  23:29:43
+SUBDIR ======> other/puzzle, OUT=a67
+START: 23:29:43
+STOP:  23:31:29
+SUBDIR ======> imaginary/tak, OUT=a67
+START: 23:31:29
+STOP:  23:31:30
+SUBDIR ======> imaginary/exp3_8, OUT=a67
+START: 23:31:30
+STOP:  23:31:33
+SUBDIR ======> spectral/awards, OUT=a67
+START: 23:31:33
+STOP:  23:32:16
+SUBDIR ======> spectral/cichelli, OUT=a67
+START: 23:32:16
+STOP:  23:33:32
+SUBDIR ======> spectral/boyer2, OUT=a67
+START: 23:33:32
+STOP:  23:39:36
+SUBDIR ======> spectral/sorting, OUT=a67
+START: 23:39:36
+STOP:  23:41:41
+SUBDIR ======> spectral/clausify, OUT=a67
+START: 23:41:41
+STOP:  23:44:28
+SUBDIR ======> spectral/hartel/event, OUT=a67
+START: 23:44:28
+STOP:  23:48:14
+SUBDIR ======> spectral/hartel/ida, OUT=a67
+START: 23:48:15
+STOP:  23:51:40
+SUBDIR ======> spectral/hartel/typecheck, OUT=a67
+START: 23:51:40
+gmake: *** [typecheck.s] Error 1
+*************** spectral/hartel/typecheck FAIL ***************

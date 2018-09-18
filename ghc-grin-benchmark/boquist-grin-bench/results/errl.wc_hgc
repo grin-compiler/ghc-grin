@@ -1,0 +1,260 @@
+SUBDIR ======> other/nfib
+wc -l nfib.4.is      # ISyntax
+      20 nfib.4.is
+wc -l nfib.6.g       # Initial GRIN
+      33 nfib.6.g
+wc -l nfib.11.g      # Eval inlining
+      27 nfib.11.g
+wc -l nfib.94.g      # Final GRIN
+      24 nfib.94.g
+wc -l nfib.R         # Initial RISC
+      94 nfib.R
+wc -l nfib.O.m.s     # Final RISC
+      64 nfib.O.m.s
+grep 'time\|iterations' nfib.7.g # Flow analysis
+Analysis time: 188 ms CPU, 0 secs real time.
+# iterations : 3
+SUBDIR ======> other/tsumupto
+wc -l tsumupto.4.is      # ISyntax
+      27 tsumupto.4.is
+wc -l tsumupto.6.g       # Initial GRIN
+      43 tsumupto.6.g
+wc -l tsumupto.11.g      # Eval inlining
+      45 tsumupto.11.g
+wc -l tsumupto.94.g      # Final GRIN
+      21 tsumupto.94.g
+wc -l tsumupto.R         # Initial RISC
+      86 tsumupto.R
+wc -l tsumupto.O.m.s     # Final RISC
+      44 tsumupto.O.m.s
+grep 'time\|iterations' tsumupto.7.g # Flow analysis
+Analysis time: 203 ms CPU, 0 secs real time.
+# iterations : 4
+SUBDIR ======> other/sieve
+wc -l sieve.4.is      # ISyntax
+      60 sieve.4.is
+wc -l sieve.6.g       # Initial GRIN
+      81 sieve.6.g
+wc -l sieve.11.g      # Eval inlining
+     114 sieve.11.g
+wc -l sieve.94.g      # Final GRIN
+     104 sieve.94.g
+wc -l sieve.R         # Initial RISC
+     436 sieve.R
+wc -l sieve.O.m.s     # Final RISC
+     301 sieve.O.m.s
+grep 'time\|iterations' sieve.7.g # Flow analysis
+Analysis time: 135 ms CPU, 0 secs real time.
+# iterations : 4
+SUBDIR ======> other/queens
+wc -l queens.4.is      # ISyntax
+     131 queens.4.is
+wc -l queens.6.g       # Initial GRIN
+     168 queens.6.g
+wc -l queens.11.g      # Eval inlining
+     226 queens.11.g
+wc -l queens.94.g      # Final GRIN
+     220 queens.94.g
+wc -l queens.R         # Initial RISC
+     884 queens.R
+wc -l queens.O.m.s     # Final RISC
+     621 queens.O.m.s
+grep 'time\|iterations' queens.7.g # Flow analysis
+Analysis time: 180 ms CPU, 0 secs real time.
+# iterations : 5
+SUBDIR ======> other/words
+wc -l words.4.is      # ISyntax
+     689 words.4.is
+wc -l words.6.g       # Initial GRIN
+    1225 words.6.g
+wc -l words.11.g      # Eval inlining
+    1968 words.11.g
+wc -l words.94.g      # Final GRIN
+    1661 words.94.g
+wc -l words.R         # Initial RISC
+    5964 words.R
+wc -l words.O.m.s     # Final RISC
+    4154 words.O.m.s
+grep 'time\|iterations' words.7.g # Flow analysis
+Analysis time: 103 ms CPU, 0 secs real time.
+# iterations : 30
+SUBDIR ======> other/puzzle
+wc -l puzzle.4.is      # ISyntax
+     594 puzzle.4.is
+wc -l puzzle.6.g       # Initial GRIN
+     798 puzzle.6.g
+wc -l puzzle.11.g      # Eval inlining
+    1301 puzzle.11.g
+wc -l puzzle.94.g      # Final GRIN
+    1463 puzzle.94.g
+wc -l puzzle.R         # Initial RISC
+    6153 puzzle.R
+wc -l puzzle.O.m.s     # Final RISC
+    4454 puzzle.O.m.s
+grep 'time\|iterations' puzzle.7.g # Flow analysis
+Analysis time: 118 ms CPU, 0 secs real time.
+# iterations : 16
+SUBDIR ======> imaginary/tak
+wc -l tak.4.is      # ISyntax
+      20 tak.4.is
+wc -l tak.6.g       # Initial GRIN
+      34 tak.6.g
+wc -l tak.11.g      # Eval inlining
+      28 tak.11.g
+wc -l tak.94.g      # Final GRIN
+      27 tak.94.g
+wc -l tak.R         # Initial RISC
+     127 tak.R
+wc -l tak.O.m.s     # Final RISC
+      92 tak.O.m.s
+grep 'time\|iterations' tak.7.g # Flow analysis
+Analysis time: 146 ms CPU, 0 secs real time.
+# iterations : 3
+SUBDIR ======> imaginary/exp3_8
+wc -l exp3_8.4.is      # ISyntax
+      49 exp3_8.4.is
+wc -l exp3_8.6.g       # Initial GRIN
+      72 exp3_8.6.g
+wc -l exp3_8.11.g      # Eval inlining
+     108 exp3_8.11.g
+wc -l exp3_8.94.g      # Final GRIN
+     162 exp3_8.94.g
+wc -l exp3_8.R         # Initial RISC
+     634 exp3_8.R
+wc -l exp3_8.O.m.s     # Final RISC
+     490 exp3_8.O.m.s
+grep 'time\|iterations' exp3_8.7.g # Flow analysis
+Analysis time: 118 ms CPU, 0 secs real time.
+# iterations : 5
+SUBDIR ======> spectral/awards
+wc -l awards.4.is      # ISyntax
+     433 awards.4.is
+wc -l awards.6.g       # Initial GRIN
+     654 awards.6.g
+wc -l awards.11.g      # Eval inlining
+    1053 awards.11.g
+wc -l awards.94.g      # Final GRIN
+    1190 awards.94.g
+wc -l awards.R         # Initial RISC
+    4706 awards.R
+wc -l awards.O.m.s     # Final RISC
+    3704 awards.O.m.s
+grep 'time\|iterations' awards.7.g # Flow analysis
+Analysis time: 176 ms CPU, 0 secs real time.
+# iterations : 17
+SUBDIR ======> spectral/sorting
+wc -l sorting.4.is      # ISyntax
+     859 sorting.4.is
+wc -l sorting.6.g       # Initial GRIN
+    1062 sorting.6.g
+wc -l sorting.11.g      # Eval inlining
+    1945 sorting.11.g
+wc -l sorting.94.g      # Final GRIN
+    2259 sorting.94.g
+wc -l sorting.R         # Initial RISC
+    9295 sorting.R
+wc -l sorting.O.m.s     # Final RISC
+    6805 sorting.O.m.s
+grep 'time\|iterations' sorting.7.g # Flow analysis
+Analysis time: 114 ms CPU, 0 secs real time.
+# iterations : 9
+SUBDIR ======> spectral/cichelli
+wc -l cichelli.4.is      # ISyntax
+     639 cichelli.4.is
+wc -l cichelli.6.g       # Initial GRIN
+    1049 cichelli.6.g
+wc -l cichelli.11.g      # Eval inlining
+    1631 cichelli.11.g
+wc -l cichelli.94.g      # Final GRIN
+    1771 cichelli.94.g
+wc -l cichelli.R         # Initial RISC
+    7014 cichelli.R
+wc -l cichelli.O.m.s     # Final RISC
+    5173 cichelli.O.m.s
+grep 'time\|iterations' cichelli.7.g # Flow analysis
+Analysis time: 122 ms CPU, 0 secs real time.
+# iterations : 28
+SUBDIR ======> spectral/hartel/event
+wc -l event.4.is      # ISyntax
+     665 event.4.is
+wc -l event.6.g       # Initial GRIN
+     940 event.6.g
+wc -l event.11.g      # Eval inlining
+    1730 event.11.g
+wc -l event.94.g      # Final GRIN
+    2723 event.94.g
+wc -l event.R         # Initial RISC
+   11060 event.R
+wc -l event.O.m.s     # Final RISC
+    9129 event.O.m.s
+grep 'time\|iterations' event.7.g # Flow analysis
+Analysis time: 116 ms CPU, 0 secs real time.
+# iterations : 10
+SUBDIR ======> spectral/clausify
+wc -l clausify.4.is      # ISyntax
+     810 clausify.4.is
+wc -l clausify.6.g       # Initial GRIN
+    1191 clausify.6.g
+wc -l clausify.11.g      # Eval inlining
+    2066 clausify.11.g
+wc -l clausify.94.g      # Final GRIN
+    2345 clausify.94.g
+wc -l clausify.R         # Initial RISC
+    9429 clausify.R
+wc -l clausify.O.m.s     # Final RISC
+    6829 clausify.O.m.s
+grep 'time\|iterations' clausify.7.g # Flow analysis
+Analysis time: 106 ms CPU, 0 secs real time.
+# iterations : 45
+SUBDIR ======> spectral/hartel/ida
+wc -l ida.4.is      # ISyntax
+     973 ida.4.is
+wc -l ida.6.g       # Initial GRIN
+    1242 ida.6.g
+wc -l ida.11.g      # Eval inlining
+    2239 ida.11.g
+wc -l ida.94.g      # Final GRIN
+    2914 ida.94.g
+wc -l ida.R         # Initial RISC
+   12204 ida.R
+wc -l ida.O.m.s     # Final RISC
+    9097 ida.O.m.s
+grep 'time\|iterations' ida.7.g # Flow analysis
+Analysis time: 126 ms CPU, 0 secs real time.
+# iterations : 9
+SUBDIR ======> spectral/hartel/typecheck
+wc -l typecheck.4.is      # ISyntax
+    1610 typecheck.4.is
+wc -l typecheck.6.g       # Initial GRIN
+    2551 typecheck.6.g
+wc -l typecheck.11.g      # Eval inlining
+    4164 typecheck.11.g
+wc -l typecheck.94.g      # Final GRIN
+    5359 typecheck.94.g
+wc -l typecheck.R         # Initial RISC
+   22557 typecheck.R
+wc -l typecheck.O.m.s     # Final RISC
+   20804 typecheck.O.m.s
+grep 'time\|iterations' typecheck.7.g # Flow analysis
+Analysis time: 115 ms CPU, 0 secs real time.
+# iterations : 16
+SUBDIR ======> spectral/boyer2
+wc -l boyer2.4.is      # ISyntax
+wc: boyer2.4.is: No such file or directory
+gmake: *** [wc_hgc] Error 1
+*************** spectral/boyer2 FAIL ***************
+wc -l boyer2_hgc.4.is       # ISyntax
+     894 boyer2_hgc.4.is
+wc -l boyer2_hgc.6.g        # Initial GRIN
+    2642 boyer2_hgc.6.g
+wc -l boyer2_hgc.11.g       # Eval inlining
+   15882 boyer2_hgc.11.g
+wc -l boyer2_hgc.94.g       # Final GRIN
+    9234 boyer2_hgc.94.g
+wc -l boyer2_hgc.R          # Initial RISC
+   29899 boyer2_hgc.R
+wc -l boyer2_hgc.O.m.s      # Final RISC
+   34184 boyer2_hgc.O.m.s
+grep 'time\|iterations' boyer2_hgc.7.g # Flow analysis
+Analysis time: 121 ms CPU, 0 secs real time.
+# iterations : 114

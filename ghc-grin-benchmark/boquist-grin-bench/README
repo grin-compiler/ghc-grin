@@ -1,0 +1,23 @@
+Files:
+
+- comp.sh:	benchmarking infrastructure, in the form of shell functions.
+- hgc.mk:	common Makefile stuff, needs GNU make.
+- imaginary/*:	nofib benchmark programs, one program per directory.
+- spectra/*:	nofib benchmark programs, one program per directory.
+- other/*:	other benchmark programs, one program per directory.
+- results/*:	raw results for all experiments in the thesis (see comp.sh).
+
+Some notes:
+
+- Only those nofib programs used in the thesis are included.
+- Most subdirectories contains a file "prel.hs". It contains the Haskell
+  Prelude functions used by that particular program, and is used by
+  the GRIN compiler (via CPP).
+- Each nofib program has been put in a single source file. The program
+  in subdirectory foo is called foo.hs. The original source files are left
+  unchanged (usually called Main.hs, etc.).
+- Most nofib subdirectories contains a file "Changes" describing the
+  changes that has been done to the program, e.g. added Prelude
+  functions, removed overloading, pattern matching made exhaustive, etc.
+- Do not expect the stuff defined in comp.sh/hgc.mk to be immediately runnable.
+  It contains a lot of details that are specific to my setup.

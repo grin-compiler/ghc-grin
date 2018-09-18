@@ -1,0 +1,5 @@
+- copy sorting module from hbc.
+- copy List((\\)) from hbc.
+- add hbcc prelude.
+- exhaustive patterns.
+- eliminate Ord.

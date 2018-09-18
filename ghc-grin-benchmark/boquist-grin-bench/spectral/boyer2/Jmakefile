@@ -1,0 +1,10 @@
+SRCS_HS=Checker.hs Lisplikefns.hs Rewritefns.hs Rulebasetext.hs Main.hs
+OBJS_O= Checker.o  Lisplikefns.o  Rewritefns.o  Rulebasetext.o  Main.o
+
+NoFibMultiModuleCompileAndRun(boyer2,-o1 boyer2.stdout)
+
+NoFibHaskellCompile(boyer2,Checker,hs)
+NoFibHaskellCompile(boyer2,Lisplikefns,hs)
+NoFibHaskellCompile(boyer2,Rewritefns,hs)
+NoFibHaskellCompile(boyer2,Rulebasetext,hs)
+NoFibHaskellCompile(boyer2,Main,hs)

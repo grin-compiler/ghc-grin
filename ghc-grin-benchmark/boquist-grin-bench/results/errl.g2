@@ -1,0 +1,1799 @@
+SUBDIR ======> other/nfib
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> other/tsumupto
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> other/sieve
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> other/queens
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> other/words
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+ge.s: No such file or directory
+gmake: *** [link] Error 1
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> other/puzzle
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> imaginary/tak
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> imaginary/exp3_8
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> spectral/awards
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+ge.s: No such file or directory
+gmake: *** [link] Error 1
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> spectral/cichelli
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+ge.s: No such file or directory
+gmake: *** [link] Error 1
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> spectral/boyer2
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+ga.s: No such file or directory
+gmake: *** [link] Error 1
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+ge.s: No such file or directory
+gmake: *** [link] Error 1
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> spectral/sorting
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> spectral/clausify
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> spectral/hartel/event
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> spectral/hartel/ida
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> spectral/hartel/typecheck
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g0.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g1.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g2.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g3.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g4.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g5.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g6.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g7.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g8.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc g9.s
+g9.s: No such file or directory
+gmake: *** [link] Error 1
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ga.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gb.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gc.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gd.s
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc ge.s
+ge.s: No such file or directory
+gmake: *** [link] Error 1
+/users/cs/sparud/boquist/alloc.sparc/bin/hgc gf.s
+SUBDIR ======> other/nfib
+ulimit -t 30; ./g0 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./g1 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./g2 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./g3 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./g4 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./g5 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./g6 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./g7 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./g8 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./g9 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./ga -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./gb -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./gc -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./gd -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./ge -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+ulimit -t 30; ./gf -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+29860703 
+SUBDIR ======> other/tsumupto
+ulimit -t 30; ./g0 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./g1 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./g2 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./g3 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./g4 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./g5 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./g6 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./g7 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./g8 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./g9 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./ga -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./gb -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./gc -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./gd -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./ge -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+ulimit -t 30; ./gf -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+-2004260032 
+SUBDIR ======> other/sieve
+ulimit -t 30; ./g0 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./g1 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./g2 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./g3 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./g4 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./g5 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./g6 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./g7 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./g8 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./g9 -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./ga -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./gb -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./gc -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./gd -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./ge -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+ulimit -t 30; ./gf -H40M > run.out && cat run.out && cmp -s hgc.out run.out
+121013308 
+SUBDIR ======> other/queens
+ulimit -t 30; ./g0 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./g1 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./g2 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./g3 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./g4 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./g5 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./g6 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./g7 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./g8 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./g9 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./ga -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./gb -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./gc -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./gd -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./ge -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+ulimit -t 30; ./gf -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+14200 
+SUBDIR ======> other/words
+ulimit -t 30; ./g0 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./g1 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./g2 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./g3 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./g4 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./g5 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./g6 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./g7 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./g8 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./g9 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./ga -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+Cpu Limit Exceeded
+gmake: *** [run_hgc] Error 158
+ulimit -t 30; ./gb -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./gc -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+ulimit -t 30; ./gd -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+Cpu Limit Exceeded
+gmake: *** [run_hgc] Error 158
+ulimit -t 30; ./ge -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+/bin/sh: ./ge: not found
+gmake: *** [run_hgc] Error 1
+ulimit -t 30; ./gf -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3276 96 4716 0 6300 0 696 5064 5196 84 480 1836 672 4188 348 0 0 11004 6072 6900 744 336 0 0 0 0 
+SUBDIR ======> other/puzzle
+ulimit -t 30; ./g0 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./g1 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./g2 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./g3 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./g4 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./g5 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./g6 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./g7 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./g8 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./g9 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./ga -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./gb -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./gc -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./gd -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./ge -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+128 
+ulimit -t 30; ./gf -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+Cpu Limit Exceeded
+gmake: *** [run_hgc] Error 158
+*************** other/puzzle FAIL ***************
+SUBDIR ======> imaginary/tak
+ulimit -t 30; ./g0 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./g1 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./g2 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./g3 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./g4 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./g5 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./g6 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./g7 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./g8 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./g9 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./ga -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./gb -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./gc -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./gd -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./ge -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+ulimit -t 30; ./gf -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+9 
+SUBDIR ======> imaginary/exp3_8
+ulimit -t 30; ./g0 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./g1 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./g2 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./g3 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./g4 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./g5 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./g6 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./g7 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./g8 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./g9 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./ga -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./gb -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./gc -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./gd -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./ge -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+ulimit -t 30; ./gf -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+6561 
+SUBDIR ======> spectral/awards
+ulimit -t 30; ./g0 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./g1 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./g2 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./g3 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./g4 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./g5 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./g6 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./g7 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./g8 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./g9 -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./ga -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./gb -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./gc -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./gd -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+ulimit -t 30; ./ge -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+/bin/sh: ./ge: not found
+gmake: *** [run_hgc] Error 1
+ulimit -t 30; ./gf -H5M > run.out && cat run.out && cmp -s hgc.out run.out
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+SUBDIR ======> spectral/cichelli
+ulimit -t 30; ./g0 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./g1 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./g2 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./g3 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./g4 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./g5 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./g6 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./g7 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./g8 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./g9 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./ga -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./gb -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./gc -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./gd -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+YesIts 16948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+ulimit -t 30; ./ge -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+/bin/sh: ./ge: not found
+gmake: *** [run_hgc] Error 1
+ulimit -t 30; ./gf -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+Cpu Limit Exceeded
+gmake: *** [run_hgc] Error 158
+*************** spectral/cichelli FAIL ***************
+SUBDIR ======> spectral/boyer2
+ulimit -t 30; ./g0 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./g1 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./g2 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./g3 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./g4 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./g5 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./g6 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./g7 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./g8 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./g9 -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./ga -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+/bin/sh: ./ga: not found
+gmake: *** [run_hgc] Error 1
+ulimit -t 30; ./gb -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./gc -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./gd -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+The term is a tautology
+
+ulimit -t 30; ./ge -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+/bin/sh: ./ge: not found
+gmake: *** [run_hgc] Error 1
+ulimit -t 30; ./gf -H10M > run.out && cat run.out && cmp -s hgc.out run.out
+Cpu Limit Exceeded
+gmake: *** [run_hgc] Error 158
+*************** spectral/boyer2 FAIL ***************
+SUBDIR ======> spectral/sorting
+ulimit -t 30; ./g0 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./g1 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./g2 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./g3 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./g4 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./g5 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./g6 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./g7 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./g8 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./g9 -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./ga -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+Cpu Limit Exceeded
+gmake: *** [run_hgc] Error 158
+ulimit -t 30; ./gb -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./gc -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./gd -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./ge -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+3849600 
+ulimit -t 30; ./gf -H60M > run.out && cat run.out && cmp -s hgc.out run.out
+Cpu Limit Exceeded
+gmake: *** [run_hgc] Error 158
+*************** spectral/sorting FAIL ***************
+SUBDIR ======> spectral/clausify
+ulimit -t 30; ./g0 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./g1 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./g2 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./g3 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./g4 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./g5 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./g6 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./g7 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./g8 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./g9 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./ga -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./gb -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./gc -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./gd -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./ge -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+ulimit -t 30; ./gf -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+Cpu Limit Exceeded
+gmake: *** [run_hgc] Error 158
+*************** spectral/clausify FAIL ***************
+SUBDIR ======> spectral/hartel/event
+ulimit -t 30; ./g0 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./g1 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./g2 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./g3 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./g4 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./g5 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./g6 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./g7 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./g8 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./g9 -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./ga -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./gb -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./gc -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./gd -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./ge -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+HHxLLHHLLHHLH
+
+ulimit -t 30; ./gf -H80M > run.out && cat run.out && cmp -s hgc.out run.out
+Cpu Limit Exceeded
+gmake: *** [run_hgc] Error 158
+*************** spectral/hartel/event FAIL ***************
+SUBDIR ======> spectral/hartel/ida
+ulimit -t 30; ./g0 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./g1 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./g2 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./g3 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./g4 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./g5 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./g6 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./g7 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./g8 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./g9 -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+Segmentation Fault
+gmake: *** [run_hgc] Error 139
+ulimit -t 30; ./ga -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./gb -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./gc -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./gd -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./ge -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3163
+
+ulimit -t 30; ./gf -H30M > run.out && cat run.out && cmp -s hgc.out run.out
+Cpu Limit Exceeded
+gmake: *** [run_hgc] Error 158
+*************** spectral/hartel/ida FAIL ***************
+SUBDIR ======> spectral/hartel/typecheck
+ulimit -t 30; ./g0 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./g1 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+Fatal error, heap full during GC!
+gmake: *** [run_hgc] Error 1
+ulimit -t 30; ./g2 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./g3 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./g4 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./g5 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./g6 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./g7 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./g8 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./g9 -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+/bin/sh: ./g9: not found
+gmake: *** [run_hgc] Error 1
+ulimit -t 30; ./ga -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./gb -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./gc -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./gd -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+2904400/47800
+
+ulimit -t 30; ./ge -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+/bin/sh: ./ge: not found
+gmake: *** [run_hgc] Error 1
+ulimit -t 30; ./gf -H20M > run.out && cat run.out && cmp -s hgc.out run.out
+Cpu Limit Exceeded
+gmake: *** [run_hgc] Error 158
+*************** spectral/hartel/typecheck FAIL ***************
+SUBDIR ======> other/nfib
+size g0.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+448    	8      	0      	456    	1c8    	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+206    	8      	0      	214    	d6     	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+258    	8      	0      	266    	10a    	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	gd.o
+size ge.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	ge.o
+size gf.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	gf.o
+SUBDIR ======> other/tsumupto
+size g0.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+384    	8      	0      	392    	188    	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+372    	8      	0      	380    	17c    	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+270    	8      	0      	278    	116    	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+296    	8      	0      	304    	130    	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+276    	8      	0      	284    	11c    	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	gd.o
+size ge.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	ge.o
+size gf.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	gf.o
+SUBDIR ======> other/sieve
+size g0.o
+text	data	bss	dec	hex	filename
+894    	20     	0      	914    	392    	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+1084   	20     	0      	1104   	450    	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+894    	20     	0      	914    	392    	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+894    	20     	0      	914    	392    	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+894    	20     	0      	914    	392    	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+894    	20     	0      	914    	392    	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+894    	20     	0      	914    	392    	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+894    	20     	0      	914    	392    	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+894    	20     	0      	914    	392    	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+1064   	20     	0      	1084   	43c    	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+906    	20     	0      	926    	39e    	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+976    	20     	0      	996    	3e4    	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+932    	20     	0      	952    	3b8    	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+890    	20     	0      	910    	38e    	gd.o
+size ge.o
+text	data	bss	dec	hex	filename
+906    	12     	0      	918    	396    	ge.o
+size gf.o
+text	data	bss	dec	hex	filename
+886    	20     	0      	906    	38a    	gf.o
+SUBDIR ======> other/queens
+size g0.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+2076   	28     	0      	2104   	838    	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+1942   	20     	0      	1962   	7aa    	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+1894   	32     	0      	1926   	786    	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+1898   	36     	0      	1934   	78e    	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+1802   	28     	0      	1830   	726    	gd.o
+size ge.o
+text	data	bss	dec	hex	filename
+1886   	8      	0      	1894   	766    	ge.o
+size gf.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	gf.o
+SUBDIR ======> other/words
+size g0.o
+text	data	bss	dec	hex	filename
+9560   	2652   	0      	12212  	2fb4   	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+9664   	2652   	0      	12316  	301c   	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+9560   	2652   	0      	12212  	2fb4   	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+9592   	2652   	0      	12244  	2fd4   	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+9560   	2652   	0      	12212  	2fb4   	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+9560   	2652   	0      	12212  	2fb4   	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+9560   	2652   	0      	12212  	2fb4   	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+9552   	2652   	0      	12204  	2fac   	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+9608   	2660   	0      	12268  	2fec   	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+10012  	2652   	0      	12664  	3178   	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+9824   	3412   	0      	13236  	33b4   	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+9560   	2652   	0      	12212  	2fb4   	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+9646   	2652   	0      	12298  	300a   	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+9384   	2652   	0      	12036  	2f04   	gd.o
+size ge.o
+size: ge.o: No such file or directory
+gmake: *** [size_hgc] Error 1
+size gf.o
+text	data	bss	dec	hex	filename
+9280   	2652   	0      	11932  	2e9c   	gf.o
+SUBDIR ======> other/puzzle
+size g0.o
+text	data	bss	dec	hex	filename
+12742  	840    	0      	13582  	350e   	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+12770  	956    	0      	13726  	359e   	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+12742  	840    	0      	13582  	350e   	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+13462  	856    	0      	14318  	37ee   	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+12742  	840    	0      	13582  	350e   	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+12742  	840    	0      	13582  	350e   	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+12742  	840    	0      	13582  	350e   	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+13274  	856    	0      	14130  	3732   	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+12742  	840    	0      	13582  	350e   	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+13164  	840    	0      	14004  	36b4   	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+12904  	1196   	0      	14100  	3714   	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+12742  	840    	0      	13582  	350e   	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+12742  	840    	0      	13582  	350e   	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+12502  	840    	0      	13342  	341e   	gd.o
+size ge.o
+text	data	bss	dec	hex	filename
+14450  	32     	0      	14482  	3892   	ge.o
+size gf.o
+text	data	bss	dec	hex	filename
+11558  	840    	0      	12398  	306e   	gf.o
+SUBDIR ======> imaginary/tak
+size g0.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+548    	8      	0      	556    	22c    	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+306    	8      	0      	314    	13a    	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+358    	8      	0      	366    	16e    	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	gd.o
+size ge.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	ge.o
+size gf.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	gf.o
+SUBDIR ======> imaginary/exp3_8
+size g0.o
+text	data	bss	dec	hex	filename
+1462   	12     	0      	1474   	5c2    	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+1462   	12     	0      	1474   	5c2    	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+1462   	12     	0      	1474   	5c2    	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+1462   	12     	0      	1474   	5c2    	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+1462   	12     	0      	1474   	5c2    	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+1470   	12     	0      	1482   	5ca    	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+1462   	12     	0      	1474   	5c2    	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+1462   	12     	0      	1474   	5c2    	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+1462   	12     	0      	1474   	5c2    	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+1478   	12     	0      	1490   	5d2    	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+1488   	12     	0      	1500   	5dc    	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+1462   	12     	0      	1474   	5c2    	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+1462   	12     	0      	1474   	5c2    	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+1446   	12     	0      	1458   	5b2    	gd.o
+size ge.o
+text	data	bss	dec	hex	filename
+1514   	8      	0      	1522   	5f2    	ge.o
+size gf.o
+text	data	bss	dec	hex	filename
+1314   	12     	0      	1326   	52e    	gf.o
+SUBDIR ======> spectral/awards
+size g0.o
+text	data	bss	dec	hex	filename
+9852   	1432   	0      	11284  	2c14   	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+9900   	1548   	0      	11448  	2cb8   	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+9852   	1432   	0      	11284  	2c14   	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+10212  	1440   	0      	11652  	2d84   	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+9852   	1432   	0      	11284  	2c14   	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+9852   	1432   	0      	11284  	2c14   	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+9852   	1432   	0      	11284  	2c14   	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+10108  	1440   	0      	11548  	2d1c   	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+9852   	1432   	0      	11284  	2c14   	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+10228  	1460   	0      	11688  	2da8   	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+10202  	1676   	0      	11878  	2e66   	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+9448   	1432   	0      	10880  	2a80   	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+9784   	1432   	0      	11216  	2bd0   	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+9620   	1432   	0      	11052  	2b2c   	gd.o
+size ge.o
+size: ge.o: No such file or directory
+gmake: *** [size_hgc] Error 1
+size gf.o
+text	data	bss	dec	hex	filename
+8318   	1432   	0      	9750   	2616   	gf.o
+SUBDIR ======> spectral/cichelli
+size g0.o
+text	data	bss	dec	hex	filename
+13882  	1868   	0      	15750  	3d86   	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+14086  	1952   	0      	16038  	3ea6   	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+13894  	1868   	0      	15762  	3d92   	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+14066  	1872   	0      	15938  	3e42   	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+13882  	1868   	0      	15750  	3d86   	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+13858  	1868   	0      	15726  	3d6e   	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+13882  	1868   	0      	15750  	3d86   	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+13958  	1872   	0      	15830  	3dd6   	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+13882  	1868   	0      	15750  	3d86   	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+14776  	1880   	0      	16656  	4110   	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+14092  	2756   	0      	16848  	41d0   	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+13882  	1868   	0      	15750  	3d86   	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+13834  	1880   	0      	15714  	3d62   	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+13606  	1868   	0      	15474  	3c72   	gd.o
+size ge.o
+size: ge.o: No such file or directory
+gmake: *** [size_hgc] Error 1
+size gf.o
+text	data	bss	dec	hex	filename
+12466  	1868   	0      	14334  	37fe   	gf.o
+SUBDIR ======> spectral/boyer2
+size g0.o
+text	data	bss	dec	hex	filename
+22954  	80184  	0      	103138 	192e2  	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+24020  	81100  	0      	105120 	19aa0  	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+22954  	80184  	0      	103138 	192e2  	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+22954  	80184  	0      	103138 	192e2  	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+22954  	80184  	0      	103138 	192e2  	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+22954  	80184  	0      	103138 	192e2  	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+22954  	80184  	0      	103138 	192e2  	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+23018  	80184  	0      	103202 	19322  	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+22954  	80184  	0      	103138 	192e2  	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+23332  	80184  	0      	103516 	1945c  	g9.o
+size ga.o
+size: ga.o: No such file or directory
+gmake: *** [size_hgc] Error 1
+size gb.o
+text	data	bss	dec	hex	filename
+23080  	80184  	0      	103264 	19360  	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+24448  	80184  	0      	104632 	198b8  	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+22030  	80184  	0      	102214 	18f46  	gd.o
+size ge.o
+size: ge.o: No such file or directory
+gmake: *** [size_hgc] Error 1
+size gf.o
+text	data	bss	dec	hex	filename
+19778  	80184  	0      	99962  	1867a  	gf.o
+SUBDIR ======> spectral/sorting
+size g0.o
+text	data	bss	dec	hex	filename
+20282  	312    	0      	20594  	5072   	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+20282  	312    	0      	20594  	5072   	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+20282  	312    	0      	20594  	5072   	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+20606  	320    	0      	20926  	51be   	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+20282  	312    	0      	20594  	5072   	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+20282  	312    	0      	20594  	5072   	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+20282  	312    	0      	20594  	5072   	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+20294  	316    	0      	20610  	5082   	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+20282  	312    	0      	20594  	5072   	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+21092  	324    	0      	21416  	53a8   	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+20828  	352    	0      	21180  	52bc   	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+20282  	312    	0      	20594  	5072   	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+20498  	324    	0      	20822  	5156   	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+19934  	312    	0      	20246  	4f16   	gd.o
+size ge.o
+text	data	bss	dec	hex	filename
+21278  	16     	0      	21294  	532e   	ge.o
+size gf.o
+text	data	bss	dec	hex	filename
+18510  	312    	0      	18822  	4986   	gf.o
+SUBDIR ======> spectral/clausify
+size g0.o
+text	data	bss	dec	hex	filename
+19734  	1288   	0      	21022  	521e   	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+20670  	1288   	0      	21958  	55c6   	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+19734  	1288   	0      	21022  	521e   	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+19890  	1292   	0      	21182  	52be   	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+19734  	1288   	0      	21022  	521e   	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+19734  	1288   	0      	21022  	521e   	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+19734  	1288   	0      	21022  	521e   	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+19886  	1292   	0      	21178  	52ba   	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+19752  	1292   	0      	21044  	5234   	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+20178  	1288   	0      	21466  	53da   	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+19824  	1708   	0      	21532  	541c   	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+19730  	1288   	0      	21018  	521a   	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+19604  	1288   	0      	20892  	519c   	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+19498  	1288   	0      	20786  	5132   	gd.o
+size ge.o
+text	data	bss	dec	hex	filename
+22078  	28     	0      	22106  	565a   	ge.o
+size gf.o
+text	data	bss	dec	hex	filename
+17238  	1288   	0      	18526  	485e   	gf.o
+SUBDIR ======> spectral/hartel/event
+size g0.o
+text	data	bss	dec	hex	filename
+27358  	1348   	0      	28706  	7022   	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+27720  	1348   	0      	29068  	718c   	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+27358  	1348   	0      	28706  	7022   	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+27358  	1348   	0      	28706  	7022   	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+27382  	1348   	0      	28730  	703a   	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+27346  	1348   	0      	28694  	7016   	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+27358  	1348   	0      	28706  	7022   	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+26822  	1348   	0      	28170  	6e0a   	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+27358  	1348   	0      	28706  	7022   	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+28550  	1348   	0      	29898  	74ca   	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+27670  	1400   	0      	29070  	718e   	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+27358  	1348   	0      	28706  	7022   	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+27358  	1348   	0      	28706  	7022   	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+26558  	1348   	0      	27906  	6d02   	gd.o
+size ge.o
+text	data	bss	dec	hex	filename
+30434  	48     	0      	30482  	7712   	ge.o
+size gf.o
+text	data	bss	dec	hex	filename
+21722  	1348   	0      	23070  	5a1e   	gf.o
+SUBDIR ======> spectral/hartel/ida
+size g0.o
+text	data	bss	dec	hex	filename
+27622  	780    	0      	28402  	6ef2   	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+28026  	984    	0      	29010  	7152   	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+27622  	780    	0      	28402  	6ef2   	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+27622  	780    	0      	28402  	6ef2   	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+27622  	780    	0      	28402  	6ef2   	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+27578  	780    	0      	28358  	6ec6   	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+27622  	780    	0      	28402  	6ef2   	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+26582  	780    	0      	27362  	6ae2   	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+27538  	780    	0      	28318  	6e9e   	g8.o
+size g9.o
+text	data	bss	dec	hex	filename
+28974  	788    	0      	29762  	7442   	g9.o
+size ga.o
+text	data	bss	dec	hex	filename
+27954  	820    	0      	28774  	7066   	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+27622  	780    	0      	28402  	6ef2   	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+27662  	780    	0      	28442  	6f1a   	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+27270  	780    	0      	28050  	6d92   	gd.o
+size ge.o
+text	data	bss	dec	hex	filename
+29246  	20     	0      	29266  	7252   	ge.o
+size gf.o
+text	data	bss	dec	hex	filename
+23206  	780    	0      	23986  	5db2   	gf.o
+SUBDIR ======> spectral/hartel/typecheck
+size g0.o
+text	data	bss	dec	hex	filename
+62124  	4944   	0      	67068  	105fc  	g0.o
+size g1.o
+text	data	bss	dec	hex	filename
+64548  	5060   	0      	69608  	10fe8  	g1.o
+size g2.o
+text	data	bss	dec	hex	filename
+62124  	4944   	0      	67068  	105fc  	g2.o
+size g3.o
+text	data	bss	dec	hex	filename
+62832  	4960   	0      	67792  	108d0  	g3.o
+size g4.o
+text	data	bss	dec	hex	filename
+62124  	4944   	0      	67068  	105fc  	g4.o
+size g5.o
+text	data	bss	dec	hex	filename
+62124  	4944   	0      	67068  	105fc  	g5.o
+size g6.o
+text	data	bss	dec	hex	filename
+62124  	4944   	0      	67068  	105fc  	g6.o
+size g7.o
+text	data	bss	dec	hex	filename
+62300  	4960   	0      	67260  	106bc  	g7.o
+size g8.o
+text	data	bss	dec	hex	filename
+62124  	4944   	0      	67068  	105fc  	g8.o
+size g9.o
+size: g9.o: No such file or directory
+gmake: *** [size_hgc] Error 1
+size ga.o
+text	data	bss	dec	hex	filename
+63192  	5732   	0      	68924  	10d3c  	ga.o
+size gb.o
+text	data	bss	dec	hex	filename
+62064  	4944   	0      	67008  	105c0  	gb.o
+size gc.o
+text	data	bss	dec	hex	filename
+62338  	4944   	0      	67282  	106d2  	gc.o
+size gd.o
+text	data	bss	dec	hex	filename
+60364  	4944   	0      	65308  	ff1c   	gd.o
+size ge.o
+size: ge.o: No such file or directory
+gmake: *** [size_hgc] Error 1
+size gf.o
+text	data	bss	dec	hex	filename
+56600  	4944   	0      	61544  	f068   	gf.o

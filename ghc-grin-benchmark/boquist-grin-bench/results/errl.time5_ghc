@@ -1,0 +1,270 @@
+SUBDIR ======> other/nfib
+tcsh -f -c "time ./nfib.ghc +RTS -H5M"
+29860703
+3.02u 0.01s 0:03.46 87.5%
+tcsh -f -c "time ./nfib.ghc +RTS -H5M"
+29860703
+3.16u 0.01s 0:03.77 84.0%
+tcsh -f -c "time ./nfib.ghc +RTS -H5M"
+29860703
+3.10u 0.03s 0:03.31 94.5%
+tcsh -f -c "time ./nfib.ghc +RTS -H5M"
+29860703
+3.07u 0.01s 0:03.26 94.4%
+tcsh -f -c "time ./nfib.ghc +RTS -H5M"
+29860703
+3.09u 0.03s 0:03.23 96.5%
+SUBDIR ======> other/tsumupto
+tcsh -f -c "time ./tsumupto.ghc +RTS -H5M"
+-2004260032
+4.17u 0.03s 0:04.53 92.7%
+tcsh -f -c "time ./tsumupto.ghc +RTS -H5M"
+-2004260032
+4.24u 0.01s 0:04.55 93.4%
+tcsh -f -c "time ./tsumupto.ghc +RTS -H5M"
+-2004260032
+4.25u 0.02s 0:04.73 90.2%
+tcsh -f -c "time ./tsumupto.ghc +RTS -H5M"
+-2004260032
+4.12u 0.01s 0:04.82 85.6%
+tcsh -f -c "time ./tsumupto.ghc +RTS -H5M"
+-2004260032
+4.10u 0.03s 0:04.49 91.9%
+SUBDIR ======> other/sieve
+tcsh -f -c "time ./sieve.ghc +RTS -H40M"
+121013308
+15.95u 0.01s 0:21.16 75.4%
+tcsh -f -c "time ./sieve.ghc +RTS -H40M"
+121013308
+15.82u 0.03s 0:18.27 86.7%
+tcsh -f -c "time ./sieve.ghc +RTS -H40M"
+121013308
+15.57u 0.01s 0:19.34 80.5%
+tcsh -f -c "time ./sieve.ghc +RTS -H40M"
+121013308
+15.91u 0.03s 0:19.24 82.8%
+tcsh -f -c "time ./sieve.ghc +RTS -H40M"
+121013308
+15.84u 0.02s 0:19.23 82.4%
+SUBDIR ======> other/queens
+tcsh -f -c "time ./queens.ghc +RTS -H60M"
+14200
+37.56u 0.04s 0:46.78 80.3%
+tcsh -f -c "time ./queens.ghc +RTS -H60M"
+14200
+37.84u 0.03s 0:49.24 76.9%
+tcsh -f -c "time ./queens.ghc +RTS -H60M"
+14200
+37.27u 0.02s 0:47.76 78.0%
+tcsh -f -c "time ./queens.ghc +RTS -H60M"
+14200
+36.48u 0.03s 0:48.09 75.9%
+tcsh -f -c "time ./queens.ghc +RTS -H60M"
+14200
+39.93u 0.03s 0:48.86 81.7%
+SUBDIR ======> other/words
+tcsh -f -c "time ./words.ghc +RTS -H60M"
+[3276,96,4716,0,6300,0,696,5064,5196,84,480,1836,672,4188,348,0,0,11004,6072,6900,744,336,0,0,0,0]
+8.67u 0.07s 0:15.72 55.5%
+tcsh -f -c "time ./words.ghc +RTS -H60M"
+[3276,96,4716,0,6300,0,696,5064,5196,84,480,1836,672,4188,348,0,0,11004,6072,6900,744,336,0,0,0,0]
+8.34u 0.03s 0:11.89 70.3%
+tcsh -f -c "time ./words.ghc +RTS -H60M"
+[3276,96,4716,0,6300,0,696,5064,5196,84,480,1836,672,4188,348,0,0,11004,6072,6900,744,336,0,0,0,0]
+8.65u 0.01s 0:11.32 76.5%
+tcsh -f -c "time ./words.ghc +RTS -H60M"
+[3276,96,4716,0,6300,0,696,5064,5196,84,480,1836,672,4188,348,0,0,11004,6072,6900,744,336,0,0,0,0]
+8.34u 0.06s 0:10.05 83.5%
+tcsh -f -c "time ./words.ghc +RTS -H60M"
+[3276,96,4716,0,6300,0,696,5064,5196,84,480,1836,672,4188,348,0,0,11004,6072,6900,744,336,0,0,0,0]
+8.70u 0.03s 0:10.95 79.7%
+SUBDIR ======> other/puzzle
+tcsh -f -c "time ./puzzle.ghc +RTS -H60M"
+128
+23.76u 0.02s 0:28.68 82.9%
+tcsh -f -c "time ./puzzle.ghc +RTS -H60M"
+128
+24.83u 0.01s 0:29.45 84.3%
+tcsh -f -c "time ./puzzle.ghc +RTS -H60M"
+128
+24.00u 0.01s 0:27.92 85.9%
+tcsh -f -c "time ./puzzle.ghc +RTS -H60M"
+128
+24.12u 0.02s 0:29.87 80.8%
+tcsh -f -c "time ./puzzle.ghc +RTS -H60M"
+128
+23.60u 0.04s 0:28.28 83.5%
+SUBDIR ======> imaginary/tak
+tcsh -f -c "time ./tak.ghc +RTS -H5M"
+9
+0.23u 0.01s 0:00.29 82.7%
+tcsh -f -c "time ./tak.ghc +RTS -H5M"
+9
+0.24u 0.01s 0:00.27 92.5%
+tcsh -f -c "time ./tak.ghc +RTS -H5M"
+9
+0.22u 0.00s 0:00.24 91.6%
+tcsh -f -c "time ./tak.ghc +RTS -H5M"
+9
+0.23u 0.02s 0:00.25 100.0%
+tcsh -f -c "time ./tak.ghc +RTS -H5M"
+9
+0.22u 0.02s 0:00.28 85.7%
+SUBDIR ======> imaginary/exp3_8
+tcsh -f -c "time ./exp3_8.ghc +RTS -H60M"
+6561
+3.93u 0.03s 0:05.39 73.4%
+tcsh -f -c "time ./exp3_8.ghc +RTS -H60M"
+6561
+3.78u 0.00s 0:04.21 89.7%
+tcsh -f -c "time ./exp3_8.ghc +RTS -H60M"
+6561
+3.95u 0.00s 0:04.46 88.5%
+tcsh -f -c "time ./exp3_8.ghc +RTS -H60M"
+6561
+3.79u 0.01s 0:04.59 82.7%
+tcsh -f -c "time ./exp3_8.ghc +RTS -H60M"
+6561
+3.86u 0.01s 0:04.61 83.9%
+SUBDIR ======> spectral/awards
+tcsh -f -c "time ./awards.ghc +RTS -H5M"
+[("Simon",[("Gold",(74,[19,34,21])),("Gold",(102,[35,27,40]))]),("Hans",[("Gold",(70,[45,17,8])),("Bronze",(52,[23,19,10]))]),("Phil",[("Gold",(70,[1,35,34])),("Silver",(60,[18,21,21])),("Bronze",(55,[20,19,16]))]),("Kevin",[("Gold",(72,[9,54,9])),("Gold",(72,[17,41,14])),("Bronze",(59,[23,18,18]))])]
+0.01u 0.00s 0:00.15 6.6%
+tcsh -f -c "time ./awards.ghc +RTS -H5M"
+[("Simon",[("Gold",(74,[19,34,21])),("Gold",(102,[35,27,40]))]),("Hans",[("Gold",(70,[45,17,8])),("Bronze",(52,[23,19,10]))]),("Phil",[("Gold",(70,[1,35,34])),("Silver",(60,[18,21,21])),("Bronze",(55,[20,19,16]))]),("Kevin",[("Gold",(72,[9,54,9])),("Gold",(72,[17,41,14])),("Bronze",(59,[23,18,18]))])]
+0.01u 0.00s 0:00.02 50.0%
+tcsh -f -c "time ./awards.ghc +RTS -H5M"
+[("Simon",[("Gold",(74,[19,34,21])),("Gold",(102,[35,27,40]))]),("Hans",[("Gold",(70,[45,17,8])),("Bronze",(52,[23,19,10]))]),("Phil",[("Gold",(70,[1,35,34])),("Silver",(60,[18,21,21])),("Bronze",(55,[20,19,16]))]),("Kevin",[("Gold",(72,[9,54,9])),("Gold",(72,[17,41,14])),("Bronze",(59,[23,18,18]))])]
+0.01u 0.01s 0:00.03 66.6%
+tcsh -f -c "time ./awards.ghc +RTS -H5M"
+[("Simon",[("Gold",(74,[19,34,21])),("Gold",(102,[35,27,40]))]),("Hans",[("Gold",(70,[45,17,8])),("Bronze",(52,[23,19,10]))]),("Phil",[("Gold",(70,[1,35,34])),("Silver",(60,[18,21,21])),("Bronze",(55,[20,19,16]))]),("Kevin",[("Gold",(72,[9,54,9])),("Gold",(72,[17,41,14])),("Bronze",(59,[23,18,18]))])]
+0.00u 0.02s 0:00.03 66.6%
+tcsh -f -c "time ./awards.ghc +RTS -H5M"
+[("Simon",[("Gold",(74,[19,34,21])),("Gold",(102,[35,27,40]))]),("Hans",[("Gold",(70,[45,17,8])),("Bronze",(52,[23,19,10]))]),("Phil",[("Gold",(70,[1,35,34])),("Silver",(60,[18,21,21])),("Bronze",(55,[20,19,16]))]),("Kevin",[("Gold",(72,[9,54,9])),("Gold",(72,[17,41,14])),("Bronze",(59,[23,18,18]))])]
+0.02u 0.00s 0:00.00 0.0%
+SUBDIR ======> spectral/boyer2
+tcsh -f -c "time ./boyer2.ghc +RTS -H10M"
+The term is a tautology
+0.23u 0.01s 0:00.40 60.0%
+tcsh -f -c "time ./boyer2.ghc +RTS -H10M"
+The term is a tautology
+0.22u 0.02s 0:00.31 77.4%
+tcsh -f -c "time ./boyer2.ghc +RTS -H10M"
+The term is a tautology
+0.26u 0.01s 0:00.37 72.9%
+tcsh -f -c "time ./boyer2.ghc +RTS -H10M"
+The term is a tautology
+0.23u 0.01s 0:00.26 92.3%
+tcsh -f -c "time ./boyer2.ghc +RTS -H10M"
+The term is a tautology
+0.22u 0.02s 0:00.27 88.8%
+SUBDIR ======> spectral/cichelli
+tcsh -f -c "time ./cichelli.ghc +RTS -H10M"
+("YesIts ",(16948,[('a',5),('i',8),('l',8),('c',7),('b',8),('y',10),('k',3),('t',1),('e',1),('j',0),('n',0)]))
+0.35u 0.01s 0:00.43 83.7%
+tcsh -f -c "time ./cichelli.ghc +RTS -H10M"
+("YesIts ",(16948,[('a',5),('i',8),('l',8),('c',7),('b',8),('y',10),('k',3),('t',1),('e',1),('j',0),('n',0)]))
+0.33u 0.03s 0:00.37 97.2%
+tcsh -f -c "time ./cichelli.ghc +RTS -H10M"
+("YesIts ",(16948,[('a',5),('i',8),('l',8),('c',7),('b',8),('y',10),('k',3),('t',1),('e',1),('j',0),('n',0)]))
+0.37u 0.00s 0:00.41 90.2%
+tcsh -f -c "time ./cichelli.ghc +RTS -H10M"
+("YesIts ",(16948,[('a',5),('i',8),('l',8),('c',7),('b',8),('y',10),('k',3),('t',1),('e',1),('j',0),('n',0)]))
+0.34u 0.02s 0:00.42 85.7%
+tcsh -f -c "time ./cichelli.ghc +RTS -H10M"
+("YesIts ",(16948,[('a',5),('i',8),('l',8),('c',7),('b',8),('y',10),('k',3),('t',1),('e',1),('j',0),('n',0)]))
+0.35u 0.01s 0:00.42 85.7%
+SUBDIR ======> spectral/clausify
+tcsh -f -c "time ./clausify.ghc +RTS -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+0.95u 0.00s 0:01.18 80.5%
+tcsh -f -c "time ./clausify.ghc +RTS -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+0.94u 0.00s 0:00.98 95.9%
+tcsh -f -c "time ./clausify.ghc +RTS -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+0.92u 0.01s 0:01.12 83.0%
+tcsh -f -c "time ./clausify.ghc +RTS -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+0.95u 0.01s 0:01.06 90.5%
+tcsh -f -c "time ./clausify.ghc +RTS -H20M"
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+0.93u 0.01s 0:01.16 81.0%
+SUBDIR ======> spectral/hartel/event
+tcsh -f -c "time ./event.ghc +RTS -H80M"
+HHxLLHHLLHHLH
+1.30u 0.06s 0:01.61 84.4%
+tcsh -f -c "time ./event.ghc +RTS -H80M"
+HHxLLHHLLHHLH
+1.28u 0.08s 0:01.46 93.1%
+tcsh -f -c "time ./event.ghc +RTS -H80M"
+HHxLLHHLLHHLH
+1.38u 0.03s 0:01.97 71.5%
+tcsh -f -c "time ./event.ghc +RTS -H80M"
+HHxLLHHLLHHLH
+1.34u 0.02s 0:01.65 82.4%
+tcsh -f -c "time ./event.ghc +RTS -H80M"
+HHxLLHHLLHHLH
+1.35u 0.05s 0:01.72 81.3%
+SUBDIR ======> spectral/hartel/typecheck
+tcsh -f -c "time ./typecheck.ghc +RTS -H20M"
+2904400/47800
+2.07u 0.01s 0:02.31 90.0%
+tcsh -f -c "time ./typecheck.ghc +RTS -H20M"
+2904400/47800
+2.06u 0.00s 0:02.42 85.1%
+tcsh -f -c "time ./typecheck.ghc +RTS -H20M"
+2904400/47800
+2.04u 0.02s 0:02.65 77.7%
+tcsh -f -c "time ./typecheck.ghc +RTS -H20M"
+2904400/47800
+2.01u 0.00s 0:02.51 80.0%
+tcsh -f -c "time ./typecheck.ghc +RTS -H20M"
+2904400/47800
+2.00u 0.02s 0:02.30 87.8%
+SUBDIR ======> spectral/sorting
+tcsh -f -c "time ./sorting.ghc +RTS -H60M"
+3849600
+7.63u 0.02s 0:08.48 90.2%
+tcsh -f -c "time ./sorting.ghc +RTS -H60M"
+3849600
+7.53u 0.01s 0:09.65 78.1%
+tcsh -f -c "time ./sorting.ghc +RTS -H60M"
+3849600
+7.60u 0.00s 0:09.61 79.0%
+tcsh -f -c "time ./sorting.ghc +RTS -H60M"
+3849600
+7.62u 0.03s 0:09.69 78.9%
+tcsh -f -c "time ./sorting.ghc +RTS -H60M"
+3849600
+7.25u 0.03s 0:08.49 85.7%

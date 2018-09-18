@@ -1,0 +1,10 @@
+PROG=exp3_8
+HBCCFLAGS=
+HGC1=-dall
+HGC2=-H90M
+HGC3=
+HBCFLAGS=
+GHCFLAGS=
+RUNFLAGS=-H60M
+
+include ../../hgc.mk

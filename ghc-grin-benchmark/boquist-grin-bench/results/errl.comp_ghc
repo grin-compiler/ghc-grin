@@ -1,0 +1,49 @@
+SUBDIR ======> other/nfib
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o nfib.ghc   nfib.hs
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> other/tsumupto
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o tsumupto.ghc   tsumupto.hs
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> other/sieve
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o sieve.ghc   sieve.hs
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> other/queens
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o queens.ghc   queens.hs
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> other/words
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o words.ghc   words.hs
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> other/puzzle
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o puzzle.ghc   puzzle.hs
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> imaginary/tak
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o tak.ghc   tak.hs
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> imaginary/exp3_8
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o exp3_8.ghc   exp3_8.hs
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> spectral/awards
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o awards.ghc   awards.hs
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> spectral/boyer2
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -o boyer2.ghc   boyer2.hs
+NOTE: Simplifier still going after 4 iterations; bailing out.
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> spectral/cichelli
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o cichelli.ghc   cichelli.hs
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> spectral/clausify
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o clausify.ghc   clausify.hs
+NOTE: Simplifier still going after 4 iterations; bailing out.
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> spectral/hartel/event
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o event.ghc   event.hs
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> spectral/hartel/typecheck
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o typecheck.ghc   typecheck.hs
+NOTE: Simplifier still going after 4 iterations; bailing out.
+NOTE: Simplifier still going after 4 iterations; bailing out.
+ghc-4.01: module version changed to 1; reason: no old .hi file
+SUBDIR ======> spectral/sorting
+env GCC_EXEC_PREFIX=/usr/pd/gnu/lib/ada/3.10p/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2/ ghc-4.01 -static -O2 -fvia-C -O2-for-C -mv8  -cpp -o sorting.ghc   sorting.hs
+ghc-4.01: module version changed to 1; reason: no old .hi file

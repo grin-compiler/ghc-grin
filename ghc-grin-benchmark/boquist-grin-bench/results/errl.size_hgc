@@ -1,0 +1,64 @@
+SUBDIR ======> other/nfib
+size nfib.o
+text	data	bss	dec	hex	filename
+190    	8      	0      	198    	c6     	nfib.o
+SUBDIR ======> other/tsumupto
+size tsumupto.o
+text	data	bss	dec	hex	filename
+126    	8      	0      	134    	86     	tsumupto.o
+SUBDIR ======> other/sieve
+size sieve.o
+text	data	bss	dec	hex	filename
+894    	20     	0      	914    	392    	sieve.o
+SUBDIR ======> other/queens
+size queens.o
+text	data	bss	dec	hex	filename
+1806   	28     	0      	1834   	72a    	queens.o
+SUBDIR ======> other/words
+size words.o
+text	data	bss	dec	hex	filename
+9560   	2652   	0      	12212  	2fb4   	words.o
+SUBDIR ======> other/puzzle
+size puzzle.o
+text	data	bss	dec	hex	filename
+12742  	840    	0      	13582  	350e   	puzzle.o
+SUBDIR ======> imaginary/tak
+size tak.o
+text	data	bss	dec	hex	filename
+290    	8      	0      	298    	12a    	tak.o
+SUBDIR ======> imaginary/exp3_8
+size exp3_8.o
+text	data	bss	dec	hex	filename
+1462   	12     	0      	1474   	5c2    	exp3_8.o
+SUBDIR ======> spectral/awards
+size awards.o
+text	data	bss	dec	hex	filename
+9852   	1432   	0      	11284  	2c14   	awards.o
+SUBDIR ======> spectral/sorting
+size sorting.o
+text	data	bss	dec	hex	filename
+20282  	312    	0      	20594  	5072   	sorting.o
+SUBDIR ======> spectral/cichelli
+size cichelli.o
+text	data	bss	dec	hex	filename
+13882  	1868   	0      	15750  	3d86   	cichelli.o
+SUBDIR ======> spectral/hartel/event
+size event.o
+text	data	bss	dec	hex	filename
+27358  	1348   	0      	28706  	7022   	event.o
+SUBDIR ======> spectral/clausify
+size clausify.o
+text	data	bss	dec	hex	filename
+19734  	1288   	0      	21022  	521e   	clausify.o
+SUBDIR ======> spectral/hartel/ida
+size ida.o
+text	data	bss	dec	hex	filename
+27622  	780    	0      	28402  	6ef2   	ida.o
+SUBDIR ======> spectral/hartel/typecheck
+size typecheck.o
+text	data	bss	dec	hex	filename
+62124  	4944   	0      	67068  	105fc  	typecheck.o
+SUBDIR ======> spectral/boyer2
+size boyer2.o
+text	data	bss	dec	hex	filename
+22954  	80184  	0      	103138 	192e2  	boyer2.o

@@ -1,0 +1,9 @@
+# started on Wed Aug  1 10:26:28 2018
+
+
+ Performance counter stats for 'sieve':
+
+     2,145,090,643      instructions:u                                              
+
+       0.381738994 seconds time elapsed
+

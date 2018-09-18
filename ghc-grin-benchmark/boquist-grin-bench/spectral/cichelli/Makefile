@@ -1,0 +1,10 @@
+PROG=cichelli
+HBCCFLAGS=
+HGC1=-dall
+HGC2=-H150M
+HGC3=
+HBCFLAGS=
+GHCFLAGS=
+RUNFLAGS=-H10M
+
+include ../../hgc.mk

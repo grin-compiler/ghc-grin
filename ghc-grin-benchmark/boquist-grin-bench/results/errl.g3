@@ -1,0 +1,3155 @@
+SUBDIR ======> other/nfib
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:26:29 1,999
+Application: ./g0 -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:26:47 1,999
+Instructions: 343,401,138
+Time: 16.830 usr  0.010 sys  17.758 real  94.828%
+Speed: 20,391.992 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:26:47 1,999
+Application: ./g1 -H5M
+29,860,703 
+Application Instructions: 343,401,155
+Stop: Wed Feb 17 18:27:05 1,999
+Instructions: 343,401,155
+Time: 16.810 usr  0.010 sys  17.986 real  93.515%
+Speed: 20,416.240 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:27:05 1,999
+Application: ./g2 -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:27:23 1,999
+Instructions: 343,401,138
+Time: 17.030 usr  0.010 sys  18.299 real  93.118%
+Speed: 20,152.649 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:27:23 1,999
+Application: ./g3 -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:27:41 1,999
+Instructions: 343,401,138
+Time: 16.710 usr  0.010 sys  18.132 real  92.211%
+Speed: 20,538.346 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:27:41 1,999
+Application: ./g4 -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:27:59 1,999
+Instructions: 343,401,138
+Time: 16.690 usr  0.020 sys  17.751 real  94.133%
+Speed: 20,550.637 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:27:59 1,999
+Application: ./g5 -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:28:20 1,999
+Instructions: 343,401,138
+Time: 16.810 usr  0.000 sys  20.854 real  80.608%
+Speed: 20,428.384 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:28:20 1,999
+Application: ./g6 -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:28:37 1,999
+Instructions: 343,401,138
+Time: 16.820 usr  0.000 sys  17.257 real  97.466%
+Speed: 20,416.239 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:28:37 1,999
+Application: ./g7 -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:28:55 1,999
+Instructions: 343,401,138
+Time: 16.670 usr  0.000 sys  17.291 real  96.406%
+Speed: 20,599.948 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:28:55 1,999
+Application: ./g8 -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:29:13 1,999
+Instructions: 343,401,138
+Time: 16.650 usr  0.000 sys  17.652 real  94.321%
+Speed: 20,624.693 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:29:13 1,999
+Application: ./g9 -H5M
+29,860,703 
+Application Instructions: 343,401,139
+Stop: Wed Feb 17 18:29:31 1,999
+Instructions: 343,401,139
+Time: 16.750 usr  0.000 sys  18.141 real  92.333%
+Speed: 20,501.561 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:29:31 1,999
+Application: ./ga -H5M
+29,860,703 
+Application Instructions: 343,401,147
+Stop: Wed Feb 17 18:29:48 1,999
+Instructions: 343,401,147
+Time: 17.030 usr  0.010 sys  17.450 real  97.651%
+Speed: 20,152.649 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:29:48 1,999
+Application: ./gb -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:30:06 1,999
+Instructions: 343,401,138
+Time: 16.610 usr  0.010 sys  17.613 real  94.363%
+Speed: 20,661.922 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:30:06 1,999
+Application: ./gc -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:30:23 1,999
+Instructions: 343,401,138
+Time: 16.710 usr  0.010 sys  17.368 real  96.267%
+Speed: 20,538.346 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:30:24 1,999
+Application: ./gd -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:30:40 1,999
+Instructions: 343,401,138
+Time: 16.580 usr  0.010 sys  16.951 real  97.869%
+Speed: 20,699.285 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:30:41 1,999
+Application: ./ge -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:30:58 1,999
+Instructions: 343,401,138
+Time: 16.650 usr  0.000 sys  17.300 real  96.243%
+Speed: 20,624.693 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:30:58 1,999
+Application: ./gf -H5M
+29,860,703 
+Application Instructions: 343,401,138
+Stop: Wed Feb 17 18:31:15 1,999
+Instructions: 343,401,138
+Time: 16.440 usr  0.010 sys  16.670 real  98.681%
+Speed: 20,875.449 KIPS
+SUBDIR ======> other/tsumupto
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:31:15 1,999
+Application: ./g0 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 18:31:19 1,999
+Instructions: 70,003,555
+Time: 2.650 usr  0.010 sys  3.764 real  70.665%
+Speed: 26,317.126 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:31:19 1,999
+Application: ./g1 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,572
+Stop: Wed Feb 17 18:31:21 1,999
+Instructions: 70,003,572
+Time: 2.640 usr  0.010 sys  2.737 real  96.815%
+Speed: 26,416.442 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:31:21 1,999
+Application: ./g2 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 18:31:24 1,999
+Instructions: 70,003,555
+Time: 2.640 usr  0.000 sys  2.703 real  97.679%
+Speed: 26,516.498 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:31:24 1,999
+Application: ./g3 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 18:31:27 1,999
+Instructions: 70,003,555
+Time: 2.630 usr  0.000 sys  2.801 real  93.902%
+Speed: 26,617.321 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:31:27 1,999
+Application: ./g4 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 18:31:30 1,999
+Instructions: 70,003,555
+Time: 2.580 usr  0.000 sys  2.724 real  94.712%
+Speed: 27,133.161 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:31:30 1,999
+Application: ./g5 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 18:31:33 1,999
+Instructions: 70,003,555
+Time: 2.590 usr  0.010 sys  2.722 real  95.517%
+Speed: 26,924.444 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:31:33 1,999
+Application: ./g6 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 18:31:36 1,999
+Instructions: 70,003,555
+Time: 2.700 usr  0.000 sys  3.764 real  71.739%
+Speed: 25,927.243 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:31:37 1,999
+Application: ./g7 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 18:31:39 1,999
+Instructions: 70,003,555
+Time: 2.610 usr  0.020 sys  2.638 real  99.705%
+Speed: 26,617.321 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:31:39 1,999
+Application: ./g8 -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 18:31:42 1,999
+Instructions: 70,003,555
+Time: 2.560 usr  0.020 sys  2.622 real  98.397%
+Speed: 27,133.161 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:31:42 1,999
+Application: ./g9 -H5M
+-2,004,260,032 
+Application Instructions: 260,016,190
+Stop: Wed Feb 17 18:31:56 1,999
+Instructions: 260,016,190
+Time: 13.080 usr  0.090 sys  14.034 real  93.845%
+Speed: 19,743.067 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:31:56 1,999
+Application: ./ga -H5M
+-2,004,260,032 
+Application Instructions: 140,008,094
+Stop: Wed Feb 17 18:32:03 1,999
+Instructions: 140,008,094
+Time: 6.270 usr  0.040 sys  6.788 real  92.961%
+Speed: 22,188.287 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:32:03 1,999
+Application: ./gb -H5M
+-2,004,260,032 
+Application Instructions: 210,015,041
+Stop: Wed Feb 17 18:32:12 1,999
+Instructions: 210,015,041
+Time: 8.460 usr  0.050 sys  8.781 real  96.909%
+Speed: 24,678.618 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:32:12 1,999
+Application: ./gc -H5M
+-2,004,260,032 
+Application Instructions: 160,010,360
+Stop: Wed Feb 17 18:32:19 1,999
+Instructions: 160,010,360
+Time: 6.990 usr  0.040 sys  7.196 real  97.698%
+Speed: 22,761.075 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:32:19 1,999
+Application: ./gd -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 18:32:22 1,999
+Instructions: 70,003,555
+Time: 2.570 usr  0.010 sys  3.029 real  85.184%
+Speed: 27,133.161 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:32:22 1,999
+Application: ./ge -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 18:32:25 1,999
+Instructions: 70,003,555
+Time: 2.580 usr  0.030 sys  2.715 real  96.125%
+Speed: 26,821.285 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:32:25 1,999
+Application: ./gf -H5M
+-2,004,260,032 
+Application Instructions: 70,003,555
+Stop: Wed Feb 17 18:32:28 1,999
+Instructions: 70,003,555
+Time: 2.620 usr  0.010 sys  2.665 real  98.689%
+Speed: 26,617.321 KIPS
+SUBDIR ======> other/sieve
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:32:28 1,999
+Application: ./g0 -H40M
+121,013,308 
+Application Instructions: 445,472,012
+Stop: Wed Feb 17 18:32:55 1,999
+Instructions: 445,472,012
+Time: 25.000 usr  0.330 sys  26.930 real  94.060%
+Speed: 17,586.736 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:32:55 1,999
+Application: ./g1 -H40M
+121,013,308 
+Application Instructions: 445,472,017
+Stop: Wed Feb 17 18:33:23 1,999
+Instructions: 445,472,017
+Time: 25.820 usr  0.260 sys  27.540 real  94.698%
+Speed: 17,080.982 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:33:23 1,999
+Application: ./g2 -H40M
+121,013,308 
+Application Instructions: 445,472,012
+Stop: Wed Feb 17 18:33:49 1,999
+Instructions: 445,472,012
+Time: 24.580 usr  0.360 sys  25.760 real  96.817%
+Speed: 17,861.749 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:33:49 1,999
+Application: ./g3 -H40M
+121,013,308 
+Application Instructions: 445,472,012
+Stop: Wed Feb 17 18:34:19 1,999
+Instructions: 445,472,012
+Time: 24.310 usr  0.370 sys  30.694 real  80.406%
+Speed: 18,049.919 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:34:20 1,999
+Application: ./g4 -H40M
+121,013,308 
+Application Instructions: 445,472,012
+Stop: Wed Feb 17 18:34:48 1,999
+Instructions: 445,472,012
+Time: 24.440 usr  0.420 sys  28.009 real  88.758%
+Speed: 17,919.228 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:34:48 1,999
+Application: ./g5 -H40M
+121,013,308 
+Application Instructions: 445,472,012
+Stop: Wed Feb 17 18:35:15 1,999
+Instructions: 445,472,012
+Time: 24.850 usr  0.420 sys  27.426 real  92.138%
+Speed: 17,628.493 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:35:15 1,999
+Application: ./g6 -H40M
+121,013,308 
+Application Instructions: 445,472,012
+Stop: Wed Feb 17 18:35:43 1,999
+Instructions: 445,472,012
+Time: 24.900 usr  0.430 sys  27.903 real  90.780%
+Speed: 17,586.736 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:35:43 1,999
+Application: ./g7 -H40M
+121,013,308 
+Application Instructions: 445,472,012
+Stop: Wed Feb 17 18:36:11 1,999
+Instructions: 445,472,012
+Time: 24.970 usr  0.390 sys  27.590 real  91.917%
+Speed: 17,565.931 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:36:11 1,999
+Application: ./g8 -H40M
+121,013,308 
+Application Instructions: 445,472,012
+Stop: Wed Feb 17 18:36:40 1,999
+Instructions: 445,472,012
+Time: 25.270 usr  0.320 sys  28.940 real  88.423%
+Speed: 17,408.050 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:36:40 1,999
+Application: ./g9 -H40M
+121,013,308 
+Application Instructions: 445,564,751
+Stop: Wed Feb 17 18:37:07 1,999
+Instructions: 445,564,751
+Time: 25.270 usr  0.230 sys  26.874 real  94.889%
+Speed: 17,473.127 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:37:07 1,999
+Application: ./ga -H40M
+121,013,308 
+Application Instructions: 458,744,526
+Stop: Wed Feb 17 18:37:35 1,999
+Instructions: 458,744,526
+Time: 25.470 usr  0.380 sys  27.465 real  94.119%
+Speed: 17,746.403 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:37:35 1,999
+Application: ./gb -H40M
+121,013,308 
+Application Instructions: 445,513,432
+Stop: Wed Feb 17 18:38:04 1,999
+Instructions: 445,513,432
+Time: 25.660 usr  0.370 sys  28.669 real  90.796%
+Speed: 17,115.383 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:38:04 1,999
+Application: ./gc -H40M
+121,013,308 
+Application Instructions: 445,498,033
+Stop: Wed Feb 17 18:38:33 1,999
+Instructions: 445,498,033
+Time: 25.730 usr  0.410 sys  28.907 real  90.429%
+Speed: 17,042.771 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:38:33 1,999
+Application: ./gd -H40M
+121,013,308 
+Application Instructions: 445,477,145
+Stop: Wed Feb 17 18:39:01 1,999
+Instructions: 445,477,145
+Time: 24.930 usr  0.340 sys  27.512 real  91.850%
+Speed: 17,628.696 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:39:01 1,999
+Application: ./ge -H40M
+121,013,308 
+Application Instructions: 445,471,963
+Stop: Wed Feb 17 18:39:30 1,999
+Instructions: 445,471,963
+Time: 25.780 usr  0.380 sys  29.398 real  88.984%
+Speed: 17,028.745 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H40M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:39:30 1,999
+Application: ./gf -H40M
+121,013,308 
+Application Instructions: 445,471,723
+Stop: Wed Feb 17 18:40:00 1,999
+Instructions: 445,471,723
+Time: 25.460 usr  0.370 sys  29.343 real  88.029%
+Speed: 17,246.292 KIPS
+SUBDIR ======> other/queens
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:40:00 1,999
+Application: ./g0 -H60M
+14,200 
+Application Instructions: 1,351,158,429
+Stop: Wed Feb 17 18:41:35 1,999
+Instructions: 1,351,158,429
+Time: 83.790 usr  0.540 sys  94.933 real  88.831%
+Speed: 16,022.275 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:41:36 1,999
+Application: ./g1 -H60M
+14,200 
+Application Instructions: 1,380,613,922
+Stop: Wed Feb 17 18:43:13 1,999
+Instructions: 1,380,613,922
+Time: 87.550 usr  0.630 sys  97.293 real  90.634%
+Speed: 15,656.769 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:43:13 1,999
+Application: ./g2 -H60M
+14,200 
+Application Instructions: 1,351,158,429
+Stop: Wed Feb 17 18:44:49 1,999
+Instructions: 1,351,158,429
+Time: 83.410 usr  0.530 sys  95.809 real  87.612%
+Speed: 16,096.717 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:44:49 1,999
+Application: ./g3 -H60M
+14,200 
+Application Instructions: 1,351,158,429
+Stop: Wed Feb 17 18:46:19 1,999
+Instructions: 1,351,158,429
+Time: 83.220 usr  0.590 sys  89.663 real  93.472%
+Speed: 16,121.685 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:46:19 1,999
+Application: ./g4 -H60M
+14,200 
+Application Instructions: 1,351,158,429
+Stop: Wed Feb 17 18:47:45 1,999
+Instructions: 1,351,158,429
+Time: 82.830 usr  0.530 sys  86.222 real  96.681%
+Speed: 16,208.714 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:47:46 1,999
+Application: ./g5 -H60M
+14,200 
+Application Instructions: 1,351,158,429
+Stop: Wed Feb 17 18:49:12 1,999
+Instructions: 1,351,158,429
+Time: 83.050 usr  0.560 sys  86.769 real  96.359%
+Speed: 16,160.249 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:49:13 1,999
+Application: ./g6 -H60M
+14,200 
+Application Instructions: 1,351,158,429
+Stop: Wed Feb 17 18:50:39 1,999
+Instructions: 1,351,158,429
+Time: 83.130 usr  0.490 sys  86.646 real  96.508%
+Speed: 16,158.317 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:50:39 1,999
+Application: ./g7 -H60M
+14,200 
+Application Instructions: 1,351,158,429
+Stop: Wed Feb 17 18:52:08 1,999
+Instructions: 1,351,158,429
+Time: 83.140 usr  0.520 sys  89.012 real  93.988%
+Speed: 16,150.591 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:52:09 1,999
+Application: ./g8 -H60M
+14,200 
+Application Instructions: 1,351,158,429
+Stop: Wed Feb 17 18:53:35 1,999
+Instructions: 1,351,158,429
+Time: 82.620 usr  0.560 sys  86.026 real  96.692%
+Speed: 16,243.790 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:53:35 1,999
+Application: ./g9 -H60M
+14,200 
+Application Instructions: 1,366,676,685
+Stop: Wed Feb 17 18:55:01 1,999
+Instructions: 1,366,676,685
+Time: 81.930 usr  0.540 sys  85.717 real  96.212%
+Speed: 16,571.804 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:55:01 1,999
+Application: ./ga -H60M
+14,200 
+Application Instructions: 1,362,118,495
+Stop: Wed Feb 17 18:56:29 1,999
+Instructions: 1,362,118,495
+Time: 83.340 usr  0.510 sys  88.405 real  94.847%
+Speed: 16,244.705 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:56:30 1,999
+Application: ./gb -H60M
+14,200 
+Application Instructions: 1,351,158,429
+Stop: Wed Feb 17 18:57:56 1,999
+Instructions: 1,351,158,429
+Time: 83.080 usr  0.520 sys  86.611 real  96.523%
+Speed: 16,162.182 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:57:57 1,999
+Application: ./gc -H60M
+14,200 
+Application Instructions: 1,624,398,148
+Stop: Wed Feb 17 18:59:36 1,999
+Instructions: 1,624,398,148
+Time: 92.460 usr  0.510 sys  99.674 real  93.274%
+Speed: 17,472.283 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 18:59:37 1,999
+Application: ./gd -H60M
+14,200 
+Application Instructions: 1,317,042,357
+Stop: Wed Feb 17 19:01:08 1,999
+Instructions: 1,317,042,357
+Time: 84.510 usr  0.670 sys  90.997 real  93.608%
+Speed: 15,461.873 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:01:08 1,999
+Application: ./ge -H60M
+14,200 
+Application Instructions: 1,351,159,248
+Stop: Wed Feb 17 19:02:31 1,999
+Instructions: 1,351,159,248
+Time: 80.690 usr  0.530 sys  82.938 real  97.928%
+Speed: 16,635.795 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:02:31 1,999
+Application: ./gf -H60M
+14,200 
+Application Instructions: 1,351,158,429
+Stop: Wed Feb 17 19:04:00 1,999
+Instructions: 1,351,158,429
+Time: 83.480 usr  0.550 sys  89.444 real  93.947%
+Speed: 16,079.477 KIPS
+SUBDIR ======> other/words
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:04:01 1,999
+Application: ./g0 -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 221,588,351
+Stop: Wed Feb 17 19:04:15 1,999
+Instructions: 221,588,351
+Time: 12.980 usr  0.590 sys  14.484 real  93.688%
+Speed: 16,329.282 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:04:15 1,999
+Application: ./g1 -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 221,588,455
+Stop: Wed Feb 17 19:04:30 1,999
+Instructions: 221,588,455
+Time: 13.330 usr  0.570 sys  14.555 real  95.503%
+Speed: 15,941.615 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:04:30 1,999
+Application: ./g2 -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 221,588,351
+Stop: Wed Feb 17 19:04:44 1,999
+Instructions: 221,588,351
+Time: 13.090 usr  0.570 sys  13.876 real  98.444%
+Speed: 16,221.695 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:04:44 1,999
+Application: ./g3 -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 221,588,349
+Stop: Wed Feb 17 19:04:59 1,999
+Instructions: 221,588,349
+Time: 13.180 usr  0.590 sys  14.474 real  95.134%
+Speed: 16,092.110 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:04:59 1,999
+Application: ./g4 -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 221,588,351
+Stop: Wed Feb 17 19:05:13 1,999
+Instructions: 221,588,351
+Time: 13.180 usr  0.520 sys  14.339 real  95.541%
+Speed: 16,174.332 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:05:14 1,999
+Application: ./g5 -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 221,588,351
+Stop: Wed Feb 17 19:05:28 1,999
+Instructions: 221,588,351
+Time: 13.190 usr  0.570 sys  14.333 real  96.005%
+Speed: 16,103.805 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:05:28 1,999
+Application: ./g6 -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 221,588,351
+Stop: Wed Feb 17 19:05:42 1,999
+Instructions: 221,588,351
+Time: 13.010 usr  0.530 sys  13.979 real  96.859%
+Speed: 16,365.462 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:05:42 1,999
+Application: ./g7 -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 221,588,403
+Stop: Wed Feb 17 19:05:57 1,999
+Instructions: 221,588,403
+Time: 13.110 usr  0.520 sys  14.378 real  94.797%
+Speed: 16,257.403 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:05:57 1,999
+Application: ./g8 -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 222,127,715
+Stop: Wed Feb 17 19:06:11 1,999
+Instructions: 222,127,715
+Time: 13.180 usr  0.460 sys  14.406 real  94.681%
+Speed: 16,285.023 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:06:12 1,999
+Application: ./g9 -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 228,280,661
+Stop: Wed Feb 17 19:06:26 1,999
+Instructions: 228,280,661
+Time: 13.390 usr  0.520 sys  14.514 real  95.839%
+Speed: 16,411.262 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:06:26 1,999
+Application: ./ga -H60M
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:12:01 1,999
+Application: ./gb -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 221,588,351
+Stop: Wed Feb 17 19:12:17 1,999
+Instructions: 221,588,351
+Time: 13.320 usr  0.550 sys  15.310 real  90.595%
+Speed: 15,976.089 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:12:17 1,999
+Application: ./gc -H60M
+3,276 96 4,716 0 6,300 0 696 5,064 5,196 84 480 1,836 672 4,188 348 0 0 11,004 6,072 6,900 744 336 0 0 0 0 
+Application Instructions: 221,742,092
+Stop: Wed Feb 17 19:12:31 1,999
+Instructions: 221,742,092
+Time: 12.930 usr  0.640 sys  14.339 real  94.637%
+Speed: 16,340.611 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:12:32 1,999
+Application: ./gd -H60M
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+/users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount: ./ge: program not found
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:17:57 1,999
+Stop: Wed Feb 17 19:17:57 1,999
+Time: 0.000 usr  0.000 sys  0.002 real  0.000%
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:17:57 1,999
+Application: ./gf -H60M
+SUBDIR ======> other/puzzle
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:23:08 1,999
+Application: ./g0 -H60M
+128 
+Application Instructions: 1,694,104,227
+Stop: Wed Feb 17 19:24:52 1,999
+Instructions: 1,694,104,227
+Time: 99.990 usr  0.610 sys  104.360 real  96.397%
+Speed: 16,840.002 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:24:52 1,999
+Application: ./g1 -H60M
+128 
+Application Instructions: 1,702,654,041
+Stop: Wed Feb 17 19:26:35 1,999
+Instructions: 1,702,654,041
+Time: 99.250 usr  0.450 sys  103.164 real  96.642%
+Speed: 17,077.774 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:26:36 1,999
+Application: ./g2 -H60M
+128 
+Application Instructions: 1,694,104,227
+Stop: Wed Feb 17 19:28:20 1,999
+Instructions: 1,694,104,227
+Time: 100.600 usr  0.590 sys  104.329 real  96.991%
+Speed: 16,741.815 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:28:20 1,999
+Application: ./g3 -H60M
+128 
+Application Instructions: 1,723,760,652
+Stop: Wed Feb 17 19:30:07 1,999
+Instructions: 1,723,760,652
+Time: 104.210 usr  0.660 sys  106.713 real  98.273%
+Speed: 16,437.119 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:30:07 1,999
+Application: ./g4 -H60M
+128 
+Application Instructions: 1,694,104,227
+Stop: Wed Feb 17 19:31:53 1,999
+Instructions: 1,694,104,227
+Time: 100.830 usr  0.590 sys  106.192 real  95.506%
+Speed: 16,703.848 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:31:54 1,999
+Application: ./g5 -H60M
+128 
+Application Instructions: 1,694,104,354
+Stop: Wed Feb 17 19:33:41 1,999
+Instructions: 1,694,104,354
+Time: 100.000 usr  0.490 sys  106.943 real  93.966%
+Speed: 16,858.437 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:33:41 1,999
+Application: ./g6 -H60M
+128 
+Application Instructions: 1,694,104,227
+Stop: Wed Feb 17 19:35:27 1,999
+Instructions: 1,694,104,227
+Time: 100.600 usr  0.590 sys  106.416 real  95.089%
+Speed: 16,741.815 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:35:28 1,999
+Application: ./g7 -H60M
+128 
+Application Instructions: 1,927,390,366
+Stop: Wed Feb 17 19:37:18 1,999
+Instructions: 1,927,390,366
+Time: 105.750 usr  0.510 sys  110.050 real  96.556%
+Speed: 18,138.437 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:37:18 1,999
+Application: ./g8 -H60M
+128 
+Application Instructions: 1,694,104,227
+Stop: Wed Feb 17 19:39:04 1,999
+Instructions: 1,694,104,227
+Time: 100.490 usr  0.540 sys  105.917 real  95.386%
+Speed: 16,768.328 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:39:04 1,999
+Application: ./g9 -H60M
+128 
+Application Instructions: 1,728,224,636
+Stop: Wed Feb 17 19:40:53 1,999
+Instructions: 1,728,224,636
+Time: 103.890 usr  0.530 sys  108.887 real  95.898%
+Speed: 16,550.705 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:40:53 1,999
+Application: ./ga -H60M
+128 
+Application Instructions: 1,706,703,437
+Stop: Wed Feb 17 19:42:35 1,999
+Instructions: 1,706,703,437
+Time: 97.810 usr  0.560 sys  101.344 real  97.066%
+Speed: 17,349.837 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:42:35 1,999
+Application: ./gb -H60M
+128 
+Application Instructions: 1,694,104,227
+Stop: Wed Feb 17 19:44:18 1,999
+Instructions: 1,694,104,227
+Time: 100.720 usr  0.660 sys  103.607 real  97.851%
+Speed: 16,710.438 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:44:19 1,999
+Application: ./gc -H60M
+128 
+Application Instructions: 1,694,104,227
+Stop: Wed Feb 17 19:46:03 1,999
+Instructions: 1,694,104,227
+Time: 100.390 usr  0.430 sys  104.249 real  96.710%
+Speed: 16,803.256 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:46:03 1,999
+Application: ./gd -H60M
+128 
+Application Instructions: 1,741,623,353
+Stop: Wed Feb 17 19:47:45 1,999
+Instructions: 1,741,623,353
+Time: 99.420 usr  0.610 sys  102.246 real  97.832%
+Speed: 17,411.010 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:47:46 1,999
+Application: ./ge -H60M
+128 
+Application Instructions: 1,701,537,602
+Stop: Wed Feb 17 19:49:27 1,999
+Instructions: 1,701,537,602
+Time: 99.160 usr  0.660 sys  100.999 real  98.833%
+Speed: 17,046.059 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:49:27 1,999
+Application: ./gf -H60M
+SUBDIR ======> imaginary/tak
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:36 1,999
+Application: ./g0 -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:54:37 1,999
+Instructions: 36,155,788
+Time: 1.510 usr  0.010 sys  1.550 real  98.063%
+Speed: 23,786.703 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:37 1,999
+Application: ./g1 -H5M
+9 
+Application Instructions: 36,155,805
+Stop: Wed Feb 17 19:54:39 1,999
+Instructions: 36,155,805
+Time: 1.500 usr  0.010 sys  1.513 real  99.800%
+Speed: 23,944.242 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:39 1,999
+Application: ./g2 -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:54:41 1,999
+Instructions: 36,155,788
+Time: 1.520 usr  0.010 sys  1.551 real  98.628%
+Speed: 23,631.234 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:41 1,999
+Application: ./g3 -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:54:42 1,999
+Instructions: 36,155,788
+Time: 1.520 usr  0.000 sys  1.520 real  100.001%
+Speed: 23,786.703 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:42 1,999
+Application: ./g4 -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:54:44 1,999
+Instructions: 36,155,788
+Time: 1.510 usr  0.020 sys  1.530 real  100.000%
+Speed: 23,631.234 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:44 1,999
+Application: ./g5 -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:54:45 1,999
+Instructions: 36,155,788
+Time: 1.520 usr  0.000 sys  1.525 real  99.697%
+Speed: 23,786.703 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:45 1,999
+Application: ./g6 -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:54:47 1,999
+Instructions: 36,155,788
+Time: 1.520 usr  0.000 sys  1.543 real  98.484%
+Speed: 23,786.703 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:47 1,999
+Application: ./g7 -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:54:49 1,999
+Instructions: 36,155,788
+Time: 1.490 usr  0.030 sys  1.534 real  99.099%
+Speed: 23,786.703 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:49 1,999
+Application: ./g8 -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:54:50 1,999
+Instructions: 36,155,788
+Time: 1.510 usr  0.000 sys  1.600 real  94.383%
+Speed: 23,944.230 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:50 1,999
+Application: ./g9 -H5M
+9 
+Application Instructions: 36,155,789
+Stop: Wed Feb 17 19:54:52 1,999
+Instructions: 36,155,789
+Time: 1.520 usr  0.000 sys  1.564 real  97.185%
+Speed: 23,786.703 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:52 1,999
+Application: ./ga -H5M
+9 
+Application Instructions: 36,155,797
+Stop: Wed Feb 17 19:54:54 1,999
+Instructions: 36,155,797
+Time: 1.550 usr  0.010 sys  1.577 real  98.913%
+Speed: 23,176.793 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:54 1,999
+Application: ./gb -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:54:55 1,999
+Instructions: 36,155,788
+Time: 1.540 usr  0.000 sys  1.552 real  99.236%
+Speed: 23,477.784 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:55 1,999
+Application: ./gc -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:54:57 1,999
+Instructions: 36,155,788
+Time: 1.520 usr  0.010 sys  1.593 real  96.016%
+Speed: 23,631.234 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:57 1,999
+Application: ./gd -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:54:59 1,999
+Instructions: 36,155,788
+Time: 1.520 usr  0.000 sys  1.554 real  97.800%
+Speed: 23,786.703 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:54:59 1,999
+Application: ./ge -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:55:00 1,999
+Instructions: 36,155,788
+Time: 1.530 usr  0.020 sys  1.584 real  97.873%
+Speed: 23,326.315 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:55:00 1,999
+Application: ./gf -H5M
+9 
+Application Instructions: 36,155,788
+Stop: Wed Feb 17 19:55:02 1,999
+Instructions: 36,155,788
+Time: 1.530 usr  0.000 sys  1.550 real  98.684%
+Speed: 23,631.234 KIPS
+SUBDIR ======> imaginary/exp3_8
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:55:02 1,999
+Application: ./g0 -H60M
+6,561 
+Application Instructions: 267,097,385
+Stop: Wed Feb 17 19:55:17 1,999
+Instructions: 267,097,385
+Time: 13.730 usr  0.570 sys  14.642 real  97.664%
+Speed: 18,678.139 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:55:17 1,999
+Application: ./g1 -H60M
+6,561 
+Application Instructions: 267,097,385
+Stop: Wed Feb 17 19:55:31 1,999
+Instructions: 267,097,385
+Time: 13.730 usr  0.660 sys  14.508 real  99.186%
+Speed: 18,561.319 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:55:32 1,999
+Application: ./g2 -H60M
+6,561 
+Application Instructions: 267,097,385
+Stop: Wed Feb 17 19:55:46 1,999
+Instructions: 267,097,385
+Time: 13.870 usr  0.590 sys  14.860 real  97.309%
+Speed: 18,471.465 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:55:47 1,999
+Application: ./g3 -H60M
+6,561 
+Application Instructions: 267,097,385
+Stop: Wed Feb 17 19:56:02 1,999
+Instructions: 267,097,385
+Time: 13.870 usr  0.470 sys  14.839 real  96.637%
+Speed: 18,626.038 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:56:02 1,999
+Application: ./g4 -H60M
+6,561 
+Application Instructions: 267,097,385
+Stop: Wed Feb 17 19:56:16 1,999
+Instructions: 267,097,385
+Time: 13.990 usr  0.350 sys  14.503 real  98.875%
+Speed: 18,626.038 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:56:17 1,999
+Application: ./g5 -H60M
+6,561 
+Application Instructions: 267,103,965
+Stop: Wed Feb 17 19:56:31 1,999
+Instructions: 267,103,965
+Time: 13.860 usr  0.480 sys  14.596 real  98.246%
+Speed: 18,626.497 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:56:31 1,999
+Application: ./g6 -H60M
+6,561 
+Application Instructions: 267,097,385
+Stop: Wed Feb 17 19:56:46 1,999
+Instructions: 267,097,385
+Time: 13.960 usr  0.460 sys  14.529 real  99.253%
+Speed: 18,522.704 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:56:46 1,999
+Application: ./g7 -H60M
+6,561 
+Application Instructions: 267,097,385
+Stop: Wed Feb 17 19:57:01 1,999
+Instructions: 267,097,385
+Time: 13.960 usr  0.430 sys  14.868 real  96.785%
+Speed: 18,561.319 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:57:01 1,999
+Application: ./g8 -H60M
+6,561 
+Application Instructions: 267,097,385
+Stop: Wed Feb 17 19:57:16 1,999
+Instructions: 267,097,385
+Time: 13.940 usr  0.450 sys  15.042 real  95.667%
+Speed: 18,561.319 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:57:17 1,999
+Application: ./g9 -H60M
+6,561 
+Application Instructions: 267,097,386
+Stop: Wed Feb 17 19:57:31 1,999
+Instructions: 267,097,386
+Time: 13.910 usr  0.500 sys  14.844 real  97.078%
+Speed: 18,535.558 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:57:32 1,999
+Application: ./ga -H60M
+6,561 
+Application Instructions: 275,163,941
+Stop: Wed Feb 17 19:57:46 1,999
+Instructions: 275,163,941
+Time: 13.880 usr  0.600 sys  14.833 real  97.623%
+Speed: 19,003.035 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:57:47 1,999
+Application: ./gb -H60M
+6,561 
+Application Instructions: 267,097,385
+Stop: Wed Feb 17 19:58:01 1,999
+Instructions: 267,097,385
+Time: 13.690 usr  0.530 sys  14.521 real  97.925%
+Speed: 18,783.220 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:58:01 1,999
+Application: ./gc -H60M
+6,561 
+Application Instructions: 267,097,385
+Stop: Wed Feb 17 19:58:16 1,999
+Instructions: 267,097,385
+Time: 13.780 usr  0.620 sys  14.967 real  96.214%
+Speed: 18,548.430 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:58:17 1,999
+Application: ./gd -H60M
+6,561 
+Application Instructions: 291,299,671
+Stop: Wed Feb 17 19:58:31 1,999
+Instructions: 291,299,671
+Time: 14.010 usr  0.570 sys  14.787 real  98.603%
+Speed: 19,979.401 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:58:32 1,999
+Application: ./ge -H60M
+6,561 
+Application Instructions: 267,097,607
+Stop: Wed Feb 17 19:58:47 1,999
+Instructions: 267,097,607
+Time: 14.190 usr  0.500 sys  14.840 real  98.987%
+Speed: 18,182.274 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:58:47 1,999
+Application: ./gf -H60M
+6,561 
+Application Instructions: 234,828,042
+Stop: Wed Feb 17 19:59:01 1,999
+Instructions: 234,828,042
+Time: 13.220 usr  0.440 sys  13.992 real  97.628%
+Speed: 17,190.925 KIPS
+SUBDIR ======> spectral/awards
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:01 1,999
+Application: ./g0 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 195,510
+Stop: Wed Feb 17 19:59:01 1,999
+Instructions: 195,510
+Time: 0.040 usr  0.010 sys  0.057 real  87.624%
+Speed: 3,910.200 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:01 1,999
+Application: ./g1 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 195,861
+Stop: Wed Feb 17 19:59:01 1,999
+Instructions: 195,861
+Time: 0.060 usr  0.000 sys  0.062 real  96.894%
+Speed: 3,264.350 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:01 1,999
+Application: ./g2 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 195,510
+Stop: Wed Feb 17 19:59:01 1,999
+Instructions: 195,510
+Time: 0.040 usr  0.010 sys  0.053 real  94.589%
+Speed: 3,910.200 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:02 1,999
+Application: ./g3 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 197,764
+Stop: Wed Feb 17 19:59:02 1,999
+Instructions: 197,764
+Time: 0.030 usr  0.010 sys  0.064 real  62.488%
+Speed: 4,944.100 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:02 1,999
+Application: ./g4 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 195,510
+Stop: Wed Feb 17 19:59:02 1,999
+Instructions: 195,510
+Time: 0.040 usr  0.020 sys  0.058 real  104.252%
+Speed: 3,258.500 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:02 1,999
+Application: ./g5 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 195,510
+Stop: Wed Feb 17 19:59:02 1,999
+Instructions: 195,510
+Time: 0.030 usr  0.020 sys  0.054 real  92.037%
+Speed: 3,910.200 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:02 1,999
+Application: ./g6 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 195,510
+Stop: Wed Feb 17 19:59:02 1,999
+Instructions: 195,510
+Time: 0.050 usr  0.010 sys  0.064 real  94.162%
+Speed: 3,258.500 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:02 1,999
+Application: ./g7 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 200,941
+Stop: Wed Feb 17 19:59:02 1,999
+Instructions: 200,941
+Time: 0.050 usr  0.000 sys  0.060 real  83.077%
+Speed: 4,018.820 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:02 1,999
+Application: ./g8 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 195,510
+Stop: Wed Feb 17 19:59:02 1,999
+Instructions: 195,510
+Time: 0.010 usr  0.040 sys  0.058 real  85.967%
+Speed: 3,910.200 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:02 1,999
+Application: ./g9 -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 200,625
+Stop: Wed Feb 17 19:59:02 1,999
+Instructions: 200,625
+Time: 0.050 usr  0.000 sys  0.054 real  93.341%
+Speed: 4,012.500 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:03 1,999
+Application: ./ga -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 197,277
+Stop: Wed Feb 17 19:59:03 1,999
+Instructions: 197,277
+Time: 0.040 usr  0.010 sys  0.054 real  93.280%
+Speed: 3,945.540 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:03 1,999
+Application: ./gb -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 195,509
+Stop: Wed Feb 17 19:59:03 1,999
+Instructions: 195,509
+Time: 0.040 usr  0.020 sys  0.069 real  86.946%
+Speed: 3,258.483 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:03 1,999
+Application: ./gc -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 195,357
+Stop: Wed Feb 17 19:59:03 1,999
+Instructions: 195,357
+Time: 0.040 usr  0.010 sys  0.067 real  74.429%
+Speed: 3,907.140 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:03 1,999
+Application: ./gd -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 197,709
+Stop: Wed Feb 17 19:59:03 1,999
+Instructions: 197,709
+Time: 0.040 usr  0.010 sys  0.058 real  86.164%
+Speed: 3,954.180 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+/users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount: ./ge: program not found
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:03 1,999
+Stop: Wed Feb 17 19:59:03 1,999
+Time: 0.000 usr  0.000 sys  0.002 real  0.000%
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H5M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:03 1,999
+Application: ./gf -H5M
+SimonGold74 19 34 21 Gold102 35 27 40 HansGold70 45 17 8 Bronze52 23 19 10 PhilGold70 1 35 34 Silver60 18 21 21 Bronze55 20 19 16 KevinGold72 9 54 9 Gold72 17 41 14 Bronze59 23 18 18 
+Application Instructions: 24,705,185
+Stop: Wed Feb 17 19:59:05 1,999
+Instructions: 24,705,185
+Time: 1.330 usr  0.030 sys  1.474 real  92.278%
+Speed: 18,165.577 KIPS
+SUBDIR ======> spectral/cichelli
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:05 1,999
+Application: ./g0 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 16,837,129
+Stop: Wed Feb 17 19:59:06 1,999
+Instructions: 16,837,129
+Time: 1.030 usr  0.020 sys  1.121 real  93.630%
+Speed: 16,035.361 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:06 1,999
+Application: ./g1 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 17,362,618
+Stop: Wed Feb 17 19:59:07 1,999
+Instructions: 17,362,618
+Time: 1.040 usr  0.060 sys  1.150 real  95.631%
+Speed: 15,784.198 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:07 1,999
+Application: ./g2 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 16,837,132
+Stop: Wed Feb 17 19:59:08 1,999
+Instructions: 16,837,132
+Time: 1.060 usr  0.020 sys  1.140 real  94.759%
+Speed: 15,589.937 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:09 1,999
+Application: ./g3 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 16,837,257
+Stop: Wed Feb 17 19:59:10 1,999
+Instructions: 16,837,257
+Time: 1.080 usr  0.030 sys  1.174 real  94.517%
+Speed: 15,168.700 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:10 1,999
+Application: ./g4 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 16,837,129
+Stop: Wed Feb 17 19:59:11 1,999
+Instructions: 16,837,129
+Time: 1.040 usr  0.040 sys  1.127 real  95.871%
+Speed: 15,589.934 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:11 1,999
+Application: ./g5 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 16,837,159
+Stop: Wed Feb 17 19:59:12 1,999
+Instructions: 16,837,159
+Time: 1.070 usr  0.030 sys  1.244 real  88.404%
+Speed: 15,306.508 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:12 1,999
+Application: ./g6 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 16,837,129
+Stop: Wed Feb 17 19:59:14 1,999
+Instructions: 16,837,129
+Time: 1.060 usr  0.030 sys  1.321 real  82.520%
+Speed: 15,446.907 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:14 1,999
+Application: ./g7 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 20,564,495
+Stop: Wed Feb 17 19:59:15 1,999
+Instructions: 20,564,495
+Time: 1.110 usr  0.050 sys  1.218 real  95.266%
+Speed: 17,728.013 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:15 1,999
+Application: ./g8 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 16,837,129
+Stop: Wed Feb 17 19:59:16 1,999
+Instructions: 16,837,129
+Time: 0.980 usr  0.040 sys  1.198 real  85.148%
+Speed: 16,506.989 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:16 1,999
+Application: ./g9 -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 17,833,479
+Stop: Wed Feb 17 19:59:18 1,999
+Instructions: 17,833,479
+Time: 1.060 usr  0.030 sys  1.197 real  91.070%
+Speed: 16,360.990 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:18 1,999
+Application: ./ga -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 17,183,542
+Stop: Wed Feb 17 19:59:19 1,999
+Instructions: 17,183,542
+Time: 1.040 usr  0.020 sys  1.168 real  90.756%
+Speed: 16,210.889 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:19 1,999
+Application: ./gb -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 16,837,129
+Stop: Wed Feb 17 19:59:20 1,999
+Instructions: 16,837,129
+Time: 0.900 usr  0.010 sys  1.185 real  76.820%
+Speed: 18,502.340 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:20 1,999
+Application: ./gc -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 16,817,104
+Stop: Wed Feb 17 19:59:21 1,999
+Instructions: 16,817,104
+Time: 1.030 usr  0.040 sys  1.123 real  95.240%
+Speed: 15,716.920 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:21 1,999
+Application: ./gd -H10M
+YesIts 16,948 a5 i8 l8 c7 b8 y10 k3 t1 e1 j0 n0 
+Application Instructions: 17,485,186
+Stop: Wed Feb 17 19:59:23 1,999
+Instructions: 17,485,186
+Time: 1.070 usr  0.030 sys  1.105 real  99.544%
+Speed: 15,895.624 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+/users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount: ./ge: program not found
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:23 1,999
+Stop: Wed Feb 17 19:59:23 1,999
+Time: 0.000 usr  0.000 sys  0.001 real  0.000%
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 19:59:23 1,999
+Application: ./gf -H10M
+SUBDIR ======> spectral/boyer2
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:33 1,999
+Application: ./g0 -H10M
+The term is a tautology
+
+Application Instructions: 13,297,443
+Stop: Wed Feb 17 20:04:34 1,999
+Instructions: 13,297,443
+Time: 0.860 usr  0.030 sys  0.924 real  96.301%
+Speed: 14,940.947 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:34 1,999
+Application: ./g1 -H10M
+The term is a tautology
+
+Application Instructions: 13,309,127
+Stop: Wed Feb 17 20:04:35 1,999
+Instructions: 13,309,127
+Time: 0.880 usr  0.030 sys  0.950 real  95.796%
+Speed: 14,625.414 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:35 1,999
+Application: ./g2 -H10M
+The term is a tautology
+
+Application Instructions: 13,297,443
+Stop: Wed Feb 17 20:04:36 1,999
+Instructions: 13,297,443
+Time: 0.880 usr  0.030 sys  0.933 real  97.565%
+Speed: 14,612.575 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:36 1,999
+Application: ./g3 -H10M
+The term is a tautology
+
+Application Instructions: 13,297,443
+Stop: Wed Feb 17 20:04:37 1,999
+Instructions: 13,297,443
+Time: 0.880 usr  0.040 sys  0.930 real  98.966%
+Speed: 14,453.742 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:37 1,999
+Application: ./g4 -H10M
+The term is a tautology
+
+Application Instructions: 13,297,443
+Stop: Wed Feb 17 20:04:38 1,999
+Instructions: 13,297,443
+Time: 0.860 usr  0.060 sys  0.962 real  95.646%
+Speed: 14,453.742 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:38 1,999
+Application: ./g5 -H10M
+The term is a tautology
+
+Application Instructions: 13,297,443
+Stop: Wed Feb 17 20:04:39 1,999
+Instructions: 13,297,443
+Time: 0.880 usr  0.050 sys  0.948 real  98.094%
+Speed: 14,298.326 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:39 1,999
+Application: ./g6 -H10M
+The term is a tautology
+
+Application Instructions: 13,297,443
+Stop: Wed Feb 17 20:04:40 1,999
+Instructions: 13,297,443
+Time: 0.880 usr  0.040 sys  0.968 real  95.002%
+Speed: 14,453.742 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:40 1,999
+Application: ./g7 -H10M
+The term is a tautology
+
+Application Instructions: 13,325,874
+Stop: Wed Feb 17 20:04:41 1,999
+Instructions: 13,325,874
+Time: 0.870 usr  0.060 sys  0.942 real  98.750%
+Speed: 14,328.897 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:41 1,999
+Application: ./g8 -H10M
+The term is a tautology
+
+Application Instructions: 13,297,443
+Stop: Wed Feb 17 20:04:42 1,999
+Instructions: 13,297,443
+Time: 0.870 usr  0.040 sys  0.937 real  97.142%
+Speed: 14,612.575 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:42 1,999
+Application: ./g9 -H10M
+The term is a tautology
+
+Application Instructions: 13,332,139
+Stop: Wed Feb 17 20:04:43 1,999
+Instructions: 13,332,139
+Time: 0.880 usr  0.070 sys  0.980 real  96.978%
+Speed: 14,033.831 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+/users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount: ./ga: program not found
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:43 1,999
+Stop: Wed Feb 17 20:04:43 1,999
+Time: 0.000 usr  0.000 sys  0.002 real  0.000%
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:43 1,999
+Application: ./gb -H10M
+The term is a tautology
+
+Application Instructions: 13,298,193
+Stop: Wed Feb 17 20:04:44 1,999
+Instructions: 13,298,193
+Time: 0.920 usr  0.040 sys  0.999 real  96.081%
+Speed: 13,852.284 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:44 1,999
+Application: ./gc -H10M
+The term is a tautology
+
+Application Instructions: 13,388,047
+Stop: Wed Feb 17 20:04:45 1,999
+Instructions: 13,388,047
+Time: 0.890 usr  0.030 sys  1.005 real  91.567%
+Speed: 14,552.225 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:45 1,999
+Application: ./gd -H10M
+The term is a tautology
+
+Application Instructions: 13,535,975
+Stop: Wed Feb 17 20:04:46 1,999
+Instructions: 13,535,975
+Time: 0.920 usr  0.040 sys  1.003 real  95.729%
+Speed: 14,099.974 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+/users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount: ./ge: program not found
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:46 1,999
+Stop: Wed Feb 17 20:04:46 1,999
+Time: 0.000 usr  0.010 sys  0.002 real  531.059%
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H10M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:04:47 1,999
+Application: ./gf -H10M
+SUBDIR ======> spectral/sorting
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:09:58 1,999
+Application: ./g0 -H60M
+3,849,600 
+Application Instructions: 289,382,777
+Stop: Wed Feb 17 20:10:15 1,999
+Instructions: 289,382,777
+Time: 16.200 usr  0.470 sys  17.205 real  96.892%
+Speed: 17,359.495 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:10:15 1,999
+Application: ./g1 -H60M
+3,849,600 
+Application Instructions: 289,382,777
+Stop: Wed Feb 17 20:10:33 1,999
+Instructions: 289,382,777
+Time: 16.140 usr  0.550 sys  17.404 real  95.896%
+Speed: 17,338.692 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:10:33 1,999
+Application: ./g2 -H60M
+3,849,600 
+Application Instructions: 289,382,777
+Stop: Wed Feb 17 20:10:50 1,999
+Instructions: 289,382,777
+Time: 16.130 usr  0.590 sys  17.128 real  97.618%
+Speed: 17,307.582 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:10:50 1,999
+Application: ./g3 -H60M
+3,849,600 
+Application Instructions: 289,382,473
+Stop: Wed Feb 17 20:11:07 1,999
+Instructions: 289,382,473
+Time: 16.250 usr  0.580 sys  17.231 real  97.672%
+Speed: 17,194.443 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:11:08 1,999
+Application: ./g4 -H60M
+3,849,600 
+Application Instructions: 289,382,777
+Stop: Wed Feb 17 20:11:25 1,999
+Instructions: 289,382,777
+Time: 16.310 usr  0.500 sys  17.335 real  96.972%
+Speed: 17,214.918 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:11:25 1,999
+Application: ./g5 -H60M
+3,849,600 
+Application Instructions: 289,382,777
+Stop: Wed Feb 17 20:11:43 1,999
+Instructions: 289,382,777
+Time: 16.290 usr  0.610 sys  17.520 real  96.463%
+Speed: 17,123.241 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:11:43 1,999
+Application: ./g6 -H60M
+3,849,600 
+Application Instructions: 289,382,777
+Stop: Wed Feb 17 20:12:00 1,999
+Instructions: 289,382,777
+Time: 16.120 usr  0.560 sys  16.877 real  98.834%
+Speed: 17,349.087 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:12:00 1,999
+Application: ./g7 -H60M
+3,849,600 
+Application Instructions: 289,436,757
+Stop: Wed Feb 17 20:12:17 1,999
+Instructions: 289,436,757
+Time: 16.330 usr  0.620 sys  17.201 real  98.539%
+Speed: 17,075.915 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:12:18 1,999
+Application: ./g8 -H60M
+3,849,600 
+Application Instructions: 289,382,777
+Stop: Wed Feb 17 20:12:35 1,999
+Instructions: 289,382,777
+Time: 16.180 usr  0.620 sys  17.613 real  95.384%
+Speed: 17,225.165 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:12:35 1,999
+Application: ./g9 -H60M
+3,849,600 
+Application Instructions: 297,195,444
+Stop: Wed Feb 17 20:12:53 1,999
+Instructions: 297,195,444
+Time: 16.840 usr  0.550 sys  18.030 real  96.451%
+Speed: 17,090.020 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:12:54 1,999
+Application: ./ga -H60M
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:18:07 1,999
+Application: ./gb -H60M
+3,849,600 
+Application Instructions: 289,382,777
+Stop: Wed Feb 17 20:18:24 1,999
+Instructions: 289,382,777
+Time: 16.530 usr  0.380 sys  17.048 real  99.192%
+Speed: 17,113.115 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:18:24 1,999
+Application: ./gc -H60M
+3,849,600 
+Application Instructions: 291,671,556
+Stop: Wed Feb 17 20:18:41 1,999
+Instructions: 291,671,556
+Time: 16.380 usr  0.480 sys  17.113 real  98.519%
+Speed: 17,299.618 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:18:41 1,999
+Application: ./gd -H60M
+3,849,600 
+Application Instructions: 300,735,770
+Stop: Wed Feb 17 20:18:58 1,999
+Instructions: 300,735,770
+Time: 16.180 usr  0.540 sys  16.868 real  99.124%
+Speed: 17,986.589 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:18:59 1,999
+Application: ./ge -H60M
+3,849,600 
+Application Instructions: 291,187,936
+Stop: Wed Feb 17 20:19:16 1,999
+Instructions: 291,187,936
+Time: 16.820 usr  0.490 sys  17.606 real  98.320%
+Speed: 16,821.949 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H60M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:19:16 1,999
+Application: ./gf -H60M
+SUBDIR ======> spectral/clausify
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:24:27 1,999
+Application: ./g0 -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 111,204,092
+Stop: Wed Feb 17 20:24:33 1,999
+Instructions: 111,204,092
+Time: 6.040 usr  0.180 sys  6.296 real  98.791%
+Speed: 17,878.471 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:24:34 1,999
+Application: ./g1 -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 112,343,813
+Stop: Wed Feb 17 20:24:40 1,999
+Instructions: 112,343,813
+Time: 6.270 usr  0.150 sys  6.576 real  97.629%
+Speed: 17,499.036 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:24:40 1,999
+Application: ./g2 -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 111,204,092
+Stop: Wed Feb 17 20:24:47 1,999
+Instructions: 111,204,092
+Time: 6.100 usr  0.200 sys  6.478 real  97.259%
+Speed: 17,651.443 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:24:47 1,999
+Application: ./g3 -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 111,436,265
+Stop: Wed Feb 17 20:24:54 1,999
+Instructions: 111,436,265
+Time: 6.290 usr  0.160 sys  7.007 real  92.054%
+Speed: 17,276.940 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:24:54 1,999
+Application: ./g4 -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 111,204,092
+Stop: Wed Feb 17 20:25:01 1,999
+Instructions: 111,204,092
+Time: 6.070 usr  0.240 sys  6.475 real  97.458%
+Speed: 17,623.469 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:25:01 1,999
+Application: ./g5 -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 111,249,434
+Stop: Wed Feb 17 20:25:07 1,999
+Instructions: 111,249,434
+Time: 6.080 usr  0.140 sys  6.214 real  100.104%
+Speed: 17,885.761 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:25:07 1,999
+Application: ./g6 -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 111,204,092
+Stop: Wed Feb 17 20:25:13 1,999
+Instructions: 111,204,092
+Time: 5.980 usr  0.210 sys  6.362 real  97.298%
+Speed: 17,965.120 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:25:14 1,999
+Application: ./g7 -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 111,511,102
+Stop: Wed Feb 17 20:25:20 1,999
+Instructions: 111,511,102
+Time: 6.090 usr  0.190 sys  6.289 real  99.851%
+Speed: 17,756.545 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:25:20 1,999
+Application: ./g8 -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 111,158,970
+Stop: Wed Feb 17 20:25:26 1,999
+Instructions: 111,158,970
+Time: 6.090 usr  0.180 sys  6.279 real  99.856%
+Speed: 17,728.703 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:25:26 1,999
+Application: ./g9 -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 112,829,346
+Stop: Wed Feb 17 20:25:33 1,999
+Instructions: 112,829,346
+Time: 6.240 usr  0.220 sys  6.656 real  97.058%
+Speed: 17,465.843 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:25:33 1,999
+Application: ./ga -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 109,759,731
+Stop: Wed Feb 17 20:25:40 1,999
+Instructions: 109,759,731
+Time: 6.250 usr  0.180 sys  6.539 real  98.332%
+Speed: 17,069.943 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:25:40 1,999
+Application: ./gb -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 111,204,042
+Stop: Wed Feb 17 20:25:46 1,999
+Instructions: 111,204,042
+Time: 6.150 usr  0.210 sys  6.468 real  98.336%
+Speed: 17,484.912 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:25:46 1,999
+Application: ./gc -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 108,633,746
+Stop: Wed Feb 17 20:25:53 1,999
+Instructions: 108,633,746
+Time: 6.010 usr  0.190 sys  6.326 real  98.004%
+Speed: 17,521.572 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:25:53 1,999
+Application: ./gd -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 112,942,213
+Stop: Wed Feb 17 20:25:59 1,999
+Instructions: 112,942,213
+Time: 6.230 usr  0.160 sys  6.497 real  98.352%
+Speed: 17,674.838 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:26:00 1,999
+Application: ./ge -H20M
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+a <= 
+
+Application Instructions: 106,823,355
+Stop: Wed Feb 17 20:26:06 1,999
+Instructions: 106,823,355
+Time: 5.920 usr  0.190 sys  6.434 real  94.963%
+Speed: 17,483.364 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:26:06 1,999
+Application: ./gf -H20M
+SUBDIR ======> spectral/hartel/event
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:31:14 1,999
+Application: ./g0 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,264,342
+Stop: Wed Feb 17 20:31:18 1,999
+Instructions: 73,264,342
+Time: 4.020 usr  0.240 sys  4.461 real  95.487%
+Speed: 17,198.202 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:31:19 1,999
+Application: ./g1 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,264,540
+Stop: Wed Feb 17 20:31:23 1,999
+Instructions: 73,264,540
+Time: 4.020 usr  0.310 sys  4.568 real  94.798%
+Speed: 16,920.217 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:31:23 1,999
+Application: ./g2 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,264,342
+Stop: Wed Feb 17 20:31:28 1,999
+Instructions: 73,264,342
+Time: 4.040 usr  0.180 sys  4.370 real  96.561%
+Speed: 17,361.218 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:31:28 1,999
+Application: ./g3 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,264,342
+Stop: Wed Feb 17 20:31:32 1,999
+Instructions: 73,264,342
+Time: 3.970 usr  0.260 sys  4.305 real  98.249%
+Speed: 17,320.175 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:31:32 1,999
+Application: ./g4 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,319,845
+Stop: Wed Feb 17 20:31:37 1,999
+Instructions: 73,319,845
+Time: 4.040 usr  0.240 sys  4.436 real  96.482%
+Speed: 17,130.805 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:31:37 1,999
+Application: ./g5 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,264,340
+Stop: Wed Feb 17 20:31:42 1,999
+Instructions: 73,264,340
+Time: 3.920 usr  0.240 sys  4.482 real  92.816%
+Speed: 17,611.620 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:31:42 1,999
+Application: ./g6 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,264,342
+Stop: Wed Feb 17 20:31:46 1,999
+Instructions: 73,264,342
+Time: 3.990 usr  0.210 sys  4.314 real  97.362%
+Speed: 17,443.891 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:31:46 1,999
+Application: ./g7 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 75,873,057
+Stop: Wed Feb 17 20:31:51 1,999
+Instructions: 75,873,057
+Time: 4.090 usr  0.250 sys  4.534 real  95.711%
+Speed: 17,482.271 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:31:51 1,999
+Application: ./g8 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,264,342
+Stop: Wed Feb 17 20:31:55 1,999
+Instructions: 73,264,342
+Time: 3.970 usr  0.260 sys  4.321 real  97.885%
+Speed: 17,320.175 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:31:55 1,999
+Application: ./g9 -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 77,554,698
+Stop: Wed Feb 17 20:32:00 1,999
+Instructions: 77,554,698
+Time: 4.040 usr  0.270 sys  4.646 real  92.773%
+Speed: 17,994.129 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:32:00 1,999
+Application: ./ga -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 74,855,330
+Stop: Wed Feb 17 20:32:05 1,999
+Instructions: 74,855,330
+Time: 4.040 usr  0.260 sys  4.467 real  96.260%
+Speed: 17,408.216 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:32:05 1,999
+Application: ./gb -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,264,342
+Stop: Wed Feb 17 20:32:09 1,999
+Instructions: 73,264,342
+Time: 3.950 usr  0.300 sys  4.285 real  99.182%
+Speed: 17,238.669 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:32:09 1,999
+Application: ./gc -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,264,342
+Stop: Wed Feb 17 20:32:14 1,999
+Instructions: 73,264,342
+Time: 4.070 usr  0.240 sys  5.087 real  84.718%
+Speed: 16,998.687 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:32:15 1,999
+Application: ./gd -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 72,504,733
+Stop: Wed Feb 17 20:32:19 1,999
+Instructions: 72,504,733
+Time: 3.990 usr  0.230 sys  4.317 real  97.761%
+Speed: 17,181.216 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:32:19 1,999
+Application: ./ge -H80M
+HHxLLHHLLHHLH
+
+Application Instructions: 73,885,670
+Stop: Wed Feb 17 20:32:23 1,999
+Instructions: 73,885,670
+Time: 4.010 usr  0.280 sys  4.324 real  99.218%
+Speed: 17,222.767 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H80M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:32:24 1,999
+Application: ./gf -H80M
+SUBDIR ======> spectral/hartel/ida
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:32 1,999
+Application: ./g0 -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,567,284
+Stop: Wed Feb 17 20:37:34 1,999
+Instructions: 26,567,284
+Time: 1.640 usr  0.050 sys  1.724 real  98.025%
+Speed: 15,720.286 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:34 1,999
+Application: ./g1 -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,598,811
+Stop: Wed Feb 17 20:37:36 1,999
+Instructions: 26,598,811
+Time: 1.610 usr  0.100 sys  1.756 real  97.395%
+Speed: 15,554.860 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:36 1,999
+Application: ./g2 -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,567,284
+Stop: Wed Feb 17 20:37:38 1,999
+Instructions: 26,567,284
+Time: 1.560 usr  0.110 sys  1.691 real  98.729%
+Speed: 15,908.553 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:38 1,999
+Application: ./g3 -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,567,284
+Stop: Wed Feb 17 20:37:39 1,999
+Instructions: 26,567,284
+Time: 1.560 usr  0.110 sys  1.723 real  96.926%
+Speed: 15,908.553 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:40 1,999
+Application: ./g4 -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,567,284
+Stop: Wed Feb 17 20:37:41 1,999
+Instructions: 26,567,284
+Time: 1.620 usr  0.030 sys  1.754 real  94.069%
+Speed: 16,101.384 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:41 1,999
+Application: ./g5 -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,588,064
+Stop: Wed Feb 17 20:37:43 1,999
+Instructions: 26,588,064
+Time: 1.510 usr  0.150 sys  1.814 real  91.516%
+Speed: 16,016.906 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:43 1,999
+Application: ./g6 -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,567,284
+Stop: Wed Feb 17 20:37:45 1,999
+Instructions: 26,567,284
+Time: 1.530 usr  0.130 sys  1.677 real  98.979%
+Speed: 16,004.388 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:45 1,999
+Application: ./g7 -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 28,736,341
+Stop: Wed Feb 17 20:37:47 1,999
+Instructions: 28,736,341
+Time: 1.590 usr  0.080 sys  1.687 real  98.995%
+Speed: 17,207.390 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:47 1,999
+Application: ./g8 -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,594,474
+Stop: Wed Feb 17 20:37:49 1,999
+Instructions: 26,594,474
+Time: 1.490 usr  0.130 sys  1.636 real  99.020%
+Speed: 16,416.342 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:49 1,999
+Application: ./g9 -H30M
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:49 1,999
+Application: ./ga -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,846,801
+Stop: Wed Feb 17 20:37:51 1,999
+Instructions: 26,846,801
+Time: 1.540 usr  0.110 sys  1.647 real  100.209%
+Speed: 16,270.788 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:51 1,999
+Application: ./gb -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,567,284
+Stop: Wed Feb 17 20:37:52 1,999
+Instructions: 26,567,284
+Time: 1.520 usr  0.130 sys  1.654 real  99.774%
+Speed: 16,101.384 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:52 1,999
+Application: ./gc -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,567,990
+Stop: Wed Feb 17 20:37:54 1,999
+Instructions: 26,567,990
+Time: 1.660 usr  0.060 sys  1.795 real  95.832%
+Speed: 15,446.506 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:54 1,999
+Application: ./gd -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 27,238,036
+Stop: Wed Feb 17 20:37:56 1,999
+Instructions: 27,238,036
+Time: 1.570 usr  0.130 sys  1.698 real  100.089%
+Speed: 16,022.374 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:56 1,999
+Application: ./ge -H30M
+(4,4)((4,3)-(1,4))((3,4)-(2,4))((1,4)-(3,3))((1,1)-(1,2))((1,2)-(1,3))((2,1)-(3,1))((1,3)-(2,3))((2,4)-(2,2))((2,3)-(2,1))((2,2)-(4,2))((3,1)-(3,2))((3,2)-(4,3))((4,1)-(4,1))((3,3)-(3,4))((4,2)-(4,4))
+30 3,163
+
+Application Instructions: 26,608,613
+Stop: Wed Feb 17 20:37:58 1,999
+Instructions: 26,608,613
+Time: 1.550 usr  0.120 sys  1.677 real  99.608%
+Speed: 15,933.301 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H30M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:37:58 1,999
+Application: ./gf -H30M
+SUBDIR ======> spectral/hartel/typecheck
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g0 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:43:10 1,999
+Application: ./g0 -H20M
+2,904,400/47,800
+
+Application Instructions: 162,833,200
+Stop: Wed Feb 17 20:43:19 1,999
+Instructions: 162,833,200
+Time: 8.190 usr  0.300 sys  8.546 real  99.347%
+Speed: 19,179.411 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g1 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Fatal error, heap full during GC!
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:43:19 1,999
+Application: ./g1 -H20M
+Application Instructions: 3,361,388,538
+Stop: Wed Feb 17 20:47:07 1,999
+Instructions: 3,361,388,538
+Time: 220.460 usr  0.230 sys  228.250 real  96.688%
+Speed: 15,231.268 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g2 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:47:07 1,999
+Application: ./g2 -H20M
+2,904,400/47,800
+
+Application Instructions: 162,833,200
+Stop: Wed Feb 17 20:47:16 1,999
+Instructions: 162,833,200
+Time: 8.150 usr  0.310 sys  8.910 real  94.950%
+Speed: 19,247.423 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g3 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:47:16 1,999
+Application: ./g3 -H20M
+2,904,400/47,800
+
+Application Instructions: 163,884,251
+Stop: Wed Feb 17 20:47:26 1,999
+Instructions: 163,884,251
+Time: 8.160 usr  0.250 sys  9.188 real  91.531%
+Speed: 19,486.831 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g4 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:47:26 1,999
+Application: ./g4 -H20M
+2,904,400/47,800
+
+Application Instructions: 162,833,020
+Stop: Wed Feb 17 20:47:34 1,999
+Instructions: 162,833,020
+Time: 8.210 usr  0.170 sys  8.558 real  97.917%
+Speed: 19,431.148 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g5 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:47:35 1,999
+Application: ./g5 -H20M
+2,904,400/47,800
+
+Application Instructions: 162,833,020
+Stop: Wed Feb 17 20:47:43 1,999
+Instructions: 162,833,020
+Time: 8.300 usr  0.210 sys  8.670 real  98.152%
+Speed: 19,134.315 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g6 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:47:43 1,999
+Application: ./g6 -H20M
+2,904,400/47,800
+
+Application Instructions: 162,833,200
+Stop: Wed Feb 17 20:47:52 1,999
+Instructions: 162,833,200
+Time: 8.340 usr  0.150 sys  8.734 real  97.204%
+Speed: 19,179.411 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g7 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:47:52 1,999
+Application: ./g7 -H20M
+2,904,400/47,800
+
+Application Instructions: 167,863,609
+Stop: Wed Feb 17 20:48:01 1,999
+Instructions: 167,863,609
+Time: 8.430 usr  0.220 sys  9.040 real  95.691%
+Speed: 19,406.198 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g8 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:48:01 1,999
+Application: ./g8 -H20M
+2,904,400/47,800
+
+Application Instructions: 162,833,200
+Stop: Wed Feb 17 20:48:10 1,999
+Instructions: 162,833,200
+Time: 8.340 usr  0.150 sys  8.930 real  95.069%
+Speed: 19,179.411 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./g9 -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+/users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount: ./g9: program not found
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:48:10 1,999
+Stop: Wed Feb 17 20:48:10 1,999
+Time: 0.000 usr  0.000 sys  0.002 real  0.000%
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ga -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:48:11 1,999
+Application: ./ga -H20M
+2,904,400/47,800
+
+Application Instructions: 163,967,027
+Stop: Wed Feb 17 20:48:20 1,999
+Instructions: 163,967,027
+Time: 8.450 usr  0.240 sys  9.232 real  94.129%
+Speed: 18,868.473 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gb -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:48:20 1,999
+Application: ./gb -H20M
+2,904,400/47,800
+
+Application Instructions: 162,793,949
+Stop: Wed Feb 17 20:48:28 1,999
+Instructions: 162,793,949
+Time: 8.270 usr  0.170 sys  8.460 real  99.764%
+Speed: 19,288.383 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gc -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:48:28 1,999
+Application: ./gc -H20M
+2,904,400/47,800
+
+Application Instructions: 162,998,175
+Stop: Wed Feb 17 20:48:37 1,999
+Instructions: 162,998,175
+Time: 8.340 usr  0.190 sys  8.680 real  98.277%
+Speed: 19,108.813 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gd -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:48:37 1,999
+Application: ./gd -H20M
+2,904,400/47,800
+
+Application Instructions: 163,115,660
+Stop: Wed Feb 17 20:48:46 1,999
+Instructions: 163,115,660
+Time: 8.600 usr  0.210 sys  8.865 real  99.380%
+Speed: 18,514.831 KIPS
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./ge -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+/users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount: ./ge: program not found
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:48:46 1,999
+Stop: Wed Feb 17 20:48:46 1,999
+Time: 0.000 usr  0.000 sys  0.002 real  0.000%
+ulimit -t 300; /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount -- ./gf -H20M | /users/cs/boquist/work/shadekit/spixtools.v9.elf/bin/,
+Analyzer: /users/cs/boquist/work/shadekit/shade.v9.elf/bin/icount
+Version: Shade and Spixtools V5.33A, V9 SPARC Solaris
+Uname: lips.cs.chalmers.se sun4u SunOS 5.6 Generic_105181-11
+Start: Wed Feb 17 20:48:46 1,999
+Application: ./gf -H20M
