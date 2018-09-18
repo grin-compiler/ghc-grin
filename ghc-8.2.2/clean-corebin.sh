@@ -1,0 +1,1 @@
+../ghc-grin-benchmark/clean-corebin.sh
