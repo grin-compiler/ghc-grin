@@ -420,7 +420,7 @@ buildOrReplLib forRepl verbosity numJobs pkg_descr lbi lib clbi = do
 
   -- link:
   when (nativeToo && not forRepl) $ do
-    info verbosity "Linking..."
+    info verbosity "Linking-ghcjs1..."
     let cProfObjs   = map (`replaceExtension` ("p_" ++ objExtension))
                       (cSources libBi)
         cSharedObjs = map (`replaceExtension` ("dyn_" ++ objExtension))
@@ -673,7 +673,7 @@ buildOrReplExe forRepl verbosity numJobs _pkg_descr lbi
 
   -- link:
   unless forRepl $ do
-    info verbosity "Linking..."
+    info verbosity "Linking-ghcjs2..."
     runGhcjsProg linkOpts { ghcOptOutputFile = toFlag (targetDir </> exeNameReal) }
 
 -- |Install for ghc, .hi, .a and, if --with-ghci given, .o

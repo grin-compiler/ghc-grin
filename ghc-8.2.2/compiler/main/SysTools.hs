@@ -15,6 +15,7 @@ module SysTools (
         initSysTools,
 
         -- Interface to system tools
+        runGrin,                 -- [Option] -> IO ()
         runUnlit, runCpp, runCc, -- [Option] -> IO ()
         runPp,                   -- [Option] -> IO ()
         runSplit,                -- [Option] -> IO ()
@@ -398,6 +399,11 @@ findTopDir Nothing
 *                                                                      *
 ************************************************************************
 -}
+
+runGrin :: DynFlags -> [Option] -> IO ()
+runGrin dflags args = do
+  let prog = "grin-ghc"
+  runSomething dflags "GRIN compiler" prog args
 
 runUnlit :: DynFlags -> [Option] -> IO ()
 runUnlit dflags args = do

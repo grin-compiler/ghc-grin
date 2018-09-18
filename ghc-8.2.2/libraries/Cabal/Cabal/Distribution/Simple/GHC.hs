@@ -683,7 +683,7 @@ buildOrReplLib forRepl verbosity numJobs pkg_descr lbi lib clbi = do
 
   -- link:
   when has_code . unless forRepl $ do
-    info verbosity "Linking..."
+    info verbosity "Linking1..."
     let cProfObjs   = map (`replaceExtension` ("p_" ++ objExtension))
                       (cSources libBi)
         cSharedObjs = map (`replaceExtension` ("dyn_" ++ objExtension))
@@ -712,8 +712,15 @@ buildOrReplLib forRepl verbosity numJobs pkg_descr lbi lib clbi = do
       | ghcVersion < mkVersion [7,2] -- ghc-7.2+ does not make _stub.o files
       , x <- allLibModules lib clbi ]
 
+    let corebinExtension = "corebin"
+    hCoreBins <- Internal.getHaskellObjects implInfo lib lbi clbi
+                      libTargetDir corebinExtension True
+    putStrLn $ unlines $ "* corebins:" : hCoreBins
+
     hObjs     <- Internal.getHaskellObjects implInfo lib lbi clbi
                       libTargetDir objExtension True
+    putStrLn $ unlines $ "* objs:" : hObjs
+
     hProfObjs <-
       if withProfLib lbi
               then Internal.getHaskellObjects implInfo lib lbi clbi
@@ -1248,7 +1255,7 @@ gbuild verbosity numJobs pkg_descr lbi bm clbi = do
                      }
                    `mappend` (if withDynExe lbi then dynLinkerOpts else mempty)
 
-      info verbosity "Linking..."
+      info verbosity "Linking2..."
       -- Work around old GHCs not relinking in this
       -- situation, see #3294
       let target = targetDir </> targetName
@@ -1290,7 +1297,7 @@ gbuild verbosity numJobs pkg_descr lbi bm clbi = do
       -- We build under a (potentially) different filename to set a
       -- soname on supported platforms.  See also the note for
       -- @flibBuildName@.
-      info verbosity "Linking..."
+      info verbosity "Linking3..."
       let buildName = flibBuildName lbi flib
       runGhcProg linkOpts { ghcOptOutputFile = toFlag (targetDir </> buildName) }
       renameFile (targetDir </> buildName) (targetDir </> targetName)
@@ -1631,6 +1638,7 @@ installLib    :: Verbosity
 installLib verbosity lbi targetDir dynlibTargetDir _builtDir _pkg lib clbi = do
   -- copy .hi files over:
   whenVanilla $ copyModuleFiles "hi"
+  whenVanilla $ copyModuleFiles "corebin"
   whenProf    $ copyModuleFiles "p_hi"
   whenShared  $ copyModuleFiles "dyn_hi"
 

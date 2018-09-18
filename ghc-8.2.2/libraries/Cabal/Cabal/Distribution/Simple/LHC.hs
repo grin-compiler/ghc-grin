@@ -344,7 +344,7 @@ buildLib verbosity pkg_descr lbi lib clbi = do
                | filename <- cSources libBi]
 
   -- link:
-  info verbosity "Linking..."
+  info verbosity "Linking-lhc..."
   let cObjs = map (`replaceExtension` objExtension) (cSources libBi)
       cSharedObjs = map (`replaceExtension` ("dyn_" ++ objExtension)) (cSources libBi)
       cid = compilerId (compiler lbi)

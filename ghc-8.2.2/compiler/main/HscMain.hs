@@ -82,6 +82,9 @@ module HscMain
     , hscAddSptEntries
     ) where
 
+import qualified GhcDump_Ast as C
+import qualified GhcDump_Convert as C
+
 import Data.Data hiding (Fixity, TyCon)
 import Id
 import GHCi             ( addSptEntry )
@@ -164,6 +167,8 @@ import System.IO (fixIO)
 import qualified Data.Map as Map
 import qualified Data.Set as S
 import Data.Set (Set)
+import qualified Data.ByteString.Lazy as BSL
+import Data.Binary
 
 #include "HsVersions.h"
 
@@ -1296,6 +1301,14 @@ hscGenHardCode hsc_env cgguts mod_summary output_filename = do
         prepd_binds <- {-# SCC "CorePrep" #-}
                        corePrepPgm hsc_env this_mod location
                                    core_binds data_tycons
+
+        --- save core ---
+        let cgguts_prep = cgguts {cg_binds = prepd_binds}
+            coreBin     = encode (C.cvtModuleCg "prep" cgguts_prep)
+            location    = ms_location mod_summary
+            core_output = replaceExtension (ml_hi_file location) "corebin"
+        BSL.writeFile core_output coreBin
+
         -----------------  Convert to STG ------------------
         (stg_binds, cost_centre_info)
             <- {-# SCC "CoreToStg" #-}

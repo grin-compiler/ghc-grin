@@ -409,6 +409,13 @@ link' dflags batch_attempt_linking hpt
            else do
 
         compilationProgressMsg dflags ("Linking " ++ exe_file ++ " ...")
+        compilationProgressMsg dflags ("obj_files " ++ unwords (map show obj_files))
+        compilationProgressMsg dflags ("linkables " ++ unwords (map (showPpr dflags) linkables))
+
+        case ghcLink dflags of
+                LinkBinary    -> putStrLn "LinkBinary"
+                LinkStaticLib -> putStrLn "LinkStaticLib"
+                LinkDynLib    -> putStrLn "LinkDynLib"
 
         -- Don't showPass in Batch mode; doLink will do that for us.
         let link = case ghcLink dflags of
@@ -1785,6 +1792,18 @@ it is supported by both gcc and clang. Anecdotally nvcc supports
 -Xlinker, but not -Wl.
 -}
 
+getRecursiveContents :: String -> FilePath -> IO [FilePath]
+getRecursiveContents ext topdir = do
+  names <- getDirectoryContents topdir
+  let properNames = filter (`notElem` [".", ".."]) names
+  paths <- forM properNames $ \name -> do
+    let path = topdir </> name
+    isDirectory <- doesDirectoryExist path
+    if isDirectory
+      then getRecursiveContents ext path
+      else pure $ filter ((== ext) . takeExtension)[path]
+  return (concat paths)
+
 linkBinary :: DynFlags -> [FilePath] -> [InstalledUnitId] -> IO ()
 linkBinary = linkBinary' False
 
@@ -1804,6 +1823,17 @@ linkBinary' staticLink dflags o_files dep_packages = do
                       else do d <- getCurrentDirectory
                               return $ normalise (d </> output_fn)
     pkg_lib_paths <- getPackageLibraryPath dflags dep_packages
+    putStrLn $ unlines $ "* pkg_lib_paths" : pkg_lib_paths
+
+    -- list corebins
+    corebins <- concat <$> mapM (getRecursiveContents ".corebin") (map takeDirectory o_files ++ pkg_lib_paths)
+    putStrLn $ unlines $ "* corebins" : corebins
+
+    -- compile / link GRIN program
+    --when (ghcLink dflags == LinkBinary && staticLink == False) $ do
+    unless staticLink $ do
+      runGrin dflags $ map (SysTools.FileOption "") corebins
+
     let pkg_lib_path_opts = concatMap get_pkg_lib_path_opts pkg_lib_paths
         get_pkg_lib_path_opts l
          | osElfTarget (platformOS platform) &&
@@ -1837,6 +1867,8 @@ linkBinary' staticLink dflags o_files dep_packages = do
                             else l
               in ["-L" ++ l] ++ ["-Xlinker", "-rpath", "-Xlinker", libpath]
          | otherwise = ["-L" ++ l]
+    putStrLn "----"
+    putStrLn $ unlines $ "* pkg_lib_path_opts" : pkg_lib_path_opts
 
     let
       dead_strip
@@ -1849,6 +1881,7 @@ linkBinary' staticLink dflags o_files dep_packages = do
 
     extraLinkObj <- mkExtraObjToLinkIntoBinary dflags
     noteLinkObjs <- mkNoteObjsToLinkIntoBinary dflags dep_packages
+    putStrLn $ unlines $ "* noteLinkObjs" : noteLinkObjs
 
     let
       (pre_hs_libs, post_hs_libs)
@@ -1859,9 +1892,14 @@ linkBinary' staticLink dflags o_files dep_packages = do
             else (["-Wl,--whole-archive"], ["-Wl,--no-whole-archive"])
         | otherwise
         = ([],[])
+    putStrLn $ unlines $ "* pre_hs_libs" : pre_hs_libs
+    putStrLn $ unlines $ "* post_hs_libs" : post_hs_libs
 
     pkg_link_opts <- do
         (package_hs_libs, extra_libs, other_flags) <- getPackageLinkOpts dflags dep_packages
+        putStrLn $ unlines $ "* package_hs_libs" : package_hs_libs
+        putStrLn $ unlines $ "* extra_libs" : extra_libs
+        putStrLn $ unlines $ "* other_flags" : other_flags
         return $ if staticLink
             then package_hs_libs -- If building an executable really means making a static
                                  -- library (e.g. iOS), then we only keep the -l options for
@@ -1882,6 +1920,8 @@ linkBinary' staticLink dflags o_files dep_packages = do
                  -- This option must be placed before the library
                  -- that defines the symbol."
 
+    putStrLn "==="
+    putStrLn $ unlines $ "* pkg_link_opts" : pkg_link_opts
     -- frameworks
     pkg_framework_opts <- getPkgFrameworkOpts dflags platform dep_packages
     let framework_opts = getFrameworkOpts dflags platform
