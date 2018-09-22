@@ -1,8 +1,8 @@
 resolver: lts-11.12
 
 packages:
-- 'app'
-- 'lib'
+#- 'app'
+#- 'lib'
 - 'sum-list'
 #- 'boquist-grin-bench'
 

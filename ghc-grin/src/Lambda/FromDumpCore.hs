@@ -100,6 +100,7 @@ visitExpr = \case
     | isDataCon bndr    -> Con <$> genName "EVar data con" bndr <*> pure []
     | otherwise         -> Var <$> genName "EVar" bndr
   C.EVarGlobal extName
+    | extName == C.ForeignCall  -> pure . Lit . LDummy $ "C.ForeignCall"
     | C.externalIsTyVar extName -> pure . Lit . LDummy $ "ExtTyBinder"
     | isDataConExt extName      -> Con <$> convertExtName extName <*> pure []
     | otherwise                 -> Var <$> convertExtName extName
