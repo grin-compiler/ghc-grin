@@ -21,7 +21,13 @@ library
     Lambda.FromSTG
 
   build-depends:
-    base
+      base
+    , containers
+    , mtl
+    , bytestring
+    , lambda-grin
+    , ghc
+    , ghc-dump-core
 
   default-language:    Haskell2010
 
@@ -40,7 +46,9 @@ executable ghc-core-grin
                      , megaparsec
                      , ansi-wl-pprint
                      , grin
+                     , ghc-grin
                      , ghc-dump-util
+                     , lambda-grin
   default-language:    Haskell2010
 
 executable ghc-grin
@@ -53,5 +61,7 @@ executable ghc-grin
                      , ansi-wl-pprint
                      , grin
                      , ghc
+                     , ghc-grin
                      , ghc-paths
+                     , lambda-grin
   default-language:    Haskell2010

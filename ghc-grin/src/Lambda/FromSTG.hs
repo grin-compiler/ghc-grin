@@ -1,5 +1,5 @@
 {-# LANGUAGE LambdaCase, TupleSections, StandaloneDeriving, TypeSynonymInstances, FlexibleInstances, RecordWildCards #-}
-module Frontend.Lambda.FromSTG (codegenLambda) where
+module Lambda.FromSTG (codegenLambda) where
 
 import Data.Map (Map)
 import qualified Data.Map as Map
@@ -18,7 +18,7 @@ import Literal
 import DataCon
 
 -- Lambda
-import Frontend.Lambda.Syntax
+import Lambda.Syntax
 
 type CG = StateT Env IO
 

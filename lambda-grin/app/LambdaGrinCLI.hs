@@ -6,10 +6,10 @@ import System.Environment
 import System.Exit
 import qualified Text.Megaparsec as M
 
-import Frontend.Lambda.Syntax
-import Frontend.Lambda.Parse
-import Frontend.Lambda.Pretty
-import Frontend.Lambda.CodeGen
+import Lambda.Syntax
+import Lambda.Parse
+import Lambda.Pretty
+import Lambda.CodeGen
 import Grin.Pretty
 import Pipeline.Pipeline
 

@@ -9,12 +9,12 @@ import qualified Text.Megaparsec as M
 
 import GhcDump.Util
 
-import Frontend.Lambda.FromDumpCore
-import Frontend.Lambda.Syntax
-import Frontend.Lambda.Parse
-import Frontend.Lambda.Pretty
-import Frontend.Lambda.CodeGen
-import Frontend.Lambda.Lint
+import Lambda.FromDumpCore
+import Lambda.Syntax
+import Lambda.Parse
+import Lambda.Pretty
+import Lambda.CodeGen
+import Lambda.Lint
 import Grin.Pretty
 import Pipeline.Pipeline
 

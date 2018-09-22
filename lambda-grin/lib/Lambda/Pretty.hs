@@ -1,12 +1,12 @@
 {-# LANGUAGE LambdaCase, RecordWildCards #-}
-module Frontend.Lambda.Pretty
+module Lambda.Pretty
   ( printLambda
   ) where
 
 import Data.Functor.Foldable as Foldable
 import Text.PrettyPrint.ANSI.Leijen
 
-import Frontend.Lambda.Syntax
+import Lambda.Syntax
 import Grin.Grin (isPrimName)
 
 printLambda :: Exp -> IO ()

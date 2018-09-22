@@ -1,5 +1,5 @@
 {-# LANGUAGE LambdaCase, TupleSections, StandaloneDeriving, TypeSynonymInstances, FlexibleInstances, RecordWildCards #-}
-module Frontend.Lambda.FromDumpCore (codegenLambda) where
+module Lambda.FromDumpCore (codegenLambda) where
 
 import Data.Map (Map)
 import qualified Data.Map as Map
@@ -14,8 +14,8 @@ import qualified Data.ByteString.Char8 as BS8
 import qualified GhcDump_Ast as C
 
 -- Lambda
-import Frontend.Lambda.Syntax (Name)
-import Frontend.Lambda.Syntax
+import Lambda.Syntax (Name)
+import Lambda.Syntax
 
 type CG = StateT Env IO
 

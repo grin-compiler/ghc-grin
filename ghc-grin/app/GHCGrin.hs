@@ -18,10 +18,10 @@ import System.Exit
 import Text.Pretty.Simple (pPrint)
 import Text.PrettyPrint.ANSI.Leijen (ondullblack)
 
-import qualified Frontend.Lambda.FromSTG as STG
-import qualified Frontend.Lambda.FromCore as Core
-import Frontend.Lambda.CodeGen
-import Frontend.Lambda.Pretty
+import qualified Lambda.FromSTG as STG
+import qualified Lambda.FromCore as Core
+import Lambda.CodeGen
+import Lambda.Pretty
 import Pipeline.Pipeline
 
 data Opts

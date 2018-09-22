@@ -1,7 +1,7 @@
 {-# LANGUAGE LambdaCase, TupleSections #-}
 {-# LANGUAGE TemplateHaskell, KindSignatures, TypeFamilies #-}
 {-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable #-}
-module Frontend.Lambda.Syntax where
+module Lambda.Syntax where
 
 import Data.Int
 import Data.Word

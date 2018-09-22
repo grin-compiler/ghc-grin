@@ -1,0 +1,33 @@
+resolver: lts-11.21
+
+# due to functor-infix
+allow-newer: true
+
+packages:
+  - 'ghc-dump-core'
+  - 'ghc-dump-util'
+  - 'ghc-grin'
+  - 'lambda-grin'
+#  - '../grin/grin'
+  - location:
+      git: https://github.com/lambdacube3d/lambdacube-ir.git
+      git: https://github.com/grin-tech/grin
+      commit: bebe703c7bbc47be30a18f2292510f31b617848e
+    subdirs:
+      - grin
+    extra-dep: true
+
+
+extra-deps:
+  - monad-gen-0.3.0.1
+  - llvm-hs-pretty-0.2.0.0
+  - functor-infix-0.0.5
+
+flags:
+  llvm-hs:
+    shared-llvm: true
+
+build:
+  test-arguments:
+    additional-args:
+      - "--seed=11010"

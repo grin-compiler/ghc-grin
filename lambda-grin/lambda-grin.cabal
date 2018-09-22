@@ -24,7 +24,14 @@ library
     Lambda.Lint
 
   build-depends:
-    base
+      base
+    , containers
+    , mtl
+    , grin
+    , bytestring
+    , recursion-schemes
+    , ansi-wl-pprint
+    , megaparsec
 
   default-language:    Haskell2010
 
@@ -41,5 +48,6 @@ executable lambda-grin
                      , mtl
                      , megaparsec
                      , ansi-wl-pprint
+                     , lambda-grin
                      , grin
   default-language:    Haskell2010

@@ -1,5 +1,5 @@
 {-# LANGUAGE LambdaCase, RecordWildCards #-}
-module Frontend.Lambda.Lint where
+module Lambda.Lint where
 
 import Text.Printf
 
@@ -10,7 +10,7 @@ import qualified Data.Set as Set
 import Data.Functor.Foldable
 import qualified Data.Foldable
 
-import Frontend.Lambda.Syntax
+import Lambda.Syntax
 import Grin.Grin (isPrimName)
 import Transformations.Util
 
