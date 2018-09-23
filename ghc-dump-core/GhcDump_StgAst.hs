@@ -1,47 +1,70 @@
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE DeriveGeneric #-}
+module GhcDump_StgAst where
+
+import GHC.Generics
+
+import qualified Data.ByteString as BS
+import Data.Binary
+
+import GhcDump_Ast (Lit, AltCon, Unique, T_Text, ModuleName, SBinder, BinderId)
+
+data DataCon
+  = DataCon
+  deriving (Eq, Ord, Generic, Show)
+
+data ForeignCall  -- dummmy
+  = ForeignCall
+  deriving (Eq, Ord, Generic, Show)
+
+data PrimOp       -- TODO: long enum
+  = PrimOp
+  deriving (Eq, Ord, Generic, Show)
+
+data PrimCall = PrimCall T_Text T_Text
+  deriving (Eq, Ord, Generic, Show)
+
 -- | A top-level binding.
 data GenStgTopBinding bndr occ
 -- See Note [CoreSyn top-level string literals]
   = StgTopLifted (GenStgBinding bndr occ)
-  | StgTopStringLit bndr ByteString
+  | StgTopStringLit bndr BS.ByteString
+  deriving (Eq, Ord, Generic, Show)
 
 data GenStgBinding bndr occ
   = StgNonRec bndr (GenStgRhs bndr occ)
   | StgRec    [(bndr, GenStgRhs bndr occ)]
+  deriving (Eq, Ord, Generic, Show)
 
 data GenStgArg occ
   = StgVarArg  occ
-  | StgLitArg  Literal
+  | StgLitArg  Lit
+  deriving (Eq, Ord, Generic, Show)
 
 data GenStgExpr bndr occ
   = StgApp
         occ             -- function
         [GenStgArg occ] -- arguments; may be empty
 
-  | StgLit      Literal
+  | StgLit      Lit
 
         -- StgConApp is vital for returning unboxed tuples or sums
         -- which can't be let-bound first
   | StgConApp   DataCon
                 [GenStgArg occ] -- Saturated
-                [Type]          -- See Note [Types in StgConApp] in UnariseStg
 
   | StgOpApp    StgOp           -- Primitive op or foreign call
                 [GenStgArg occ] -- Saturated.
-                Type            -- Result type
-                                -- We need to know this so that we can
-                                -- assign result registers
 
   | StgLam
         [bndr]
-        StgExpr    -- Body of lambda
+        (GenStgExpr bndr occ)   -- Body of lambda
 
   | StgCase
         (GenStgExpr bndr occ)
                     -- the thing to examine
 
         bndr        -- binds the result of evaluating the scrutinee
-
-        AltType
 
         [GenStgAlt bndr occ]
                     -- The DEFAULT case is always *first*
@@ -54,14 +77,10 @@ data GenStgExpr bndr occ
   | StgLetNoEscape
         (GenStgBinding bndr occ)    -- right hand sides (see below)
         (GenStgExpr bndr occ)       -- body
-
-  | StgTick
-    (Tickish bndr)
-    (GenStgExpr bndr occ)       -- sub expression
+  deriving (Eq, Ord, Generic, Show)
 
 data GenStgRhs bndr occ
   = StgRhsClosure
-        CostCentreStack         -- CCS to be attached (default is CurrentCCS)
         StgBinderInfo           -- Info about how this binder is used (see below)
         [occ]                   -- non-global free vars; a list, rather than
                                 -- a set, because order is important
@@ -71,14 +90,10 @@ data GenStgRhs bndr occ
         (GenStgExpr bndr occ)   -- body
 
   | StgRhsCon
-        CostCentreStack  -- CCS to be attached (default is CurrentCCS).
-                         -- Top-level (static) ones will end up with
-                         -- DontCareCCS, because we don't count static
-                         -- data in heap profiles, and we don't set CCCS
-                         -- from static closure.
         DataCon          -- Constructor. Never an unboxed tuple or sum, as those
                          -- are not allocated.
         [GenStgArg occ]  -- Args
+  deriving (Eq, Ord, Generic, Show)
 
 data StgBinderInfo
   = NoStgBinderInfo
@@ -86,20 +101,19 @@ data StgBinderInfo
                         -- This means we don't need to build an info table and
                         -- slow entry code for the thing
                         -- Thunks never get this value
+  deriving (Eq, Ord, Generic, Show)
 
-type GenStgAlt bndr occ
-  = (AltCon,            -- alts: data constructor,
-     [bndr],            -- constructor's parameters,
-     GenStgExpr bndr occ)       -- ...right-hand side.
+data GenStgAlt bndr var
+  = StgAlt
+    { altCon     :: !AltCon
+    , altBinders :: [bndr]
+    , altRHS     :: GenStgExpr bndr var
+    }
+  deriving (Eq, Ord, Generic, Show)
 
-data AltType
-  = PolyAlt             -- Polymorphic (a lifted type variable)
-  | MultiValAlt Int     -- Multi value of this arity (unboxed tuple or sum)
-                        -- the arity could indeed be 1 for unary unboxed tuple
-  | AlgAlt      TyCon   -- Algebraic data type; the AltCons will be DataAlts
-  | PrimAlt     PrimRep -- Primitive data type; the AltCons (if any) will be LitAlts
 
 data UpdateFlag = ReEntrant | Updatable | SingleEntry
+  deriving (Eq, Ord, Generic, Show)
 
 data StgOp
   = StgPrimOp  PrimOp
@@ -110,10 +124,29 @@ data StgOp
         -- The Unique is occasionally needed by the C pretty-printer
         -- (which lacks a unique supply), notably when generating a
         -- typedef for foreign-export-dynamic
+  deriving (Eq, Ord, Generic, Show)
 
-type StgTopBinding = GenStgTopBinding Id Id
-type StgBinding  = GenStgBinding  Id Id
-type StgArg      = GenStgArg      Id
-type StgExpr     = GenStgExpr     Id Id
-type StgRhs      = GenStgRhs      Id Id
-type StgAlt      = GenStgAlt      Id Id
+data Module' bndr var
+  = Module
+    { moduleName        :: ModuleName
+    , modulePhase       :: T_Text
+    , moduleTopBindings :: [GenStgTopBinding bndr var]
+    }
+  deriving (Eq, Ord, Generic, Show)
+
+type SModule = Module' SBinder BinderId
+
+instance Binary DataCon
+instance Binary ForeignCall
+instance Binary PrimOp
+instance Binary PrimCall
+instance Binary StgBinderInfo
+instance Binary UpdateFlag
+instance Binary StgOp
+instance (Binary var) => Binary (GenStgArg var)
+instance (Binary bndr, Binary var) => Binary (GenStgTopBinding bndr var)
+instance (Binary bndr, Binary var) => Binary (GenStgBinding bndr var)
+instance (Binary bndr, Binary var) => Binary (GenStgExpr bndr var)
+instance (Binary bndr, Binary var) => Binary (GenStgRhs bndr var)
+instance (Binary bndr, Binary var) => Binary (GenStgAlt bndr var)
+instance (Binary bndr, Binary var) => Binary (Module' bndr var)

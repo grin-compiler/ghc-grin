@@ -1827,12 +1827,14 @@ linkBinary' staticLink dflags o_files dep_packages = do
 
     -- list corebins
     corebins <- concat <$> mapM (getRecursiveContents ".corebin") (map takeDirectory o_files ++ pkg_lib_paths)
+    stgbins  <- concat <$> mapM (getRecursiveContents ".stgbin") (map takeDirectory o_files ++ pkg_lib_paths)
     putStrLn $ unlines $ "* corebins" : corebins
+    putStrLn $ unlines $ "* stgbins" : stgbins
 
     -- compile / link GRIN program
     --when (ghcLink dflags == LinkBinary && staticLink == False) $ do
     unless staticLink $ do
-      runGrin dflags $ map (SysTools.FileOption "") corebins
+      runGrin dflags $ map (SysTools.FileOption "") corebins ++ map (SysTools.FileOption "") stgbins
 
     let pkg_lib_path_opts = concatMap get_pkg_lib_path_opts pkg_lib_paths
         get_pkg_lib_path_opts l

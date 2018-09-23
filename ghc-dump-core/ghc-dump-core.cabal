@@ -31,7 +31,10 @@ tested-with:         GHC==7.10.3, GHC==8.0.2, GHC==8.2.2
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     GhcDump_Convert, GhcDump_Ast
+  exposed-modules:     GhcDump_Convert
+                       GhcDump_Ast
+                       GhcDump_StgConvert
+                       GhcDump_StgAst
   ghc-options:         -Wall
   other-extensions:    GeneralizedNewtypeDeriving
   build-depends:       base,

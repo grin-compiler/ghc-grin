@@ -84,6 +84,8 @@ module HscMain
 
 import qualified GhcDump_Ast as C
 import qualified GhcDump_Convert as C
+import qualified GhcDump_StgAst as S
+import qualified GhcDump_StgConvert as S
 
 import Data.Data hiding (Fixity, TyCon)
 import Id
@@ -1316,6 +1318,12 @@ hscGenHardCode hsc_env cgguts mod_summary output_filename = do
 
         let prof_init = profilingInitCode this_mod cost_centre_info
             foreign_stubs = foreign_stubs0 `appendStubC` prof_init
+
+        --- save stg ---
+        let stgBin      = encode (S.cvtModule "stg" modName stg_binds)
+            stg_output  = replaceExtension (ml_hi_file location) "stgbin"
+            modName     = Module.moduleName $ cg_module cgguts
+        BSL.writeFile stg_output stgBin
 
         ------------------  Code generation ------------------
 
