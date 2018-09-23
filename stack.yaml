@@ -10,7 +10,6 @@ packages:
   - 'lambda-grin'
 #  - '../grin/grin'
   - location:
-      git: https://github.com/lambdacube3d/lambdacube-ir.git
       git: https://github.com/grin-tech/grin
       commit: bebe703c7bbc47be30a18f2292510f31b617848e
     subdirs:
