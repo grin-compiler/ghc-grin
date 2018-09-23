@@ -5,17 +5,14 @@ import Control.Monad
 import System.FilePath
 import System.Environment
 import System.Exit
-import qualified Text.Megaparsec as M
 
 import GhcDump.Util
 
 import Lambda.FromDumpCore
 import Lambda.Syntax
-import Lambda.Parse
 import Lambda.Pretty
 import Lambda.CodeGen
 import Lambda.Lint
-import Grin.Pretty
 import Pipeline.Pipeline
 
 import Text.PrettyPrint.ANSI.Leijen (ondullblack, putDoc, plain, pretty)
