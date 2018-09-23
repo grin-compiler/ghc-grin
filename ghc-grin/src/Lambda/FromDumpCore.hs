@@ -128,5 +128,5 @@ codegenLambda mod = do
   let modName = BS8.unpack . C.getModuleName $ C.moduleName mod
   (defs, Env{..}) <- runStateT (visitTopBinder mod) (Env mempty 0 modName mempty)
   unless (Set.null dataCons) $ do
-    printf "%s data constructors:\n%s" modName  (unlines . map show . Set.toList $ dataCons)
+    printf "%s data constructors:\n%s" modName  (unlines . map ("  "++) . Set.toList $ dataCons)
   pure . Program $ defs -- ++ closureDefs

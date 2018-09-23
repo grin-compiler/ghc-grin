@@ -17,9 +17,10 @@ import Transformations.Util
 lintLambda :: Program -> IO ()
 lintLambda prg = do
   let Env{..} = test prg
-  printf "node pats:\n%s" . unlines . map show $ Set.toList envCon
-  printf "unknown:\n%s" . unlines . map show $ Set.toList (Set.difference envUse envDef)
-  printf "errors:\n%s" . unlines . map show $ Set.toList envErr
+      tab = ("  "++)
+  printf "node pats:\n%s" . unlines . map tab $ Set.toList envCon
+  printf "unknown:\n%s" . unlines . map tab $ Set.toList (Set.difference envUse envDef)
+  printf "errors:\n%s" . unlines . map tab $ Set.toList envErr
   --printf "unused:\n%s" . unlines . map show $ Set.toList (Set.difference envDef envUse)
 
 data Env
