@@ -5,7 +5,7 @@
 
 GRIN backend for GHC
 
-<img src="https://raw.githubusercontent.com/grin-tech/grin/master/images/boq-grin-ghc-inst-count.png" width="500" >
+![Instruction Count Benchmark](boq-grin-ghc-inst-count.png)
 
 ### ghc-dump-core ghc-dump-util
 custom AST Data type for GHC Core with serialization support and tooling
