@@ -1,5 +1,8 @@
 # GHC-GRIN
 
+[![Gitter chat](https://badges.gitter.im/grin-tech/grin.png)](https://gitter.im/Grin-Development/Lobby)
+
+
 GRIN backend for GHC
 
 ### ghc-dump-core ghc-dump-util
