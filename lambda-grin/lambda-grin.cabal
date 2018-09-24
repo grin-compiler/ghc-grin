@@ -14,7 +14,7 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-  hs-source-dirs:      lib
+  hs-source-dirs:      src
   exposed-modules:
     Lambda.CodeGen
     Lambda.Parse
