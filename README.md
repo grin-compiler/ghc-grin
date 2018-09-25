@@ -22,7 +22,10 @@ converts the dumped GHC Core to Lambda
 ### ghc-grin-benchmark
 sample (stack based) projects to test the modified GHC with the GRIN backend
 
-## Benchmark
+## Preliminary Benchmark
+
+Comparison of Boquist PhD results *(Sparc, RISC)* with GHC 8.2 *(x64, CISC)* based on the CPU instruction count.
+This is not an accurate comparison as the CPU architectures differ, instead it gives a rough overview.
 
 Instruction Count Benchmark
 - Boquist GRIN on Sparc (RISC) *1999*
