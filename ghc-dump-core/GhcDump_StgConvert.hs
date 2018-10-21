@@ -24,7 +24,7 @@ import GhcDump_Convert
   )
 
 cvtVar :: Id.Id -> BinderId
-cvtVar = BinderId . cvtUnique . Id.idUnique
+cvtVar = BinderId . cvtUnique . Id.idUnique -- TODO: global var handling
 
 cvtBinder :: Id.Id -> SBinder
 cvtBinder v

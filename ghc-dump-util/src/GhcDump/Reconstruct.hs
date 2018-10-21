@@ -1,5 +1,5 @@
 {-# LANGUAGE RecordWildCards #-}
-module GhcDump.Reconstruct (reconModule) where
+module GhcDump.Reconstruct (reconModule, reconBinder, BinderMap(..), insertBinder, insertBinders, getBinder, emptyBinderMap) where
 
 import Data.Foldable
 import Data.Bifunctor
