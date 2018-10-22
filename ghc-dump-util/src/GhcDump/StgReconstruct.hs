@@ -61,8 +61,10 @@ reconBinding bm = \case
 
 reconRhs :: BinderMap -> SRhs -> Rhs
 reconRhs bm = \case
-  StgRhsClosure b vs u bs e -> StgRhsClosure b ([]) u ([]) (reconExpr bm e) -- TODO: maybe add binders to the binder map
   StgRhsCon d vs            -> StgRhsCon d $ map (reconArg bm) vs
+  StgRhsClosure b vs u bs e -> let bs'   = map (reconBinder bm) bs
+                                   bm'  = insertBinders bs' bm
+                               in StgRhsClosure b (map (getBinder bm') vs) u bs' (reconExpr bm' e)
 
 reconArg :: BinderMap -> SArg -> Arg
 reconArg bm = \case

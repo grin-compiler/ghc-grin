@@ -236,7 +236,7 @@ dcolon :: Doc
 dcolon = "::"
 
 smallRArrow :: Doc
-smallRArrow = "→"
+smallRArrow = "->"
 
 hang' :: Doc -> Int -> Doc -> Doc
 hang' d1 n d2 = hang n $ sep [d1, d2]

@@ -27,9 +27,11 @@ insertBinders bs bm = foldl' (flip insertBinder) bm bs
 getBinder :: BinderMap -> BinderId -> Binder
 getBinder (BinderMap m) bid
   | Just b <- HM.lookup bid m = b
+  | otherwise                 = head $ HM.elems m -- HACK: until external names are not handled
+{-
   | otherwise                 = error $ "unknown binder "++ show bid ++ ":\nin scope:\n"
                                         ++ unlines (map (\(bid',b) -> show bid' ++ "\t" ++ show b) (HM.toList m))
-
+-}
 -- "recon" == "reconstruct"
 
 reconModule :: SModule -> Module

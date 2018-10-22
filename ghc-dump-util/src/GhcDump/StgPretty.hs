@@ -95,7 +95,7 @@ pprTopBinding :: PrettyOpts -> TopBinding -> Doc
 pprTopBinding opts = \case
   StgTopLifted (StgNonRec b r)  -> pprTopBind (b,r)
   StgTopLifted (StgRec bs)      -> "rec" <+> braces (line <> vsep (map pprTopBind bs))
-  StgTopStringLit b s           -> pprTopBind' (\_ -> text . BS.unpack) (b,s)
+  StgTopStringLit b s           -> pprTopBind' (\_ -> text . show) (b,s)
   where
     pprTopBind = pprTopBind' pprRhs
     pprTopBind' f (b@(Bndr b'),rhs) =

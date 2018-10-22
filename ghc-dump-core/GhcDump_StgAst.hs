@@ -121,11 +121,11 @@ data BinderInfo
 type SAlt = Alt' SBinder BinderId
 type Alt  = Alt' Binder Binder
 
-data Alt' bndr var
+data Alt' bndr occ
   = Alt
     { altCon     :: !AltCon
     , altBinders :: [bndr]
-    , altRHS     :: Expr' bndr var
+    , altRHS     :: Expr' bndr occ
     }
   deriving (Eq, Ord, Generic, Show)
 
@@ -147,11 +147,11 @@ data StgOp
 type Module  = Module' Binder Binder
 type SModule = Module' SBinder BinderId
 
-data Module' bndr var
+data Module' bndr occ
   = Module
     { moduleName        :: ModuleName
     , modulePhase       :: T_Text
-    , moduleTopBindings :: [TopBinding' bndr var]
+    , moduleTopBindings :: [TopBinding' bndr occ]
     }
   deriving (Eq, Ord, Generic, Show)
 
@@ -162,10 +162,10 @@ instance Binary PrimCall
 instance Binary BinderInfo
 instance Binary UpdateFlag
 instance Binary StgOp
-instance (Binary var) => Binary (Arg' var)
-instance (Binary bndr, Binary var) => Binary (TopBinding' bndr var)
-instance (Binary bndr, Binary var) => Binary (Binding' bndr var)
-instance (Binary bndr, Binary var) => Binary (Expr' bndr var)
-instance (Binary bndr, Binary var) => Binary (Rhs' bndr var)
-instance (Binary bndr, Binary var) => Binary (Alt' bndr var)
-instance (Binary bndr, Binary var) => Binary (Module' bndr var)
+instance (Binary occ) => Binary (Arg' occ)
+instance (Binary bndr, Binary occ) => Binary (TopBinding' bndr occ)
+instance (Binary bndr, Binary occ) => Binary (Binding' bndr occ)
+instance (Binary bndr, Binary occ) => Binary (Expr' bndr occ)
+instance (Binary bndr, Binary occ) => Binary (Rhs' bndr occ)
+instance (Binary bndr, Binary occ) => Binary (Alt' bndr occ)
+instance (Binary bndr, Binary occ) => Binary (Module' bndr occ)
