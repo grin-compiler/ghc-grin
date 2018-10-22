@@ -24,7 +24,9 @@ cabal-version:       >=1.10
 library
   exposed-modules:     GhcDump.Repl
                        GhcDump.Util
+                       GhcDump.StgUtil
                        GhcDump.Pretty
+                       GhcDump.StgPretty
                        GhcDump.Reconstruct
                        GhcDump.StgReconstruct
   hs-source-dirs:      src
@@ -40,6 +42,17 @@ library
 
 executable ghc-dump
   main-is:             Main.hs
+  build-depends:       base < 5.0,
+                       ghc-dump-core,
+                       ghc-dump-util,
+                       ansi-wl-pprint,
+                       regex-tdfa,
+                       regex-tdfa-text,
+                       optparse-applicative
+  default-language:    Haskell2010
+
+executable stg-dump
+  main-is:             StgMain.hs
   build-depends:       base < 5.0,
                        ghc-dump-core,
                        ghc-dump-util,
