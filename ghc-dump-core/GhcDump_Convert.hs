@@ -10,7 +10,7 @@ import qualified Var
 import Id (isFCallId)
 import Module (ModuleName, moduleNameFS, moduleName)
 import Unique (Unique, getUnique, unpkUnique)
-import Name (getOccName, occNameFS, OccName, getName, nameModule_maybe)
+import Name (getOccName, occNameFS, OccName, getName, nameModule_maybe, isExternalName, nameModule)
 import OccName
 import qualified IdInfo
 import qualified BasicTypes as OccInfo (OccInfo(..), isStrongLoopBreaker)
@@ -159,14 +159,17 @@ cvtExpr expr =
         -- foreign calls are local but have no binding site.
         -- TODO: use hasNoBinding here.
       | isFCallId x   -> EVarGlobal ForeignCall
-      | Just m <- nameModule_maybe $ getName x
-                      -> EVarGlobal $ ExternalName (cvtModuleName $ Module.moduleName m)
+      | n <- getName x, isExternalName n
+                      -> EVarGlobal ForeignCall
+--                      -> EVarGlobal $ ExternalName (cvtModuleName $ Module.moduleName $ nameModule n) (cvtBinder x)
+                                                   {-
                                                    (occNameToText $ getOccName x)
                                                    (cvtUnique $ getUnique x)
                                                    (cvtIdDetails $ Var.idDetails x)
                                                    (IdInfo.arityInfo      $ Var.idInfo x)
                                                    (IdInfo.callArityInfo  $ Var.idInfo x)
                                                    (Var.isTyVar x)
+                                                   -}
       | otherwise     -> EVar (cvtVar x)
     Lit l             -> ELit (cvtLit l)
     App x y           -> EApp (cvtExpr x) (cvtExpr y)

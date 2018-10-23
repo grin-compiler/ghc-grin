@@ -7,7 +7,7 @@ import GHC.Generics
 import qualified Data.ByteString as BS
 import Data.Binary
 
-import GhcDump_Ast (Lit, AltCon, Unique, T_Text, ModuleName, Binder, SBinder, BinderId)
+import GhcDump_Ast (Lit, AltCon, Unique, T_Text, ModuleName, Binder, SBinder, BinderId, ExternalName'(..))
 
 data DataCon
   = DataCon T_Text
@@ -152,6 +152,7 @@ data Module' bndr occ
     { moduleName        :: ModuleName
     , modulePhase       :: T_Text
     , moduleTopBindings :: [TopBinding' bndr occ]
+    , moduleExternals   :: [ExternalName' bndr]
     }
   deriving (Eq, Ord, Generic, Show)
 

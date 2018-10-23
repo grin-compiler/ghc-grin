@@ -34,7 +34,7 @@ instance Pretty T_Text where
     pretty = text . BS.unpack
 
 instance Pretty ExternalName where
-    pretty n@ExternalName{} = pretty (externalModuleName n) <> "." <> text (BS.unpack $ externalName n)
+    pretty n@ExternalName{} = pretty (externalModuleName n) <> "." <> (pretty $ binderId $ unBndr $ externalBinder n)
     pretty ForeignCall = "<foreign>"
 
 instance Pretty ModuleName where

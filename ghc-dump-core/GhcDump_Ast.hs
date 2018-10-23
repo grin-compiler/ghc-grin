@@ -23,15 +23,13 @@ newtype ModuleName
   = ModuleName { getModuleName :: T_Text }
   deriving (Eq, Ord, Binary, Show)
 
-data ExternalName
+type SExternalName = ExternalName' SBinder
+type ExternalName  = ExternalName' Binder
+
+data ExternalName' bndr
   = ExternalName
     { externalModuleName  :: !ModuleName
-    , externalName        :: !T_Text
-    , externalUnique      :: !Unique
-    , externalIdDetails   :: IdDetails
-    , externalIdArity     :: !Int
-    , externalIdCallArity :: !Int
-    , externalIsTyVar     :: !Bool
+    , externalBinder      :: !bndr
     }
   | ForeignCall
   deriving (Eq, Ord, Generic, Show)
@@ -168,7 +166,7 @@ type Expr  = Expr' Binder Binder
 
 data Expr' bndr var
   = EVar        var
-  | EVarGlobal  ExternalName
+  | EVarGlobal  (ExternalName' bndr)
   | ELit        Lit
   | EApp        (Expr' bndr var) (Expr' bndr var)
   | ETyLam      bndr (Expr' bndr var)
@@ -238,7 +236,7 @@ instance Show Unique where
  show (Unique c n) = show $ mkUnique c n
 
 instance Binary Unique
-instance Binary ExternalName
+instance (Binary bndr) => Binary (ExternalName' bndr)
 instance Binary SBinder
 instance Binary Binder
 instance (Binary bndr, Binary var) => Binary (Binder' bndr var)

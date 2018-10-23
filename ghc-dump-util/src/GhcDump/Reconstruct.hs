@@ -27,11 +27,11 @@ insertBinders bs bm = foldl' (flip insertBinder) bm bs
 getBinder :: BinderMap -> BinderId -> Binder
 getBinder (BinderMap m) bid
   | Just b <- HM.lookup bid m = b
-  | otherwise                 = head $ HM.elems m -- HACK: until external names are not handled
-{-
+--  | otherwise                 = head $ HM.elems m -- HACK: until external names are not handled
+
   | otherwise                 = error $ "unknown binder "++ show bid ++ ":\nin scope:\n"
                                         ++ unlines (map (\(bid',b) -> show bid' ++ "\t" ++ show b) (HM.toList m))
--}
+
 -- "recon" == "reconstruct"
 
 reconModule :: SModule -> Module
@@ -48,7 +48,7 @@ reconModule m = Module (moduleName m) (modulePhase m) binds
 
 reconExpr :: BinderMap -> SExpr -> Expr
 reconExpr bm (EVar var)       = EVar $ getBinder bm var
-reconExpr _  (EVarGlobal n)   = EVarGlobal n
+--reconExpr _  (EVarGlobal n)   = EVarGlobal n
 reconExpr _  (ELit l)         = ELit l
 reconExpr bm (EApp x y)       = EApp (reconExpr bm x) (reconExpr bm y)
 reconExpr bm (ETyLam b x)     = let b' = reconBinder bm b

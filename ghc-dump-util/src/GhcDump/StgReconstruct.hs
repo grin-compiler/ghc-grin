@@ -8,23 +8,30 @@ import Prelude hiding (readFile)
 import Data.Hashable
 import qualified Data.HashMap.Lazy as HM
 
-import GhcDump_StgAst
-import GhcDump_Ast (BinderId(..), Binder(..), Unique(..), binderId, SBinder)
+import GhcDump_StgAst hiding (ForeignCall)
+import GhcDump_Ast (BinderId(..), Binder(..), Unique(..), binderId, SBinder, ExternalName'(..), ExternalName, SExternalName)
 
 import GhcDump.Reconstruct (reconBinder, BinderMap, insertBinder, insertBinders, getBinder, emptyBinderMap)
 
 -- "recon" == "reconstruct"
 
 reconModule :: SModule -> Module
-reconModule m = Module (moduleName m) (modulePhase m) binds
+reconModule m = Module (moduleName m) (modulePhase m) binds exts
   where
-    bm    = insertBinders (concatMap topBindings binds) emptyBinderMap
+    bm    = insertBinders (concatMap topBindings binds ++ [b | ExternalName _ b <- exts]) emptyBinderMap
     binds = map reconTopBinding $ moduleTopBindings m
+
+    exts  = map reconExternal $ moduleExternals m
 
     reconTopBinding :: STopBinding -> TopBinding
     reconTopBinding = \case
       StgTopLifted b      -> StgTopLifted (snd $ reconBinding bm b)
       StgTopStringLit b s -> StgTopStringLit (reconBinder bm b) s
+
+reconExternal :: SExternalName -> ExternalName
+reconExternal = \case
+  ExternalName m b  -> ExternalName m $ reconBinder emptyBinderMap b
+  ForeignCall       -> ForeignCall
 
 topBindings :: TopBinding' bndr occ -> [bndr]
 topBindings = \case

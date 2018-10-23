@@ -52,7 +52,7 @@ isDataCon b = case C.unBndr b of
 
 isDataConExt :: C.ExternalName -> Bool
 isDataConExt C.ForeignCall = False
-isDataConExt b = C.externalIdDetails b == C.DataConWorkId
+isDataConExt b = (C.binderIdDetails . C.unBndr . C.externalBinder $ b) == C.DataConWorkId
 
 {-
 TODO - support these:
@@ -83,6 +83,8 @@ visitAlt (C.Alt altCon argIds body) = do
 convertExtName :: C.ExternalName -> CG String
 convertExtName = \case
   C.ExternalName {..} -> do
+    let externalName = C.binderName $ C.unBndr $ externalBinder
+        externalIdArity = C.idiArity $ C.binderIdInfo $ C.unBndr $ externalBinder
     let qualName = BS8.unpack (C.getModuleName externalModuleName) ++ "." ++ BS8.unpack externalName
     modify $ \env@Env{..} -> env {dataCons = Set.insert ("EVarGlobal" ++ "-" ++ show externalIdArity ++ "-" ++ qualName) dataCons}
     pure $ BS8.unpack (C.getModuleName externalModuleName) ++ "." ++ BS8.unpack externalName
@@ -101,7 +103,7 @@ visitExpr = \case
     | otherwise         -> Var <$> genName "EVar" bndr
   C.EVarGlobal extName
     | extName == C.ForeignCall  -> pure . Lit . LDummy $ "C.ForeignCall"
-    | C.externalIsTyVar extName -> pure . Lit . LDummy $ "ExtTyBinder"
+--    | externalIsTyVar extName -> pure . Lit . LDummy $ "ExtTyBinder"
     | isDataConExt extName      -> Con <$> convertExtName extName <*> pure []
     | otherwise                 -> Var <$> convertExtName extName
   C.ELit lit            -> pure . Lit $ convertLit lit

@@ -41,5 +41,7 @@ library
                        bytestring,
                        filepath,
                        binary,
+                       containers,
+                       transformers,
                        ghc
   default-language:    Haskell2010

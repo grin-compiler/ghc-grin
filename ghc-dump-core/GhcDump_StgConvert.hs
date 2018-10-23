@@ -1,4 +1,4 @@
-{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE LambdaCase, TupleSections #-}
 module GhcDump_StgConvert where
 
 import qualified Data.ByteString.Char8 as BS8
@@ -9,8 +9,15 @@ import qualified DataCon as GHC
 import qualified Id as Id
 import qualified Name as GHC
 import qualified PrimOp as GHC
+import qualified IdInfo
+import qualified Unique
 
-import GhcDump_Ast (SBinder(..), BinderId(..), Binder'(..))
+import Control.Monad
+import Control.Monad.Trans.Writer.Strict
+import Data.IntMap (IntMap)
+import qualified Data.IntMap as IntMap
+
+import GhcDump_Ast (SBinder(..), BinderId(..), Binder'(..), ExternalName'(..), SExternalName)
 import GhcDump_StgAst as Ast
 import GhcDump_Convert
   ( cvtModuleName
@@ -23,23 +30,24 @@ import GhcDump_Convert
   , occNameToText
   )
 
-cvtVar :: Id.Id -> BinderId
-cvtVar = BinderId . cvtUnique . Id.idUnique -- TODO: global var handling
+type M = Writer (IntMap Id.Id)
+
+cvtVar :: Id.Id -> M BinderId
+cvtVar x = do
+  when (GHC.isExternalName $ GHC.getName x) $ do
+    tell (IntMap.singleton (Unique.getKey $ Id.idUnique x) x)
+  pure . BinderId . cvtUnique . Id.idUnique $ x
 
 cvtBinder :: Id.Id -> SBinder
 cvtBinder v
   | Id.isId v = SBndr $ Binder
       { binderName      = occNameToText $ GHC.getOccName v
-      , binderId        = cvtVar v
+      , binderId        = BinderId . cvtUnique . Id.idUnique $ v
       , binderIdInfo    = cvtIdInfo $ Id.idInfo v
       , binderIdDetails = cvtIdDetails $ Id.idDetails v
       , binderType      = cvtType $ Id.idType v
       }
-  | otherwise = SBndr $ TyBinder
-      { binderName      = occNameToText $ GHC.getOccName v
-      , binderId        = cvtVar v
-      , binderKind      = cvtType $ Id.idType v
-      }
+  | otherwise = error $ "Type binder in STG: " ++ (show $ occNameToText $ GHC.getOccName v)
 
 cvtDataCon :: GHC.DataCon -> DataCon
 cvtDataCon d = DataCon (occNameToText $ GHC.getOccName d)
@@ -48,12 +56,12 @@ cvtOp :: GHC.StgOp -> StgOp
 cvtOp = \case
   GHC.StgPrimOp o     -> StgPrimOp (PrimOp . occNameToText $ GHC.primOpOcc o)
   GHC.StgPrimCallOp c -> StgPrimCallOp PrimCall -- TODO
-  GHC.StgFCallOp f u  -> StgFCallOp ForeignCall (cvtUnique u) -- TODO
+  GHC.StgFCallOp f u  -> StgFCallOp Ast.ForeignCall (cvtUnique u) -- TODO
 
-cvtArg :: GHC.StgArg -> SArg
+cvtArg :: GHC.StgArg -> M SArg
 cvtArg = \case
-  GHC.StgVarArg o -> StgVarArg (cvtVar o)
-  GHC.StgLitArg l -> StgLitArg (cvtLit l)
+  GHC.StgVarArg o -> StgVarArg <$> cvtVar o
+  GHC.StgLitArg l -> pure $ StgLitArg (cvtLit l)
 
 cvtBinderInfo :: GHC.StgBinderInfo -> BinderInfo
 cvtBinderInfo i
@@ -66,35 +74,43 @@ cvtUpdateFlag = \case
   GHC.Updatable   -> Updatable
   GHC.SingleEntry -> SingleEntry
 
-cvtAlt :: GHC.StgAlt -> SAlt
-cvtAlt (con, bs, e) = Alt (cvtAltCon con) (map cvtBinder bs) (cvtExpr e)
+cvtAlt :: GHC.StgAlt -> M SAlt
+cvtAlt (con, bs, e) = Alt (cvtAltCon con) (map cvtBinder bs) <$> cvtExpr e
 
-cvtExpr :: GHC.StgExpr -> SExpr
+cvtExpr :: GHC.StgExpr -> M SExpr
 cvtExpr = \case
-  GHC.StgApp f ps         -> StgApp (cvtVar f) (map cvtArg ps)
-  GHC.StgLit l            -> StgLit (cvtLit l)
-  GHC.StgConApp d ps _    -> StgConApp (cvtDataCon d) (map cvtArg ps)
-  GHC.StgOpApp o ps _     -> StgOpApp (cvtOp o) (map cvtArg ps)
-  GHC.StgLam bs e         -> StgLam (map cvtBinder bs) (cvtExpr e)
-  GHC.StgCase e b _ al    -> StgCase (cvtExpr e) (cvtBinder b) (map cvtAlt al)
-  GHC.StgLet b e          -> StgLet (cvtBind b) (cvtExpr e)
-  GHC.StgLetNoEscape b e  -> StgLetNoEscape (cvtBind b) (cvtExpr e)
+  GHC.StgApp f ps         -> StgApp <$> cvtVar f <*> mapM cvtArg ps
+  GHC.StgLit l            -> pure $ StgLit (cvtLit l)
+  GHC.StgConApp d ps _    -> StgConApp (cvtDataCon d) <$> mapM cvtArg ps
+  GHC.StgOpApp o ps _     -> StgOpApp (cvtOp o) <$> mapM cvtArg ps
+  GHC.StgLam bs e         -> StgLam (map cvtBinder bs) <$> cvtExpr e
+  GHC.StgCase e b _ al    -> StgCase <$> cvtExpr e <*> pure (cvtBinder b) <*> mapM cvtAlt al
+  GHC.StgLet b e          -> StgLet <$> cvtBind b <*> cvtExpr e
+  GHC.StgLetNoEscape b e  -> StgLetNoEscape <$> cvtBind b <*> cvtExpr e
   GHC.StgTick _ e         -> cvtExpr e
 
-cvtRhs :: GHC.StgRhs -> SRhs
+cvtRhs :: GHC.StgRhs -> M SRhs
 cvtRhs = \case
-  GHC.StgRhsClosure _ b fs u bs e -> StgRhsClosure (cvtBinderInfo b) (map cvtVar fs) (cvtUpdateFlag u) (map cvtBinder bs) (cvtExpr e)
-  GHC.StgRhsCon _ dc args         -> StgRhsCon (cvtDataCon dc) (map cvtArg args)
+  GHC.StgRhsClosure _ b fs u bs e -> StgRhsClosure (cvtBinderInfo b) <$> mapM cvtVar fs <*> pure (cvtUpdateFlag u) <*> pure (map cvtBinder bs) <*> cvtExpr e
+  GHC.StgRhsCon _ dc args         -> StgRhsCon (cvtDataCon dc) <$> mapM cvtArg args
 
-cvtBind :: GHC.StgBinding -> SBinding
+cvtBind :: GHC.StgBinding -> M SBinding
 cvtBind = \case
-  GHC.StgNonRec b r -> StgNonRec (cvtBinder b) (cvtRhs r)
-  GHC.StgRec    bs  -> StgRec [(cvtBinder b, cvtRhs r) | (b, r) <- bs]
+  GHC.StgNonRec b r -> StgNonRec (cvtBinder b) <$> cvtRhs r
+  GHC.StgRec    bs  -> StgRec <$> sequence [(cvtBinder b,) <$> cvtRhs r | (b, r) <- bs]
 
-cvtTopBind :: GHC.StgTopBinding -> STopBinding
+cvtTopBind :: GHC.StgTopBinding -> M STopBinding
 cvtTopBind = \case
-  GHC.StgTopLifted b        -> StgTopLifted (cvtBind b)
-  GHC.StgTopStringLit b bs  -> StgTopStringLit (cvtBinder b) bs
+  GHC.StgTopLifted b        -> StgTopLifted <$> cvtBind b
+  GHC.StgTopStringLit b bs  -> pure $ StgTopStringLit (cvtBinder b) bs
 
 cvtModule :: String -> Module.ModuleName -> [GHC.StgTopBinding] -> Ast.SModule
-cvtModule phase modName binds = Ast.Module (cvtModuleName modName) (BS8.pack phase) (map cvtTopBind binds)
+cvtModule phase modName binds = Ast.Module (cvtModuleName modName) (BS8.pack phase) topBinds extNames where
+  (topBinds, extNameSet)  = runWriter $ mapM cvtTopBind binds
+  extNames                = map mkExternalName $ IntMap.elems extNameSet
+
+mkExternalName :: Id.Id -> SExternalName
+mkExternalName x = ExternalName
+  { externalModuleName  = cvtModuleName $ Module.moduleName $ GHC.nameModule $ GHC.getName x
+  , externalBinder      = cvtBinder x
+  }
