@@ -91,10 +91,10 @@ pprIdInfo opts i d
     doc = sep $ punctuate ", "
           $ [ pretty d
             , "arity=" <> pretty (idiArity i)
-            , "inline=" <> pretty (idiInlinePragma i)
+--            , "inline=" <> pretty (idiInlinePragma i)
             , "occ=" <> pretty (idiOccInfo i)
-            , "str=" <> pretty (idiStrictnessSig i)
-            , "dmd=" <> pretty (idiDemandSig i)
+--            , "str=" <> pretty (idiStrictnessSig i)
+--            , "dmd=" <> pretty (idiDemandSig i)
             , "call-arity=" <> pretty (idiCallArity i)
 --            , "unfolding=" <> pprUnfolding opts (idiUnfolding i)
             ] ++ (if idiIsOneShot i then ["one-shot"] else [])

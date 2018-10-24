@@ -16,7 +16,7 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:
-    Lambda.FromDumpCore
+    Lambda.FromDumpStg
 
   build-depends:
       base
@@ -33,9 +33,9 @@ source-repository head
   type:     git
   location: https://github.com/grin-tech/grin
 
-executable ghc-core-grin
+executable ghc-grin
   hs-source-dirs:      app
-  main-is:             GHCCoreGrin.hs
+  main-is:             GHCGrin.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , mtl

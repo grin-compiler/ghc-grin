@@ -51,7 +51,7 @@ test = cata folder where
     LetRecF binds e   -> mconcat [env {envDef = Set.singleton name} <> a | (name, a) <- binds] <> e
     LetSF binds e     -> mconcat [env {envDef = Set.singleton name} <> a | (name, a) <- binds] <> e
     LetF binds e      -> mconcat [env {envDef = Set.singleton name} <> a | (name, a) <- binds] <> e
-    LamF name e       -> env {envDef = Set.singleton name} <> e
+    LamF name e       -> env {envDef = Set.fromList name} <> e
     AltF (NodePat con args) e -> env {envDef = Set.fromList $ args, envCon = Set.singleton $ show (length args) ++ "-" ++ con} <> e
     -- err
     LitF (LError err) -> env {envErr = Set.singleton err}

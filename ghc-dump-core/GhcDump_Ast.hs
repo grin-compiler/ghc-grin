@@ -66,10 +66,10 @@ data IdInfo bndr var
     { idiArity         :: !Int
     , idiIsOneShot     :: Bool
 --    , idiUnfolding     :: Unfolding bndr var
-    , idiInlinePragma  :: !T_Text
+--    , idiInlinePragma  :: !T_Text -- TODO
     , idiOccInfo       :: OccInfo
-    , idiStrictnessSig :: !T_Text
-    , idiDemandSig     :: !T_Text
+--    , idiStrictnessSig :: !T_Text -- REMOVE
+--    , idiDemandSig     :: !T_Text -- REMOVE
     , idiCallArity     :: !Int
     }
   deriving (Eq, Ord, Generic, Show)

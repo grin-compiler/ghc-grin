@@ -34,7 +34,7 @@ data Exp
   -- Alt
   | Alt         Pat Exp
   -- Extra
-  | Lam         Name Exp
+  | Lam         [Name] Exp
   deriving (Eq, Ord, Show)
 
 data Lit

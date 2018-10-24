@@ -73,7 +73,7 @@ cvtIdInfo i =
     IdInfo { idiArity         = IdInfo.arityInfo i
            , idiIsOneShot     = IdInfo.oneShotInfo i == IdInfo.OneShotLam
            -- , idiUnfolding     = cvtUnfolding $ IdInfo.unfoldingInfo i
-           , idiInlinePragma  = cvtSDoc $ ppr $ IdInfo.inlinePragInfo i
+          -- , idiInlinePragma  = cvtSDoc $ ppr $ IdInfo.inlinePragInfo i
            , idiOccInfo       = case IdInfo.occInfo i of
 #if MIN_VERSION_ghc(8,2,0)
                                   OccInfo.ManyOccs{} -> OccManyOccs
@@ -83,8 +83,8 @@ cvtIdInfo i =
                                   OccInfo.IAmDead    -> OccDead
                                   OccInfo.OneOcc{}   -> OccOneOcc
                                   oi@OccInfo.IAmALoopBreaker{} -> OccLoopBreaker (OccInfo.isStrongLoopBreaker oi)
-           , idiStrictnessSig = cvtSDoc $ ppr $ IdInfo.strictnessInfo i
-           , idiDemandSig     = cvtSDoc $ ppr $ IdInfo.demandInfo i
+          -- , idiStrictnessSig = cvtSDoc $ ppr $ IdInfo.strictnessInfo i
+          -- , idiDemandSig     = cvtSDoc $ ppr $ IdInfo.demandInfo i
            , idiCallArity     = IdInfo.callArityInfo i
            }
 

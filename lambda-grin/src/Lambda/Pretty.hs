@@ -39,7 +39,7 @@ instance Pretty Exp where
       -- Alt
       AltF cpat exp       -> pretty cpat <+> text "->" <+> align (pretty exp)
       -- Extra
-      LamF name exp       -> keyword "\\" <> text name <+> text "->" <+> align (pretty exp)
+      LamF name exp       -> keyword "\\" <> hsep (map text name) <+> text "->" <+> align (pretty exp)
 
 instance Pretty Lit where
   pretty = \case

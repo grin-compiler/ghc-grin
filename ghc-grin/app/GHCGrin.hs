@@ -6,9 +6,9 @@ import System.FilePath
 import System.Environment
 import System.Exit
 
-import GhcDump.Util
+import GhcDump.StgUtil
 
-import Lambda.FromDumpCore
+import Lambda.FromDumpStg
 import Lambda.Syntax
 import Lambda.Pretty
 import Lambda.CodeGen
@@ -23,7 +23,7 @@ data Opts
   , output :: FilePath
   }
 
-showUsage = do putStrLn "Usage: ghc-core-grin <source-files> [-o <output-file>]"
+showUsage = do putStrLn "Usage: ghc-grin <stg-files> [-o <output-file>]"
                exitWith ExitSuccess
 
 getOpts :: IO Opts
@@ -38,9 +38,9 @@ cg_main :: Opts -> IO ()
 cg_main opts = do
   defList <- forM (inputs opts) $ \fname -> do
     putStrLn $ "loading " ++ fname
-    coreModule <- readDump fname
+    stgModule <- readDump fname
     putStrLn $ "loaded " ++ fname
-    program@(Program defs) <- codegenLambda coreModule
+    program@(Program defs) <- codegenLambda stgModule
 
     let lambdaName = replaceExtension fname "lambda"
     --putStrLn lambdaName

@@ -712,10 +712,10 @@ buildOrReplLib forRepl verbosity numJobs pkg_descr lbi lib clbi = do
       | ghcVersion < mkVersion [7,2] -- ghc-7.2+ does not make _stub.o files
       , x <- allLibModules lib clbi ]
 
-    let corebinExtension = "corebin"
-    hCoreBins <- Internal.getHaskellObjects implInfo lib lbi clbi
-                      libTargetDir corebinExtension True
-    putStrLn $ unlines $ "* corebins:" : hCoreBins
+    let stgbinExtension = "stgbin"
+    hStgBins <- Internal.getHaskellObjects implInfo lib lbi clbi
+                      libTargetDir stgbinExtension True
+    putStrLn $ unlines $ "* stgbins:" : hStgBins
 
     hObjs     <- Internal.getHaskellObjects implInfo lib lbi clbi
                       libTargetDir objExtension True
@@ -1638,7 +1638,7 @@ installLib    :: Verbosity
 installLib verbosity lbi targetDir dynlibTargetDir _builtDir _pkg lib clbi = do
   -- copy .hi files over:
   whenVanilla $ copyModuleFiles "hi"
-  whenVanilla $ copyModuleFiles "corebin"
+  whenVanilla $ copyModuleFiles "stgbin"
   whenProf    $ copyModuleFiles "p_hi"
   whenShared  $ copyModuleFiles "dyn_hi"
 
