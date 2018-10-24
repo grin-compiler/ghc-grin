@@ -34,7 +34,7 @@ instance Pretty T_Text where
     pretty = text . BS.unpack
 
 instance Pretty ExternalName where
-    pretty n@ExternalName{} = pretty (externalModuleName n) <> "." <> (pretty $ binderId $ unBndr $ externalBinder n)
+    pretty n@ExternalName{} = pretty (externalModuleName n) <> text "." <> (pretty $ externalBinder n)
     pretty ForeignCall = "<foreign>"
 
 instance Pretty ModuleName where
@@ -96,7 +96,7 @@ pprIdInfo opts i d
             , "str=" <> pretty (idiStrictnessSig i)
             , "dmd=" <> pretty (idiDemandSig i)
             , "call-arity=" <> pretty (idiCallArity i)
-            , "unfolding=" <> pprUnfolding opts (idiUnfolding i)
+--            , "unfolding=" <> pprUnfolding opts (idiUnfolding i)
             ] ++ (if idiIsOneShot i then ["one-shot"] else [])
 
 pprUnfolding :: PrettyOpts -> Unfolding Binder Binder -> Doc
@@ -206,7 +206,7 @@ pprTopBinding opts tb =
 
 pprTypeSig :: PrettyOpts -> Binder -> Doc
 pprTypeSig opts b@(Bndr b') =
-    pprBinder opts b <+> dcolon <+> align (pprType opts (binderType b'))
+    pprBinder opts b <+> dcolon <+> align ({-pprType opts (binderType b')-}text "_")
 
 pprBinding :: PrettyOpts -> Binder -> Expr -> Doc
 pprBinding opts b@(Bndr b'@Binder{}) rhs =

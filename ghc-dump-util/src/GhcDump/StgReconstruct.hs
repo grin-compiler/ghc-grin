@@ -11,7 +11,7 @@ import qualified Data.HashMap.Lazy as HM
 import GhcDump_StgAst hiding (ForeignCall)
 import GhcDump_Ast (BinderId(..), Binder(..), Unique(..), binderId, SBinder, ExternalName'(..), ExternalName, SExternalName)
 
-import GhcDump.Reconstruct (reconBinder, BinderMap, insertBinder, insertBinders, getBinder, emptyBinderMap)
+import GhcDump.Reconstruct (reconBinder, BinderMap, insertBinder, insertBinders, getBinder, emptyBinderMap, reconExternal)
 
 -- "recon" == "reconstruct"
 
@@ -27,11 +27,6 @@ reconModule m = Module (moduleName m) (modulePhase m) binds exts
     reconTopBinding = \case
       StgTopLifted b      -> StgTopLifted (snd $ reconBinding bm b)
       StgTopStringLit b s -> StgTopStringLit (reconBinder bm b) s
-
-reconExternal :: SExternalName -> ExternalName
-reconExternal = \case
-  ExternalName m b  -> ExternalName m $ reconBinder emptyBinderMap b
-  ForeignCall       -> ForeignCall
 
 topBindings :: TopBinding' bndr occ -> [bndr]
 topBindings = \case

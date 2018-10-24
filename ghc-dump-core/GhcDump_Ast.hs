@@ -52,12 +52,12 @@ data Binder' bndr var
     , binderId        :: !BinderId
     , binderIdInfo    :: IdInfo bndr var
     , binderIdDetails :: IdDetails
-    , binderType      :: Type' bndr var
+--    , binderType      :: Type' bndr var
     }
   | TyBinder
     { binderName      :: !T_Text
     , binderId        :: !BinderId
-    , binderKind      :: Type' bndr var
+--    , binderKind      :: Type' bndr var
     }
   deriving (Eq, Ord, Generic, Show)
 
@@ -65,7 +65,7 @@ data IdInfo bndr var
   = IdInfo
     { idiArity         :: !Int
     , idiIsOneShot     :: Bool
-    , idiUnfolding     :: Unfolding bndr var
+--    , idiUnfolding     :: Unfolding bndr var
     , idiInlinePragma  :: !T_Text
     , idiOccInfo       :: OccInfo
     , idiStrictnessSig :: !T_Text

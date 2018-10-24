@@ -60,19 +60,19 @@ cvtBinder v
                    , binderId     = cvtVar v
                    , binderIdInfo = cvtIdInfo $ Var.idInfo v
                    , binderIdDetails = cvtIdDetails $ Var.idDetails v
-                   , binderType   = cvtType $ Var.varType v
+              --     , binderType   = cvtType $ Var.varType v
                    }
   | otherwise =
     SBndr $ TyBinder { binderName   = occNameToText $ getOccName v
                      , binderId     = cvtVar v
-                     , binderKind   = cvtType $ Var.varType v
+                --     , binderKind   = cvtType $ Var.varType v
                      }
 
 cvtIdInfo :: IdInfo.IdInfo -> Ast.IdInfo SBinder BinderId
 cvtIdInfo i =
     IdInfo { idiArity         = IdInfo.arityInfo i
            , idiIsOneShot     = IdInfo.oneShotInfo i == IdInfo.OneShotLam
-           , idiUnfolding     = cvtUnfolding $ IdInfo.unfoldingInfo i
+           -- , idiUnfolding     = cvtUnfolding $ IdInfo.unfoldingInfo i
            , idiInlinePragma  = cvtSDoc $ ppr $ IdInfo.inlinePragInfo i
            , idiOccInfo       = case IdInfo.occInfo i of
 #if MIN_VERSION_ghc(8,2,0)
@@ -160,16 +160,7 @@ cvtExpr expr =
         -- TODO: use hasNoBinding here.
       | isFCallId x   -> EVarGlobal ForeignCall
       | n <- getName x, isExternalName n
-                      -> EVarGlobal ForeignCall
---                      -> EVarGlobal $ ExternalName (cvtModuleName $ Module.moduleName $ nameModule n) (cvtBinder x)
-                                                   {-
-                                                   (occNameToText $ getOccName x)
-                                                   (cvtUnique $ getUnique x)
-                                                   (cvtIdDetails $ Var.idDetails x)
-                                                   (IdInfo.arityInfo      $ Var.idInfo x)
-                                                   (IdInfo.callArityInfo  $ Var.idInfo x)
-                                                   (Var.isTyVar x)
-                                                   -}
+                      -> EVarGlobal ForeignCall -- FIXME
       | otherwise     -> EVar (cvtVar x)
     Lit l             -> ELit (cvtLit l)
     App x y           -> EApp (cvtExpr x) (cvtExpr y)

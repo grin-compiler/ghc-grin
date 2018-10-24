@@ -111,6 +111,7 @@ pprModule :: PrettyOpts -> Module -> Doc
 pprModule opts m =
   comment (pretty $ modulePhase m)
   <$$> text "module" <+> pretty (moduleName m) <+> "where" <> line
+  <$$> vsep (map pretty (moduleExternals m)) <> line
   <$$> vsep (map (pprTopBinding opts) (moduleTopBindings m))
 
 instance Pretty Module where

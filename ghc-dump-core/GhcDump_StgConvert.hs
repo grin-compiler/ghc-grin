@@ -13,11 +13,13 @@ import qualified IdInfo
 import qualified Unique
 
 import Control.Monad
-import Control.Monad.Trans.Writer.Strict
+import Control.Monad.Trans.State.Strict
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
+import qualified Data.IntSet as IntSet
 
-import GhcDump_Ast (SBinder(..), BinderId(..), Binder'(..), ExternalName'(..), SExternalName)
+import GhcDump_Ast (SBinder(..), BinderId(..), Binder'(..), ExternalName'(..), SExternalName, Unfolding(..))
+import qualified GhcDump_Ast
 import GhcDump_StgAst as Ast
 import GhcDump_Convert
   ( cvtModuleName
@@ -30,12 +32,17 @@ import GhcDump_Convert
   , occNameToText
   )
 
-type M = Writer (IntMap Id.Id)
+type M = State (IntMap Id.Id)
+
+idKey = Unique.getKey . Id.idUnique
 
 cvtVar :: Id.Id -> M BinderId
 cvtVar x = do
-  when (GHC.isExternalName $ GHC.getName x) $ do
-    tell (IntMap.singleton (Unique.getKey $ Id.idUnique x) x)
+  let name = GHC.getName x
+  when (GHC.isExternalName name) $ do -- TODO: refine filter to not include local top level binders
+    let key = idKey x
+    new <- IntMap.notMember key <$> get
+    when new $ modify' $ \m -> IntMap.insert key x m
   pure . BinderId . cvtUnique . Id.idUnique $ x
 
 cvtBinder :: Id.Id -> SBinder
@@ -43,9 +50,9 @@ cvtBinder v
   | Id.isId v = SBndr $ Binder
       { binderName      = occNameToText $ GHC.getOccName v
       , binderId        = BinderId . cvtUnique . Id.idUnique $ v
-      , binderIdInfo    = cvtIdInfo $ Id.idInfo v
+      , binderIdInfo    = (cvtIdInfo $ Id.idInfo v) -- {GhcDump_Ast.idiUnfolding = NoUnfolding}
       , binderIdDetails = cvtIdDetails $ Id.idDetails v
-      , binderType      = cvtType $ Id.idType v
+--      , binderType      = cvtType $ Id.idType v
       }
   | otherwise = error $ "Type binder in STG: " ++ (show $ occNameToText $ GHC.getOccName v)
 
@@ -106,11 +113,18 @@ cvtTopBind = \case
 
 cvtModule :: String -> Module.ModuleName -> [GHC.StgTopBinding] -> Ast.SModule
 cvtModule phase modName binds = Ast.Module (cvtModuleName modName) (BS8.pack phase) topBinds extNames where
-  (topBinds, extNameSet)  = runWriter $ mapM cvtTopBind binds
-  extNames                = map mkExternalName $ IntMap.elems extNameSet
+  (topBinds, extNameSet)  = runState (mapM cvtTopBind binds) IntMap.empty
+  extNames                = [mkExternalName e | (k,e) <- IntMap.toList extNameSet, IntSet.notMember k topKeys]
+  topKeys                 = IntSet.fromList $ concatMap topBindKeys binds
 
 mkExternalName :: Id.Id -> SExternalName
 mkExternalName x = ExternalName
   { externalModuleName  = cvtModuleName $ Module.moduleName $ GHC.nameModule $ GHC.getName x
   , externalBinder      = cvtBinder x
   }
+
+topBindKeys :: GHC.StgTopBinding -> [Int]
+topBindKeys = \case
+  GHC.StgTopLifted (GHC.StgNonRec b _)  -> [idKey b]
+  GHC.StgTopLifted (GHC.StgRec bs)      -> map (idKey . fst) bs
+  GHC.StgTopStringLit b _               -> [idKey b]

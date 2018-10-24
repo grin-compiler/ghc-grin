@@ -1,5 +1,5 @@
-{-# LANGUAGE RecordWildCards #-}
-module GhcDump.Reconstruct (reconModule, reconBinder, BinderMap(..), insertBinder, insertBinders, getBinder, emptyBinderMap) where
+{-# LANGUAGE RecordWildCards, LambdaCase #-}
+module GhcDump.Reconstruct (reconModule, reconBinder, BinderMap(..), insertBinder, insertBinders, getBinder, emptyBinderMap, reconExternal) where
 
 import Data.Foldable
 import Data.Bifunctor
@@ -46,9 +46,14 @@ reconModule m = Module (moduleName m) (modulePhase m) binds
     reconTopBinding (RecTopBinding bs) = RecTopBinding bs'
       where bs' = map (\(a,stats,rhs) -> (reconBinder bm a, stats, reconExpr bm rhs)) bs
 
+reconExternal :: SExternalName -> ExternalName
+reconExternal = \case
+  ExternalName m b  -> ExternalName m $ reconBinder emptyBinderMap b
+  ForeignCall       -> ForeignCall
+
 reconExpr :: BinderMap -> SExpr -> Expr
 reconExpr bm (EVar var)       = EVar $ getBinder bm var
---reconExpr _  (EVarGlobal n)   = EVarGlobal n
+reconExpr _  (EVarGlobal n)   = EVarGlobal $ reconExternal n
 reconExpr _  (ELit l)         = ELit l
 reconExpr bm (EApp x y)       = EApp (reconExpr bm x) (reconExpr bm y)
 reconExpr bm (ETyLam b x)     = let b' = reconBinder bm b
@@ -68,15 +73,16 @@ reconExpr _  ECoercion        = ECoercion
 
 reconBinder :: BinderMap -> SBinder -> Binder
 reconBinder bm (SBndr b@Binder{}) =
-    Bndr $ b { binderType = reconType bm $ binderType b
-             , binderIdInfo = reconIdInfo bm $ binderIdInfo b
+    Bndr $ b { --binderType = LitTy -- reconType bm $ binderType b
+              binderIdInfo = reconIdInfo bm $ binderIdInfo b
              }
 reconBinder bm (SBndr b@TyBinder{}) =
-    Bndr $ b { binderKind = reconType bm $ binderKind b }
+    Bndr $ TyBinder { binderName  = binderName b
+                    , binderId    = binderId b} -- { binderKind = reconType bm $ binderKind b }
 
 reconIdInfo :: BinderMap -> IdInfo SBinder BinderId -> IdInfo Binder Binder
 reconIdInfo bm i =
-    i { idiUnfolding = reconUnfolding bm $ idiUnfolding i }
+    i {idiArity = idiArity i}-- { idiUnfolding = reconUnfolding bm $ idiUnfolding i }
 
 reconUnfolding :: BinderMap -> Unfolding SBinder BinderId -> Unfolding Binder Binder
 reconUnfolding _  NoUnfolding = NoUnfolding
