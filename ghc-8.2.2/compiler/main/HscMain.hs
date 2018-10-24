@@ -1309,7 +1309,7 @@ hscGenHardCode hsc_env cgguts mod_summary output_filename = do
             coreBin     = encode (C.cvtModuleCg "prep" cgguts_prep)
             location    = ms_location mod_summary
             core_output = replaceExtension (ml_hi_file location) "corebin"
-        BSL.writeFile core_output coreBin
+        --BSL.writeFile core_output coreBin
 
         -----------------  Convert to STG ------------------
         (stg_binds, cost_centre_info)
