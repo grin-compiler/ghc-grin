@@ -45,7 +45,8 @@ env = Env
 test = cata folder where
   folder = \case
     -- use
-    VarF name -> env {envUse = Set.singleton name}
+    VarF name         -> env {envUse = Set.singleton name}
+    AppF name e       -> mconcat $ env {envUse = Set.singleton name} : e
     -- def
     DefF name args e  -> env {envDef = Set.fromList $ name : args} <> e
     LetRecF binds e   -> mconcat [env {envDef = Set.singleton name} <> a | (name, a) <- binds] <> e

@@ -83,21 +83,21 @@ instance Pretty CoreStats where
                        , "jbinds="<>int (csJoinBinds c)
                        ])
 
-pprIdInfo :: PrettyOpts -> IdInfo Binder Binder -> IdDetails -> Doc
-pprIdInfo opts i d
+pprIdInfo :: PrettyOpts -> IdInfo Binder Binder -> {-IdDetails -> -}Doc
+pprIdInfo opts i --d
   | not $ showIdInfo opts = empty
   | otherwise = comment $ "IdInfo:" <+> align doc
   where
     doc = sep $ punctuate ", "
-          $ [ pretty d
-            , "arity=" <> pretty (idiArity i)
+          $ [ --pretty d
+             "arity=" <> pretty (idiArity i)
 --            , "inline=" <> pretty (idiInlinePragma i)
-            , "occ=" <> pretty (idiOccInfo i)
+--            , "occ=" <> pretty (idiOccInfo i)
 --            , "str=" <> pretty (idiStrictnessSig i)
 --            , "dmd=" <> pretty (idiDemandSig i)
             , "call-arity=" <> pretty (idiCallArity i)
 --            , "unfolding=" <> pprUnfolding opts (idiUnfolding i)
-            ] ++ (if idiIsOneShot i then ["one-shot"] else [])
+            ]-- ++ (if idiIsOneShot i then ["one-shot"] else [])
 
 pprUnfolding :: PrettyOpts -> Unfolding Binder Binder -> Doc
 pprUnfolding _    NoUnfolding = "NoUnfolding"
@@ -184,7 +184,7 @@ pprExpr' opts parens  (EType t)        = maybeParens parens $ "TYPE:" <+> pprTyp
 pprExpr' opts parens  ECoercion        = "CO"
 
 instance Pretty AltCon where
-    pretty (AltDataCon m t) = maybe mempty (\n -> text (BS.unpack n) <> ".") m <> text (BS.unpack t)
+    pretty (AltDataCon dc) = pretty dc
     pretty (AltLit l) = pretty l
     pretty AltDefault = text "DEFAULT"
 
@@ -199,7 +199,7 @@ pprTopBinding opts tb =
   where
     pprTopBind (b@(Bndr b'),s,rhs) =
         pprTypeSig opts b
-        <$$> pprIdInfo opts (binderIdInfo b') (binderIdDetails b')
+        <$$> pprIdInfo opts (binderIdInfo b') --(binderIdDetails b')
         <$$> comment (pretty s)
         <$$> hang' (pprBinder opts b <+> equals) 2 (pprExpr opts rhs)
         <> line
@@ -211,7 +211,7 @@ pprTypeSig opts b@(Bndr b') =
 pprBinding :: PrettyOpts -> Binder -> Expr -> Doc
 pprBinding opts b@(Bndr b'@Binder{}) rhs =
     ppWhen (showLetTypes opts) (pprTypeSig opts b)
-    <$$> pprIdInfo opts (binderIdInfo b') (binderIdDetails b')
+    <$$> pprIdInfo opts (binderIdInfo b') -- (binderIdDetails b')
     <$$> hang' (pprBinder opts b <+> equals) 2 (pprExpr opts rhs)
 pprBinding opts b@(Bndr TyBinder{}) rhs =
     -- let-bound type variables: who knew?

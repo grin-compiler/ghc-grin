@@ -14,8 +14,8 @@ import Text.Regex.TDFA
 import Text.Regex.TDFA.Common (Regex)
 import Text.Regex.TDFA.Text
 
-import GhcDump_Ast (Binder(..), binderUniqueName)
-import GhcDump.Pretty (PrettyOpts(..))
+--import GhcDump_Ast (Binder(..), binderUniqueName)
+--import GhcDump.Pretty (PrettyOpts(..))
 import GhcDump.StgPretty
 import GhcDump.StgUtil
 import GhcDump_StgAst

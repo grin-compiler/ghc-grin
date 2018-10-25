@@ -1,5 +1,5 @@
 {-# LANGUAGE RecordWildCards, LambdaCase #-}
-module GhcDump.Reconstruct (reconModule, reconBinder, BinderMap(..), insertBinder, insertBinders, getBinder, emptyBinderMap, reconExternal) where
+module GhcDump.Reconstruct (reconModule, reconBinder, BinderMap(..), insertBinder, insertBinders, getBinder, emptyBinderMap, reconExternal, reconAltCon) where
 
 import Data.Foldable
 import Data.Bifunctor
@@ -87,15 +87,21 @@ reconIdInfo bm i =
 reconUnfolding :: BinderMap -> Unfolding SBinder BinderId -> Unfolding Binder Binder
 reconUnfolding _  NoUnfolding = NoUnfolding
 reconUnfolding _  BootUnfolding = BootUnfolding
-reconUnfolding _  (OtherCon alts) = OtherCon alts
+--reconUnfolding _  (OtherCon alts) = OtherCon alts
 reconUnfolding _  DFunUnfolding   = DFunUnfolding
 reconUnfolding bm CoreUnfolding{..} = CoreUnfolding { unfTemplate = reconExpr bm unfTemplate
                                                     , .. }
 
+reconAltCon :: BinderMap -> SAltCon -> AltCon
+reconAltCon bm = \case
+  AltDataCon dc -> AltDataCon $ getBinder bm dc
+  AltLit l      -> AltLit l
+  AltDefault    -> AltDefault
+
 reconAlt :: BinderMap -> SAlt -> Alt
 reconAlt bm0 (Alt con bs rhs) =
     let (bm', bs') = doBinders bm0 [] bs
-    in Alt con bs' (reconExpr bm' rhs)
+    in Alt (reconAltCon bm0 con) bs' (reconExpr bm' rhs)
   where
     doBinders bm acc []       = (bm, reverse acc)
     doBinders bm acc (b:rest) = doBinders bm' (b':acc) rest

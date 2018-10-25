@@ -51,25 +51,16 @@ data Binder' bndr var
     { binderName      :: !T_Text
     , binderId        :: !BinderId
     , binderIdInfo    :: IdInfo bndr var
-    , binderIdDetails :: IdDetails
---    , binderType      :: Type' bndr var
     }
   | TyBinder
     { binderName      :: !T_Text
     , binderId        :: !BinderId
---    , binderKind      :: Type' bndr var
     }
   deriving (Eq, Ord, Generic, Show)
 
 data IdInfo bndr var
   = IdInfo
     { idiArity         :: !Int
-    , idiIsOneShot     :: Bool
---    , idiUnfolding     :: Unfolding bndr var
---    , idiInlinePragma  :: !T_Text -- TODO
-    , idiOccInfo       :: OccInfo
---    , idiStrictnessSig :: !T_Text -- REMOVE
---    , idiDemandSig     :: !T_Text -- REMOVE
     , idiCallArity     :: !Int
     }
   deriving (Eq, Ord, Generic, Show)
@@ -77,7 +68,7 @@ data IdInfo bndr var
 data Unfolding bndr var
   = NoUnfolding
   | BootUnfolding
-  | OtherCon [AltCon]
+  | OtherCon [AltCon' var]
   | DFunUnfolding
   | CoreUnfolding
     { unfTemplate   :: Expr' bndr var
@@ -182,14 +173,17 @@ type Alt  = Alt' Binder Binder
 
 data Alt' bndr var
   = Alt
-    { altCon     :: !AltCon
+    { altCon     :: !(AltCon' var)
     , altBinders :: [bndr]
     , altRHS     :: Expr' bndr var
     }
   deriving (Eq, Ord, Generic, Show)
 
-data AltCon
-  = AltDataCon  !(Maybe T_Text) !T_Text -- module name, data con name
+type SAltCon = AltCon' BinderId
+type AltCon = AltCon' Binder
+
+data AltCon' var
+  = AltDataCon  var -- DataCon
   | AltLit      Lit
   | AltDefault
   deriving (Eq, Ord, Generic, Show)
@@ -250,6 +244,6 @@ instance (Binary bndr, Binary var) => Binary (Type' bndr var)
 instance (Binary bndr, Binary var) => Binary (Module' bndr var)
 instance (Binary bndr, Binary var) => Binary (Expr' bndr var)
 instance (Binary bndr, Binary var) => Binary (Alt' bndr var)
-instance Binary AltCon
+instance (Binary var) => Binary (AltCon' var)
 instance (Binary bndr, Binary var) => Binary (TopBinding' bndr var)
 instance Binary CoreStats

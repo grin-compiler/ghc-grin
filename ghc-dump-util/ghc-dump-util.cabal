@@ -22,12 +22,8 @@ tested-with:         GHC==7.10.3, GHC==8.0.2, GHC==8.2.2
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     GhcDump.Repl
-                       GhcDump.Util
-                       GhcDump.StgUtil
-                       GhcDump.Pretty
+  exposed-modules:     GhcDump.StgUtil
                        GhcDump.StgPretty
-                       GhcDump.Reconstruct
                        GhcDump.StgReconstruct
   hs-source-dirs:      src
   build-depends:       base < 5.0,

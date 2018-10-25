@@ -7,7 +7,7 @@ module GhcDump.StgPretty
   ( Pretty(..)
   , module GhcDump.StgPretty
   ) where
-
+{-
 import GhcDump.Pretty
   ( PrettyOpts(..)
   , defaultPrettyOpts
@@ -19,9 +19,10 @@ import GhcDump.Pretty
   , maybeParens
   , smallRArrow
   )
-import GhcDump_Ast (BinderId(..), Binder(..), Unique(..), binderId, SBinder, binderIdInfo, binderIdDetails)
+-}
+--import GhcDump_Ast (BinderId(..), Binder(..), Unique(..), binderId, SBinder, binderIdInfo)
 import GhcDump_StgAst
-import GhcDump.Util
+--import GhcDump.Util
 
 import Data.Ratio
 import qualified Data.Text as T
@@ -37,6 +38,84 @@ data StgOp
 -}
 
 
+---
+data PrettyOpts = PrettyOpts { showUniques    :: Bool
+                             , showIdInfo     :: Bool
+                             , showLetTypes   :: Bool
+                             , showUnfoldings :: Bool
+                             }
+
+defaultPrettyOpts :: PrettyOpts
+defaultPrettyOpts = PrettyOpts { showUniques    = False
+                               , showIdInfo     = False
+                               , showLetTypes   = False
+                               , showUnfoldings = False
+                               }
+
+
+smallRArrow :: Doc
+smallRArrow = "->"
+
+
+hang' :: Doc -> Int -> Doc -> Doc
+hang' d1 n d2 = hang n $ sep [d1, d2]
+
+comment :: Doc -> Doc
+comment x = "{-" <+> x <+> "-}"
+
+maybeParens :: Bool -> Doc -> Doc
+maybeParens True  = parens
+maybeParens False = id
+
+pprIdInfo :: PrettyOpts -> IdInfo -> Doc
+pprIdInfo opts i
+  | not $ showIdInfo opts = empty
+  | otherwise = comment $ "IdInfo:" <+> align doc
+  where
+    doc = sep $ punctuate ", "
+          $ [
+             "arity=" <> pretty (idiArity i)
+            , "call-arity=" <> pretty (idiCallArity i)
+            ]
+
+
+pprBinder :: PrettyOpts -> Binder -> Doc
+pprBinder opts b
+  | showUniques opts = pretty $ binderUniqueName b
+  | otherwise        = pretty $ binderName b
+
+instance Pretty T_Text where
+    pretty = text . BS.unpack
+
+instance Pretty ModuleName where
+    pretty = text . BS.unpack . getModuleName
+
+pprRational :: Rational -> Doc
+pprRational r = pretty (numerator r) <> "/" <> pretty (denominator r)
+
+instance Pretty Lit where
+    pretty (MachChar x) = "'" <> char x <> "'#"
+    pretty (MachStr x) = "\"" <> text (BS.unpack x) <> "\"#"
+    pretty MachNullAddr = "nullAddr#"
+    pretty (MachInt x) = pretty x <> "#"
+    pretty (MachInt64 x) = pretty x <> "#"
+    pretty (MachWord x) = pretty x <> "#"
+    pretty (MachWord64 x) = pretty x <> "##"
+    pretty (MachFloat x) = "FLOAT" <> parens (pprRational x)
+    pretty (MachDouble x) = "DOUBLE" <> parens (pprRational x)
+    pretty (MachLabel x) = "LABEL"<> parens (pretty x)
+    pretty (LitInteger x) = pretty x
+
+instance Pretty AltCon where
+    pretty (AltDataCon dc) = pretty dc
+    pretty (AltLit l) = pretty l
+    pretty AltDefault = text "DEFAULT"
+
+instance Pretty Binder where
+    pretty = pprBinder defaultPrettyOpts
+
+---
+
 pprExpr :: PrettyOpts -> Expr -> Doc
 pprExpr opts = pprExpr' opts False
 
@@ -51,8 +130,8 @@ pprArg opts = \case
 pprOp :: PrettyOpts -> StgOp -> Doc
 pprOp opt _ = text "op" -- TODO
 
-pprCon :: DataCon -> Doc
-pprCon (DataCon dc) = text $ BS.unpack dc
+--pprCon :: DataCon -> Doc
+--pprCon (DataCon dc) = text $ BS.unpack dc
 
 pprExpr' :: PrettyOpts -> Bool -> Expr -> Doc
 pprExpr' opts parens exp = case exp of
@@ -65,7 +144,7 @@ pprExpr' opts parens exp = case exp of
                                ]
   StgApp f args       -> maybeParens parens $ hang' (pprBinder opts f) 2 (sep $ map (pprArg opts) args)
   StgOpApp op args    -> maybeParens parens $ hang' (pprOp opts op) 2 (sep $ map (pprArg opts) args)
-  StgConApp dc args   -> maybeParens parens $ hang' (pprCon dc) 2 (sep $ map (pprArg opts) args)
+  StgConApp dc args   -> maybeParens parens $ hang' (pretty dc) 2 (sep $ map (pprArg opts) args)
   StgLam b x          -> maybeParens parens $ hang' ("λ" <+> sep (map (pprBinder opts) b) <+> smallRArrow) 2 (pprExpr' opts False x)
   StgLet b e          -> maybeParens parens $ "let" <+> (align $ pprBinding opts b) <$$> "in" <+> align (pprExpr' opts False e)
   StgLetNoEscape b e  -> maybeParens parens $ "lettail" <+> (align $ pprBinding opts b) <$$> "in" <+> align (pprExpr' opts False e)
@@ -78,16 +157,15 @@ instance Pretty Expr where
 pprRhs :: PrettyOpts -> Rhs -> Doc
 pprRhs opts = \case
   StgRhsClosure b vs u bs e -> pprExpr opts e -- TODO: StgRhsClosure b ([]) u ([]) (reconExpr bm e) -- TODO: maybe add binders to the binder map
-  StgRhsCon d vs            -> pprCon d <+> (sep $ map (pprArg opts) vs)
+  StgRhsCon d vs            -> pretty d <+> (sep $ map (pprArg opts) vs)
 
 pprBinding :: PrettyOpts -> Binding -> Doc
 pprBinding opts = \case
   StgNonRec b r  -> pprTopBind (b,r)
   StgRec bs      -> "rec" <+> braces (line <> vsep (map pprTopBind bs))
   where
-    pprTopBind (b@(Bndr b'),rhs) =
-      pprTypeSig opts b
-      <$$> pprIdInfo opts (binderIdInfo b') (binderIdDetails b')
+    pprTopBind (b,rhs) =
+      pprIdInfo opts (binderIdInfo b)
       <$$> hang' (pprBinder opts b <+> equals) 2 (pprRhs opts rhs)
       <> line
 
@@ -98,9 +176,8 @@ pprTopBinding opts = \case
   StgTopStringLit b s           -> pprTopBind' (\_ -> text . show) (b,s)
   where
     pprTopBind = pprTopBind' pprRhs
-    pprTopBind' f (b@(Bndr b'),rhs) =
-      pprTypeSig opts b
-      <$$> pprIdInfo opts (binderIdInfo b') (binderIdDetails b')
+    pprTopBind' f (b,rhs) =
+      pprIdInfo opts (binderIdInfo b)
       <$$> hang' (pprBinder opts b <+> equals) 2 (f opts rhs)
       <> line
 

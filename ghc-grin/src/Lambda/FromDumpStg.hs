@@ -11,7 +11,6 @@ import Text.Printf
 import qualified Data.ByteString.Char8 as BS8
 
 -- GHC Dump
-import qualified GhcDump_Ast as CC
 import qualified GhcDump_StgAst as C
 
 -- Lambda
@@ -26,34 +25,34 @@ data Env
   , counter     :: Int
   , moduleName  :: String
   , dataCons    :: Set String
-  , externals   :: Map CC.BinderId String
+  , externals   :: Map C.BinderId String
 --  , dataArity   :: Map String Int
 --  , varArity    :: Map String Int
   }
 
-convertUnique :: CC.Unique -> String
-convertUnique (CC.Unique c i) = c : show i
+convertUnique :: C.Unique -> String
+convertUnique (C.Unique c i) = c : show i
 
-genConName :: String -> C.DataCon -> CG String
-genConName p (C.DataCon con) = do
+genConName :: String -> C.Binder -> CG String
+genConName p b = do
   modName <- gets moduleName
-  let name = BS8.unpack con
+  let name = BS8.unpack . C.binderName $ b
       qualName = modName ++ "." ++ name
   modify $ \env@Env{..} -> env {dataCons = Set.insert (name) dataCons}
   pure name
 
-genName :: String -> CC.Binder -> CG String
+genName :: String -> C.Binder -> CG String
 genName p b = do
-  modName <- gets (Map.lookup (CC.binderId $ CC.unBndr b) . externals) >>= \case
+  modName <- gets (Map.lookup (C.binderId b) . externals) >>= \case
     Nothing -> gets moduleName
     Just n  -> pure n
-  let name = BS8.unpack . CC.binderName $ CC.unBndr b
+  let name = BS8.unpack . C.binderName $ b
       qualName = modName ++ "." ++ name
   {-
-  case CC.unBndr b of
-    CC.Binder{..} -> do
-      let CC.IdInfo{..} = binderIdInfo
-      when (binderIdDetails `elem` [CC.DataConWorkId]) $ do
+  case C.unBndr b of
+    C.Binder{..} -> do
+      let C.IdInfo{..} = binderIdInfo
+      when (binderIdDetails `elem` [C.DataConWorkId]) $ do
         modify $ \env@Env{..} -> env {dataCons = Set.insert (p ++ "-" ++ show idiArity ++ "-" ++ qualName) dataCons}
     _ -> pure ()
   -}
@@ -65,24 +64,24 @@ data Lit = MachNullAddr
          | MachLabel T_Text
          | LitInteger Integer
 -}
-convertLit :: CC.Lit -> Lit
+convertLit :: C.Lit -> Lit
 convertLit = \case
-  CC.MachInt     i -> LInt64 $ fromIntegral i
-  CC.MachInt64   i -> LInt64 $ fromIntegral i
-  CC.MachWord    w -> LWord64 $ fromIntegral w
-  CC.MachWord64  w -> LWord64 $ fromIntegral w
-  CC.MachFloat   f -> LFloat $ realToFrac f
-  CC.MachDouble  f -> LFloat $ realToFrac f
-  CC.MachStr     s -> LString s
-  CC.MachChar    c -> LChar c
+  C.MachInt     i -> LInt64 $ fromIntegral i
+  C.MachInt64   i -> LInt64 $ fromIntegral i
+  C.MachWord    w -> LWord64 $ fromIntegral w
+  C.MachWord64  w -> LWord64 $ fromIntegral w
+  C.MachFloat   f -> LFloat $ realToFrac f
+  C.MachDouble  f -> LFloat $ realToFrac f
+  C.MachStr     s -> LString s
+  C.MachChar    c -> LChar c
   lit -> LError . show $ lit
 
 visitAlt :: C.Alt -> CG Alt
 visitAlt (C.Alt altCon argIds body) = do
   cpat <- case altCon of
-    CC.AltDataCon moduleName dataCon -> NodePat (maybe (error $ "missing data con module name: " ++ show dataCon) (\n -> BS8.unpack n ++ ".") moduleName ++ BS8.unpack dataCon) <$> mapM (genName "alt") argIds
-    CC.AltLit lit                    -> pure . LitPat $ convertLit lit
-    CC.AltDefault                    -> pure DefaultPat
+    C.AltDataCon dc  -> NodePat <$> genConName "AltDataCon" dc <*> mapM (genName "alt") argIds
+    C.AltLit lit     -> pure . LitPat $ convertLit lit
+    C.AltDefault     -> pure DefaultPat
   Alt cpat <$> visitExpr body
 
 visitArg :: C.Arg -> CG Exp
@@ -127,8 +126,8 @@ visitModule C.Module{..} = concat <$> mapM visitTopBinder moduleTopBindings
 
 codegenLambda :: C.Module -> IO Program
 codegenLambda mod = do
-  let modName   = BS8.unpack . CC.getModuleName $ C.moduleName mod
-      extNames  = Map.fromList [(CC.binderId $ CC.unBndr b, BS8.unpack $ CC.getModuleName m) | CC.ExternalName m b <- C.moduleExternals mod]
+  let modName   = BS8.unpack . C.getModuleName $ C.moduleName mod
+      extNames  = Map.fromList [] --[(C.binderId $ C.unBndr b, BS8.unpack $ C.getModuleName m) | C.ExternalName m b <- C.moduleExternals mod]
   (defs, Env{..}) <- runStateT (visitModule mod) (Env mempty 0 modName mempty extNames)
   unless (Set.null dataCons) $ do
     printf "%s data constructors:\n%s" modName  (unlines . map ("  "++) . Set.toList $ dataCons)

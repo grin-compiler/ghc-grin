@@ -59,7 +59,7 @@ cvtBinder v
     SBndr $ Binder { binderName   = occNameToText $ getOccName v
                    , binderId     = cvtVar v
                    , binderIdInfo = cvtIdInfo $ Var.idInfo v
-                   , binderIdDetails = cvtIdDetails $ Var.idDetails v
+              --     , binderIdDetails = cvtIdDetails $ Var.idDetails v
               --     , binderType   = cvtType $ Var.varType v
                    }
   | otherwise =
@@ -71,10 +71,10 @@ cvtBinder v
 cvtIdInfo :: IdInfo.IdInfo -> Ast.IdInfo SBinder BinderId
 cvtIdInfo i =
     IdInfo { idiArity         = IdInfo.arityInfo i
-           , idiIsOneShot     = IdInfo.oneShotInfo i == IdInfo.OneShotLam
+         --  , idiIsOneShot     = IdInfo.oneShotInfo i == IdInfo.OneShotLam
            -- , idiUnfolding     = cvtUnfolding $ IdInfo.unfoldingInfo i
           -- , idiInlinePragma  = cvtSDoc $ ppr $ IdInfo.inlinePragInfo i
-           , idiOccInfo       = case IdInfo.occInfo i of
+{-           , idiOccInfo       = case IdInfo.occInfo i of
 #if MIN_VERSION_ghc(8,2,0)
                                   OccInfo.ManyOccs{} -> OccManyOccs
 #else
@@ -83,6 +83,7 @@ cvtIdInfo i =
                                   OccInfo.IAmDead    -> OccDead
                                   OccInfo.OneOcc{}   -> OccOneOcc
                                   oi@OccInfo.IAmALoopBreaker{} -> OccLoopBreaker (OccInfo.isStrongLoopBreaker oi)
+-}
           -- , idiStrictnessSig = cvtSDoc $ ppr $ IdInfo.strictnessInfo i
           -- , idiDemandSig     = cvtSDoc $ ppr $ IdInfo.demandInfo i
            , idiCallArity     = IdInfo.callArityInfo i
@@ -178,11 +179,13 @@ cvtExpr expr =
 cvtAlt :: CoreAlt -> Ast.SAlt
 cvtAlt (con, bs, e) = Alt (cvtAltCon con) (map cvtBinder bs) (cvtExpr e)
 
-cvtAltCon :: CoreSyn.AltCon -> Ast.AltCon
+cvtAltCon :: CoreSyn.AltCon -> Ast.SAltCon
+cvtAltCon = undefined -- TODO
+{-
 cvtAltCon (DataAlt altcon) = Ast.AltDataCon (fastStringToText . moduleNameFS . Module.moduleName <$> (nameModule_maybe $ getName altcon)) $ occNameToText $ getOccName altcon
 cvtAltCon (LitAlt l)       = Ast.AltLit $ cvtLit l
 cvtAltCon DEFAULT          = Ast.AltDefault
-
+-}
 cvtLit :: Literal -> Ast.Lit
 cvtLit l =
     case l of

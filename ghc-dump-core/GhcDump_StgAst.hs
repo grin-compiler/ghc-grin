@@ -4,13 +4,60 @@ module GhcDump_StgAst where
 
 import GHC.Generics
 
+import Data.Monoid
 import qualified Data.ByteString as BS
+import qualified Data.ByteString.Char8 as BS8
 import Data.Binary
 
-import GhcDump_Ast (Lit, AltCon, Unique, T_Text, ModuleName, Binder, SBinder, BinderId, ExternalName'(..))
+type T_Text = BS8.ByteString
 
-data DataCon
-  = DataCon T_Text
+data Unique
+  = Unique !Char !Int
+  deriving (Eq, Ord, Generic)
+
+-- | This is dependent upon GHC
+instance Show Unique where
+ show (Unique c n) = c : show n
+
+newtype ModuleName
+  = ModuleName { getModuleName :: T_Text }
+  deriving (Eq, Ord, Binary, Show)
+
+newtype BinderId
+  = BinderId Unique
+  deriving (Eq, Ord, Binary, Show)
+
+data Binder
+  = Binder
+    { binderName      :: !T_Text
+    , binderId        :: !BinderId
+    , binderIdInfo    :: IdInfo
+    }
+  deriving (Eq, Ord, Generic, Show)
+
+binderUniqueName :: Binder -> T_Text
+binderUniqueName b = binderName b <> BS8.pack "." <> BS8.pack (show u)
+  where BinderId u = binderId b
+
+data IdInfo
+  = IdInfo
+    { idiArity         :: !Int
+    , idiCallArity     :: !Int
+    }
+  deriving (Eq, Ord, Generic, Show)
+
+data Lit
+  = MachChar      Char
+  | MachStr       BS.ByteString
+  | MachNullAddr
+  | MachInt       Integer
+  | MachInt64     Integer
+  | MachWord      Integer
+  | MachWord64    Integer
+  | MachFloat     Rational
+  | MachDouble    Rational
+  | MachLabel     T_Text
+  | LitInteger    Integer
   deriving (Eq, Ord, Generic, Show)
 
 data ForeignCall
@@ -24,7 +71,7 @@ data PrimOp
 data PrimCall = PrimCall -- T_Text T_Text
   deriving (Eq, Ord, Generic, Show)
 
-type STopBinding = TopBinding' SBinder BinderId
+type STopBinding = TopBinding' Binder BinderId
 type TopBinding  = TopBinding' Binder Binder
 
 -- | A top-level binding.
@@ -34,7 +81,7 @@ data TopBinding' bndr occ
   | StgTopStringLit bndr BS.ByteString
   deriving (Eq, Ord, Generic, Show)
 
-type SBinding = Binding' SBinder BinderId
+type SBinding = Binding' Binder BinderId
 type Binding  = Binding' Binder Binder
 
 data Binding' bndr occ
@@ -50,7 +97,7 @@ data Arg' occ
   | StgLitArg  Lit
   deriving (Eq, Ord, Generic, Show)
 
-type SExpr = Expr' SBinder BinderId
+type SExpr = Expr' Binder BinderId
 type Expr  = Expr' Binder Binder
 
 data Expr' bndr occ
@@ -62,7 +109,7 @@ data Expr' bndr occ
 
         -- StgConApp is vital for returning unboxed tuples or sums
         -- which can't be let-bound first
-  | StgConApp   DataCon
+  | StgConApp   occ        -- DataCon
                 [Arg' occ] -- Saturated
 
   | StgOpApp    StgOp           -- Primitive op or foreign call
@@ -91,7 +138,7 @@ data Expr' bndr occ
         (Expr' bndr occ)       -- body
   deriving (Eq, Ord, Generic, Show)
 
-type SRhs = Rhs' SBinder BinderId
+type SRhs = Rhs' Binder BinderId
 type Rhs  = Rhs' Binder Binder
 
 data Rhs' bndr occ
@@ -105,8 +152,7 @@ data Rhs' bndr occ
         (Expr' bndr occ)   -- body
 
   | StgRhsCon
-        DataCon          -- Constructor. Never an unboxed tuple or sum, as those
-                         -- are not allocated.
+        occ         -- DataCon
         [Arg' occ]  -- Args
   deriving (Eq, Ord, Generic, Show)
 
@@ -118,17 +164,25 @@ data BinderInfo
                         -- Thunks never get this value
   deriving (Eq, Ord, Generic, Show)
 
-type SAlt = Alt' SBinder BinderId
+type SAlt = Alt' Binder BinderId
 type Alt  = Alt' Binder Binder
 
 data Alt' bndr occ
   = Alt
-    { altCon     :: !AltCon
+    { altCon     :: !(AltCon' occ)
     , altBinders :: [bndr]
     , altRHS     :: Expr' bndr occ
     }
   deriving (Eq, Ord, Generic, Show)
 
+type SAltCon = AltCon' BinderId
+type AltCon = AltCon' Binder
+
+data AltCon' occ
+  = AltDataCon  occ -- DataCon
+  | AltLit      Lit
+  | AltDefault
+  deriving (Eq, Ord, Generic, Show)
 
 data UpdateFlag = ReEntrant | Updatable | SingleEntry
   deriving (Eq, Ord, Generic, Show)
@@ -145,24 +199,29 @@ data StgOp
   deriving (Eq, Ord, Generic, Show)
 
 type Module  = Module' Binder Binder
-type SModule = Module' SBinder BinderId
+type SModule = Module' Binder BinderId
 
 data Module' bndr occ
   = Module
     { moduleName        :: ModuleName
     , modulePhase       :: T_Text
     , moduleTopBindings :: [TopBinding' bndr occ]
-    , moduleExternals   :: [ExternalName' bndr]
+    , moduleExternals   :: [(ModuleName, [bndr])]
+    , moduleDataCons    :: [(ModuleName, [bndr])]
     }
   deriving (Eq, Ord, Generic, Show)
 
-instance Binary DataCon
+instance Binary Unique
+instance Binary Binder
+instance Binary IdInfo
+instance Binary Lit
 instance Binary ForeignCall
 instance Binary PrimOp
 instance Binary PrimCall
 instance Binary BinderInfo
 instance Binary UpdateFlag
 instance Binary StgOp
+instance (Binary occ) => Binary (AltCon' occ)
 instance (Binary occ) => Binary (Arg' occ)
 instance (Binary bndr, Binary occ) => Binary (TopBinding' bndr occ)
 instance (Binary bndr, Binary occ) => Binary (Binding' bndr occ)
