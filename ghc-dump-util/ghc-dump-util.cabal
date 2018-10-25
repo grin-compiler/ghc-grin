@@ -36,17 +36,6 @@ library
                        binary
   default-language:    Haskell2010
 
---executable ghc-dump
---  main-is:             Main.hs
---  build-depends:       base < 5.0,
---                       ghc-dump-core,
---                       ghc-dump-util,
---                       ansi-wl-pprint,
---                       regex-tdfa,
---                       regex-tdfa-text,
---                       optparse-applicative
---  default-language:    Haskell2010
-
 executable stg-dump
   main-is:             StgMain.hs
   build-depends:       base < 5.0,
