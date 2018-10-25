@@ -82,8 +82,6 @@ module HscMain
     , hscAddSptEntries
     ) where
 
-import qualified GhcDump_Ast as C
-import qualified GhcDump_Convert as C
 import qualified GhcDump_StgAst as S
 import qualified GhcDump_StgConvert as S
 

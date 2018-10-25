@@ -165,8 +165,6 @@ Library
         vectorise
 
     Exposed-Modules:
-        GhcDump_Convert
-        GhcDump_Ast
         GhcDump_StgConvert
         GhcDump_StgAst
         DriverBkp
