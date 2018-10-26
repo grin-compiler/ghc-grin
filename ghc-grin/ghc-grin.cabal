@@ -16,7 +16,7 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:
-    Lambda.FromDumpStg
+    Lambda.FromStg
 
   build-depends:
       base

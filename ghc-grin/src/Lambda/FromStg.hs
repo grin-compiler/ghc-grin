@@ -1,5 +1,5 @@
 {-# LANGUAGE LambdaCase, TupleSections, StandaloneDeriving, TypeSynonymInstances, FlexibleInstances, RecordWildCards #-}
-module Lambda.FromDumpStg (codegenLambda) where
+module Lambda.FromStg (codegenLambda) where
 
 import Data.Set (Set)
 import qualified Data.Set as Set

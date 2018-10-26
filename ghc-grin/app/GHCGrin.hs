@@ -8,7 +8,7 @@ import System.Exit
 
 import GhcDump.StgUtil
 
-import Lambda.FromDumpStg
+import Lambda.FromStg
 import Lambda.Syntax
 import Lambda.Pretty
 import Lambda.CodeGen
