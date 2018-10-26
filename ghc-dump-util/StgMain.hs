@@ -52,20 +52,12 @@ modes = subparser
       where
         makeRegexM' = makeRegexM :: String -> ReadM Regex
 
-    prettyOpts :: Parser PrettyOpts
-    prettyOpts =
-        PrettyOpts
-          <$> switch (short 'u' <> long "show-uniques" <> help "Show binder uniques")
-          <*> switch (short 'i' <> long "show-idinfo" <> help "Show IdInfo of bindings")
-          <*> switch (short 'T' <> long "show-let-types" <> help "Show type signatures for let-bound binders")
-          <*> switch (short 'U' <> long "show-unfoldings" <> help "Show unfolding templates")
-
     showMode =
-        run <$> filterCond <*> prettyOpts <*> dumpFile
+        run <$> filterCond <*> dumpFile
       where
-        run filterFn opts fname = do
+        run filterFn fname = do
             dump <- filterFn <$> GhcDump.StgUtil.readDump fname
-            print $ pprModule opts dump
+            print $ pprModule dump
 
 main :: IO ()
 main = join $ execParser $ info (helper <*> modes) mempty

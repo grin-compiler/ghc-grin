@@ -31,7 +31,6 @@ library
                        bytestring,
                        unordered-containers,
                        hashable,
-                       text,
                        ansi-wl-pprint,
                        binary
   default-language:    Haskell2010

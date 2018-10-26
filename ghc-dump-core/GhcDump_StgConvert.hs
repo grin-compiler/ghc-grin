@@ -1,4 +1,4 @@
-{-# LANGUAGE LambdaCase, TupleSections #-}
+{-# LANGUAGE RecordWildCards, LambdaCase, TupleSections #-}
 module GhcDump_StgConvert where
 
 import qualified Data.ByteString.Char8 as BS8
@@ -8,20 +8,22 @@ import qualified DataCon    as GHC
 import qualified FastString as GHC
 import qualified Id         as GHC
 import qualified IdInfo     as GHC
+import qualified Literal    as GHC
 import qualified Module     as GHC
 import qualified Name       as GHC
 import qualified PrimOp     as GHC
 import qualified StgSyn     as GHC
 import qualified Unique     as GHC
-import Literal (Literal(..))
 
 import Control.Monad
 import Control.Monad.Trans.State.Strict
+import Data.List (foldl')
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import qualified Data.IntSet as IntSet
+import qualified Data.Map as Map
 
-import GhcDump_StgAst as Ast
+import GhcDump_StgAst
 
 fastStringToText :: GHC.FastString -> T_Text
 fastStringToText = GHC.fastStringToByteString
@@ -29,81 +31,74 @@ fastStringToText = GHC.fastStringToByteString
 occNameToText :: GHC.OccName -> T_Text
 occNameToText = GHC.fastStringToByteString . GHC.occNameFS
 
-cvtModuleName :: GHC.ModuleName -> Ast.ModuleName
-cvtModuleName = Ast.ModuleName . fastStringToText . GHC.moduleNameFS
+cvtModuleName :: GHC.ModuleName -> ModuleName
+cvtModuleName = ModuleName . fastStringToText . GHC.moduleNameFS
 
-cvtAltCon :: GHC.AltCon -> Ast.SAltCon
-cvtAltCon = undefined -- TODO
-{-
-cvtAltCon (DataAlt altcon) = Ast.AltDataCon (fastStringToText . moduleNameFS . GHC.moduleName <$> (nameModule_maybe $ getName altcon)) $ occNameToText $ getOccName altcon
-cvtAltCon (LitAlt l)       = Ast.AltLit $ cvtLit l
-cvtAltCon DEFAULT          = Ast.AltDefault
--}
+cvtLit :: GHC.Literal -> Lit
+cvtLit = \case
+  GHC.MachChar x      -> MachChar x
+  GHC.MachStr x       -> MachStr x
+  GHC.MachNullAddr    -> MachNullAddr
+  GHC.MachInt x       -> MachInt x
+  GHC.MachInt64 x     -> MachInt64 x
+  GHC.MachWord x      -> MachWord x
+  GHC.MachWord64 x    -> MachWord64 x
+  GHC.MachFloat x     -> MachFloat x
+  GHC.MachDouble x    -> MachDouble x
+  GHC.MachLabel x _ _ -> MachLabel $ fastStringToText  x
+  GHC.LitInteger x _  -> LitInteger x
 
-cvtLit :: Literal -> Ast.Lit
-cvtLit l =
-    case l of
-      Literal.MachChar x -> Ast.MachChar x
-      Literal.MachStr x -> Ast.MachStr x
-      Literal.MachNullAddr -> Ast.MachNullAddr
-      Literal.MachInt x -> Ast.MachInt x
-      Literal.MachInt64 x -> Ast.MachInt64 x
-      Literal.MachWord x -> Ast.MachWord x
-      Literal.MachWord64 x -> Ast.MachWord64 x
-      Literal.MachFloat x -> Ast.MachFloat x
-      Literal.MachDouble x -> Ast.MachDouble x
-      Literal.MachLabel x _ _ -> Ast.MachLabel $ fastStringToText  x
-      Literal.LitInteger x _ -> Ast.LitInteger x
-
-cvtIdInfo :: GHC.IdInfo -> Ast.IdInfo
-cvtIdInfo i = IdInfo
-  { idiArity      = GHC.arityInfo i
-  , idiCallArity  = GHC.callArityInfo i
-  }
-
-cvtUnique :: GHC.Unique -> Ast.Unique
-cvtUnique u = Ast.Unique a b
+cvtUnique :: GHC.Unique -> Unique
+cvtUnique u = Unique a b
   where (a,b) = GHC.unpkUnique u
 
+data Env
+  = Env
+  { envExternals  :: IntMap GHC.Id
+  , envDataCons   :: IntMap GHC.Name
+  }
 
-type M = State (IntMap GHC.Id)
+emptyEnv :: Env
+emptyEnv = Env
+  { envExternals  = IntMap.empty
+  , envDataCons   = IntMap.empty
+  }
 
-idKey = GHC.getKey . GHC.idUnique
+type M = State Env
+
+uniqueKey :: GHC.Uniquable a => a -> Int
+uniqueKey = GHC.getKey . GHC.getUnique
 
 cvtVar :: GHC.Id -> M BinderId
 cvtVar x = do
   let name = GHC.getName x
-  when (GHC.isExternalName name) $ do -- TODO: refine filter to not include local top level binders
-    let key = idKey x
-    new <- IntMap.notMember key <$> get
-    when new $ modify' $ \m -> IntMap.insert key x m
+  when (GHC.isExternalName name) $ do
+    let key = uniqueKey x
+    new <- IntMap.notMember key <$> gets envExternals
+    when new $ modify' $ \m@Env{..} -> m {envExternals = IntMap.insert key x envExternals}
   pure . BinderId . cvtUnique . GHC.idUnique $ x
 
-cvtBinder :: GHC.Id -> Binder
+cvtBinder :: GHC.Id -> SBinder
 cvtBinder v
-  | GHC.isId v = Binder
-      { binderName      = occNameToText $ GHC.getOccName v
-      , binderId        = BinderId . cvtUnique . GHC.idUnique $ v
-      , binderIdInfo    = (cvtIdInfo $ GHC.idInfo v) -- {GhcDump_Ast.idiUnfolding = NoUnfolding}
+  | GHC.isId v = SBinder
+      { sbinderName  = occNameToText $ GHC.getOccName v
+      , sbinderId    = BinderId . cvtUnique . GHC.idUnique $ v
       }
   | otherwise = error $ "Type binder in STG: " ++ (show $ occNameToText $ GHC.getOccName v)
 
 cvtDataCon :: GHC.DataCon -> M BinderId
-cvtDataCon x = do -- DataCon (occNameToText $ GHC.getOccName d)
-  let name = GHC.getName x
-  {-
-  when (GHC.isExternalName name) $ do -- TODO: refine filter to not include local top level binders
-    let key = idKey x
-    new <- IntMap.notMember key <$> get
-    when new $ modify' $ \m -> IntMap.insert key x m
-  -}
+cvtDataCon x = do
+  let name  = GHC.getName x
+      key   = uniqueKey x
+  new <- IntMap.notMember key <$> gets envDataCons
+  when new $ modify' $ \m@Env{..} -> m {envDataCons = IntMap.insert key name envDataCons}
   pure . BinderId . cvtUnique . GHC.getUnique $ x
 
 cvtOp :: GHC.StgOp -> StgOp
 cvtOp = \case
-  GHC.StgPrimOp o     -> StgPrimOp (PrimOp . occNameToText $ GHC.primOpOcc o)
+  GHC.StgPrimOp o     -> StgPrimOp (occNameToText $ GHC.primOpOcc o)
   GHC.StgPrimCallOp c -> StgPrimCallOp PrimCall -- TODO
-  GHC.StgFCallOp f u  -> StgFCallOp Ast.ForeignCall (cvtUnique u) -- TODO
+  GHC.StgFCallOp f u  -> StgFCallOp ForeignCall (cvtUnique u) -- TODO
 
 cvtArg :: GHC.StgArg -> M SArg
 cvtArg = \case
@@ -122,7 +117,13 @@ cvtUpdateFlag = \case
   GHC.SingleEntry -> SingleEntry
 
 cvtAlt :: GHC.StgAlt -> M SAlt
-cvtAlt (con, bs, e) = Alt (cvtAltCon con) (map cvtBinder bs) <$> cvtExpr e
+cvtAlt (con, bs, e) = Alt <$> cvtAltCon con <*> pure (map cvtBinder bs) <*> cvtExpr e
+
+cvtAltCon :: GHC.AltCon -> M SAltCon
+cvtAltCon = \case
+  GHC.DataAlt con -> AltDataCon <$> cvtDataCon con
+  GHC.LitAlt l    -> pure . AltLit $ cvtLit l
+  GHC.DEFAULT     -> pure $ AltDefault
 
 cvtExpr :: GHC.StgExpr -> M SExpr
 cvtExpr = \case
@@ -151,20 +152,35 @@ cvtTopBind = \case
   GHC.StgTopLifted b        -> StgTopLifted <$> cvtBind b
   GHC.StgTopStringLit b bs  -> pure $ StgTopStringLit (cvtBinder b) bs
 
-cvtModule :: String -> GHC.ModuleName -> [GHC.StgTopBinding] -> Ast.SModule
-cvtModule phase modName binds = Ast.Module (cvtModuleName modName) (BS8.pack phase) topBinds [] []{-extNames-} where -- TODO
-  (topBinds, extNameSet)  = runState (mapM cvtTopBind binds) IntMap.empty
-  extNames                = [] -- [mkExternalName e | (k,e) <- IntMap.toList extNameSet, IntSet.notMember k topKeys]
-  topKeys                 = IntSet.fromList $ concatMap topBindKeys binds
-{-
-mkExternalName :: GHC.Id -> SExternalName
-mkExternalName x = ExternalName
-  { externalModuleName  = cvtModuleName $ GHC.moduleName $ GHC.nameModule $ GHC.getName x
-  , externalBinder      = cvtBinder x
-  }
--}
+cvtModule :: String -> GHC.ModuleName -> [GHC.StgTopBinding] -> SModule
+cvtModule phase modName binds =
+  Module
+  { moduleName        = cvtModuleName modName
+  , modulePhase       = BS8.pack phase
+  , moduleTopBindings = topBinds
+  , moduleExternals   = groupByModule [mkExternalName e | (k,e) <- IntMap.toList envExternals, IntSet.notMember k topKeys]
+  , moduleDataCons    = groupByModule . map mkDataCon $ IntMap.elems envDataCons
+  } where
+      (topBinds, Env{..}) = runState (mapM cvtTopBind binds) emptyEnv
+      topKeys             = IntSet.fromList $ concatMap topBindKeys binds
+
+-- utils
+
+groupByModule :: [(ModuleName, SBinder)] -> [(ModuleName, [SBinder])]
+groupByModule = Map.toList . foldl' (\a (m,b) -> Map.insertWith (++) m [b] a) Map.empty
+
+mkExternalName :: GHC.Id -> (ModuleName, SBinder)
+mkExternalName x = (cvtModuleName $ GHC.moduleName $ GHC.nameModule $ GHC.getName x, cvtBinder x)
+
+mkDataCon :: GHC.Name -> (ModuleName, SBinder)
+mkDataCon x = (cvtModuleName $ GHC.moduleName $ GHC.nameModule x, b) where
+  b = SBinder
+      { sbinderName = occNameToText $ GHC.getOccName x
+      , sbinderId   = BinderId . cvtUnique . GHC.getUnique $ x
+      }
+
 topBindKeys :: GHC.StgTopBinding -> [Int]
 topBindKeys = \case
-  GHC.StgTopLifted (GHC.StgNonRec b _)  -> [idKey b]
-  GHC.StgTopLifted (GHC.StgRec bs)      -> map (idKey . fst) bs
-  GHC.StgTopStringLit b _               -> [idKey b]
+  GHC.StgTopLifted (GHC.StgNonRec b _)  -> [uniqueKey b]
+  GHC.StgTopLifted (GHC.StgRec bs)      -> map (uniqueKey . fst) bs
+  GHC.StgTopStringLit b _               -> [uniqueKey b]

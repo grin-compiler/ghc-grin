@@ -1,5 +1,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE RecordWildCards #-}
 module GhcDump_StgAst where
 
 import GHC.Generics
@@ -15,7 +16,6 @@ data Unique
   = Unique !Char !Int
   deriving (Eq, Ord, Generic)
 
--- | This is dependent upon GHC
 instance Show Unique where
  show (Unique c n) = c : show n
 
@@ -27,24 +27,27 @@ newtype BinderId
   = BinderId Unique
   deriving (Eq, Ord, Binary, Show)
 
+data SBinder
+  = SBinder
+    { sbinderName :: !T_Text
+    , sbinderId   :: !BinderId
+    }
+  deriving (Eq, Ord, Generic, Show)
+
 data Binder
   = Binder
-    { binderName      :: !T_Text
-    , binderId        :: !BinderId
-    , binderIdInfo    :: IdInfo
+    { binderName    :: !T_Text
+    , binderId      :: !BinderId
+    , binderModule  :: !ModuleName
+    , binderIsTop   :: !Bool
     }
   deriving (Eq, Ord, Generic, Show)
 
 binderUniqueName :: Binder -> T_Text
-binderUniqueName b = binderName b <> BS8.pack "." <> BS8.pack (show u)
-  where BinderId u = binderId b
-
-data IdInfo
-  = IdInfo
-    { idiArity         :: !Int
-    , idiCallArity     :: !Int
-    }
-  deriving (Eq, Ord, Generic, Show)
+binderUniqueName Binder{..}
+  | binderIsTop = getModuleName binderModule <> BS8.pack "." <> binderName
+  | otherwise   = binderName <> BS8.pack ('.' : show u)
+  where BinderId u = binderId
 
 data Lit
   = MachChar      Char
@@ -60,18 +63,8 @@ data Lit
   | LitInteger    Integer
   deriving (Eq, Ord, Generic, Show)
 
-data ForeignCall
-  = ForeignCall -- TODO
-  deriving (Eq, Ord, Generic, Show)
 
-data PrimOp
-  = PrimOp T_Text
-  deriving (Eq, Ord, Generic, Show)
-
-data PrimCall = PrimCall -- T_Text T_Text
-  deriving (Eq, Ord, Generic, Show)
-
-type STopBinding = TopBinding' Binder BinderId
+type STopBinding = TopBinding' SBinder BinderId
 type TopBinding  = TopBinding' Binder Binder
 
 -- | A top-level binding.
@@ -81,7 +74,7 @@ data TopBinding' bndr occ
   | StgTopStringLit bndr BS.ByteString
   deriving (Eq, Ord, Generic, Show)
 
-type SBinding = Binding' Binder BinderId
+type SBinding = Binding' SBinder BinderId
 type Binding  = Binding' Binder Binder
 
 data Binding' bndr occ
@@ -97,7 +90,7 @@ data Arg' occ
   | StgLitArg  Lit
   deriving (Eq, Ord, Generic, Show)
 
-type SExpr = Expr' Binder BinderId
+type SExpr = Expr' SBinder BinderId
 type Expr  = Expr' Binder Binder
 
 data Expr' bndr occ
@@ -138,7 +131,7 @@ data Expr' bndr occ
         (Expr' bndr occ)       -- body
   deriving (Eq, Ord, Generic, Show)
 
-type SRhs = Rhs' Binder BinderId
+type SRhs = Rhs' SBinder BinderId
 type Rhs  = Rhs' Binder Binder
 
 data Rhs' bndr occ
@@ -164,7 +157,7 @@ data BinderInfo
                         -- Thunks never get this value
   deriving (Eq, Ord, Generic, Show)
 
-type SAlt = Alt' Binder BinderId
+type SAlt = Alt' SBinder BinderId
 type Alt  = Alt' Binder Binder
 
 data Alt' bndr occ
@@ -187,19 +180,24 @@ data AltCon' occ
 data UpdateFlag = ReEntrant | Updatable | SingleEntry
   deriving (Eq, Ord, Generic, Show)
 
+data ForeignCall
+  = ForeignCall -- TODO
+  deriving (Eq, Ord, Generic, Show)
+
+data PrimCall = PrimCall -- T_Text T_Text
+  deriving (Eq, Ord, Generic, Show)
+
 data StgOp
-  = StgPrimOp  PrimOp
-
+  = StgPrimOp     T_Text
   | StgPrimCallOp PrimCall
-
-  | StgFCallOp ForeignCall Unique
+  | StgFCallOp    ForeignCall Unique
         -- The Unique is occasionally needed by the C pretty-printer
         -- (which lacks a unique supply), notably when generating a
         -- typedef for foreign-export-dynamic
   deriving (Eq, Ord, Generic, Show)
 
 type Module  = Module' Binder Binder
-type SModule = Module' Binder BinderId
+type SModule = Module' SBinder BinderId
 
 data Module' bndr occ
   = Module
@@ -213,10 +211,9 @@ data Module' bndr occ
 
 instance Binary Unique
 instance Binary Binder
-instance Binary IdInfo
+instance Binary SBinder
 instance Binary Lit
 instance Binary ForeignCall
-instance Binary PrimOp
 instance Binary PrimCall
 instance Binary BinderInfo
 instance Binary UpdateFlag

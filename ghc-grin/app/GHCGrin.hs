@@ -36,11 +36,11 @@ getOpts = do xs <- getArgs
 
 cg_main :: Opts -> IO ()
 cg_main opts = do
-  defList <- forM (inputs opts) $ \fname -> do
+  defList <- forM (zip [0..] $ inputs opts) $ \(moduleSalt,fname) -> do
     putStrLn $ "loading " ++ fname
     stgModule <- readDump fname
     putStrLn $ "loaded " ++ fname
-    program@(Program defs) <- codegenLambda stgModule
+    program@(Program defs) <- codegenLambda moduleSalt stgModule
 
     let lambdaName = replaceExtension fname "lambda"
     --putStrLn lambdaName
