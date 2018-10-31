@@ -22,6 +22,7 @@ library
     Lambda.PrimOps
     Lambda.Syntax
     Lambda.Lint
+    Lambda.StaticSingleAssignment
 
   build-depends:
       base
