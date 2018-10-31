@@ -21,7 +21,6 @@ data Env
   = Env
   { moduleName  :: String
   , dataCons    :: Set String
-  , moduleSalt  :: String
   }
 
 convertUnique :: C.Unique -> String
@@ -37,11 +36,7 @@ genConName b = do
   pure name
 
 genName :: C.Binder -> CG String
-genName b
-  | C.binderIsTop b = pure . BS8.unpack . C.binderUniqueName $ b
-  | otherwise       = do
-      s <- gets moduleSalt
-      pure $ (BS8.unpack $ C.binderUniqueName b) ++ s
+genName = pure . BS8.unpack . C.binderUniqueName
 
 {-
 TODO - support these:
@@ -101,8 +96,9 @@ visitExpr = \case
 
 visitRhs :: C.Rhs -> CG Exp
 visitRhs = \case
-  C.StgRhsClosure _ vs _ bs e -> Lam <$> mapM genName bs <*> visitExpr e -- TODO: app vs
   C.StgRhsCon con args        -> Con <$> genConName con <*> mapM visitArg args
+  C.StgRhsClosure _ [] _ bs e -> Lam <$> mapM genName bs <*> visitExpr e
+  C.StgRhsClosure _ vs _ bs e -> AppExp <$> (Lam <$> mapM genName (vs ++ bs) <*> visitExpr e) <*> mapM (pure . Var <=< genName) vs
 
 visitTopBinder :: C.TopBinding -> CG [Def]
 visitTopBinder = \case
@@ -113,10 +109,10 @@ visitTopBinder = \case
 visitModule :: C.Module -> CG [Def]
 visitModule C.Module{..} = concat <$> mapM visitTopBinder moduleTopBindings
 
-codegenLambda :: Int -> C.Module -> IO Program
-codegenLambda salt mod = do
+codegenLambda :: C.Module -> IO Program
+codegenLambda mod = do
   let modName   = BS8.unpack . C.getModuleName $ C.moduleName mod
-  (defs, Env{..}) <- runStateT (visitModule mod) (Env modName mempty (printf ".%d" salt))
+  (defs, Env{..}) <- runStateT (visitModule mod) (Env modName mempty)
   unless (Set.null dataCons) $ do
     printf "%s data constructors:\n%s" modName  (unlines . map ("  "++) . Set.toList $ dataCons)
   pure . Program $ defs

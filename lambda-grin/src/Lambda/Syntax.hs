@@ -22,7 +22,6 @@ data Exp
   | Def         Name [Name] Exp
   -- Exp
   | App         Name [Exp]
-  | AppCore     Exp Exp
   | Case        Atom [Alt]
   | Let         [(Name, Exp)] Exp -- lazy let
   | LetRec      [(Name, Exp)] Exp -- lazy let with mutually recursive bindings
@@ -34,6 +33,7 @@ data Exp
   -- Alt
   | Alt         Pat Exp
   -- Extra
+  | AppExp      Exp [Exp]         -- convenient for nested expressions i.e. lambdas
   | Lam         [Name] Exp
   deriving (Eq, Ord, Show)
 

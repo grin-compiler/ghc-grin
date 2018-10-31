@@ -13,6 +13,7 @@ import Lambda.Syntax
 import Lambda.Pretty
 import Lambda.CodeGen
 import Lambda.Lint
+import Lambda.StaticSingleAssignment
 import Pipeline.Pipeline
 
 import Text.PrettyPrint.ANSI.Leijen (ondullblack, putDoc, plain, pretty)
@@ -36,11 +37,11 @@ getOpts = do xs <- getArgs
 
 cg_main :: Opts -> IO ()
 cg_main opts = do
-  defList <- forM (zip [0..] $ inputs opts) $ \(moduleSalt,fname) -> do
+  defList <- forM (inputs opts) $ \fname -> do
     putStrLn $ "loading " ++ fname
     stgModule <- readDump fname
     putStrLn $ "loaded " ++ fname
-    program@(Program defs) <- codegenLambda moduleSalt stgModule
+    program@(Program defs) <- codegenLambda stgModule
 
     let lambdaName = replaceExtension fname "lambda"
     --putStrLn lambdaName
@@ -56,8 +57,8 @@ cg_main opts = do
       , PrintGrin ondullblack
       ]
     -}
-  let wholeProgram = Program $ concat defList
-  --writeFile "whole_program.lambda" . show . plain $ pretty wholeProgram
+  let wholeProgram = singleStaticAssignment $ Program $ concat defList
+  writeFile "whole_program.lambda" . show . plain $ pretty wholeProgram
   lintLambda wholeProgram
 
 main :: IO ()
