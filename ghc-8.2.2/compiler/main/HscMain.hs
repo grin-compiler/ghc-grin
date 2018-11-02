@@ -1302,15 +1302,6 @@ hscGenHardCode hsc_env cgguts mod_summary output_filename = do
                        corePrepPgm hsc_env this_mod location
                                    core_binds data_tycons
 
-        {-
-        --- save core ---
-        let cgguts_prep = cgguts {cg_binds = prepd_binds}
-            coreBin     = encode (C.cvtModuleCg "prep" cgguts_prep)
-            location    = ms_location mod_summary
-            core_output = replaceExtension (ml_hi_file location) "corebin"
-        BSL.writeFile core_output coreBin
-        -}
-
         -----------------  Convert to STG ------------------
         (stg_binds, cost_centre_info)
             <- {-# SCC "CoreToStg" #-}

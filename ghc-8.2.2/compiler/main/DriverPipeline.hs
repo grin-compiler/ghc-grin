@@ -1814,6 +1814,8 @@ linkBinary' staticLink dflags o_files dep_packages = do
         verbFlags = getVerbFlags dflags
         output_fn = exeFileName staticLink dflags
 
+    putStrLn $ unlines $ "* o_files" : o_files
+
     -- get the full list of packages to link with, by combining the
     -- explicit packages with the auto packages and all of their
     -- dependencies, and eliminating duplicates.
@@ -1825,16 +1827,14 @@ linkBinary' staticLink dflags o_files dep_packages = do
     pkg_lib_paths <- getPackageLibraryPath dflags dep_packages
     putStrLn $ unlines $ "* pkg_lib_paths" : pkg_lib_paths
 
-    -- list corebins
-    --corebins <- concat <$> mapM (getRecursiveContents ".corebin") (map takeDirectory o_files ++ pkg_lib_paths)
+    -- list stgbins
     stgbins  <- concat <$> mapM (getRecursiveContents ".stgbin") (map takeDirectory o_files ++ pkg_lib_paths)
-    --putStrLn $ unlines $ "* corebins" : corebins
     putStrLn $ unlines $ "* stgbins" : stgbins
 
     -- compile / link GRIN program
     --when (ghcLink dflags == LinkBinary && staticLink == False) $ do
     unless staticLink $ do
-      runGrin dflags $ {-map (SysTools.FileOption "") corebins ++ -}map (SysTools.FileOption "") stgbins
+      runGrin dflags $ map (SysTools.FileOption "") stgbins
 
     let pkg_lib_path_opts = concatMap get_pkg_lib_path_opts pkg_lib_paths
         get_pkg_lib_path_opts l
