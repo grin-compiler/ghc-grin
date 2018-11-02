@@ -22,6 +22,7 @@ import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import qualified Data.IntSet as IntSet
 import qualified Data.Map as Map
+import qualified Data.Set as Set
 
 import GhcDump_StgAst
 
@@ -153,16 +154,20 @@ cvtTopBind = \case
   GHC.StgTopStringLit b bs  -> pure $ StgTopStringLit (cvtBinder b) bs
 
 cvtModule :: String -> GHC.ModuleName -> [GHC.StgTopBinding] -> SModule
-cvtModule phase modName binds =
+cvtModule phase modName' binds =
   Module
-  { moduleName        = cvtModuleName modName
+  { moduleName        = modName
+  , moduleDependency  = Set.toList . Set.delete modName . Set.fromList . map fst $ externals
   , modulePhase       = BS8.pack phase
   , moduleTopBindings = topBinds
-  , moduleExternals   = groupByModule [mkExternalName e | (k,e) <- IntMap.toList envExternals, IntSet.notMember k topKeys]
-  , moduleDataCons    = groupByModule . map mkDataCon $ IntMap.elems envDataCons
+  , moduleExternals   = externals
+  , moduleDataCons    = dataCons
   } where
       (topBinds, Env{..}) = runState (mapM cvtTopBind binds) emptyEnv
       topKeys             = IntSet.fromList $ concatMap topBindKeys binds
+      modName             = cvtModuleName modName'
+      externals           = groupByModule [mkExternalName e | (k,e) <- IntMap.toList envExternals, IntSet.notMember k topKeys]
+      dataCons            = groupByModule . map mkDataCon $ IntMap.elems envDataCons
 
 -- utils
 

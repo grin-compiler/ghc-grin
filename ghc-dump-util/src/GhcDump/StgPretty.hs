@@ -138,6 +138,7 @@ pprModule :: Module -> Doc
 pprModule m =
   comment (pretty $ modulePhase m)
   <$$> text "module" <+> pretty (moduleName m) <+> "where" <> line
+  <$$> vsep [text "using" <> pretty n | n <- moduleDependency m] <> line
   <$$> vsep (map pretty (moduleExternals m)) <> line
   <$$> vsep (map (pprTopBinding) (moduleTopBindings m))
 

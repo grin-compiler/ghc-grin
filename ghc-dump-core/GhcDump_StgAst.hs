@@ -202,6 +202,7 @@ type SModule = Module' SBinder BinderId
 data Module' bndr occ
   = Module
     { moduleName        :: ModuleName
+    , moduleDependency  :: [ModuleName]
     , modulePhase       :: T_Text
     , moduleTopBindings :: [TopBinding' bndr occ]
     , moduleExternals   :: [(ModuleName, [bndr])]

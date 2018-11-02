@@ -39,7 +39,7 @@ reconLocalBinder :: BinderMap -> SBinder -> Binder
 reconLocalBinder (BinderMap n m) SBinder{..} = Binder sbinderName sbinderId n False -- HINT: local binders only
 
 reconModule :: SModule -> Module
-reconModule Module{..} = Module moduleName modulePhase binds exts cons
+reconModule Module{..} = Module moduleName moduleDependency modulePhase binds exts cons
   where
     bm    = BinderMap moduleName $ HM.fromList [(binderId b, b) | b <- tops ++ concatMap snd (exts ++ cons)]
     binds = map reconTopBinding moduleTopBindings
