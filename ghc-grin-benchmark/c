@@ -12,4 +12,4 @@ stack --stack-root `pwd`/.stack-root clean
 
 rm -fr .stack-work
 
-stack --stack-root `pwd`/.stack-root build
+time stack --stack-root `pwd`/.stack-root build
