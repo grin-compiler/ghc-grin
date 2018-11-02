@@ -13,7 +13,10 @@ import Lambda.CodeGen
 import Grin.Pretty
 import Pipeline.Pipeline
 
-import Text.PrettyPrint.ANSI.Leijen (ondullblack)
+import Text.PrettyPrint.ANSI.Leijen (ondullblack, plain)
+
+import qualified Data.ByteString.Lazy as BSL
+import Data.Binary
 
 data Opts
   = Opts
@@ -35,6 +38,7 @@ getOpts = do xs <- getArgs
 cg_main :: Opts -> IO ()
 cg_main opts = do
   forM_ (inputs opts) $ \fname -> do
+    {-
     content <- readFile fname
     let program = either (error . M.parseErrorPretty' content) id $ parseLambda fname content
     putStrLn "\n* Lambda"
@@ -46,6 +50,10 @@ cg_main opts = do
       , SaveGrin (output opts)
       , PrintGrin ondullblack
       ]
+    -}
+    program <- decode <$> BSL.readFile fname :: IO Exp
+    let lambdaGrin = codegenGrin program
+    writeFile (fname ++ ".grin") $ show $ plain $ pretty lambdaGrin
 
 main :: IO ()
 main = do opts <- getOpts
