@@ -1,11 +1,13 @@
 module Main where
 
+import Text.Printf
 import Control.Monad
 
 import System.FilePath
 import System.Environment
 import System.Exit
 
+import GhcDump_StgAst (ModuleName(..))
 import GhcDump.StgUtil
 
 import Lambda.FromStg
@@ -14,7 +16,17 @@ import Lambda.Pretty
 import Lambda.CodeGen
 import Lambda.Lint
 import Lambda.StaticSingleAssignment
+import Lambda.ClosureConversion
 import Pipeline.Pipeline
+
+import Data.Maybe
+import Data.List (foldl')
+import qualified Data.Set as Set
+import qualified Data.Map as Map
+import qualified Data.ByteString.Char8 as BS8
+
+import qualified Data.ByteString.Lazy as BSL
+import Data.Binary
 
 import Text.PrettyPrint.ANSI.Leijen (ondullblack, putDoc, plain, pretty)
 
@@ -35,19 +47,33 @@ getOpts = do xs <- getArgs
     process opts (x:xs) = process (opts { inputs = x:inputs opts }) xs
     process opts [] = opts
 
+
 cg_main :: Opts -> IO ()
 cg_main opts = do
-  defList <- forM (inputs opts) $ \fname -> do
+  -- filter dependenies only
+  depList <- mapM readDumpInfo (inputs opts)
+  let fnameMap  = Map.fromList $ zip (map fst depList) (inputs opts)
+      depMap    = Map.fromList depList
+      calcDep s n
+        | Set.member n s = s
+        | Just l <- Map.lookup n depMap = foldl' calcDep (Set.insert n s) l
+        | otherwise = Set.insert n s -- error $ printf "missing module: %s" . show $ getModuleName n
+
+      modMain = ModuleName $ BS8.pack "Main"
+      prunedDeps = catMaybes [Map.lookup m fnameMap | m <- Set.toList $ calcDep mempty modMain]
+
+  -- compile pruned program
+  defList <- forM prunedDeps $ \fname -> do
     putStrLn $ "loading " ++ fname
     stgModule <- readDump fname
-    putStrLn $ "loaded " ++ fname
     program@(Program defs) <- codegenLambda stgModule
 
     let lambdaName = replaceExtension fname "lambda"
     --putStrLn lambdaName
-    writeFile lambdaName . show . plain $ pretty program
+    --writeFile lambdaName . show . plain $ pretty program
 
     pure defs
+
     {-
     let lambdaGrin = codegenGrin program
     void $ pipeline pipelineOpts lambdaGrin
@@ -57,9 +83,19 @@ cg_main opts = do
       , PrintGrin ondullblack
       ]
     -}
-  let wholeProgram = singleStaticAssignment $ Program $ concat defList
+  let wholeProgram = eliminateLams [] $ singleStaticAssignment $ Program $ concat defList
   writeFile "whole_program.lambda" . show . plain $ pretty wholeProgram
   lintLambda wholeProgram
+  printf "all: %d pruned: %d\n" (length $ inputs opts) (length prunedDeps)
+
+  let pset = Set.fromList prunedDeps
+      aset = Set.fromList $ inputs opts
+  printf "dead modules:\n%s" (unlines $ Set.toList $ aset Set.\\ pset)
+
+  BSL.writeFile "whole_program.lambdabin" $ encode wholeProgram
+
+  --let lambdaGrin = codegenGrin wholeProgram
+  --writeFile "whole_program.grin" $ show $ plain $ pretty lambdaGrin
 
 main :: IO ()
 main = do opts <- getOpts
