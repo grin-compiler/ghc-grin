@@ -1,13 +1,15 @@
 {-# LANGUAGE LambdaCase, TupleSections #-}
 {-# LANGUAGE TemplateHaskell, KindSignatures, TypeFamilies #-}
-{-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable #-}
+{-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveGeneric #-}
 module Lambda.Syntax where
 
+import GHC.Generics
 import Data.Int
 import Data.Word
 import Data.ByteString (ByteString)
 import Data.Functor.Foldable as Foldable
 import Data.Functor.Foldable.TH
+import Data.Binary
 
 type Name = String
 
@@ -21,7 +23,7 @@ data Exp
   -- Binding
   | Def         Name [Name] Exp
   -- Exp
-  | App         Name [Exp]
+  | App         Name [Atom]
   | Case        Atom [Alt]
   | Let         [(Name, Exp)] Exp -- lazy let
   | LetRec      [(Name, Exp)] Exp -- lazy let with mutually recursive bindings
@@ -35,7 +37,7 @@ data Exp
   -- Extra
   | AppExp      Exp [Exp]         -- convenient for nested expressions i.e. lambdas
   | Lam         [Name] Exp
-  deriving (Eq, Ord, Show)
+  deriving (Generic, Eq, Ord, Show)
 
 data Lit
   = LInt64  Int64
@@ -47,14 +49,18 @@ data Lit
   -- special
   | LError  String  -- marks an error
   | LDummy  String  -- should be ignored
-  deriving (Eq, Ord, Show)
+  deriving (Generic, Eq, Ord, Show)
 
 data Pat
   = NodePat Name [Name]
   | LitPat  Lit
   | DefaultPat
-  deriving (Eq, Show, Ord)
+  deriving (Generic, Eq, Show, Ord)
 
 -- TODO: do we need lambda?
 
 makeBaseFunctor ''Exp
+
+instance Binary Exp
+instance Binary Lit
+instance Binary Pat

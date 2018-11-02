@@ -21,14 +21,17 @@ library
     Lambda.Pretty
     Lambda.PrimOps
     Lambda.Syntax
+    Lambda.Util
     Lambda.Lint
     Lambda.StaticSingleAssignment
+    Lambda.ClosureConversion
 
   build-depends:
       base
     , containers
     , mtl
     , grin
+    , binary
     , bytestring
     , recursion-schemes
     , ansi-wl-pprint
@@ -48,6 +51,8 @@ executable lambda-grin
   build-depends:       base
                      , mtl
                      , megaparsec
+                     , binary
+                     , bytestring
                      , ansi-wl-pprint
                      , lambda-grin
                      , grin
