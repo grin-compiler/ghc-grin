@@ -35,7 +35,8 @@ maybeParens True  = parens
 maybeParens False = id
 
 pprBinder :: Binder -> Doc
-pprBinder = pretty . binderUniqueName
+pprBinder b = (pretty . binderUniqueName $ b) <+> text "{-" <> text (show u) <> text "-}"
+  where BinderId u = binderId b
 
 instance Pretty T_Text where
     pretty = text . BS.unpack
@@ -138,7 +139,7 @@ pprModule :: Module -> Doc
 pprModule m =
   comment (pretty $ modulePhase m)
   <$$> text "module" <+> pretty (moduleName m) <+> "where" <> line
-  <$$> vsep [text "using" <> pretty n | n <- moduleDependency m] <> line
+  <$$> vsep [text "using" <+> pretty n | n <- moduleDependency m] <> line
   <$$> vsep (map pretty (moduleExternals m)) <> line
   <$$> vsep (map (pprTopBinding) (moduleTopBindings m))
 
