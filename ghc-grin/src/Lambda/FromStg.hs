@@ -83,8 +83,11 @@ visitExpr = \case
   C.StgCase expr result alts  -> do
     scrutName <- genName result
     scrutExp <- visitExpr expr
-    LetS [(scrutName, scrutExp)] . Case (Var scrutName) <$> mapM visitAlt alts
-
+    case alts of
+      -- NOTE: force convention in STG
+      [C.Alt C.AltDefault [] rhsExpr] -> LetS [(scrutName, scrutExp)] <$> visitExpr rhsExpr
+      -- normal case
+      _ -> LetS [(scrutName, scrutExp)] . Case (Var scrutName) <$> mapM visitAlt alts
   C.StgLet (C.StgNonRec b r) e          -> Let <$> ((\name exp -> [(name, exp)]) <$> genName b <*> visitRhs r) <*> visitExpr e
   C.StgLet (C.StgRec bs) e              -> LetRec <$> mapM (\(b,r) -> (,) <$> genName b <*> visitRhs r) bs <*> visitExpr e
 
