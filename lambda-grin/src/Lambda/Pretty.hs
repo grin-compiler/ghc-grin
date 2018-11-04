@@ -36,7 +36,7 @@ instance Pretty Exp where
       VarF name           -> text name
       LitF lit            -> pretty lit
       -- Alt
-      AltF cpat exp       -> pretty cpat <+> text "->" <+> align (pretty exp)
+      AltF cpat exp       -> pretty cpat <+> text "->" <$$> indent 4 (pretty exp)
       -- Extra
       AppExpF exp args    -> hsep $ parens exp : map pretty args
       LamF name exp       -> keyword "\\" <> hsep (map text name) <+> text "->" <+> align (pretty exp)
