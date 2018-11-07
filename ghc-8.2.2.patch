@@ -1,0 +1,313 @@
+diff --git a/ghc-8.2.2/clean-corebin.sh b/ghc-8.2.2/clean-corebin.sh
+new file mode 120000
+index 0000000..e299c9f
+--- /dev/null
++++ b/ghc-8.2.2/clean-corebin.sh
+@@ -0,0 +1 @@
++../ghc-grin-benchmark/clean-corebin.sh
+\ No newline at end of file
+diff --git a/ghc-8.2.2/compiler/ghc.cabal.in b/ghc-8.2.2/compiler/ghc.cabal.in
+index 2c837fd..1f810d5 100644
+--- a/ghc-8.2.2/compiler/ghc.cabal.in
++++ b/ghc-8.2.2/compiler/ghc.cabal.in
+@@ -165,6 +165,8 @@ Library
+         vectorise
+ 
+     Exposed-Modules:
++        GhcDump_StgConvert
++        GhcDump_StgAst
+         DriverBkp
+         BkpSyn
+         NameShape
+diff --git a/ghc-8.2.2/compiler/main/DriverPipeline.hs b/ghc-8.2.2/compiler/main/DriverPipeline.hs
+index 40e6a8d..7e78ab4 100644
+--- a/ghc-8.2.2/compiler/main/DriverPipeline.hs
++++ b/ghc-8.2.2/compiler/main/DriverPipeline.hs
+@@ -409,6 +409,13 @@ link' dflags batch_attempt_linking hpt
+            else do
+ 
+         compilationProgressMsg dflags ("Linking " ++ exe_file ++ " ...")
++        compilationProgressMsg dflags ("obj_files " ++ unwords (map show obj_files))
++        compilationProgressMsg dflags ("linkables " ++ unwords (map (showPpr dflags) linkables))
++
++        case ghcLink dflags of
++                LinkBinary    -> putStrLn "LinkBinary"
++                LinkStaticLib -> putStrLn "LinkStaticLib"
++                LinkDynLib    -> putStrLn "LinkDynLib"
+ 
+         -- Don't showPass in Batch mode; doLink will do that for us.
+         let link = case ghcLink dflags of
+@@ -1785,6 +1792,18 @@ it is supported by both gcc and clang. Anecdotally nvcc supports
+ -Xlinker, but not -Wl.
+ -}
+ 
++getRecursiveContents :: String -> FilePath -> IO [FilePath]
++getRecursiveContents ext topdir = do
++  names <- getDirectoryContents topdir
++  let properNames = filter (`notElem` [".", ".."]) names
++  paths <- forM properNames $ \name -> do
++    let path = topdir </> name
++    isDirectory <- doesDirectoryExist path
++    if isDirectory
++      then getRecursiveContents ext path
++      else pure $ filter ((== ext) . takeExtension)[path]
++  return (concat paths)
++
+ linkBinary :: DynFlags -> [FilePath] -> [InstalledUnitId] -> IO ()
+ linkBinary = linkBinary' False
+ 
+@@ -1795,6 +1814,8 @@ linkBinary' staticLink dflags o_files dep_packages = do
+         verbFlags = getVerbFlags dflags
+         output_fn = exeFileName staticLink dflags
+ 
++    putStrLn $ unlines $ "* o_files" : o_files
++
+     -- get the full list of packages to link with, by combining the
+     -- explicit packages with the auto packages and all of their
+     -- dependencies, and eliminating duplicates.
+@@ -1804,6 +1825,17 @@ linkBinary' staticLink dflags o_files dep_packages = do
+                       else do d <- getCurrentDirectory
+                               return $ normalise (d </> output_fn)
+     pkg_lib_paths <- getPackageLibraryPath dflags dep_packages
++    putStrLn $ unlines $ "* pkg_lib_paths" : pkg_lib_paths
++
++    -- list stgbins
++    stgbins  <- concat <$> mapM (getRecursiveContents ".stgbin") (map takeDirectory o_files ++ pkg_lib_paths)
++    putStrLn $ unlines $ "* stgbins" : stgbins
++
++    -- compile / link GRIN program
++    --when (ghcLink dflags == LinkBinary && staticLink == False) $ do
++    unless staticLink $ do
++      runGrin dflags $ map (SysTools.FileOption "") stgbins
++
+     let pkg_lib_path_opts = concatMap get_pkg_lib_path_opts pkg_lib_paths
+         get_pkg_lib_path_opts l
+          | osElfTarget (platformOS platform) &&
+@@ -1837,6 +1869,8 @@ linkBinary' staticLink dflags o_files dep_packages = do
+                             else l
+               in ["-L" ++ l] ++ ["-Xlinker", "-rpath", "-Xlinker", libpath]
+          | otherwise = ["-L" ++ l]
++    putStrLn "----"
++    putStrLn $ unlines $ "* pkg_lib_path_opts" : pkg_lib_path_opts
+ 
+     let
+       dead_strip
+@@ -1849,6 +1883,7 @@ linkBinary' staticLink dflags o_files dep_packages = do
+ 
+     extraLinkObj <- mkExtraObjToLinkIntoBinary dflags
+     noteLinkObjs <- mkNoteObjsToLinkIntoBinary dflags dep_packages
++    putStrLn $ unlines $ "* noteLinkObjs" : noteLinkObjs
+ 
+     let
+       (pre_hs_libs, post_hs_libs)
+@@ -1859,9 +1894,14 @@ linkBinary' staticLink dflags o_files dep_packages = do
+             else (["-Wl,--whole-archive"], ["-Wl,--no-whole-archive"])
+         | otherwise
+         = ([],[])
++    putStrLn $ unlines $ "* pre_hs_libs" : pre_hs_libs
++    putStrLn $ unlines $ "* post_hs_libs" : post_hs_libs
+ 
+     pkg_link_opts <- do
+         (package_hs_libs, extra_libs, other_flags) <- getPackageLinkOpts dflags dep_packages
++        putStrLn $ unlines $ "* package_hs_libs" : package_hs_libs
++        putStrLn $ unlines $ "* extra_libs" : extra_libs
++        putStrLn $ unlines $ "* other_flags" : other_flags
+         return $ if staticLink
+             then package_hs_libs -- If building an executable really means making a static
+                                  -- library (e.g. iOS), then we only keep the -l options for
+@@ -1882,6 +1922,8 @@ linkBinary' staticLink dflags o_files dep_packages = do
+                  -- This option must be placed before the library
+                  -- that defines the symbol."
+ 
++    putStrLn "==="
++    putStrLn $ unlines $ "* pkg_link_opts" : pkg_link_opts
+     -- frameworks
+     pkg_framework_opts <- getPkgFrameworkOpts dflags platform dep_packages
+     let framework_opts = getFrameworkOpts dflags platform
+diff --git a/ghc-8.2.2/compiler/main/HscMain.hs b/ghc-8.2.2/compiler/main/HscMain.hs
+index 906fce3..1c283c3 100644
+--- a/ghc-8.2.2/compiler/main/HscMain.hs
++++ b/ghc-8.2.2/compiler/main/HscMain.hs
+@@ -82,6 +82,9 @@ module HscMain
+     , hscAddSptEntries
+     ) where
+ 
++import qualified GhcDump_StgAst as S
++import qualified GhcDump_StgConvert as S
++
+ import Data.Data hiding (Fixity, TyCon)
+ import Id
+ import GHCi             ( addSptEntry )
+@@ -164,6 +167,8 @@ import System.IO (fixIO)
+ import qualified Data.Map as Map
+ import qualified Data.Set as S
+ import Data.Set (Set)
++import qualified Data.ByteString.Lazy as BSL
++import Data.Binary
+ 
+ #include "HsVersions.h"
+ 
+@@ -1296,6 +1301,7 @@ hscGenHardCode hsc_env cgguts mod_summary output_filename = do
+         prepd_binds <- {-# SCC "CorePrep" #-}
+                        corePrepPgm hsc_env this_mod location
+                                    core_binds data_tycons
++
+         -----------------  Convert to STG ------------------
+         (stg_binds, cost_centre_info)
+             <- {-# SCC "CoreToStg" #-}
+@@ -1304,6 +1310,12 @@ hscGenHardCode hsc_env cgguts mod_summary output_filename = do
+         let prof_init = profilingInitCode this_mod cost_centre_info
+             foreign_stubs = foreign_stubs0 `appendStubC` prof_init
+ 
++        --- save stg ---
++        let stgBin      = encode (S.cvtModule "stg" modName stg_binds)
++            stg_output  = replaceExtension (ml_hi_file location) "stgbin"
++            modName     = Module.moduleName $ cg_module cgguts
++        BSL.writeFile stg_output stgBin
++
+         ------------------  Code generation ------------------
+ 
+         -- The back-end is streamed: each top-level function goes
+diff --git a/ghc-8.2.2/compiler/main/SysTools.hs b/ghc-8.2.2/compiler/main/SysTools.hs
+index b2d85a7..98ba9bc 100644
+--- a/ghc-8.2.2/compiler/main/SysTools.hs
++++ b/ghc-8.2.2/compiler/main/SysTools.hs
+@@ -15,6 +15,7 @@ module SysTools (
+         initSysTools,
+ 
+         -- Interface to system tools
++        runGrin,                 -- [Option] -> IO ()
+         runUnlit, runCpp, runCc, -- [Option] -> IO ()
+         runPp,                   -- [Option] -> IO ()
+         runSplit,                -- [Option] -> IO ()
+@@ -399,6 +400,11 @@ findTopDir Nothing
+ ************************************************************************
+ -}
+ 
++runGrin :: DynFlags -> [Option] -> IO ()
++runGrin dflags args = do
++  let prog = "grin-ghc"
++  runSomething dflags "GRIN compiler" prog args
++
+ runUnlit :: DynFlags -> [Option] -> IO ()
+ runUnlit dflags args = do
+   let prog = pgm_L dflags
+diff --git a/ghc-8.2.2/compiler/stgSyn/GhcDump_StgAst.hs b/ghc-8.2.2/compiler/stgSyn/GhcDump_StgAst.hs
+new file mode 120000
+index 0000000..885101c
+--- /dev/null
++++ b/ghc-8.2.2/compiler/stgSyn/GhcDump_StgAst.hs
+@@ -0,0 +1 @@
++../../../ghc-dump-core/GhcDump_StgAst.hs
+\ No newline at end of file
+diff --git a/ghc-8.2.2/compiler/stgSyn/GhcDump_StgConvert.hs b/ghc-8.2.2/compiler/stgSyn/GhcDump_StgConvert.hs
+new file mode 120000
+index 0000000..55ebc93
+--- /dev/null
++++ b/ghc-8.2.2/compiler/stgSyn/GhcDump_StgConvert.hs
+@@ -0,0 +1 @@
++../../../ghc-dump-core/GhcDump_StgConvert.hs
+\ No newline at end of file
+diff --git a/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/PackageDescription/Configuration.hs b/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/PackageDescription/Configuration.hs
+index 89d15ed..da76349 100644
+--- a/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/PackageDescription/Configuration.hs
++++ b/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/PackageDescription/Configuration.hs
+@@ -219,7 +219,7 @@ resolveWithFlags dom enabled os arch impl constrs trees checkDeps =
+     mp m@(Right _) _           = m
+     mp _           m@(Right _) = m
+     mp (Left xs)   (Left ys)   =
+-        let union = Map.foldrWithKey (Map.insertWith' combine)
++        let union = Map.foldrWithKey (Map.insertWith combine)
+                     (unDepMapUnion xs) (unDepMapUnion ys)
+             combine x y = simplifyVersionRange $ unionVersionRanges x y
+         in union `seq` Left (DepMapUnion union)
+diff --git a/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/GHC.hs b/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/GHC.hs
+index 39929bd..20000af 100644
+--- a/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/GHC.hs
++++ b/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/GHC.hs
+@@ -683,7 +683,7 @@ buildOrReplLib forRepl verbosity numJobs pkg_descr lbi lib clbi = do
+ 
+   -- link:
+   when has_code . unless forRepl $ do
+-    info verbosity "Linking..."
++    info verbosity "Linking1..."
+     let cProfObjs   = map (`replaceExtension` ("p_" ++ objExtension))
+                       (cSources libBi)
+         cSharedObjs = map (`replaceExtension` ("dyn_" ++ objExtension))
+@@ -712,8 +712,15 @@ buildOrReplLib forRepl verbosity numJobs pkg_descr lbi lib clbi = do
+       | ghcVersion < mkVersion [7,2] -- ghc-7.2+ does not make _stub.o files
+       , x <- allLibModules lib clbi ]
+ 
++    let stgbinExtension = "stgbin"
++    hStgBins <- Internal.getHaskellObjects implInfo lib lbi clbi
++                      libTargetDir stgbinExtension True
++    putStrLn $ unlines $ "* stgbins:" : hStgBins
++
+     hObjs     <- Internal.getHaskellObjects implInfo lib lbi clbi
+                       libTargetDir objExtension True
++    putStrLn $ unlines $ "* objs:" : hObjs
++
+     hProfObjs <-
+       if withProfLib lbi
+               then Internal.getHaskellObjects implInfo lib lbi clbi
+@@ -1248,7 +1255,7 @@ gbuild verbosity numJobs pkg_descr lbi bm clbi = do
+                      }
+                    `mappend` (if withDynExe lbi then dynLinkerOpts else mempty)
+ 
+-      info verbosity "Linking..."
++      info verbosity "Linking2..."
+       -- Work around old GHCs not relinking in this
+       -- situation, see #3294
+       let target = targetDir </> targetName
+@@ -1290,7 +1297,7 @@ gbuild verbosity numJobs pkg_descr lbi bm clbi = do
+       -- We build under a (potentially) different filename to set a
+       -- soname on supported platforms.  See also the note for
+       -- @flibBuildName@.
+-      info verbosity "Linking..."
++      info verbosity "Linking3..."
+       let buildName = flibBuildName lbi flib
+       runGhcProg linkOpts { ghcOptOutputFile = toFlag (targetDir </> buildName) }
+       renameFile (targetDir </> buildName) (targetDir </> targetName)
+@@ -1631,6 +1638,7 @@ installLib    :: Verbosity
+ installLib verbosity lbi targetDir dynlibTargetDir _builtDir _pkg lib clbi = do
+   -- copy .hi files over:
+   whenVanilla $ copyModuleFiles "hi"
++  whenVanilla $ copyModuleFiles "stgbin"
+   whenProf    $ copyModuleFiles "p_hi"
+   whenShared  $ copyModuleFiles "dyn_hi"
+ 
+diff --git a/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/GHCJS.hs b/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/GHCJS.hs
+index 42641cb..b60ea1b 100644
+--- a/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/GHCJS.hs
++++ b/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/GHCJS.hs
+@@ -420,7 +420,7 @@ buildOrReplLib forRepl verbosity numJobs pkg_descr lbi lib clbi = do
+ 
+   -- link:
+   when (nativeToo && not forRepl) $ do
+-    info verbosity "Linking..."
++    info verbosity "Linking-ghcjs1..."
+     let cProfObjs   = map (`replaceExtension` ("p_" ++ objExtension))
+                       (cSources libBi)
+         cSharedObjs = map (`replaceExtension` ("dyn_" ++ objExtension))
+@@ -673,7 +673,7 @@ buildOrReplExe forRepl verbosity numJobs _pkg_descr lbi
+ 
+   -- link:
+   unless forRepl $ do
+-    info verbosity "Linking..."
++    info verbosity "Linking-ghcjs2..."
+     runGhcjsProg linkOpts { ghcOptOutputFile = toFlag (targetDir </> exeNameReal) }
+ 
+ -- |Install for ghc, .hi, .a and, if --with-ghci given, .o
+diff --git a/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/LHC.hs b/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/LHC.hs
+index 9451831..2606e0b 100644
+--- a/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/LHC.hs
++++ b/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/LHC.hs
+@@ -344,7 +344,7 @@ buildLib verbosity pkg_descr lbi lib clbi = do
+                | filename <- cSources libBi]
+ 
+   -- link:
+-  info verbosity "Linking..."
++  info verbosity "Linking-lhc..."
+   let cObjs = map (`replaceExtension` objExtension) (cSources libBi)
+       cSharedObjs = map (`replaceExtension` ("dyn_" ++ objExtension)) (cSources libBi)
+       cid = compilerId (compiler lbi)

@@ -1,0 +1,140 @@
+diff --git a/ghc-8.2.2/compiler/ghc.cabal.in b/ghc-8.2.2/compiler/ghc.cabal.in
+index 2c837fd..1f810d5 100644
+--- a/ghc-8.2.2/compiler/ghc.cabal.in
++++ b/ghc-8.2.2/compiler/ghc.cabal.in
+@@ -165,6 +165,8 @@ Library
+         vectorise
+ 
+     Exposed-Modules:
++        GhcDump_StgConvert
++        GhcDump_StgAst
+         DriverBkp
+         BkpSyn
+         NameShape
+diff --git a/ghc-8.2.2/compiler/main/DriverPipeline.hs b/ghc-8.2.2/compiler/main/DriverPipeline.hs
+index 40e6a8d..7e78ab4 100644
+--- a/ghc-8.2.2/compiler/main/DriverPipeline.hs
++++ b/ghc-8.2.2/compiler/main/DriverPipeline.hs
+@@ -1785,6 +1792,18 @@ it is supported by both gcc and clang. Anecdotally nvcc supports
+ -Xlinker, but not -Wl.
+ -}
+ 
++getRecursiveContents :: String -> FilePath -> IO [FilePath]
++getRecursiveContents ext topdir = do
++  names <- getDirectoryContents topdir
++  let properNames = filter (`notElem` [".", ".."]) names
++  paths <- forM properNames $ \name -> do
++    let path = topdir </> name
++    isDirectory <- doesDirectoryExist path
++    if isDirectory
++      then getRecursiveContents ext path
++      else pure $ filter ((== ext) . takeExtension)[path]
++  return (concat paths)
++
+ linkBinary :: DynFlags -> [FilePath] -> [InstalledUnitId] -> IO ()
+ linkBinary = linkBinary' False
+ 
+@@ -1804,6 +1825,17 @@ linkBinary' staticLink dflags o_files dep_packages = do
+                       else do d <- getCurrentDirectory
+                               return $ normalise (d </> output_fn)
+     pkg_lib_paths <- getPackageLibraryPath dflags dep_packages
++
++    -- list stgbins
++    stgbins  <- concat <$> mapM (getRecursiveContents ".stgbin") (map takeDirectory o_files ++ pkg_lib_paths)
++
++    -- compile / link GRIN program
++    --when (ghcLink dflags == LinkBinary && staticLink == False) $ do
++    unless staticLink $ do
++      runGrin dflags $ map (SysTools.FileOption "") stgbins
++
+     let pkg_lib_path_opts = concatMap get_pkg_lib_path_opts pkg_lib_paths
+         get_pkg_lib_path_opts l
+          | osElfTarget (platformOS platform) &&
+diff --git a/ghc-8.2.2/compiler/main/HscMain.hs b/ghc-8.2.2/compiler/main/HscMain.hs
+index 906fce3..1c283c3 100644
+--- a/ghc-8.2.2/compiler/main/HscMain.hs
++++ b/ghc-8.2.2/compiler/main/HscMain.hs
+@@ -82,6 +82,9 @@ module HscMain
+     , hscAddSptEntries
+     ) where
+ 
++import qualified GhcDump_StgConvert as Stg
++import qualified Data.ByteString.Lazy as BSL
++import Data.Binary
++
+ import Data.Data hiding (Fixity, TyCon)
+ import Id
+ import GHCi             ( addSptEntry )
+@@ -1296,6 +1301,7 @@ hscGenHardCode hsc_env cgguts mod_summary output_filename = do
+         prepd_binds <- {-# SCC "CorePrep" #-}
+                        corePrepPgm hsc_env this_mod location
+                                    core_binds data_tycons
++
+         -----------------  Convert to STG ------------------
+         (stg_binds, cost_centre_info)
+             <- {-# SCC "CoreToStg" #-}
+@@ -1304,6 +1310,12 @@ hscGenHardCode hsc_env cgguts mod_summary output_filename = do
+         let prof_init = profilingInitCode this_mod cost_centre_info
+             foreign_stubs = foreign_stubs0 `appendStubC` prof_init
+ 
++        --- save stg ---
++        let stgBin      = encode (Stg.cvtModule "stg" modName stg_binds)
++            stg_output  = replaceExtension (ml_hi_file location) "stgbin"
++            modName     = Module.moduleName $ cg_module cgguts
++        BSL.writeFile stg_output stgBin
++
+         ------------------  Code generation ------------------
+ 
+         -- The back-end is streamed: each top-level function goes
+diff --git a/ghc-8.2.2/compiler/main/SysTools.hs b/ghc-8.2.2/compiler/main/SysTools.hs
+index b2d85a7..98ba9bc 100644
+--- a/ghc-8.2.2/compiler/main/SysTools.hs
++++ b/ghc-8.2.2/compiler/main/SysTools.hs
+@@ -15,6 +15,7 @@ module SysTools (
+         initSysTools,
+ 
+         -- Interface to system tools
++        runGrin,                 -- [Option] -> IO ()
+         runUnlit, runCpp, runCc, -- [Option] -> IO ()
+         runPp,                   -- [Option] -> IO ()
+         runSplit,                -- [Option] -> IO ()
+@@ -399,6 +400,11 @@ findTopDir Nothing
+ ************************************************************************
+ -}
+ 
++runGrin :: DynFlags -> [Option] -> IO ()
++runGrin dflags args = do
++  let prog = "grin-ghc"
++  runSomething dflags "GRIN compiler" prog args
++
+ runUnlit :: DynFlags -> [Option] -> IO ()
+ runUnlit dflags args = do
+   let prog = pgm_L dflags
+diff --git a/ghc-8.2.2/compiler/stgSyn/GhcDump_StgAst.hs b/ghc-8.2.2/compiler/stgSyn/GhcDump_StgAst.hs
+new file mode 120000
+index 0000000..885101c
+--- /dev/null
++++ b/ghc-8.2.2/compiler/stgSyn/GhcDump_StgAst.hs
+@@ -0,0 +1 @@
++../../../ghc-dump-core/GhcDump_StgAst.hs
+\ No newline at end of file
+diff --git a/ghc-8.2.2/compiler/stgSyn/GhcDump_StgConvert.hs b/ghc-8.2.2/compiler/stgSyn/GhcDump_StgConvert.hs
+new file mode 120000
+index 0000000..55ebc93
+--- /dev/null
++++ b/ghc-8.2.2/compiler/stgSyn/GhcDump_StgConvert.hs
+@@ -0,0 +1 @@
++../../../ghc-dump-core/GhcDump_StgConvert.hs
+\ No newline at end of file
+diff --git a/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/GHC.hs b/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/GHC.hs
+index 39929bd..20000af 100644
+--- a/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/GHC.hs
++++ b/ghc-8.2.2/libraries/Cabal/Cabal/Distribution/Simple/GHC.hs
+@@ -1631,6 +1638,7 @@ installLib    :: Verbosity
+ installLib verbosity lbi targetDir dynlibTargetDir _builtDir _pkg lib clbi = do
+   -- copy .hi files over:
+   whenVanilla $ copyModuleFiles "hi"
++  whenVanilla $ copyModuleFiles "stgbin"
+   whenProf    $ copyModuleFiles "p_hi"
+   whenShared  $ copyModuleFiles "dyn_hi"
+ 
