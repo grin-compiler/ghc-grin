@@ -1,0 +1,24 @@
+Name:   encoding-wrong
+Name:   encoding
+Version:  0.8
+cabal-version: >=1.12
+-- double-dash files
+extra-source-files:
+  -- this is comment
+  README.md "--"
+  "--"
+
+custom-setup
+  setup-depends:
+    base < 5,
+    ghc-prim
+
+Library
+  -- version range round trip is better
+  build-depends: base (> 4.4 || == 4.4)
+
+  Exposed-Modules:
+    Data.Encoding
+
+  -- options with spaces
+  GHC-Options:         -Wall -O2 -threaded -rtsopts "-with-rtsopts=-N1 -A64m"

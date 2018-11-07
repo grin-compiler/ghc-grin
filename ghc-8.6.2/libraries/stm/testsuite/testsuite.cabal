@@ -1,0 +1,50 @@
+cabal-version:       2.2
+name:                testsuite
+version:             0
+
+synopsis:            External testsuite for stm package
+category:            Testing
+license:             BSD-3-Clause
+maintainer:          hvr@gnu.org
+description:
+  This testsuite is intended to be compatible with different versions
+  of `stm` (via use of @CPP@ if needed) in order to more easily
+  verify regression tests.
+  .
+  See also @README.md@ for more information.
+
+test-suite stm
+  hs-source-dirs: src
+
+  main-is: Main.hs
+  other-modules:
+    Issue9
+    Issue17
+    Stm052
+    Stm064
+    Stm065
+
+  type: exitcode-stdio-1.0
+
+  default-language: Haskell2010
+  other-extensions: CPP
+
+  -- IUT
+  build-depends:
+    , stm  >= 2.4 && < 2.6
+
+  --
+  build-depends:
+    , base                   >= 4.3 && < 4.13
+    , test-framework        ^>= 0.8.2.0
+    , test-framework-hunit  ^>= 0.3.0.2
+    , HUnit                 ^>= 1.6.0.0
+    -- Testing with GHC < 7.4 requires 'HUnit-1.3.1.2' which didn't depend on 'call-stack' (which requires GHC >= 7.4)
+                         || ^>= 1.3.1.2
+
+    -- some tests need 'array' & 'random'
+    , array ^>= 0.3.0.2 || ^>= 0.4.0.0 || ^>= 0.5.0.0
+    , random ^>= 1.1
+
+  ghc-options: -Wall -fno-warn-unused-imports
+  ghc-options: -threaded
