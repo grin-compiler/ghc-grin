@@ -9,6 +9,7 @@ import qualified Text.Megaparsec as M
 import Lambda.Syntax
 import Lambda.Parse
 import Lambda.Pretty
+import Lambda.Lint
 import Lambda.CodeGen
 import Grin.Pretty
 import Pipeline.Pipeline
@@ -52,6 +53,7 @@ cg_main opts = do
       ]
     -}
     program <- decode <$> BSL.readFile fname :: IO Exp
+    lintLambda program
     let lambdaGrin = codegenGrin program
     writeFile (fname ++ ".grin") $ show $ plain $ pretty lambdaGrin
 
