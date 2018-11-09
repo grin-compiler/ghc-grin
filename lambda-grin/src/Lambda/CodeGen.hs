@@ -8,9 +8,10 @@ import Control.Monad.State
 import Data.Foldable
 import Data.Map (Map)
 import qualified Data.Map as Map
+import Data.Functor.Foldable
 
 import Lambda.Syntax
-import Lambda.PrimOps
+--import Lambda.PrimOps
 import qualified Grin.Grin as G
 import Transformations.Optimising.DeadProcedureElimination
 import Transformations.GenerateEval
@@ -36,7 +37,16 @@ genLit = \case
   LWord64 v -> G.LWord64 v
   LFloat  v -> G.LFloat v
   LBool   v -> G.LBool v
-
+  _ -> G.LWord64 999 -- TODO
+-- TODO
+{-
+data Lit
+  | LChar   Char
+  | LString ByteString
+  -- special
+  | LError  String  -- marks an error
+  | LDummy  String  -- should be ignored
+-}
 genCPat :: Pat -> G.CPat
 genCPat = \case
   NodePat name args -> G.NodePat (G.Tag G.C name) args
@@ -80,10 +90,24 @@ gen mode e = gets _arityMap >>= \arityMap -> case e of
         Just whnf -> pure $ G.SReturn $ G.Var whnf
         Nothing   -> pure $ G.SApp "eval" [G.Var name] -- TODO: handle functions
 
+  -- TODO -----
+  Var name
+    -> do
+      gets $ Map.lookup name . _whnfMap >>= \case
+        Just whnf -> pure $ G.SReturn $ G.Var whnf
+        Nothing   -> pure $ G.SApp "eval" [G.Var name] -- TODO: handle functions
+  -------------
+
   -- TODO: build var name <--> location name map for suspended computations
   Let binds exp
     | mode == R
     -> foldr (\(name, e) rightExp -> G.EBind <$> gen C e <*> pure (G.Var name) <*> rightExp) (gen R exp) binds
+
+  -- TODO -----
+  LetRec binds exp
+    | mode == R
+    -> foldr (\(name, e) rightExp -> G.EBind <$> gen C e <*> pure (G.Var name) <*> rightExp) (gen R exp) binds
+  -------------
 
   LetS binds exp
     | mode == R
@@ -93,9 +117,22 @@ gen mode e = gets _arityMap >>= \arityMap -> case e of
       modify' $ \env@Env{..} -> env {_whnfMap = Map.insert name name _whnfMap}
       G.EBind leftExp (G.Var name) <$> rightExp) (gen R exp) binds
 
+  -- TODO -----
+  LetS binds exp
+    -> foldr (\(name, e) rightExp -> G.EBind <$> gen C e <*> pure (G.Var name) <*> rightExp) (gen R exp) binds
+  Let binds exp
+    -> foldr (\(name, e) rightExp -> G.EBind <$> gen C e <*> pure (G.Var name) <*> rightExp) (gen R exp) binds
+  -------------
+
   App name args
     | argCount <- length args
     -> case arity arityMap name of
+
+      Nothing
+        -- NOTE: primops must be saturated
+        | G.isPrimName name
+        , mode == E || mode == R
+        -> G.SApp name <$> mapM (genVal E) args
 
       -- unknown function ; generate apply chain
       {-
@@ -118,10 +155,15 @@ gen mode e = gets _arityMap >>= \arityMap -> case e of
           | mode == C -> G.SStore  . G.ConstTagNode (G.Tag (G.P $ ar - argCount) name) <$> mapM (genVal C) args
           | mode == E -> G.SReturn . G.ConstTagNode (G.Tag (G.P $ ar - argCount) name) <$> mapM (genVal C) args
           | mode == R -> G.SReturn . G.ConstTagNode (G.Tag (G.P $ ar - argCount) name) <$> mapM (genVal C) args
+
+  -- TODO -----
+        GT -> G.SApp name <$> mapM (genVal C) args
 {-
         GT  -> let (funArgs, extraArgs) = splitAt ar args
                in apChain (G.SApp name $ map genAtom funArgs) extraArgs
 -}
+      _ -> G.SApp name <$> mapM (genVal C) args
+  -------------
 
   Alt pat exp
     | mode == R
@@ -156,18 +198,9 @@ gen mode e = gets _arityMap >>= \arityMap -> case e of
 -}
 
 codegenGrin :: Program -> G.Program
-codegenGrin exp = G.Program $ prog ++ primOps where
-  G.Program prog    = evalState (gen R exp) (Env 0 (buildArityMap exp) mempty)
-  G.Program primOps = lambdaPrimOps
+codegenGrin exp = evalState (gen R exp) (Env 0 (buildArityMap exp) mempty)
 
 -- HINT: arity map for lambda
 buildArityMap :: Program -> Map Name Int
-buildArityMap (Program defs) =
-  Map.fromList $
-    [(name, length args) | Def name args _ <- defs] ++
-    [(name, length args) | let G.Program ops = lambdaPrimOps, G.Def name args _ <- ops] ++
-    [("_prim_int_add", 2)
-    ,("_prim_int_gt", 2)
-    ,("_prim_int_print", 1)
-    ]
+buildArityMap (Program defs) = Map.fromList [(name, length args) | Def name args _ <- defs]
 buildArityMap _ = error "invalid expression, program expected"
