@@ -1,0 +1,121 @@
+diff --git a/ghc-8.6.2/compiler/ghc.cabal.in b/ghc-8.6.2/compiler/ghc.cabal.in
+index 01628dc..418c895 100644
+--- a/ghc-8.6.2/compiler/ghc.cabal.in
++++ b/ghc-8.6.2/compiler/ghc.cabal.in
+@@ -169,6 +169,8 @@ Library
+         GhcPrelude
+ 
+     Exposed-Modules:
++        GhcDump_StgConvert
++        GhcDump_StgAst
+         Ar
+         FileCleanup
+         DriverBkp
+diff --git a/ghc-8.6.2/compiler/main/DriverPipeline.hs b/ghc-8.6.2/compiler/main/DriverPipeline.hs
+index 92e3455..e94d1c7 100644
+--- a/ghc-8.6.2/compiler/main/DriverPipeline.hs
++++ b/ghc-8.6.2/compiler/main/DriverPipeline.hs
+@@ -1691,6 +1691,18 @@ it is supported by both gcc and clang. Anecdotally nvcc supports
+ -Xlinker, but not -Wl.
+ -}
+ 
++getRecursiveContents :: String -> FilePath -> IO [FilePath]
++getRecursiveContents ext topdir = do
++  names <- getDirectoryContents topdir
++  let properNames = filter (`notElem` [".", ".."]) names
++  paths <- forM properNames $ \name -> do
++    let path = topdir </> name
++    isDirectory <- doesDirectoryExist path
++    if isDirectory
++      then getRecursiveContents ext path
++      else pure $ filter ((== ext) . takeExtension)[path]
++  return (concat paths)
++
+ linkBinary :: DynFlags -> [FilePath] -> [InstalledUnitId] -> IO ()
+ linkBinary = linkBinary' False
+ 
+@@ -1710,6 +1722,15 @@ linkBinary' staticLink dflags o_files dep_packages = do
+                       else do d <- getCurrentDirectory
+                               return $ normalise (d </> output_fn)
+     pkg_lib_paths <- getPackageLibraryPath dflags dep_packages
++
++    -- list stgbins
++    stgbins  <- concat <$> mapM (getRecursiveContents ".stgbin") (map takeDirectory o_files ++ pkg_lib_paths)
++
++    -- compile / link GRIN program
++    --when (ghcLink dflags == LinkBinary && staticLink == False) $ do
++    unless staticLink $ do
++      runGrin dflags $ map (SysTools.FileOption "") stgbins
++
+     let pkg_lib_path_opts = concatMap get_pkg_lib_path_opts pkg_lib_paths
+         get_pkg_lib_path_opts l
+          | osElfTarget (platformOS platform) &&
+diff --git a/ghc-8.6.2/compiler/main/HscMain.hs b/ghc-8.6.2/compiler/main/HscMain.hs
+index a8a33bf..6bccd5f 100644
+--- a/ghc-8.6.2/compiler/main/HscMain.hs
++++ b/ghc-8.6.2/compiler/main/HscMain.hs
+@@ -171,6 +171,10 @@ import qualified Data.Map as Map
+ import qualified Data.Set as S
+ import Data.Set (Set)
+ 
++import qualified GhcDump_StgConvert as Stg
++import qualified Data.ByteString.Lazy as BSL
++import Data.Binary
++
+ #include "HsVersions.h"
+ 
+ 
+@@ -1327,6 +1331,12 @@ hscGenHardCode hsc_env cgguts mod_summary output_filename = do
+             prof_init = profilingInitCode this_mod cost_centre_info
+             foreign_stubs = foreign_stubs0 `appendStubC` prof_init
+ 
++        --- save stg ---
++        let stgBin      = encode (Stg.cvtModule "stg" modName stg_binds)
++            stg_output  = replaceExtension (ml_hi_file location) "stgbin"
++            modName     = Module.moduleName $ cg_module cgguts
++        BSL.writeFile stg_output stgBin
++
+         ------------------  Code generation ------------------
+ 
+         -- The back-end is streamed: each top-level function goes
+diff --git a/ghc-8.6.2/compiler/main/SysTools/Tasks.hs b/ghc-8.6.2/compiler/main/SysTools/Tasks.hs
+index 66cc1ec..1bf0255 100644
+--- a/ghc-8.6.2/compiler/main/SysTools/Tasks.hs
++++ b/ghc-8.6.2/compiler/main/SysTools/Tasks.hs
+@@ -343,3 +343,8 @@ runWindres dflags args = do
+ touch :: DynFlags -> String -> String -> IO ()
+ touch dflags purpose arg =
+   runSomething dflags purpose (pgm_T dflags) [FileOption "" arg]
++
++runGrin :: DynFlags -> [Option] -> IO ()
++runGrin dflags args = do
++  let prog = "grin-ghc"
++  runSomething dflags "GRIN compiler" prog args
+diff --git a/ghc-8.6.2/compiler/stgSyn/GhcDump_StgAst.hs b/ghc-8.6.2/compiler/stgSyn/GhcDump_StgAst.hs
+new file mode 120000
+index 0000000..885101c
+--- /dev/null
++++ b/ghc-8.6.2/compiler/stgSyn/GhcDump_StgAst.hs
+@@ -0,0 +1 @@
++../../../ghc-dump-core/GhcDump_StgAst.hs
+\ No newline at end of file
+diff --git a/ghc-8.6.2/compiler/stgSyn/GhcDump_StgConvert.hs b/ghc-8.6.2/compiler/stgSyn/GhcDump_StgConvert.hs
+new file mode 120000
+index 0000000..55ebc93
+--- /dev/null
++++ b/ghc-8.6.2/compiler/stgSyn/GhcDump_StgConvert.hs
+@@ -0,0 +1 @@
++../../../ghc-dump-core/GhcDump_StgConvert.hs
+\ No newline at end of file
+diff --git a/ghc-8.6.2/libraries/Cabal/Cabal/Distribution/Simple/GHC.hs b/ghc-8.6.2/libraries/Cabal/Cabal/Distribution/Simple/GHC.hs
+index 1d4a97a..1bd1d20 100644
+--- a/ghc-8.6.2/libraries/Cabal/Cabal/Distribution/Simple/GHC.hs
++++ b/ghc-8.6.2/libraries/Cabal/Cabal/Distribution/Simple/GHC.hs
+@@ -1826,6 +1826,7 @@ installLib    :: Verbosity
+ installLib verbosity lbi targetDir dynlibTargetDir _builtDir _pkg lib clbi = do
+   -- copy .hi files over:
+   whenVanilla $ copyModuleFiles "hi"
++  whenVanilla $ copyModuleFiles "stgbin"
+   whenProf    $ copyModuleFiles "p_hi"
+   whenShared  $ copyModuleFiles "dyn_hi"
+ 
