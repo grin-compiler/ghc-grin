@@ -1,5 +1,0 @@
-procName() {
-L0:
-  reg1 = 42 / 0
-  ret(reg1)
-}

@@ -1,6 +1,0 @@
-{-
->module TcEnv where
->import TcRnTypes
->
->tcExtendIdEnv :: [TcId] -> TcM a -> TcM a
--}
