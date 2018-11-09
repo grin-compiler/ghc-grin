@@ -169,6 +169,8 @@ Library
         GhcPrelude
 
     Exposed-Modules:
+        GhcDump_StgConvert
+        GhcDump_StgAst
         Ar
         FileCleanup
         DriverBkp

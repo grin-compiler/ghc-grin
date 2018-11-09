@@ -1691,6 +1691,18 @@ it is supported by both gcc and clang. Anecdotally nvcc supports
 -Xlinker, but not -Wl.
 -}
 
+getRecursiveContents :: String -> FilePath -> IO [FilePath]
+getRecursiveContents ext topdir = do
+  names <- getDirectoryContents topdir
+  let properNames = filter (`notElem` [".", ".."]) names
+  paths <- forM properNames $ \name -> do
+    let path = topdir </> name
+    isDirectory <- doesDirectoryExist path
+    if isDirectory
+      then getRecursiveContents ext path
+      else pure $ filter ((== ext) . takeExtension)[path]
+  return (concat paths)
+
 linkBinary :: DynFlags -> [FilePath] -> [InstalledUnitId] -> IO ()
 linkBinary = linkBinary' False
 
@@ -1710,6 +1722,15 @@ linkBinary' staticLink dflags o_files dep_packages = do
                       else do d <- getCurrentDirectory
                               return $ normalise (d </> output_fn)
     pkg_lib_paths <- getPackageLibraryPath dflags dep_packages
+
+    -- list stgbins
+    stgbins  <- concat <$> mapM (getRecursiveContents ".stgbin") (map takeDirectory o_files ++ pkg_lib_paths)
+
+    -- compile / link GRIN program
+    --when (ghcLink dflags == LinkBinary && staticLink == False) $ do
+    unless staticLink $ do
+      runGrin dflags $ map (SysTools.FileOption "") stgbins
+
     let pkg_lib_path_opts = concatMap get_pkg_lib_path_opts pkg_lib_paths
         get_pkg_lib_path_opts l
          | osElfTarget (platformOS platform) &&

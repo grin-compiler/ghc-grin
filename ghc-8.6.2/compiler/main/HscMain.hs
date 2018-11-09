@@ -171,6 +171,10 @@ import qualified Data.Map as Map
 import qualified Data.Set as S
 import Data.Set (Set)
 
+import qualified GhcDump_StgConvert as Stg
+import qualified Data.ByteString.Lazy as BSL
+import Data.Binary
+
 #include "HsVersions.h"
 
 
@@ -1326,6 +1330,12 @@ hscGenHardCode hsc_env cgguts mod_summary output_filename = do
               (S.toList local_ccs ++ caf_ccs, caf_cc_stacks)
             prof_init = profilingInitCode this_mod cost_centre_info
             foreign_stubs = foreign_stubs0 `appendStubC` prof_init
+
+        --- save stg ---
+        let stgBin      = encode (Stg.cvtModule "stg" modName stg_binds)
+            stg_output  = replaceExtension (ml_hi_file location) "stgbin"
+            modName     = Module.moduleName $ cg_module cgguts
+        BSL.writeFile stg_output stgBin
 
         ------------------  Code generation ------------------
 

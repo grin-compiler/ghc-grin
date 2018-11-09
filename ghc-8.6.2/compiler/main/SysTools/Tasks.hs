@@ -343,3 +343,8 @@ runWindres dflags args = do
 touch :: DynFlags -> String -> String -> IO ()
 touch dflags purpose arg =
   runSomething dflags purpose (pgm_T dflags) [FileOption "" arg]
+
+runGrin :: DynFlags -> [Option] -> IO ()
+runGrin dflags args = do
+  let prog = "grin-ghc"
+  runSomething dflags "GRIN compiler" prog args

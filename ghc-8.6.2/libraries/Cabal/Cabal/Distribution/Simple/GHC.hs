@@ -1826,6 +1826,7 @@ installLib    :: Verbosity
 installLib verbosity lbi targetDir dynlibTargetDir _builtDir _pkg lib clbi = do
   -- copy .hi files over:
   whenVanilla $ copyModuleFiles "hi"
+  whenVanilla $ copyModuleFiles "stgbin"
   whenProf    $ copyModuleFiles "p_hi"
   whenShared  $ copyModuleFiles "dyn_hi"
 
