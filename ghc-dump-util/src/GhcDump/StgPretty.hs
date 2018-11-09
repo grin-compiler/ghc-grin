@@ -35,8 +35,9 @@ maybeParens True  = parens
 maybeParens False = id
 
 pprBinder :: Binder -> Doc
-pprBinder b = (pretty . binderUniqueName $ b) <+> text "{-" <> text (show u) <> text "-}"
-  where BinderId u = binderId b
+pprBinder b = (pretty . binderUniqueName $ b) <+> text "{-" <> text (show u) <> exported <> text "-}" where
+  BinderId u  = binderId b
+  exported    = if binderIsExported b then text " exported" else mempty
 
 instance Pretty T_Text where
     pretty = text . BS.unpack
@@ -47,18 +48,23 @@ instance Pretty ModuleName where
 pprRational :: Rational -> Doc
 pprRational r = pretty (numerator r) <> "/" <> pretty (denominator r)
 
+instance Pretty LitNumType where
+  pretty = \case
+    LitNumInteger -> "Integer"
+    LitNumNatural -> "Natural"
+    LitNumInt     -> "Int"
+    LitNumInt64   -> "Int64"
+    LitNumWord    -> "Word"
+    LitNumWord64  -> "Word64"
+
 instance Pretty Lit where
     pretty (MachChar x) = "'" <> char x <> "'#"
     pretty (MachStr x) = "\"" <> text (BS.unpack x) <> "\"#"
     pretty MachNullAddr = "nullAddr#"
-    pretty (MachInt x) = pretty x <> "#"
-    pretty (MachInt64 x) = pretty x <> "#"
-    pretty (MachWord x) = pretty x <> "#"
-    pretty (MachWord64 x) = pretty x <> "##"
     pretty (MachFloat x) = "FLOAT" <> parens (pprRational x)
     pretty (MachDouble x) = "DOUBLE" <> parens (pprRational x)
     pretty (MachLabel x) = "LABEL"<> parens (pretty x)
-    pretty (LitInteger x) = pretty x
+    pretty (LitNumber t i) = "#" <> pretty t <> "#" <> pretty i
 
 instance Pretty AltCon where
     pretty (AltDataCon dc) = pretty dc
@@ -135,12 +141,24 @@ pprTopBinding = \case
 instance Pretty TopBinding where
   pretty = pprTopBinding
 
+{-
+  = Module
+    { modulePhase       :: T_Text
+    , moduleName        :: ModuleName
+    , moduleDependency  :: [ModuleName]
+    , moduleExternals   :: [(ModuleName, [bndr])]
+    , moduleDataCons    :: [(ModuleName, [bndr])]
+    , moduleExported    :: [(ModuleName, [BinderId])]
+    , moduleTopBindings :: [TopBinding' bndr occ]
+    }
+-}
 pprModule :: Module -> Doc
 pprModule m =
   comment (pretty $ modulePhase m)
   <$$> text "module" <+> pretty (moduleName m) <+> "where" <> line
   <$$> vsep [text "using" <+> pretty n | n <- moduleDependency m] <> line
-  <$$> vsep (map pretty (moduleExternals m)) <> line
+  <$$> text "externals" <$$> vsep [indent 2 $ vsep (map pretty bl) | (n, bl) <- moduleExternals m] <> line
+  <$$> text "data" <$$> vsep [indent 2 $ vsep (map pretty bl) | (n, bl) <- moduleDataCons m] <> line
   <$$> vsep (map (pprTopBinding) (moduleTopBindings m))
 
 instance Pretty Module where

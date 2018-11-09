@@ -1,7 +1,7 @@
 module GhcDump.StgUtil
     ( -- * Convenient IO
       readDump, readDump',
-      readDumpInfo
+      readDumpInfo, readDumpInfo'
     ) where
 
 import Prelude hiding (readFile)
@@ -19,5 +19,8 @@ readDump' fname = decode <$> BSL.readFile fname
 readDump :: FilePath -> IO Module
 readDump fname = reconModule <$> readDump' fname
 
+readDumpInfo' :: FilePath -> IO (T_Text, ModuleName, [ModuleName])
+readDumpInfo' fname = decode <$> BSL.readFile fname
+
 readDumpInfo :: FilePath -> IO (ModuleName, [ModuleName])
-readDumpInfo fname = decode <$> BSL.readFile fname
+readDumpInfo fname = (\(_,a,b) -> (a,b)) <$> readDumpInfo' fname

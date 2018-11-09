@@ -36,20 +36,51 @@ getBinder (BinderMap _ m) bid
 -- "recon" == "reconstruct"
 
 reconLocalBinder :: BinderMap -> SBinder -> Binder
-reconLocalBinder (BinderMap n m) SBinder{..} = Binder sbinderName sbinderId n False -- HINT: local binders only
+reconLocalBinder (BinderMap n m) SBinder{..} = -- HINT: local binders only
+  Binder
+  { binderName        = sbinderName
+  , binderId          = sbinderId
+  , binderModule      = n
+  , binderIsTop       = False
+  , binderIsExported  = False
+  }
 
+{-
+  = Module
+    { modulePhase       :: T_Text
+    , moduleName        :: ModuleName
+    , moduleDependency  :: [ModuleName]
+    , moduleExternals   :: [(ModuleName, [bndr])]
+    , moduleDataCons    :: [(ModuleName, [bndr])]
+    , moduleExported    :: [(ModuleName, [BinderId])]
+    , moduleTopBindings :: [TopBinding' bndr occ]
+    }
+-}
 reconModule :: SModule -> Module
-reconModule Module{..} = Module moduleName moduleDependency modulePhase binds exts cons
+reconModule Module{..} = Module modulePhase moduleName moduleDependency exts cons moduleExported binds
   where
     bm    = BinderMap moduleName $ HM.fromList [(binderId b, b) | b <- tops ++ concatMap snd (exts ++ cons)]
     binds = map reconTopBinding moduleTopBindings
 
-    tops  = map (mkTopBinder moduleName) $ concatMap topBindings moduleTopBindings
-    exts  = [(m, map (mkTopBinder m) l) | (m, l) <- moduleExternals]
-    cons  = [(m, map (mkTopBinder m) l) | (m, l) <- moduleDataCons]
+    modNameMap = HM.fromList [(b, m) | (m,l) <- moduleExported, b <- l]
 
-    mkTopBinder :: ModuleName -> SBinder -> Binder
-    mkTopBinder m SBinder{..} = Binder sbinderName sbinderId m True
+    tops  = [ mkTopBinder modName exported b
+            | b@SBinder{..} <- concatMap topBindings moduleTopBindings
+            , let modName   = HM.lookupDefault moduleName sbinderId modNameMap
+            , let exported  = HM.member sbinderId modNameMap
+            ]
+    exts  = [(m, map (mkTopBinder m True) l) | (m, l) <- moduleExternals]
+    cons  = [(m, map (mkTopBinder m True) l) | (m, l) <- moduleDataCons]
+
+    mkTopBinder :: ModuleName -> Bool -> SBinder -> Binder
+    mkTopBinder m exported SBinder{..} =
+      Binder
+      { binderName        = sbinderName
+      , binderId          = sbinderId
+      , binderModule      = m
+      , binderIsTop       = True
+      , binderIsExported  = exported
+      }
 
     reconTopBinder :: SBinder -> Binder
     reconTopBinder b = getBinder bm $ sbinderId b

@@ -3,6 +3,8 @@
 {-# LANGUAGE RecordWildCards #-}
 module GhcDump_StgAst where
 
+import GhcPrelude
+
 import GHC.Generics
 
 import Data.Monoid
@@ -36,31 +38,37 @@ data SBinder
 
 data Binder
   = Binder
-    { binderName    :: !T_Text
-    , binderId      :: !BinderId
-    , binderModule  :: !ModuleName
-    , binderIsTop   :: !Bool
+    { binderName        :: !T_Text
+    , binderId          :: !BinderId
+    , binderModule      :: !ModuleName
+    , binderIsTop       :: !Bool
+    , binderIsExported  :: !Bool
     }
   deriving (Eq, Ord, Generic, Show)
 
 binderUniqueName :: Binder -> T_Text
 binderUniqueName Binder{..}
-  | binderIsTop = getModuleName binderModule <> BS8.pack "." <> binderName
+  | binderIsExported = getModuleName binderModule <> BS8.pack "." <> binderName
   | otherwise   = binderName <> BS8.pack ('.' : show u)
   where BinderId u = binderId
+
+data LitNumType
+  = LitNumInteger -- ^ @Integer@ (see Note [Integer literals])
+  | LitNumNatural -- ^ @Natural@ (see Note [Natural literals])
+  | LitNumInt     -- ^ @Int#@ - according to target machine
+  | LitNumInt64   -- ^ @Int64#@ - exactly 64 bits
+  | LitNumWord    -- ^ @Word#@ - according to target machine
+  | LitNumWord64  -- ^ @Word64#@ - exactly 64 bits
+  deriving (Eq, Ord, Generic, Show)
 
 data Lit
   = MachChar      Char
   | MachStr       BS.ByteString
   | MachNullAddr
-  | MachInt       Integer
-  | MachInt64     Integer
-  | MachWord      Integer
-  | MachWord64    Integer
   | MachFloat     Rational
   | MachDouble    Rational
   | MachLabel     T_Text
-  | LitInteger    Integer
+  | LitNumber     LitNumType Integer
   deriving (Eq, Ord, Generic, Show)
 
 
@@ -201,18 +209,20 @@ type SModule = Module' SBinder BinderId
 
 data Module' bndr occ
   = Module
-    { moduleName        :: ModuleName
+    { modulePhase       :: T_Text
+    , moduleName        :: ModuleName
     , moduleDependency  :: [ModuleName]
-    , modulePhase       :: T_Text
-    , moduleTopBindings :: [TopBinding' bndr occ]
     , moduleExternals   :: [(ModuleName, [bndr])]
     , moduleDataCons    :: [(ModuleName, [bndr])]
+    , moduleExported    :: [(ModuleName, [BinderId])]
+    , moduleTopBindings :: [TopBinding' bndr occ]
     }
   deriving (Eq, Ord, Generic, Show)
 
 instance Binary Unique
 instance Binary Binder
 instance Binary SBinder
+instance Binary LitNumType
 instance Binary Lit
 instance Binary ForeignCall
 instance Binary PrimCall
