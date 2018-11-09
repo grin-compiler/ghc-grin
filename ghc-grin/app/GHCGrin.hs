@@ -69,8 +69,8 @@ cg_main opts = do
     program@(Program defs) <- codegenLambda stgModule
 
     let lambdaName = replaceExtension fname "lambda"
-    --putStrLn lambdaName
-    --writeFile lambdaName . show . plain $ pretty program
+    putStrLn lambdaName
+    writeFile lambdaName . show . plain $ pretty program
 
     pure defs
 
@@ -94,8 +94,8 @@ cg_main opts = do
 
   BSL.writeFile "whole_program.lambdabin" $ encode wholeProgram
 
-  --let lambdaGrin = codegenGrin wholeProgram
-  --writeFile "whole_program.grin" $ show $ plain $ pretty lambdaGrin
+  let lambdaGrin = codegenGrin wholeProgram
+  writeFile "whole_program.grin" $ show $ plain $ pretty lambdaGrin
 
 main :: IO ()
 main = do opts <- getOpts

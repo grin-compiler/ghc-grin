@@ -46,10 +46,13 @@ data Lit = MachNullAddr
 -}
 convertLit :: C.Lit -> Lit
 convertLit = \case
-  C.MachInt     i -> LInt64 $ fromIntegral i
-  C.MachInt64   i -> LInt64 $ fromIntegral i
-  C.MachWord    w -> LWord64 $ fromIntegral w
-  C.MachWord64  w -> LWord64 $ fromIntegral w
+  C.LitNumber t i -> case t of
+    C.LitNumInteger -> LInt64 $ fromIntegral i
+    C.LitNumNatural -> LInt64 $ fromIntegral i
+    C.LitNumInt     -> LInt64 $ fromIntegral i
+    C.LitNumInt64   -> LInt64 $ fromIntegral i
+    C.LitNumWord    -> LWord64 $ fromIntegral i
+    C.LitNumWord64  -> LWord64 $ fromIntegral i
   C.MachFloat   f -> LFloat $ realToFrac f
   C.MachDouble  f -> LFloat $ realToFrac f
   C.MachStr     s -> LString s
@@ -101,7 +104,7 @@ visitRhs :: C.Rhs -> CG Exp
 visitRhs = \case
   C.StgRhsCon con args        -> Con <$> genConName con <*> mapM visitArg args
   C.StgRhsClosure _ [] _ bs e -> Lam <$> mapM genName bs <*> visitExpr e
-  C.StgRhsClosure _ vs _ bs e -> AppExp <$> (Lam <$> mapM genName (vs ++ bs) <*> visitExpr e) <*> mapM (pure . Var <=< genName) vs
+  C.StgRhsClosure _ vs _ bs e -> AppExp <$> (Lam <$> mapM genName (vs' ++ bs) <*> visitExpr e) <*> mapM (pure . Var <=< genName) vs' where vs' = Set.toList . Set.fromList $ vs
 
 visitTopBinder :: C.TopBinding -> CG [Def]
 visitTopBinder = \case
