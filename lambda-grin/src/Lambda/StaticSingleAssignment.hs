@@ -22,19 +22,45 @@ singleStaticAssignment e = evalState (anaM build (mempty, e)) (mkNameEnv e) wher
     n' <- deriveNewName n
     pure (Map.insert n n' env', l ++ [(n', (env', b))])
 
+  add :: Env -> (Name, Name) -> Env
+  add env (k,v) = Map.insert k v env
+
+  addMany :: Env -> [(Name, Name)] -> Env
+  addMany = foldl add
+
   build :: (Env, Exp) -> NameM (ExpF (Env, Exp))
   build (env, e) = case e of
+
     -- name shadowing in the bind sequence
-    Let bs e  -> do
+
+    Let bs e -> do
       (newEnv, bs') <- foldM mkName (env,[]) bs
       pure $ LetF bs' (newEnv, e)
 
-    -- name shadowing in the bind sequence
-    LetS bs e  -> do
+    LetS bs e -> do
       (newEnv, bs') <- foldM mkName (env,[]) bs
       pure $ LetSF bs' (newEnv, e)
 
+    LetRec bs e -> do
+      let ns = map fst bs
+      newNs <- mapM deriveNewName ns
+      let newEnv = addMany env $ zip ns newNs
+      pure $ LetRecF [(n, (newEnv, b)) | (n, (_, b)) <- zip newNs bs] (newEnv, e)
+
+    Lam ns e -> do
+      newNs <- mapM deriveNewName ns
+      pure $ LamF newNs (addMany env $ zip ns newNs, e)
+
+    Def n ns e -> do
+      newNs <- mapM deriveNewName ns
+      pure $ DefF n newNs (addMany env $ zip ns newNs, e)
+
+    Alt (NodePat n ns) e -> do
+      newNs <- mapM deriveNewName ns
+      pure $ AltF (NodePat n newNs) (addMany env $ zip ns newNs, e)
+
     -- no name shadowing
+
     _ -> do
       newEnv <- foldM (\m n -> Map.insert n <$> deriveNewName n <*> pure m) env $ (foldLocalNameDefExp (:[]) e :: [Name])
       pure $ (newEnv,) <$> (project $ mapLocalNameExp (subst newEnv) e)
