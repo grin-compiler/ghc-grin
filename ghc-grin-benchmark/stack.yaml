@@ -1,4 +1,4 @@
-resolver: lts-11.12
+resolver: nightly-2018-11-07
 
 packages:
 #- 'app'
@@ -7,7 +7,7 @@ packages:
 #- 'boquist-grin-bench'
 
 extra-path:
-- /home/csaba/haskell/grin-tech/ghc-grin/ghc-8.2.2/inplace/bin
+- /home/csaba/haskell/grin-tech/ghc-grin/ghc-8.6.2/inplace/bin
 
 # Turn on system GHC
 system-ghc: true

@@ -18,3 +18,4 @@ cabal-version:       >=1.10
 executable tsumupto2
   build-depends:  base
   main-is:        tsumupto2.hs
+  ghc-options:    -O2
