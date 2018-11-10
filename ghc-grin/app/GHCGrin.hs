@@ -17,6 +17,7 @@ import Lambda.CodeGen
 import Lambda.Lint
 import Lambda.StaticSingleAssignment
 import Lambda.ClosureConversion
+import Lambda.DeadFunctionElimination
 import Pipeline.Pipeline
 
 import Data.Maybe
@@ -83,10 +84,15 @@ cg_main opts = do
       , PrintGrin ondullblack
       ]
     -}
-  let wholeProgram = eliminateLams [] $ singleStaticAssignment $ Program $ concat defList
+  let wholeProgramBloat = eliminateLams [] $ singleStaticAssignment $ Program $ concat defList
+      wholeProgram      = deadFunctionElimination wholeProgramBloat
   writeFile "whole_program.lambda" . show . plain $ pretty wholeProgram
   lintLambda wholeProgram
   printf "all: %d pruned: %d\n" (length $ inputs opts) (length prunedDeps)
+  let Program defsStripped  = wholeProgram
+      Program defsBloat     = wholeProgramBloat
+  printf "bloat    lambda def count: %d\n" (length defsBloat)
+  printf "stripped lambda def count: %d\n" (length defsStripped)
 
   let pset = Set.fromList prunedDeps
       aset = Set.fromList $ inputs opts

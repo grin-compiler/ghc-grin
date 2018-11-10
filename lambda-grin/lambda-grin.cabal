@@ -25,6 +25,7 @@ library
     Lambda.Lint
     Lambda.StaticSingleAssignment
     Lambda.ClosureConversion
+    Lambda.DeadFunctionElimination
 
   build-depends:
       base
