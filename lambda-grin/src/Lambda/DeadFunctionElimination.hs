@@ -3,25 +3,33 @@ module Lambda.DeadFunctionElimination where
 
 -- NOTE: only after lambda lifting and whole program availablity
 
-import Data.Functor.Foldable
+import Data.Map (Map)
+import qualified Data.Map as Map
 import Data.Set (Set)
 import qualified Data.Set as Set
+import Data.Functor.Foldable as Foldable
 import qualified Data.Foldable
 
 import Lambda.Syntax
 
-liveFunctionSet :: Set Name -> Exp -> Set Name
-liveFunctionSet funNames = cata folder where
-  folder = \case
-    AppF n args | Set.member n funNames -> mconcat $ Set.singleton n : args
-    VarF n      | Set.member n funNames -> Set.singleton n
-    e           -> Data.Foldable.fold e
+deadFunctionElimination :: Program -> Program
+deadFunctionElimination (Program defs) = Program [def | def@(Def name _ _) <- defs, Set.member name liveDefs] where
+  defMap :: Map Name Def
+  defMap = Map.fromList [(name, def) | def@(Def name _ _) <- defs]
 
-deadFunctionElimination :: Exp -> Exp
-deadFunctionElimination prog@(Program defs) =
-  let newProg       = Program [def | def@(Def n _ _) <- defs, Set.member n liveDefNames]
-      allDefNames   = Set.fromList [n | Def n _ _ <- defs]
-      liveDefNames  = liveFunctionSet allDefNames prog <> Set.singleton ":Main.main"
-  in if allDefNames /= liveDefNames
-    then deadFunctionElimination newProg
-    else newProg
+  lookupDef :: Name -> Maybe Def
+  lookupDef name = Map.lookup name defMap
+
+  liveDefs :: Set Name
+  liveDefs = fst $ until (\(live, visited) -> live == visited) visit (Set.singleton ":Main.main", mempty)
+
+  visit :: (Set Name, Set Name) -> (Set Name, Set Name)
+  visit (live, visited) = (mappend live seen, mappend visited toVisit) where
+    toVisit = Set.difference live visited
+    seen    = foldMap (maybe mempty (cata collect) . lookupDef) toVisit
+
+  collect :: ExpF (Set Name) -> Set Name
+  collect = \case
+    AppF name args  | Map.member name defMap  -> mconcat $ Set.singleton name : args
+    VarF name       | Map.member name defMap  -> Set.singleton name
+    exp -> Data.Foldable.fold exp
