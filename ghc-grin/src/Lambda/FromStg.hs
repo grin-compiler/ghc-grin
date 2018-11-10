@@ -1,4 +1,4 @@
-{-# LANGUAGE LambdaCase, TupleSections, StandaloneDeriving, TypeSynonymInstances, FlexibleInstances, RecordWildCards #-}
+{-# LANGUAGE LambdaCase, TupleSections, StandaloneDeriving, TypeSynonymInstances, FlexibleInstances, RecordWildCards, OverloadedStrings #-}
 module Lambda.FromStg (codegenLambda) where
 
 import Data.Set (Set)
@@ -7,6 +7,7 @@ import Control.Monad
 import Control.Monad.State
 import Text.Printf
 import qualified Data.ByteString.Char8 as BS8
+import qualified Data.Text.Short as TS
 
 -- GHC Dump
 import qualified GhcDump_StgAst as C
@@ -19,24 +20,24 @@ type CG = StateT Env IO
 
 data Env
   = Env
-  { moduleName  :: String
-  , dataCons    :: Set String
+  { moduleName  :: Name
+  , dataCons    :: Set Name
   }
 
-convertUnique :: C.Unique -> String
-convertUnique (C.Unique c i) = c : show i
+convertUnique :: C.Unique -> Name
+convertUnique (C.Unique c i) = TS.cons c $ showTS i
 
-genConName :: C.Binder -> CG String
+genConName :: C.Binder -> CG Name
 genConName b = do
-  let name  = BS8.unpack $ C.binderUniqueName b
-      mname = BS8.unpack . C.getModuleName . C.binderModule $ b
+  let name  = packName . BS8.unpack $ C.binderUniqueName b
+      mname = packName . BS8.unpack . C.getModuleName . C.binderModule $ b
   modName <- gets moduleName
   when (modName == mname) $ do
     modify $ \env@Env{..} -> env {dataCons = Set.insert name dataCons}
   pure name
 
-genName :: C.Binder -> CG String
-genName = pure . BS8.unpack . C.binderUniqueName
+genName :: C.Binder -> CG Name
+genName = pure . packName . BS8.unpack . C.binderUniqueName
 
 {-
 TODO - support these:
@@ -57,7 +58,7 @@ convertLit = \case
   C.MachDouble  f -> LFloat $ realToFrac f
   C.MachStr     s -> LString s
   C.MachChar    c -> LChar c
-  lit -> LError . show $ lit
+  lit -> LError . showTS $ lit
 
 visitAlt :: C.Alt -> CG Alt
 visitAlt (C.Alt altCon argIds body) = do
@@ -78,7 +79,7 @@ visitExpr = \case
   C.StgApp fun args     -> App <$> genName fun <*> mapM visitArg args
   C.StgConApp con args  -> Con <$> genConName con <*> mapM visitArg args
   C.StgOpApp op args    -> case op of
-    C.StgPrimOp prim  -> App ("_prim_ghc_" ++ BS8.unpack prim) <$> mapM visitArg args
+    C.StgPrimOp prim  -> App ("_prim_ghc_" <> (packName $ BS8.unpack prim)) <$> mapM visitArg args
     C.StgPrimCallOp _ -> App "_stg_primCall_TODO_" <$> mapM visitArg args -- TODO
     C.StgFCallOp _ _  -> App "_stg_fCall_TODO_" <$> mapM visitArg args -- TODO
 
@@ -117,8 +118,8 @@ visitModule C.Module{..} = concat <$> mapM visitTopBinder moduleTopBindings
 
 codegenLambda :: C.Module -> IO Program
 codegenLambda mod = do
-  let modName   = BS8.unpack . C.getModuleName $ C.moduleName mod
+  let modName   = packName . BS8.unpack . C.getModuleName $ C.moduleName mod
   (defs, Env{..}) <- runStateT (visitModule mod) (Env modName mempty)
   unless (Set.null dataCons) $ do
-    printf "%s data constructors:\n%s" modName  (unlines . map ("  "++) . Set.toList $ dataCons)
+    printf "%s data constructors:\n%s" modName  (unlines . map (("  "++).unpackName) . Set.toList $ dataCons)
   pure . Program $ defs

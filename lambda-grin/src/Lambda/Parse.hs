@@ -1,7 +1,9 @@
-{-# LANGUAGE TupleSections, LambdaCase #-}
+{-# LANGUAGE TupleSections, LambdaCase, OverloadedStrings #-}
 
 module Lambda.Parse (parseLambda) where
 
+import qualified Data.Text.Short as TS
+import Data.Text (Text)
 import qualified Data.ByteString.Char8 as BS8
 import Data.Void
 import Control.Applicative (empty)
@@ -14,7 +16,7 @@ import Lambda.Syntax
 
 keywords = Set.fromList ["case","of","let","letrec","letS", "#True", "#False", "_"]
 
-type Parser = Parsec Void String
+type Parser = Parsec Void Text
 
 lineComment :: Parser ()
 lineComment = L.skipLineComment "--"
@@ -26,7 +28,7 @@ sc :: Parser ()
 sc = L.space (void spaceChar) lineComment blockComment
 
 sc' :: Parser ()
-sc' = L.space (void $ oneOf " \t") lineComment blockComment
+sc' = L.space (void $ oneOf (" \t" :: String)) lineComment blockComment
 
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc'
@@ -38,13 +40,13 @@ kw w = lexeme $ string w
 
 op w = L.symbol sc' w
 
-var :: Parser String
-var = try $ lexeme ((:) <$> lowerChar <*> many (alphaNumChar <|> oneOf "'_.:!@{}$-")) >>= \x -> case Set.member x keywords of
-  True -> fail $ "keyword: " ++ x
+var :: Parser Name
+var = try $ lexeme ((\c s -> TS.cons c $ packName s) <$> lowerChar <*> many (alphaNumChar <|> oneOf ("'_.:!@{}$-" :: String))) >>= \x -> case Set.member x keywords of
+  True -> fail $ "keyword: " ++ unpackName x
   False -> pure x
 
-con :: Parser String
-con = lexeme $ some (alphaNumChar)
+con :: Parser Name
+con = lexeme $ packName <$> some (alphaNumChar)
 
 integer = lexeme L.decimal
 signedInteger = L.signed sc' integer
@@ -75,7 +77,7 @@ atom = Lit <$> literal <|>
        Var <$> var
 
 primNameOrDefName :: Parser Name
-primNameOrDefName = ('_':) <$ char '_' <*> var <|> var
+primNameOrDefName = ("_"<>) <$ char '_' <*> var <|> var
 
 alternative :: Pos -> Parser Alt
 alternative i = Alt <$> try (L.indentGuard sc EQ i *> altPat) <* op "->" <*> (L.indentGuard sc GT i >>= expr)
@@ -100,5 +102,5 @@ literal = (try $ LFloat . realToFrac <$> signedFloat) <|>
 lambdaModule :: Parser Program
 lambdaModule = Program <$> some def <* sc <* eof
 
-parseLambda :: String -> String -> Either (ParseError Char Void) Program
+parseLambda :: String -> Text -> Either (ParseError Char Void) Program
 parseLambda filename content = runParser lambdaModule filename content

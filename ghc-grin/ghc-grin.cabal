@@ -22,6 +22,7 @@ library
       base
     , containers
     , mtl
+    , text-short
     , bytestring
     , lambda-grin
     , ghc-dump-core

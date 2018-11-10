@@ -1,4 +1,4 @@
-{-# LANGUAGE LambdaCase, TupleSections, RecordWildCards #-}
+{-# LANGUAGE LambdaCase, TupleSections, RecordWildCards, OverloadedStrings #-}
 module Lambda.CodeGen (codegenGrin) where
 
 import Text.Printf
@@ -26,7 +26,7 @@ data Env
 type CG = State Env
 
 uniq :: Name -> CG Name
-uniq name = state (\env@Env{..} -> (printf "%s.%d" name _counter, env {_counter = succ _counter}))
+uniq name = state (\env@Env{..} -> (name <> "." <> showTS  _counter, env {_counter = succ _counter}))
 
 arity :: Map Name Int -> Name -> Maybe Int
 arity = flip Map.lookup

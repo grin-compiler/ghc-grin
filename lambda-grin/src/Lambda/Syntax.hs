@@ -1,7 +1,12 @@
 {-# LANGUAGE LambdaCase, TupleSections #-}
 {-# LANGUAGE TemplateHaskell, KindSignatures, TypeFamilies #-}
 {-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveGeneric #-}
-module Lambda.Syntax where
+module Lambda.Syntax
+  ( module Lambda.Syntax
+  , Grin.packName
+  , Grin.unpackName
+  , Grin.showTS
+  ) where
 
 import GHC.Generics
 import Data.Int
@@ -10,8 +15,10 @@ import Data.ByteString (ByteString)
 import Data.Functor.Foldable as Foldable
 import Data.Functor.Foldable.TH
 import Data.Binary
+import Data.Text.Short (ShortText)
+import qualified Grin.Grin as Grin
 
-type Name = String
+type Name = Grin.Name
 
 type Atom = Exp
 type Alt = Exp
@@ -47,8 +54,8 @@ data Lit
   | LChar   Char
   | LString ByteString
   -- special
-  | LError  String  -- marks an error
-  | LDummy  String  -- should be ignored
+  | LError  ShortText  -- marks an error
+  | LDummy  ShortText  -- should be ignored
   deriving (Generic, Eq, Ord, Show)
 
 data Pat

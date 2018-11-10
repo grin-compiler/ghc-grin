@@ -1,4 +1,4 @@
-{-# LANGUAGE LambdaCase, RecordWildCards #-}
+{-# LANGUAGE LambdaCase, RecordWildCards, OverloadedStrings #-}
 module Lambda.Lint where
 
 import Text.Printf
@@ -20,7 +20,7 @@ import Lambda.Util
 lintLambda :: Program -> IO ()
 lintLambda prg = do
   let Env{..} = test prg
-      tab = ("  "++)
+      tab = ("  "++) . unpackName
   --printf "node pats:\n%s" . unlines . map tab $ Set.toList envCon
   printf "unknown:\n%s" . unlines . map tab $ Set.toList (Set.difference envUse $ Map.keysSet envDef)
   printf "errors:\n%s" . unlines . map tab $ Set.toList envErr
@@ -30,10 +30,10 @@ lintLambda prg = do
 
 data Env
   = Env
-  { envDef  :: Map String Int
-  , envUse  :: Set String
-  , envCon  :: Set String
-  , envErr  :: Set String
+  { envDef  :: Map Name Int
+  , envUse  :: Set Name
+  , envCon  :: Set Name
+  , envErr  :: Set Name
   }
 
 instance Semigroup  Env where (Env a1 b1 c1 d1) <> (Env a2 b2 c2 d2) = Env (Map.unionWith (+) a1 a2) (b1 <> b2) (c1 <> c2) (d1 <> d2)
@@ -60,7 +60,7 @@ test = cata folder where
     LetSF binds e     -> mconcat [env {envDef = addDef name} <> a | (name, a) <- binds] <> e
     LetF binds e      -> mconcat [env {envDef = addDef name} <> a | (name, a) <- binds] <> e
     LamF names e      -> env {envDef = addDefs names} <> e
-    AltF (NodePat con args) e -> env {envDef = addDefs args, envCon = Set.singleton $ show (length args) ++ "-" ++ con} <> e
+    AltF (NodePat con args) e -> env {envDef = addDefs args, envCon = Set.singleton $ showTS (length args) <> "-" <> con} <> e
     -- err
     LitF (LError err) -> env {envErr = Set.singleton err}
     e -> Data.Foldable.fold e
