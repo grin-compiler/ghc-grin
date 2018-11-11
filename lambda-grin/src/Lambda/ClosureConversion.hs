@@ -1,8 +1,7 @@
-{-# LANGUAGE LambdaCase, OverloadedStrings #-}
+{-# LANGUAGE LambdaCase, OverloadedStrings, RecordWildCards #-}
 module Lambda.ClosureConversion where
 
 import Control.Monad.State
-import Control.Monad.Writer
 import Data.Functor.Foldable as Foldable
 import qualified Data.Foldable
 
@@ -15,8 +14,6 @@ import Transformations.Names hiding (mkNameEnv)
 import Lambda.Syntax
 import Lambda.Util
 
-
-type ClosM = WriterT [Def] NameM
 
 without :: Eq a => [a] -> [a] -> [a]
 without = foldr (filter . (/=)) -- Like \\ but removes all occurrences
@@ -40,12 +37,34 @@ closConv globals = cata folder where
                        in Lam (vars ++ vs) e `applyTo` vars
   folder e = embed e
 
+data Env
+  = Env
+  { envClosures       :: [Def]
+  , envCurrentDefName :: Name
+  }
+
+type ClosM = StateT Env NameM
+
+setDefName :: Name -> ClosM ()
+setDefName n = modify' $ \env -> env {envCurrentDefName = n}
+
+addDef :: Def -> ClosM ()
+addDef def = modify' $ \env@Env{..} -> env {envClosures = def : envClosures}
+
 liftLam :: Exp -> ClosM Exp
-liftLam = cataM folder where
+liftLam = hyloM folder builder where
+
+  builder = \case
+    e@(Def n _ _) -> do
+      setDefName n
+      pure $ project e
+    e -> pure $ project e
+
   folder = \case
     LamF vs e -> do
-      fresh <- lift $ deriveNewName "closure" -- TODO: better name
-      tell [Def fresh vs e]
+      defName <- gets envCurrentDefName
+      fresh <- lift $ deriveNewName $ defName <> ".closure"
+      addDef $ Def fresh vs e
       pure $ Var fresh
 
     -- smash
@@ -64,6 +83,7 @@ smash = cata folder where
     e                   -> embed e
 
 eliminateLams :: [Name] -> Program -> Program
-eliminateLams globals prg@(Program defs) = Program $ defs' ++ newDefs where
-  (Program defs', newDefs) = evalState (runWriterT . liftLam{- . smash . closConv (defNames ++ globals)-} $ prg) (mkNameEnv prg)
+eliminateLams globals prg@(Program defs) = Program $ defs' ++ envClosures where
+  (Program defs', Env{..}) = evalState (runStateT (liftLam{- . smash . closConv (defNames ++ globals)-} $ prg) emptyEnv) (mkNameEnv prg)
   defNames = [n | Def n _ _ <- defs]
+  emptyEnv = Env [] ""
