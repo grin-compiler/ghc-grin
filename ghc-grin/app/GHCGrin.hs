@@ -84,8 +84,9 @@ cg_main opts = do
       , PrintGrin ondullblack
       ]
     -}
-  let wholeProgramBloat = eliminateLams [] $ singleStaticAssignment $ Program $ concat defList
-      wholeProgram      = deadFunctionElimination wholeProgramBloat
+  let sortDefs (Program defs) = Program . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
+      wholeProgramBloat = eliminateLams [] $ singleStaticAssignment $ Program $ concat defList
+      wholeProgram      = sortDefs $ deadFunctionElimination wholeProgramBloat
   writeFile "whole_program.lambda" . show . plain $ pretty wholeProgram
   lintLambda wholeProgram
   printf "all: %d pruned: %d\n" (length $ inputs opts) (length prunedDeps)
