@@ -1729,7 +1729,7 @@ linkBinary' staticLink dflags o_files dep_packages = do
     -- compile / link GRIN program
     --when (ghcLink dflags == LinkBinary && staticLink == False) $ do
     unless staticLink $ do
-      runGrin dflags $ map (SysTools.FileOption "") stgbins
+      runGrin dflags $ map (SysTools.FileOption "") stgbins ++ [SysTools.Option "-o", SysTools.FileOption "" output_fn]
 
     let pkg_lib_path_opts = concatMap get_pkg_lib_path_opts pkg_lib_paths
         get_pkg_lib_path_opts l
