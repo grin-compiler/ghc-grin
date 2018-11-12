@@ -62,7 +62,7 @@ cg_main opts = do
   r <- getResourceLimit ResourceOpenFiles
   print r
   let ResourceLimits (ResourceLimit minNum) (ResourceLimit maxNum) = r
-  setResourceLimit ResourceOpenFiles $ ResourceLimits (ResourceLimit $ max minNum $ min (fromIntegral $ inputLen + minNum) maxNum) (ResourceLimit maxNum)
+  setResourceLimit ResourceOpenFiles $ ResourceLimits (ResourceLimit $ max minNum $ min (fromIntegral inputLen + minNum) maxNum) (ResourceLimit maxNum)
   -- filter dependenies only
   depList <- mapM readDumpInfo (inputs opts)
   let fnameMap  = Map.fromList $ zip (map fst depList) (inputs opts)
