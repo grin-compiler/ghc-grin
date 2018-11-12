@@ -1,3 +1,4 @@
+{-# LANGUAGE StandaloneDeriving #-}
 module Main where
 
 import Text.Printf
@@ -27,9 +28,12 @@ import qualified Data.Map as Map
 import qualified Data.ByteString.Char8 as BS8
 
 import qualified Data.ByteString.Lazy as BSL
+import qualified Data.ByteString as BS
 import Data.Binary
 
 import Text.PrettyPrint.ANSI.Leijen (ondullblack, putDoc, plain, pretty)
+
+import System.Posix.Resource
 
 data Opts
   = Opts
@@ -48,9 +52,17 @@ getOpts = do xs <- getArgs
     process opts (x:xs) = process (opts { inputs = x:inputs opts }) xs
     process opts [] = opts
 
+deriving instance Show ResourceLimit
+deriving instance Show ResourceLimits
 
 cg_main :: Opts -> IO ()
 cg_main opts = do
+  let inputLen = length $ inputs opts
+  printf "input length: %d\n" inputLen
+  r <- getResourceLimit ResourceOpenFiles
+  print r
+  let ResourceLimits (ResourceLimit minNum) (ResourceLimit maxNum) = r
+  setResourceLimit ResourceOpenFiles $ ResourceLimits (ResourceLimit $ max minNum $ min (fromIntegral $ inputLen + minNum) maxNum) (ResourceLimit maxNum)
   -- filter dependenies only
   depList <- mapM readDumpInfo (inputs opts)
   let fnameMap  = Map.fromList $ zip (map fst depList) (inputs opts)
@@ -87,7 +99,8 @@ cg_main opts = do
   let sortDefs (Program defs) = Program . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
       wholeProgramBloat = eliminateLams [] $ singleStaticAssignment $ Program $ concat defList
       wholeProgram      = sortDefs $ deadFunctionElimination wholeProgramBloat
-  writeFile "whole_program.lambda" . show . plain $ pretty wholeProgram
+      output_fn         = output opts
+  writeFile (output_fn ++ ".lambda") . show . plain $ pretty wholeProgram
   lintLambda wholeProgram
   printf "all: %d pruned: %d\n" (length $ inputs opts) (length prunedDeps)
   let Program defsStripped  = wholeProgram
@@ -99,10 +112,10 @@ cg_main opts = do
       aset = Set.fromList $ inputs opts
   printf "dead modules:\n%s" (unlines $ Set.toList $ aset Set.\\ pset)
 
-  BSL.writeFile "whole_program.lambdabin" $ encode wholeProgram
+  BSL.writeFile (output_fn ++ ".lambdabin") $ encode wholeProgram
 
   let lambdaGrin = codegenGrin wholeProgram
-  writeFile "whole_program.grin" $ show $ plain $ pretty lambdaGrin
+  writeFile (output_fn ++ ".grin") $ show $ plain $ pretty lambdaGrin
 
 main :: IO ()
 main = do opts <- getOpts

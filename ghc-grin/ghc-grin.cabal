@@ -42,6 +42,7 @@ executable ghc-grin
                      , mtl
                      , filepath
                      , containers
+                     , unix
                      , ansi-wl-pprint
                      , binary
                      , bytestring
