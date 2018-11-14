@@ -102,3 +102,13 @@ data Pat
   | LitPat  Lit
   | DefaultPat
 -}
+
+expSize :: Exp -> Int
+expSize = cata folder where
+  folder = \case
+    VarF {} -> 1
+    LitF {} -> 1
+    e       -> succ $ Data.Foldable.sum e
+
+programHistogram :: Program -> Map Int Int
+programHistogram (Program defs) = Map.unionsWith (+) [Map.singleton (expSize d) 1 | d <- defs]

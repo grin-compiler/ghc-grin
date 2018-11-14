@@ -82,7 +82,6 @@ cg_main opts = do
     program@(Program defs) <- codegenLambda stgModule
 
     let lambdaName = replaceExtension fname "lambda"
-    putStrLn lambdaName
     writeFile lambdaName . show . plain $ pretty program
 
     pure defs
@@ -105,17 +104,23 @@ cg_main opts = do
   printf "all: %d pruned: %d\n" (length $ inputs opts) (length prunedDeps)
   let Program defsStripped  = wholeProgram
       Program defsBloat     = wholeProgramBloat
+      conDefCount           = length [() | Def _ _ (Con{}) <- defsStripped]
   printf "bloat    lambda def count: %d\n" (length defsBloat)
   printf "stripped lambda def count: %d\n" (length defsStripped)
+  printf "stripped lambda con def count: %d\n" conDefCount
+  let histogram = programHistogram wholeProgram
+  printf "program ast size: %d\n" $ sum $ map (uncurry (*)) $ Map.toList histogram
+  printf "def size histogram (size: count)\n%s" $ unlines [printf "  % 5d: % 5d" size count| (size, count) <- Map.toList histogram]
 
   let pset = Set.fromList prunedDeps
       aset = Set.fromList $ inputs opts
   printf "dead modules:\n%s" (unlines $ Set.toList $ aset Set.\\ pset)
 
   BSL.writeFile (output_fn ++ ".lambdabin") $ encode wholeProgram
-
+  {-
   let lambdaGrin = codegenGrin wholeProgram
   writeFile (output_fn ++ ".grin") $ show $ plain $ pretty lambdaGrin
+  -}
 
 main :: IO ()
 main = do opts <- getOpts
