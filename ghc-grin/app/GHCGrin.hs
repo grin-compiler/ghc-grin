@@ -8,7 +8,7 @@ import System.FilePath
 import System.Environment
 import System.Exit
 
-import GhcDump_StgAst (ModuleName(..))
+import GhcDump_StgAst (ModuleName(..), moduleName)
 import GhcDump.StgUtil
 
 import Lambda.FromStg
@@ -66,6 +66,7 @@ cg_main opts = do
   -- filter dependenies only
   depList <- mapM readDumpInfo (inputs opts)
   let fnameMap  = Map.fromList $ zip (map fst depList) (inputs opts)
+      mnameMap  = Map.fromList $ zip (inputs opts) (map fst depList)
       depMap    = Map.fromList depList
       calcDep s n
         | Set.member n s = s
@@ -75,9 +76,10 @@ cg_main opts = do
       modMain = ModuleName $ BS8.pack "Main"
       prunedDeps = catMaybes [Map.lookup m fnameMap | m <- Set.toList $ calcDep mempty modMain]
 
+  putStrLn $ "dependencies:\n" ++ unlines ["  " ++ (BS8.unpack . getModuleName $! mnameMap Map.! fname) | fname <- prunedDeps]
+
   -- compile pruned program
   defList <- forM prunedDeps $ \fname -> do
-    putStrLn $ "loading " ++ fname
     stgModule <- readDump fname
     program@(Program defs) <- codegenLambda stgModule
 
@@ -114,7 +116,7 @@ cg_main opts = do
 
   let pset = Set.fromList prunedDeps
       aset = Set.fromList $ inputs opts
-  printf "dead modules:\n%s" (unlines $ Set.toList $ aset Set.\\ pset)
+  --printf "dead modules:\n%s" (unlines $ Set.toList $ aset Set.\\ pset)
 
   BSL.writeFile (output_fn ++ ".lambdabin") $ encode wholeProgram
   {-
