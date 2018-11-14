@@ -10,6 +10,6 @@ ln -f -s $GRINGHCPATH/ghc-stage2 $GRINGHCPATH/ghc
 
 stack --stack-root `pwd`/.stack-root clean
 
-rm -fr .stack-work
+#rm -fr .stack-work
 
 time stack --stack-root `pwd`/.stack-root build
