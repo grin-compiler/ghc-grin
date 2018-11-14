@@ -144,7 +144,6 @@ type Rhs  = Rhs' Binder Binder
 
 data Rhs' bndr occ
   = StgRhsClosure
-        BinderInfo           -- Info about how this binder is used (see below)
         [occ]                   -- non-global free vars; a list, rather than
                                 -- a set, because order is important
         !UpdateFlag             -- ReEntrant | Updatable | SingleEntry
@@ -157,12 +156,7 @@ data Rhs' bndr occ
         [Arg' occ]  -- Args
   deriving (Eq, Ord, Generic, Show)
 
-data BinderInfo
-  = NoStgBinderInfo
-  | SatCallsOnly        -- All occurrences are *saturated* *function* calls
-                        -- This means we don't need to build an info table and
-                        -- slow entry code for the thing
-                        -- Thunks never get this value
+data UpdateFlag = ReEntrant | Updatable | SingleEntry
   deriving (Eq, Ord, Generic, Show)
 
 type SAlt = Alt' SBinder BinderId
@@ -185,11 +179,23 @@ data AltCon' occ
   | AltDefault
   deriving (Eq, Ord, Generic, Show)
 
-data UpdateFlag = ReEntrant | Updatable | SingleEntry
+data Safety = PlaySafe | PlayInterruptible | PlayRisky
+  deriving (Eq, Ord, Generic, Show)
+
+data CCallConv = CCallConv | CApiConv | StdCallConv | PrimCallConv | JavaScriptCallConv
+  deriving (Eq, Ord, Generic, Show)
+
+data CCallTarget
+  = StaticTarget BS8.ByteString
+  | DynamicTarget
   deriving (Eq, Ord, Generic, Show)
 
 data ForeignCall
-  = ForeignCall -- TODO
+  = ForeignCall
+  { foreignCTarget  :: CCallTarget
+  , foreignCConv    :: CCallConv
+  , foreignCSafety  :: Safety
+  }
   deriving (Eq, Ord, Generic, Show)
 
 data PrimCall = PrimCall -- T_Text T_Text
@@ -198,10 +204,7 @@ data PrimCall = PrimCall -- T_Text T_Text
 data StgOp
   = StgPrimOp     T_Text
   | StgPrimCallOp PrimCall
-  | StgFCallOp    ForeignCall Unique
-        -- The Unique is occasionally needed by the C pretty-printer
-        -- (which lacks a unique supply), notably when generating a
-        -- typedef for foreign-export-dynamic
+  | StgFCallOp    ForeignCall
   deriving (Eq, Ord, Generic, Show)
 
 type Module  = Module' Binder Binder
@@ -224,9 +227,11 @@ instance Binary Binder
 instance Binary SBinder
 instance Binary LitNumType
 instance Binary Lit
+instance Binary CCallTarget
+instance Binary CCallConv
+instance Binary Safety
 instance Binary ForeignCall
 instance Binary PrimCall
-instance Binary BinderInfo
 instance Binary UpdateFlag
 instance Binary StgOp
 instance (Binary occ) => Binary (AltCon' occ)

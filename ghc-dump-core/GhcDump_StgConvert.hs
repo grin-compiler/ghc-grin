@@ -5,18 +5,19 @@ import GhcPrelude
 
 import qualified Data.ByteString.Char8 as BS8
 
-import qualified CoreSyn    as GHC
-import qualified DataCon    as GHC
-import qualified FastString as GHC
-import qualified Var        as GHC
-import qualified Id         as GHC
-import qualified IdInfo     as GHC
-import qualified Literal    as GHC
-import qualified Module     as GHC
-import qualified Name       as GHC
-import qualified PrimOp     as GHC
-import qualified StgSyn     as GHC
-import qualified Unique     as GHC
+import qualified CoreSyn      as GHC
+import qualified DataCon      as GHC
+import qualified FastString   as GHC
+import qualified ForeignCall  as GHC
+import qualified Id           as GHC
+import qualified IdInfo       as GHC
+import qualified Literal      as GHC
+import qualified Module       as GHC
+import qualified Name         as GHC
+import qualified PrimOp       as GHC
+import qualified StgSyn       as GHC
+import qualified Unique       as GHC
+import qualified Var          as GHC
 
 import Control.Monad
 import Control.Monad.Trans.State.Strict
@@ -108,21 +109,38 @@ cvtDataCon x = do
   when new $ modify' $ \m@Env{..} -> m {envDataCons = IntMap.insert key name envDataCons}
   pure . BinderId . cvtUnique . GHC.getUnique $ x
 
+cvtCCallTarget :: GHC.CCallTarget -> CCallTarget
+cvtCCallTarget = \case
+  GHC.StaticTarget _ t _ _  -> StaticTarget $ fastStringToText t
+  GHC.DynamicTarget         -> DynamicTarget
+
+cvtCCallConv :: GHC.CCallConv -> CCallConv
+cvtCCallConv = \case
+  GHC.CCallConv           -> CCallConv
+  GHC.CApiConv            -> CApiConv
+  GHC.StdCallConv         -> StdCallConv
+  GHC.PrimCallConv        -> PrimCallConv
+  GHC.JavaScriptCallConv  -> JavaScriptCallConv
+
+cvtSafety :: GHC.Safety -> Safety
+cvtSafety = \case
+  GHC.PlaySafe          -> PlaySafe
+  GHC.PlayInterruptible -> PlayInterruptible
+  GHC.PlayRisky         -> PlayRisky
+
+cvtForeignCall :: GHC.ForeignCall -> ForeignCall
+cvtForeignCall (GHC.CCall (GHC.CCallSpec t c s)) = ForeignCall (cvtCCallTarget t) (cvtCCallConv c) (cvtSafety s)
+
 cvtOp :: GHC.StgOp -> StgOp
 cvtOp = \case
   GHC.StgPrimOp o     -> StgPrimOp (occNameToText $ GHC.primOpOcc o)
   GHC.StgPrimCallOp c -> StgPrimCallOp PrimCall -- TODO
-  GHC.StgFCallOp f u  -> StgFCallOp ForeignCall (cvtUnique u) -- TODO
+  GHC.StgFCallOp f _  -> StgFCallOp $ cvtForeignCall f
 
 cvtArg :: GHC.StgArg -> M SArg
 cvtArg = \case
   GHC.StgVarArg o -> StgVarArg <$> cvtVar o
   GHC.StgLitArg l -> pure $ StgLitArg (cvtLit l)
-
-cvtBinderInfo :: GHC.StgBinderInfo -> BinderInfo
-cvtBinderInfo i
-  | GHC.satCallsOnly i  = SatCallsOnly
-  | otherwise           = NoStgBinderInfo
 
 cvtUpdateFlag :: GHC.UpdateFlag -> UpdateFlag
 cvtUpdateFlag = \case
@@ -153,7 +171,7 @@ cvtExpr = \case
 
 cvtRhs :: GHC.StgRhs -> M SRhs
 cvtRhs = \case
-  GHC.StgRhsClosure _ b fs u bs e -> StgRhsClosure (cvtBinderInfo b) <$> mapM cvtVar fs <*> pure (cvtUpdateFlag u) <*> pure (map cvtBinder bs) <*> cvtExpr e
+  GHC.StgRhsClosure _ b fs u bs e -> StgRhsClosure <$> mapM cvtVar fs <*> pure (cvtUpdateFlag u) <*> pure (map cvtBinder bs) <*> cvtExpr e
   GHC.StgRhsCon _ dc args         -> StgRhsCon <$> cvtDataCon dc <*> mapM cvtArg args
 
 cvtBind :: GHC.StgBinding -> M SBinding

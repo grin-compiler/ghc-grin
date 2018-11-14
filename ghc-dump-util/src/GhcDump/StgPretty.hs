@@ -85,11 +85,23 @@ pprArg = \case
   StgVarArg o -> pprBinder o
   StgLitArg l -> pretty l
 
+instance Pretty Safety where
+  pretty = text . show
+
+instance Pretty CCallConv where
+  pretty = text . show
+
+instance Pretty CCallTarget where
+  pretty = text . show
+
+instance Pretty ForeignCall where
+  pretty ForeignCall{..} = braces $ hsep [pretty foreignCSafety, pretty foreignCConv, pretty foreignCTarget]
+
 pprOp :: StgOp -> Doc
 pprOp = \case
   StgPrimOp op    -> text "_stg_prim_" <> pretty op
   StgPrimCallOp _ -> text "_stg_prim_call"
-  StgFCallOp _ _  -> text "_stg_foreign_call"
+  StgFCallOp f    -> text "_stg_foreign_call" <+> pretty f
 
 pprExpr' :: Bool -> Expr -> Doc
 pprExpr' parens exp = case exp of
@@ -114,9 +126,9 @@ instance Pretty Expr where
 
 pprRhs :: Rhs -> Doc
 pprRhs = \case
-  StgRhsClosure b vs u bs e -> text "closure" <+> parens (sep $ text "F:" : map pprBinder vs) <+> parens (sep $ text "B:" : map pprBinder bs) <+>
-                                braces (line <> pprExpr e)
-  StgRhsCon d vs            -> pretty d <+> (sep $ map (pprArg) vs)
+  StgRhsClosure vs u bs e -> text "closure" <+> parens (sep $ text "F:" : map pprBinder vs) <+> parens (sep $ text "B:" : map pprBinder bs) <+>
+                              braces (line <> pprExpr e)
+  StgRhsCon d vs          -> pretty d <+> (sep $ map (pprArg) vs)
 
 pprBinding :: Binding -> Doc
 pprBinding = \case

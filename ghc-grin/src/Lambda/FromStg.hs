@@ -11,6 +11,7 @@ import qualified Data.Text.Short as TS
 
 -- GHC Dump
 import qualified GhcDump_StgAst as C
+import qualified GhcDump.StgPretty as P
 
 -- Lambda
 import Lambda.Syntax (Name)
@@ -80,8 +81,8 @@ visitExpr = \case
   C.StgConApp con args  -> Con <$> genConName con <*> mapM visitArg args
   C.StgOpApp op args    -> case op of
     C.StgPrimOp prim  -> App ("_prim_ghc_" <> (packName $ BS8.unpack prim)) <$> mapM visitArg args
-    C.StgPrimCallOp _ -> App "_stg_primCall_TODO_" <$> mapM visitArg args -- TODO
-    C.StgFCallOp _ _  -> App "_stg_fCall_TODO_" <$> mapM visitArg args -- TODO
+    C.StgPrimCallOp _ -> App "_prim__stg_primCall_TODO_" <$> mapM visitArg args -- TODO
+    C.StgFCallOp f    -> App ("_prim__stg_foreign_call " <> (TS.pack . show . P.pretty $ f)) <$> mapM visitArg args -- TODO
 
   C.StgLam bs expr      -> Lam <$> mapM genName bs <*> visitExpr expr
   C.StgCase expr result alts  -> do
@@ -103,9 +104,9 @@ visitExpr = \case
 
 visitRhs :: C.Rhs -> CG Exp
 visitRhs = \case
-  C.StgRhsCon con args        -> Con <$> genConName con <*> mapM visitArg args
-  C.StgRhsClosure _ [] _ bs e -> Lam <$> mapM genName bs <*> visitExpr e
-  C.StgRhsClosure _ vs _ bs e -> AppExp <$> (Lam <$> mapM genName (vs' ++ bs) <*> visitExpr e) <*> mapM (pure . Var <=< genName) vs' where vs' = Set.toList . Set.fromList $ vs
+  C.StgRhsCon con args      -> Con <$> genConName con <*> mapM visitArg args
+  C.StgRhsClosure [] _ bs e -> Lam <$> mapM genName bs <*> visitExpr e
+  C.StgRhsClosure vs _ bs e -> AppExp <$> (Lam <$> mapM genName (vs' ++ bs) <*> visitExpr e) <*> mapM (pure . Var <=< genName) vs' where vs' = Set.toList . Set.fromList $ vs
 
 visitTopBinder :: C.TopBinding -> CG [Def]
 visitTopBinder = \case
@@ -120,6 +121,8 @@ codegenLambda :: C.Module -> IO Program
 codegenLambda mod = do
   let modName   = packName . BS8.unpack . C.getModuleName $ C.moduleName mod
   (defs, Env{..}) <- runStateT (visitModule mod) (Env modName mempty)
+  {-
   unless (Set.null dataCons) $ do
     printf "%s data constructors:\n%s" modName  (unlines . map (("  "++).unpackName) . Set.toList $ dataCons)
+  -}
   pure . Program $ defs
