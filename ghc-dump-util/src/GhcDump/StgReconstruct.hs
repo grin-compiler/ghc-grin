@@ -107,7 +107,7 @@ reconExpr bm = \case
                              bm'  = insertBinder b' bm
                          in StgCase (reconExpr bm x) b' (map (reconAlt bm') alts)
   StgApp f args       -> StgApp (getBinder bm f) (map (reconArg bm) args)
-  StgOpApp op args    -> StgOpApp op (map (reconArg bm) args)
+  StgOpApp op args ty -> StgOpApp op (map (reconArg bm) args) ty
   StgConApp dc args   -> StgConApp (getBinder bm dc) (map (reconArg bm) args)
   StgLet b e          -> let (bm', b') = reconBinding bm b
                          in StgLet b' (reconExpr bm' e)

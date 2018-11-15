@@ -111,8 +111,8 @@ cg_main opts = do
   printf "stripped lambda def count: %d\n" (length defsStripped)
   printf "stripped lambda con def count: %d\n" conDefCount
   let histogram = programHistogram wholeProgram
-  printf "program ast size: %d\n" $ sum $ map (uncurry (*)) $ Map.toList histogram
-  printf "def size histogram (size: count)\n%s" $ unlines [printf "  % 5d: % 5d" size count| (size, count) <- Map.toList histogram]
+  printf "program ast size: %d\n" $ sum [s * i | (s, (i,_)) <- Map.toList histogram]
+  printf "def size histogram (size: count, sample def name)\n%s" $ unlines [printf "  % 7d: % 7d     %s" size count name | (size, (count, name)) <- Map.toList histogram]
 
   let pset = Set.fromList prunedDeps
       aset = Set.fromList $ inputs opts

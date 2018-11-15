@@ -110,5 +110,5 @@ expSize = cata folder where
     LitF {} -> 1
     e       -> succ $ Data.Foldable.sum e
 
-programHistogram :: Program -> Map Int Int
-programHistogram (Program defs) = Map.unionsWith (+) [Map.singleton (expSize d) 1 | d <- defs]
+programHistogram :: Program -> Map Int (Int, Name)
+programHistogram (Program defs) = Map.unionsWith (\(i1,n1) (i2,n2) -> (i1 + i2, n1)) [Map.singleton (expSize d) (1, n) | d@(Def n _ _) <- defs]

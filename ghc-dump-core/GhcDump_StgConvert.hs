@@ -7,6 +7,7 @@ import qualified Data.ByteString.Char8 as BS8
 
 import qualified CoreSyn      as GHC
 import qualified DataCon      as GHC
+import qualified DynFlags     as GHC
 import qualified FastString   as GHC
 import qualified ForeignCall  as GHC
 import qualified Id           as GHC
@@ -14,6 +15,7 @@ import qualified IdInfo       as GHC
 import qualified Literal      as GHC
 import qualified Module       as GHC
 import qualified Name         as GHC
+import qualified Outputable   as GHC
 import qualified PrimOp       as GHC
 import qualified StgSyn       as GHC
 import qualified Unique       as GHC
@@ -37,6 +39,9 @@ fastStringToText = GHC.fastStringToByteString
 
 occNameToText :: GHC.OccName -> T_Text
 occNameToText = GHC.fastStringToByteString . GHC.occNameFS
+
+cvtSDoc :: GHC.SDoc -> T_Text
+cvtSDoc = BS8.pack . GHC.showSDoc GHC.unsafeGlobalDynFlags
 
 cvtModuleName :: GHC.ModuleName -> ModuleName
 cvtModuleName = ModuleName . fastStringToText . GHC.moduleNameFS
@@ -162,7 +167,7 @@ cvtExpr = \case
   GHC.StgApp f ps         -> StgApp <$> cvtVar f <*> mapM cvtArg ps
   GHC.StgLit l            -> pure $ StgLit (cvtLit l)
   GHC.StgConApp dc ps _   -> StgConApp <$> cvtDataCon dc <*> mapM cvtArg ps
-  GHC.StgOpApp o ps _     -> StgOpApp (cvtOp o) <$> mapM cvtArg ps
+  GHC.StgOpApp o ps t     -> StgOpApp (cvtOp o) <$> mapM cvtArg ps <*> pure (cvtSDoc $ GHC.ppr t)
   GHC.StgLam bs e         -> StgLam (map cvtBinder $ NonEmpty.toList bs) <$> cvtExpr e
   GHC.StgCase e b _ al    -> StgCase <$> cvtExpr e <*> pure (cvtBinder b) <*> mapM cvtAlt al
   GHC.StgLet b e          -> StgLet <$> cvtBind b <*> cvtExpr e

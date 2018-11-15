@@ -113,8 +113,9 @@ data Expr' bndr occ
   | StgConApp   occ        -- DataCon
                 [Arg' occ] -- Saturated
 
-  | StgOpApp    StgOp           -- Primitive op or foreign call
+  | StgOpApp    StgOp      -- Primitive op or foreign call
                 [Arg' occ] -- Saturated.
+                T_Text     -- TODO: serialize type properly
 
   | StgLam
         [bndr]

@@ -113,7 +113,7 @@ pprExpr' parens exp = case exp of
                                , "}"
                                ]
   StgApp f args       -> maybeParens parens $ hang' (pprBinder f) 2 (sep $ map (pprArg) args)
-  StgOpApp op args    -> maybeParens parens $ hang' (pprOp op) 2 (sep $ map (pprArg) args)
+  StgOpApp op args ty -> maybeParens parens $ hang' (pprOp op <+> braces (pretty ty)) 2 (sep $ map (pprArg) args)
   StgConApp dc args   -> maybeParens parens $ hang' (pretty dc) 2 (sep $ map (pprArg) args)
   StgLam b x          -> maybeParens parens $ hang' ("\\" <+> sep (map (pprBinder) b) <+> smallRArrow) 2 (pprExpr' False x)
   StgLet b e          -> maybeParens parens $ "let" <+> (align $ pprBinding b) <$$> "in" <+> align (pprExpr' False e)

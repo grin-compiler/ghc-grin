@@ -12,6 +12,7 @@ import qualified Data.Text.Short as TS
 -- GHC Dump
 import qualified GhcDump_StgAst as C
 import qualified GhcDump.StgPretty as P
+import qualified Text.PrettyPrint.ANSI.Leijen as P
 
 -- Lambda
 import Lambda.Syntax (Name)
@@ -79,10 +80,10 @@ visitExpr = \case
   C.StgLit lit          -> pure . Lit $ convertLit lit
   C.StgApp fun args     -> App <$> genName fun <*> mapM visitArg args
   C.StgConApp con args  -> Con <$> genConName con <*> mapM visitArg args
-  C.StgOpApp op args    -> case op of
-    C.StgPrimOp prim  -> App ("_prim_ghc_" <> (packName $ BS8.unpack prim)) <$> mapM visitArg args
-    C.StgPrimCallOp _ -> App "_prim__stg_primCall_TODO_" <$> mapM visitArg args -- TODO
-    C.StgFCallOp f    -> App ("_prim__stg_foreign_call " <> (TS.pack . show . P.pretty $ f)) <$> mapM visitArg args -- TODO
+  C.StgOpApp op args ty -> case op of
+    C.StgPrimOp prim  -> App ("_prim_ghc_" <> (packName $ BS8.unpack prim) <> (TS.pack . show . P.braces $ P.pretty ty)) <$> mapM visitArg args
+    C.StgPrimCallOp _ -> App ("_prim__stg_primCall_TODO_" <> (TS.pack . show . P.braces $ P.pretty ty)) <$> mapM visitArg args -- TODO
+    C.StgFCallOp f    -> App ("_prim__stg_foreign_call " <> (TS.pack . show . P.pretty $ f) <> (TS.pack . show . P.braces $ P.pretty ty)) <$> mapM visitArg args -- TODO
 
   C.StgLam bs expr      -> Lam <$> mapM genName bs <*> visitExpr expr
   C.StgCase expr result alts  -> do
