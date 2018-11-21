@@ -14,7 +14,7 @@ import GhcDump.StgUtil
 import Lambda.FromStg
 import Lambda.Syntax
 import Lambda.Pretty
-import Lambda.CodeGen
+import Lambda.GrinCodeGen
 import Lambda.Lint
 import Lambda.StaticSingleAssignment
 import Lambda.ClosureConversion

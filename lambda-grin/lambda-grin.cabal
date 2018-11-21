@@ -16,7 +16,8 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:
-    Lambda.CodeGen
+    Lambda.GrinCodeGen
+    Lambda.GrinCodeGen2
     Lambda.Parse
     Lambda.Pretty
     Lambda.PrimOps

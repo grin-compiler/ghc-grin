@@ -27,7 +27,7 @@ instance Pretty Exp where
       ProgramF defs       -> vcat (map pretty defs)
       DefF name args exp  -> hsep (pretty name : map pretty args) <+> text "=" <$$> indent 2 (pretty exp) <> line
       -- Exp
-      AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : map pretty args)
+      AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : text "@" : map pretty args)
       CaseF atom alts     -> keyword "case" <+> pretty atom <+> keyword "of" <$$> indent 2 (vsep (map pretty alts))
       LetF binds exp      -> keyword "let"    <+> align (vsep (map prettyBind binds)) <$$> pretty exp
       LetRecF binds exp   -> keyword "letrec" <+> align (vsep (map prettyBind binds)) <$$> pretty exp
@@ -46,7 +46,7 @@ instance Pretty Lit where
   pretty = \case
     LInt64 a  -> integer $ fromIntegral a
     LWord64 a -> integer (fromIntegral a) <> text "u"
-    LFloat a  -> float a
+    LFloat a  -> text "#" <> text (show a)
     LBool a   -> text "#" <> text (show a)
     LChar a   -> text "#" <> text (show a)
     LString a -> text "#" <> text (show a)

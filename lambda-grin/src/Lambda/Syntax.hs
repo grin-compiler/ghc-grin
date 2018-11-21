@@ -47,12 +47,15 @@ data Exp
   deriving (Generic, Eq, Ord, Show)
 
 data Lit
-  = LInt64  Int64
-  | LWord64 Word64
-  | LFloat  Float
-  | LBool   Bool
-  | LChar   Char
-  | LString ByteString
+  = LInt64      Int64
+  | LWord64     Word64
+  | LFloat      Rational
+  | LDouble     Rational
+  | LBool       Bool
+  | LChar       Char
+  | LString     ByteString
+  | LLabelAddr  ByteString
+  | LNullAddr
   -- special
   | LError  ShortText  -- marks an error
   | LDummy  ShortText  -- should be ignored

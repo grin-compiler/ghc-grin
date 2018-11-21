@@ -21,7 +21,7 @@ deadFunctionElimination (Program defs) = Program [def | def@(Def name _ _) <- de
   lookupDef name = Map.lookup name defMap
 
   liveDefs :: Set Name
-  liveDefs = fst $ until (\(live, visited) -> live == visited) visit (Set.singleton ":Main.main", mempty)
+  liveDefs = fst $ until (\(live, visited) -> live == visited) visit (Set.singleton {- ":Main.main" -} "Main.main", mempty)
 
   visit :: (Set Name, Set Name) -> (Set Name, Set Name)
   visit (live, visited) = (mappend live seen, mappend visited toVisit) where

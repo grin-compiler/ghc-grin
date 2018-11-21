@@ -31,6 +31,11 @@ foldNameDefExpF f = \case
   LamF bs _             -> mconcat $ map f bs
   _                     -> mempty
 
+mapNameExp :: (Name -> Name) -> Exp -> Exp
+mapNameExp f = \case
+  Def n args e  -> Def (f n) (map f args) e
+  exp           -> mapLocalNameExp f exp
+
 mapLocalNameExp :: (Name -> Name) -> Exp -> Exp
 mapLocalNameExp f = \case
   -- def
