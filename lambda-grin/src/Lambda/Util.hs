@@ -41,7 +41,7 @@ mapLocalNameExp f = \case
   -- def
   Def n args e          -> Def n (map f args) e -- NOTE: do not touch top level function name
   LetRec bs e           -> LetRec [(f n, a) | (n,a) <- bs] e
-  Let bs e              -> LetS [(f n, a) | (n,a) <- bs] e
+  Let bs e              -> Let  [(f n, a) | (n,a) <- bs] e
   LetS bs e             -> LetS [(f n, a) | (n,a) <- bs] e
   Alt (NodePat n bs) e  -> Alt (NodePat n (map f bs)) e
   Lam bs e              -> Lam (map f bs) e
