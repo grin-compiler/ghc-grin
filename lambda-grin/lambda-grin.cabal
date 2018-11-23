@@ -21,6 +21,7 @@ library
     Lambda.Parse
     Lambda.Pretty
     Lambda.PrimOps
+    Lambda.GhcPrimOps
     Lambda.Syntax
     Lambda.Util
     Lambda.Lint
