@@ -14,7 +14,6 @@ import Lambda.Syntax
 import Lambda.Util
 --import Lambda.PrimOps
 import qualified Grin.Grin as G
-import Transformations.Optimising.DeadProcedureElimination
 import Transformations.GenerateEval
 import Transformations.Util
 import Transformations.Names hiding (mkNameEnv)

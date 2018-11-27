@@ -11,7 +11,7 @@ packages:
 #  - '../grin/grin'
   - location:
       git: https://github.com/grin-tech/grin
-      commit: c84c5256aa622214f691e1835a6e2c1d063e15ad
+      commit: 05983c972880884780bf2c66324fd7da6a55841a
     subdirs:
       - grin
     extra-dep: true
@@ -27,6 +27,7 @@ extra-deps:
   - functor-infix-0.0.5
   - megaparsec-6.5.0
   - neat-interpolation-0.3.2.2
+  - set-extra-1.4.1
 
 flags:
   llvm-hs:

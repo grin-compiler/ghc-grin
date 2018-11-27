@@ -15,7 +15,6 @@ import Lambda.Syntax
 import Lambda.Util
 import Lambda.GhcPrimOps
 import qualified Grin.Grin as G
-import Transformations.Optimising.DeadProcedureElimination
 import Transformations.StaticSingleAssignment
 import Transformations.GenerateEval
 import Transformations.Util
