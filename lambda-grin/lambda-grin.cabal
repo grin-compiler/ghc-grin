@@ -18,10 +18,12 @@ library
   exposed-modules:
     Lambda.GrinCodeGen
     Lambda.GrinCodeGen2
+    Lambda.GrinCodeGen3
     Lambda.Parse
     Lambda.Pretty
     Lambda.PrimOps
     Lambda.GhcPrimOps
+    Lambda.GhcPrimOpsBoxed
     Lambda.Syntax
     Lambda.Util
     Lambda.Lint

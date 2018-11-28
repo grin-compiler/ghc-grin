@@ -10,7 +10,7 @@ import Lambda.Syntax
 import Lambda.Parse
 import Lambda.Pretty
 import Lambda.Lint
-import Lambda.GrinCodeGen2
+import Lambda.GrinCodeGen3
 import Grin.Pretty
 import Pipeline.Pipeline
 
