@@ -80,8 +80,8 @@ ghcPrimOps = [prog|
 
   _ghc_bool_to_int a =
     case a of
-      #False  -> pure 0
-      #True   -> pure 1
+      #False  -> pure (Cint64 0)
+      #True   -> pure (Cint64 1)
 
   "_ghc_tagToEnum#{Bool}" a =
     (Cint64 i) <- fetch a

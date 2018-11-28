@@ -29,14 +29,49 @@ import Transformations.Names hiding (mkNameEnv)
 data Cmd
   = G G.Exp
   | B Name G.Exp
+  | P G.LPat G.Exp
+
+data Repr
+  = Repr
+  { ptrName :: Maybe Name
+  , valName :: Maybe Name
+  }
+
+instance Semigroup Repr where
+  Repr a1 b1 <> Repr a2 b2 = Repr (a1 <> a2) (b1 <> b2)
+
+instance Monoid Repr where
+  mempty = Repr Nothing Nothing
 
 data Env
   = Env
   { _arityMap   :: Map Name Int
   , _commands   :: [Cmd]
+  , _varMap     :: Map Name Repr
   }
 
 type CG = StateT Env NameM
+
+addRepr :: Name -> Repr -> CG ()
+addRepr n r = modify $ \env@Env{..} -> env {_varMap = Map.insertWith mappend n r _varMap}
+
+valN, ptrN :: Name -> Repr
+valN n = Repr Nothing (Just n)
+ptrN n = Repr (Just n) Nothing
+
+getPtr :: Name -> CG (Maybe Name)
+getPtr n = do
+  m <- gets _varMap
+  pure $ do
+    Repr p v <- Map.lookup n m
+    p
+
+getVal :: Name -> CG (Maybe Name)
+getVal n = do
+  m <- gets _varMap
+  pure $ do
+    Repr p v <- Map.lookup n m
+    v
 
 uniq :: Name -> CG Name
 uniq = lift . deriveNewName
@@ -66,6 +101,12 @@ boxedLitTag = \case
 genBoxedLit :: Lit -> G.Val
 genBoxedLit l = mkCon (boxedLitTag l) [G.Lit $ genLit l]
 
+genCPat :: Pat -> G.CPat
+genCPat = \case
+  NodePat name args -> G.NodePat (G.Tag G.C name) args
+  LitPat  lit       -> G.LitPat (genLit lit)
+  DefaultPat        -> G.DefaultPat
+
 -- TODO
 {-
 data Lit
@@ -87,7 +128,7 @@ emit :: Cmd -> CG ()
 emit cmd = modify $ \env@Env{..} -> env {_commands = cmd : _commands}
 
 clearState :: CG ()
-clearState = modify $ \env -> env {_commands = []}
+clearState = modify $ \env -> env {_commands = [], _varMap = mempty}
 
 clearCmds :: CG ()
 clearCmds = modify $ \env -> env {_commands = []}
@@ -105,8 +146,10 @@ cmdToExp :: CG G.Exp
 cmdToExp = do
   let go [] = G.SReturn G.Unit
       go [G e] = e
+      go [P p e] = G.EBind e p (G.SReturn p)
       go [B n e] = G.EBind e (G.Var n) (G.SReturn $ G.Var n)
       go ((G e) : xs) = G.EBind e G.Unit $ go xs
+      go ((P p e) : xs) = G.EBind e p $ go xs
       go ((B n e) : xs) = G.EBind e (G.Var n) $ go xs
   cmds <- gets _commands
   pure $ go $ reverse cmds
@@ -131,12 +174,15 @@ genVal = \case
   -- FIXME: handle GHC prim types properly
   Var "GHC.Prim.void#" -> pure . G.Lit . G.LBool $ False
 
-  Var name -> do
-    ptrName <- tmpName "ptr_" name
-    arityM name >>= \case
-      Nothing -> emit . B ptrName $ G.SStore $ G.Var name
-      Just ar -> emit . B ptrName $ G.SStore $ mkThunk ar name []
-    pure $ G.Var ptrName
+  Var name -> getPtr name >>= \case
+    Just n -> pure $ G.Var n
+    Nothing -> do
+      ptrName <- tmpName "ptr_" name
+      addRepr name $ ptrN ptrName
+      arityM name >>= \case
+        Nothing -> emit . B ptrName $ G.SStore $ G.Var name
+        Just ar -> emit . B ptrName $ G.SStore $ mkThunk ar name []
+      pure $ G.Var ptrName
 
   x -> error $ printf "unsupported atom: %s" (show x)
 
@@ -168,7 +214,9 @@ genStrictExp :: Exp -> CG G.SimpleExp
 genStrictExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
   Var name
     | Nothing <- arity _arityMap name -> do
-      pure $ G.SApp "eval" [G.Var name]
+      getPtr name >>= \case
+        Nothing -> pure $ G.SReturn $ G.Var name
+        Just n  -> pure $ G.SApp "eval" [G.Var n]
 
   App name args | isGhcPrim name -> G.SApp name <$> mapM genVal args
 
@@ -201,7 +249,10 @@ genExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
     | Just ar <- arity _arityMap name -> do
       pure . G.SReturn $ mkThunk ar name []
 
-    | otherwise -> pure $ G.SApp "eval" [G.Var name]
+    | otherwise -> do
+      getPtr name >>= \case
+        Nothing -> pure $ G.SReturn $ G.Var name
+        Just n  -> pure $ G.SApp "eval" [G.Var n]
 
   App name args | isGhcPrim name -> G.SApp name <$> mapM genVal args
 
@@ -232,44 +283,39 @@ genExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
         G.SReturn . G.Var <$> foldM applyArg fName vals
 
   LetS binds exp -> do
-    forM_ binds $ \(name, rhs) -> genStrictExp rhs >>= emit . B name
+    forM_ binds $ \(name, rhs) -> do
+      genStrictExp rhs >>= emit . B name
+      addRepr name $ valN name
     genExp exp
 
   Let binds exp -> do
-    forM_ binds $ \(name, rhs) -> genLazyExp rhs >>= emit . B name
+    forM_ binds $ \(name, rhs) -> do
+      genLazyExp rhs >>= emit . B name
+      addRepr name $ ptrN name
     genExp exp
 
   Case (Var name) alts -> do
-    let genAlt (Alt pat rhs) = fmap (G.Alt (genCPat pat)) $ withBlock $ genExp rhs >>= emit . G
+    let litTags = [boxedLitTag l | Alt (LitPat l) _ <- alts]
 
-        (litAlts, otherAlts) = partition isLitAlt alts
-        litPatKinds = Map.toList $ Map.unionsWith (++) [Map.singleton (boxedLitTag l) [alt] | alt@(Alt (LitPat l) _) <- litAlts]
+    scrutName <- if null litTags then pure name else if any (head litTags /=) litTags
+      then error $ "invalid case expression: " ++ show lambdaExp
+      else do
+        let litTag = head litTags
+        litName <- uniq litTag
+        emit $ P (mkCon litTag [G.Var litName]) (G.SReturn $ G.Var name)
+        pure litName
 
-    otherExps <- mapM genAlt otherAlts
-    litExps <- forM litPatKinds $ \(litTag, ls) -> do
-      litName <- uniq litTag
-      litExps <- mapM genAlt ls
-      pure . G.Alt (G.NodePat (G.Tag G.C litTag) [litName]) . G.SBlock $ G.ECase (G.Var litName) litExps
-
+    altExps <- forM alts $ \(Alt pat rhs) -> fmap (G.Alt (genCPat pat)) $ withBlock $ do
+      case pat of
+        NodePat _ args -> forM_ args $ \n -> addRepr n $ ptrN n
+        _ -> pure ()
+      genExp rhs >>= emit . G
 
     resultName <- tmpName "result_" name
-    emit . B resultName . G.SBlock . G.ECase (G.Var name) $ otherExps ++ litExps
+    emit . B resultName . G.SBlock . G.ECase (G.Var scrutName) $ altExps
     pure . G.SReturn $ G.Var resultName
 
   exp -> error $ "genExp: " ++ show exp
-
-isLitAlt (Alt p _) = isLitPat p
-
-isLitPat :: Pat -> Bool
-isLitPat = \case
-  LitPat {} -> True
-  _         -> False
-
-genCPat :: Pat -> G.CPat
-genCPat = \case
-  NodePat name args -> G.NodePat (G.Tag G.C name) args
-  LitPat  lit       -> G.LitPat (genLit lit)
-  DefaultPat        -> G.DefaultPat
 
 remapNames :: Program -> [Name] -> CG Program
 remapNames prog names = do
@@ -282,6 +328,7 @@ genProgram prog' = do
   let Program defs = prog
   grinDefs <- forM defs $ \(Def name args exp) -> do
     clearState
+    forM_ args $ \n -> addRepr n $ ptrN n
     result <- genExp exp
     emit $ G result
     G.Def name args <$> cmdToExp
@@ -298,6 +345,7 @@ codegenGrin exp = evalState (evalStateT (genProgram exp) emptyEnv) (mkNameEnv ex
   emptyEnv = Env
     { _arityMap   = buildArityMap exp
     , _commands   = []
+    , _varMap     = mempty
     }
 
 -- HINT: arity map for lambda
