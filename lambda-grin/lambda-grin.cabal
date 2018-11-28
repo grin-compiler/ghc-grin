@@ -17,8 +17,8 @@ library
   hs-source-dirs:      src
   exposed-modules:
     Lambda.GrinCodeGen
-    Lambda.GrinCodeGen2
-    Lambda.GrinCodeGen3
+    Lambda.GrinCodeGenUnboxed
+    Lambda.GrinCodeGenBoxed
     Lambda.Parse
     Lambda.Pretty
     Lambda.PrimOps
