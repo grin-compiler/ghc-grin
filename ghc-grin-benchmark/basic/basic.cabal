@@ -7,8 +7,86 @@ category:            Development
 build-type:          Simple
 cabal-version:       >=1.10
 
-executable basic
+executable basic00
   build-depends:  base
-  main-is:        basic.hs
+  main-is:        basic00.hs
+  ghc-options:    -O0
+
+executable basic01
+  build-depends:  base
+  main-is:        basic01.hs
+  c-sources:      clib.c
+  ghc-options:    -O0
+
+executable basic02
+  build-depends:  base
+  main-is:        basic02.hs
+  c-sources:      clib.c
+  ghc-options:    -O0
+
+executable basic03
+  build-depends:  base
+  main-is:        basic03.hs
+  c-sources:      clib.c
+  ghc-options:    -O0
+
+executable basic04
+  build-depends:  base
+  main-is:        basic04.hs
+  c-sources:      clib.c
+  ghc-options:    -O0
+
+executable basic05
+  build-depends:  base
+  main-is:        basic05.hs
+  c-sources:      clib.c
+  ghc-options:    -O0
+
+executable basic06
+  build-depends:  base
+  main-is:        basic06.hs
+  c-sources:      clib.c
+  ghc-options:    -O0
+
+-- opt
+
+executable basic00_opt
+  build-depends:  base
+  main-is:        basic00.hs
+  ghc-options:    -O
+
+executable basic01_opt
+  build-depends:  base
+  main-is:        basic01.hs
+  ghc-options:    -O
+  c-sources:      clib.c
+
+executable basic02_opt
+  build-depends:  base
+  main-is:        basic02.hs
+  ghc-options:    -O
+  c-sources:      clib.c
+
+executable basic03_opt
+  build-depends:  base
+  main-is:        basic03.hs
+  ghc-options:    -O
+  c-sources:      clib.c
+
+executable basic04_opt
+  build-depends:  base
+  main-is:        basic04.hs
+  ghc-options:    -O
+  c-sources:      clib.c
+
+executable basic05_opt
+  build-depends:  base
+  main-is:        basic05.hs
+  ghc-options:    -O
+  c-sources:      clib.c
+
+executable basic06_opt
+  build-depends:  base
+  main-is:        basic06.hs
   ghc-options:    -O
   c-sources:      clib.c

@@ -1,0 +1,109 @@
+name:                boq-custom
+version:             0.1.0.0
+synopsis:            modified GRIN benchmark set from Urban Boquist PhD
+description:
+license:             BSD3
+license-file:        LICENSE
+author:              Urban Boquist
+copyright:           (c) 1999 Urban Boquist
+category:            Compiler
+build-type:          Simple
+tested-with:         GHC==8.2.2
+cabal-version:       >=1.10
+
+library
+  exposed-modules:  RTS
+  build-depends:    base
+  default-language: Haskell2010
+  c-sources:        clib.c
+
+executable exp3_8
+  build-depends:  base, boq-custom
+  main-is:        exp3_8.hs
+  ghc-options:    -O0
+
+executable tak
+  build-depends:  base, boq-custom
+  main-is:        tak.hs
+  ghc-options:    -O0
+
+executable nfib
+  build-depends:  base, boq-custom
+  main-is:        nfib.hs
+  ghc-options:    -O0
+
+executable puzzle
+  build-depends:  base, boq-custom
+  main-is:        puzzle.hs
+  ghc-options:    -O0
+
+executable queens
+  build-depends:  base, boq-custom
+  main-is:        queens.hs
+  ghc-options:    -O0
+
+executable sieve
+  build-depends:  base, boq-custom
+  main-is:        sieve.hs
+  ghc-options:    -O0
+
+executable tsumupto
+  build-depends:  base, boq-custom
+  main-is:        tsumupto.hs
+  ghc-options:    -O0
+
+executable words
+  build-depends:  base, boq-custom
+  main-is:        words.hs
+  ghc-options:    -O0
+
+executable sorting
+  build-depends:  base, boq-custom
+  main-is:        sorting.hs
+  ghc-options:    -O0
+
+-- opt
+executable exp3_8_opt
+  build-depends:  base, boq-custom
+  main-is:        exp3_8.hs
+  ghc-options:    -O
+
+executable tak_opt
+  build-depends:  base, boq-custom
+  main-is:        tak.hs
+  ghc-options:    -O
+
+executable nfib_opt
+  build-depends:  base, boq-custom
+  main-is:        nfib.hs
+  ghc-options:    -O
+
+executable puzzle_opt
+  build-depends:  base, boq-custom
+  main-is:        puzzle.hs
+  ghc-options:    -O
+
+executable queens_opt
+  build-depends:  base, boq-custom
+  main-is:        queens.hs
+  ghc-options:    -O
+
+executable sieve_opt
+  build-depends:  base, boq-custom
+  main-is:        sieve.hs
+  ghc-options:    -O
+
+executable tsumupto_opt
+  build-depends:  base, boq-custom
+  main-is:        tsumupto.hs
+  ghc-options:    -O
+
+executable words_opt
+  build-depends:  base, boq-custom
+  main-is:        words.hs
+  ghc-options:    -O
+
+executable sorting_opt
+  build-depends:  base, boq-custom
+  main-is:        sorting.hs
+  ghc-options:    -O

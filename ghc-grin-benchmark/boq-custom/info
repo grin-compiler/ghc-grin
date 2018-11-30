@@ -1,0 +1,42 @@
+int print:
+  exp3_8
+  tak
+  nfib
+  puzzle
+  queens
+  sieve
+  tsumupto
+  sorting
+
+print int list:
+  words
+
+TODO:
+
+print String:
+  boyer2
+  clausify
+  event
+  ida
+  typecheck
+
+print list of (String, Int):
+  awards
+
+print (String,Int,[],Char):
+  cichelli
+
+PRIMOP support
+
+primop OK:
+  queens
+  exp3
+  tsumupto
+  nfib
+
+many primops:
+  puzzle
+  tak
+  words
+  sorting
+  sieve
