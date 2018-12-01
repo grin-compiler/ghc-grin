@@ -19,6 +19,7 @@ library
     Lambda.GrinCodeGen
     Lambda.GrinCodeGenUnboxed
     Lambda.GrinCodeGenBoxed
+    Lambda.GrinCodeGenTyped
     Lambda.Parse
     Lambda.Pretty
     Lambda.PrimOps

@@ -58,7 +58,7 @@ data Mode = C | E | R deriving (Eq, Ord, Show)
 
 genVal :: Atom -> G.Val
 genVal = \case
-  Var name  -> G.Var name
+  Var isPtr name  -> G.Var name
   Lit lit   -> G.Lit $ genLit lit
   x -> error $ printf "unsupported atom: %s" (show x)
 
@@ -136,12 +136,12 @@ genExp = hyloM folder builder where
     Con name args
       | mode == C     -> pure . G . G.SStoreF  $ G.ConstTagNode (G.Tag G.C name) (map genVal args)
       | otherwise     -> pure . G . G.SReturnF $ G.ConstTagNode (G.Tag G.C name) (map genVal args)
-    Var name
+    Var isPtr name
       | Just ar <- arity arityMap name -> pure . G $ G.SReturnF $ G.ConstTagNode (G.Tag (if ar == 0 then G.F else G.P ar) name) []
       | mode == E     -> pure . G $ G.SAppF "eval" [G.Var name]
       | otherwise     -> pure . G . G.SReturnF $ G.Var name
 
-    Case (Var name) alts  -> pure . G $ G.ECaseF (G.Var name) [(mode, alt) | alt <- alts]
+    Case (Var isPtr name) alts  -> pure . G $ G.ECaseF (G.Var name) [(mode, alt) | alt <- alts]
 
     Let [] exp                      -> builder (mode, exp)
     Let ((name, rhs) : binds) exp   -> pure . G $ G.EBindF (C, rhs) (G.Var name) (mode, Let binds exp)

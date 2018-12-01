@@ -74,7 +74,7 @@ expr i = L.indentGuard sc EQ i >>
 
 atom :: Parser Atom
 atom = Lit <$> literal <|>
-       Var <$> var
+       Var True <$> var -- TODO
 
 primNameOrDefName :: Parser Name
 primNameOrDefName = ("_"<>) <$ char '_' <*> var <|> var

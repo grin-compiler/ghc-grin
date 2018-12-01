@@ -41,6 +41,12 @@ genConName b = do
 genName :: C.Binder -> CG Name
 genName = pure . packName . BS8.unpack . C.binderUniqueName
 
+isPointer :: C.Binder -> Bool
+isPointer b = case C.binderRep b of
+  [C.LiftedRep]   -> True
+  [C.UnliftedRep] -> True
+  _               -> False
+
 {-
 TODO - support these:
 data Lit = MachNullAddr
@@ -72,16 +78,16 @@ visitAlt (C.Alt altCon argIds body) = do
 
 visitArg :: C.Arg -> CG Exp
 visitArg = \case
-  C.StgVarArg o -> Var <$> genName o
+  C.StgVarArg o -> Var (isPointer o) <$> genName o
   C.StgLitArg l -> pure . Lit $ convertLit l
 
 visitExpr :: C.Expr -> CG Exp
 visitExpr = \case
   C.StgLit lit          -> pure . Lit $ convertLit lit
-  C.StgApp fun []       -> Var <$> genName fun
+  C.StgApp fun []       -> Var (isPointer fun) <$> genName fun
   C.StgApp fun args     -> App <$> genName fun <*> mapM visitArg args
-  C.StgConApp con args  -> Con <$> genConName con <*> mapM visitArg args
-  C.StgOpApp op args ty -> case op of
+  C.StgConApp con args t r  -> Con <$> genConName con <*> mapM visitArg args
+  C.StgOpApp op args ty r   -> case op of
     C.StgPrimOp prim  -> App ("_ghc_" <> (packName $ BS8.unpack prim) <> (TS.pack . show . P.braces $ P.pretty ty)) <$> mapM visitArg args
     C.StgPrimCallOp _ -> App ("_ghc__stg_primCall_TODO_" <> (TS.pack . show . P.braces $ P.pretty ty)) <$> mapM visitArg args -- TODO
     C.StgFCallOp f    -> App ("_ghc__stg_foreign_call " <> (TS.pack . show . P.pretty $ f) <> (TS.pack . show . P.braces $ P.pretty ty)) <$> mapM visitArg args -- TODO
@@ -93,7 +99,7 @@ visitExpr = \case
       -- NOTE: force convention in STG
       [C.Alt C.AltDefault [] rhsExpr] -> LetS [(scrutName, scrutExp)] <$> visitExpr rhsExpr
       -- normal case
-      _ -> LetS [(scrutName, scrutExp)] . Case (Var scrutName) <$> mapM visitAlt alts
+      _ -> LetS [(scrutName, scrutExp)] . Case (Var (isPointer result) scrutName) <$> mapM visitAlt alts
   C.StgLet (C.StgNonRec b r) e          -> Let <$> ((\name exp -> [(name, exp)]) <$> genName b <*> visitRhs r) <*> visitExpr e
   C.StgLet (C.StgRec bs) e              -> LetRec <$> mapM (\(b,r) -> (,) <$> genName b <*> visitRhs r) bs <*> visitExpr e
 
@@ -110,7 +116,7 @@ visitRhs :: C.Rhs -> CG Exp
 visitRhs = \case
   C.StgRhsCon con args      -> Con <$> genConName con <*> mapM visitArg args
   C.StgRhsClosure [] _ bs e -> Lam <$> mapM genName bs <*> visitExpr e
-  C.StgRhsClosure vs _ bs e -> AppExp <$> (Lam <$> mapM genName (vs' ++ bs) <*> visitExpr e) <*> mapM (pure . Var <=< genName) vs' where vs' = Set.toList . Set.fromList $ vs
+  C.StgRhsClosure vs _ bs e -> AppExp <$> (Lam <$> mapM genName (vs' ++ bs) <*> visitExpr e) <*> mapM (\v -> Var (isPointer v) <$> genName v) vs' where vs' = Set.toList . Set.fromList $ vs
 
 visitTopRhs :: C.Binder -> C.Rhs -> CG Def
 visitTopRhs b = \case

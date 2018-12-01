@@ -47,7 +47,7 @@ mapLocalNameExp f = \case
   Lam bs e              -> Lam (map f bs) e
   -- use
   App n l               -> App (f n) l
-  Var n                 -> Var (f n)
+  Var p n               -> Var p (f n)
   -- other
   exp                   -> exp
 

@@ -172,9 +172,9 @@ genVal = \case
     pure $ G.Var ptrName
 
   -- FIXME: handle GHC prim types properly
-  Var "GHC.Prim.void#" -> pure . G.Lit . G.LBool $ False
+  Var _ "GHC.Prim.void#" -> pure . G.Lit . G.LBool $ False
 
-  Var name -> getPtr name >>= \case
+  Var isPtr name -> getPtr name >>= \case
     Just n -> pure $ G.Var n
     Nothing -> do
       ptrName <- tmpName "ptr_" name
@@ -195,7 +195,7 @@ genLazyExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
   Con name args -> do
     G.SStore . mkCon name <$> genVals args
 
-  Var name -> arityM name >>= \case
+  Var isPtr name -> arityM name >>= \case
     Just ar -> pure $ G.SStore $ mkThunk ar name []
 
   App name args
@@ -212,7 +212,7 @@ isGhcPrim = TS.isPrefixOf "_ghc_"
 
 genStrictExp :: Exp -> CG G.SimpleExp
 genStrictExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
-  Var name
+  Var isPtr name
     | Nothing <- arity _arityMap name -> do
       getPtr name >>= \case
         Nothing -> pure $ G.SReturn $ G.Var name
@@ -245,7 +245,7 @@ genExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
     vals <- genVals args
     pure . G.SReturn $ mkCon name vals
 
-  Var name
+  Var isPtr name
     | Just ar <- arity _arityMap name -> do
       pure . G.SReturn $ mkThunk ar name []
 
@@ -294,7 +294,7 @@ genExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
       addRepr name $ ptrN name
     genExp exp
 
-  Case (Var name) alts -> do
+  Case (Var isPtr name) alts -> do
     let litTags = [boxedLitTag l | Alt (LitPat l) _ <- alts]
 
     scrutName <- if null litTags then pure name else if any (head litTags /=) litTags

@@ -37,7 +37,8 @@ data Exp
   | LetS        [(Name, Exp)] Exp -- strict let
   | Con         Name [Atom]
   -- Atom
-  | Var         Name
+--  | Var         Name
+  | Var         Bool Name -- is pointer
   | Lit         Lit
   -- Alt
   | Alt         Pat Exp

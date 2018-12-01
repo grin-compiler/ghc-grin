@@ -20,6 +20,7 @@ keyword = yellow . text
 keywordR = red . text
 
 prettyBind (name, exp) = pretty name <+> text "=" <+> pretty exp
+comment d = text "{-" <+> d <+> text "-}"
 
 instance Pretty Exp where
   pretty = cata folder where
@@ -34,7 +35,7 @@ instance Pretty Exp where
       LetSF binds exp     -> keyword "letS"   <+> align (vsep (map prettyBind binds)) <$$> pretty exp
       ConF tag args       -> brackets $ hsep (pretty tag : map pretty args)
       -- Atom
-      VarF name           -> pretty name
+      VarF isPtr name     -> pretty name <> if isPtr then mempty else comment (text "value")
       LitF lit            -> pretty lit
       -- Alt
       AltF cpat exp       -> pretty cpat <+> text "->" <$$> indent 4 (pretty exp)

@@ -147,9 +147,9 @@ genVal = \case
     pure $ G.Var ptrName
 
   -- FIXME: handle GHC prim types properly
-  Var "GHC.Prim.void#" -> pure . G.Lit . G.LBool $ False
+  Var _ "GHC.Prim.void#" -> pure . G.Lit . G.LBool $ False
 
-  Var name -> arityM name >>= \case
+  Var _ name -> arityM name >>= \case
     Nothing -> do
       getPointerName name >>= \case
         Just ptrName -> pure $ G.Var ptrName
@@ -171,9 +171,9 @@ genPrimOpVal = \case
   Lit lit -> pure . G.Lit $ genLit lit
 
   -- FIXME: handle GHC prim types properly
-  Var "GHC.Prim.void#" -> pure . G.Lit . G.LBool $ False
+  Var _ "GHC.Prim.void#" -> pure . G.Lit . G.LBool $ False
 
-  Var name -> pure $ G.Var name
+  Var _ name -> pure $ G.Var name
 
   x -> error $ printf "unsupported atom: %s" (show x)
 
@@ -186,7 +186,7 @@ genLazyExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
   Con name args -> do
     G.SStore . mkCon name <$> genVals args
 
-  Var name -> arityM name >>= \case
+  Var _ name -> arityM name >>= \case
     --Nothing -> pure $ G.Var name
     Just ar -> pure $ G.SStore $ mkThunk ar name []
 
@@ -204,7 +204,7 @@ isGhcPrim = TS.isPrefixOf "_ghc_"
 
 genStrictExp :: Exp -> CG G.SimpleExp
 genStrictExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
-  Var name
+  Var _ name
     | Nothing <- arity _arityMap name -> do
       pure $ G.SApp "eval" [G.Var name]
 
@@ -239,7 +239,7 @@ genExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
     vals <- genVals args
     pure . G.SReturn $ mkCon name vals
 
-  Var name
+  Var _ name
     | Just ar <- arity _arityMap name -> do
       pure . G.SReturn $ mkThunk ar name []
 
@@ -294,7 +294,7 @@ genExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
     forM_ binds $ \(name, rhs) -> genLazyExp rhs >>= emit . B name >> addPointerNames [name]
     genExp exp
 
-  Case (Var name) alts -> do
+  Case (Var _ name) alts -> do
     altExps <- forM alts $ \(Alt pat rhs) -> fmap (G.Alt (genCPat pat)) $ withBlock $ do
       case pat of
         NodePat _ args -> addPointerNames args

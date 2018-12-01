@@ -52,7 +52,7 @@ addDefs ns = Map.unionsWith (+) $ map addDef ns
 test = cata folder where
   folder = \case
     -- use
-    VarF name         -> env {envUse = Set.singleton name}
+    VarF _ name       -> env {envUse = Set.singleton name}
     AppF name e       -> mconcat $ env {envUse = Set.singleton name} : e
     -- def
     DefF name args e  -> env {envDef = addDefs $ name : args} <> e

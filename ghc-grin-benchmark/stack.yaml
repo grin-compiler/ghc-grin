@@ -7,7 +7,7 @@ packages:
 #- 'lib'
 #- 'sum-list'
 - 'basic'
-- 'boq-custom'
+#- 'boq-custom'
 #- 'boquist-grin-bench'
 
 #- 'Idris-dev-1.3.1'

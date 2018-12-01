@@ -31,5 +31,5 @@ deadFunctionElimination (Program defs) = Program [def | def@(Def name _ _) <- de
   collect :: ExpF (Set Name) -> Set Name
   collect = \case
     AppF name args  | Map.member name defMap  -> mconcat $ Set.singleton name : args
-    VarF name       | Map.member name defMap  -> Set.singleton name
+    VarF _ name     | Map.member name defMap  -> Set.singleton name
     exp -> Data.Foldable.fold exp
