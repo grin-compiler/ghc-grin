@@ -21,6 +21,34 @@ data Unique
 instance Show Unique where
  show (Unique c n) = c : show n
 
+data PrimRep
+  = NotRunimeRep T_Text
+  | VoidRep
+  | LiftedRep
+  | UnliftedRep   -- ^ Unlifted pointer
+  | IntRep        -- ^ Signed, word-sized value
+  | WordRep       -- ^ Unsigned, word-sized value
+  | Int64Rep      -- ^ Signed, 64 bit value (with 32-bit words only)
+  | Word64Rep     -- ^ Unsigned, 64 bit value (with 32-bit words only)
+  | AddrRep       -- ^ A pointer, but /not/ to a Haskell value (use '(Un)liftedRep')
+  | FloatRep
+  | DoubleRep
+  | VecRep Int PrimElemRep  -- ^ A vector
+  deriving (Eq, Ord, Generic, Show)
+
+data PrimElemRep
+  = Int8ElemRep
+  | Int16ElemRep
+  | Int32ElemRep
+  | Int64ElemRep
+  | Word8ElemRep
+  | Word16ElemRep
+  | Word32ElemRep
+  | Word64ElemRep
+  | FloatElemRep
+  | DoubleElemRep
+  deriving (Eq, Ord, Generic, Show)
+
 newtype ModuleName
   = ModuleName { getModuleName :: T_Text }
   deriving (Eq, Ord, Binary, Show)
@@ -33,6 +61,7 @@ data SBinder
   = SBinder
     { sbinderName :: !T_Text
     , sbinderId   :: !BinderId
+    , sbinderRep  :: [PrimRep]
     }
   deriving (Eq, Ord, Generic, Show)
 
@@ -40,6 +69,7 @@ data Binder
   = Binder
     { binderName        :: !T_Text
     , binderId          :: !BinderId
+    , binderRep         :: [PrimRep]
     , binderModule      :: !ModuleName
     , binderIsTop       :: !Bool
     , binderIsExported  :: !Bool
@@ -112,10 +142,13 @@ data Expr' bndr occ
         -- which can't be let-bound first
   | StgConApp   occ        -- DataCon
                 [Arg' occ] -- Saturated
+                [T_Text]   -- types
+                [[PrimRep]]-- types rep
 
   | StgOpApp    StgOp      -- Primitive op or foreign call
                 [Arg' occ] -- Saturated.
                 T_Text     -- TODO: serialize type properly
+                [PrimRep]  -- result rep
 
   | StgLam
         [bndr]
@@ -224,6 +257,8 @@ data Module' bndr occ
   deriving (Eq, Ord, Generic, Show)
 
 instance Binary Unique
+instance Binary PrimElemRep
+instance Binary PrimRep
 instance Binary Binder
 instance Binary SBinder
 instance Binary LitNumType

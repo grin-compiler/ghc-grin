@@ -40,22 +40,12 @@ reconLocalBinder (BinderMap n m) SBinder{..} = -- HINT: local binders only
   Binder
   { binderName        = sbinderName
   , binderId          = sbinderId
+  , binderRep         = sbinderRep
   , binderModule      = n
   , binderIsTop       = False
   , binderIsExported  = False
   }
 
-{-
-  = Module
-    { modulePhase       :: T_Text
-    , moduleName        :: ModuleName
-    , moduleDependency  :: [ModuleName]
-    , moduleExternals   :: [(ModuleName, [bndr])]
-    , moduleDataCons    :: [(ModuleName, [bndr])]
-    , moduleExported    :: [(ModuleName, [BinderId])]
-    , moduleTopBindings :: [TopBinding' bndr occ]
-    }
--}
 reconModule :: SModule -> Module
 reconModule Module{..} = Module modulePhase moduleName moduleDependency exts cons moduleExported binds
   where
@@ -77,6 +67,7 @@ reconModule Module{..} = Module modulePhase moduleName moduleDependency exts con
       Binder
       { binderName        = sbinderName
       , binderId          = sbinderId
+      , binderRep         = sbinderRep
       , binderModule      = m
       , binderIsTop       = True
       , binderIsExported  = exported
@@ -99,20 +90,20 @@ topBindings = \case
 
 reconExpr :: BinderMap -> SExpr -> Expr
 reconExpr bm = \case
-  StgLit l            -> StgLit l
-  StgLam bs x         -> let bs'   = map (reconLocalBinder bm) bs
-                             bm'  = insertBinders bs' bm
-                         in StgLam bs' (reconExpr bm' x)
-  StgCase x b alts    -> let b'   = reconLocalBinder bm b
-                             bm'  = insertBinder b' bm
-                         in StgCase (reconExpr bm x) b' (map (reconAlt bm') alts)
-  StgApp f args       -> StgApp (getBinder bm f) (map (reconArg bm) args)
-  StgOpApp op args ty -> StgOpApp op (map (reconArg bm) args) ty
-  StgConApp dc args   -> StgConApp (getBinder bm dc) (map (reconArg bm) args)
-  StgLet b e          -> let (bm', b') = reconBinding bm b
-                         in StgLet b' (reconExpr bm' e)
-  StgLetNoEscape b e  -> let (bm', b') = reconBinding bm b
-                         in StgLet b' (reconExpr bm' e)
+  StgLit l              -> StgLit l
+  StgLam bs x           -> let bs'   = map (reconLocalBinder bm) bs
+                               bm'  = insertBinders bs' bm
+                           in StgLam bs' (reconExpr bm' x)
+  StgCase x b alts      -> let b'   = reconLocalBinder bm b
+                               bm'  = insertBinder b' bm
+                           in StgCase (reconExpr bm x) b' (map (reconAlt bm') alts)
+  StgApp f args         -> StgApp (getBinder bm f) (map (reconArg bm) args)
+  StgOpApp op args t r  -> StgOpApp op (map (reconArg bm) args) t r
+  StgConApp dc args t r -> StgConApp (getBinder bm dc) (map (reconArg bm) args) t r
+  StgLet b e            -> let (bm', b') = reconBinding bm b
+                           in StgLet b' (reconExpr bm' e)
+  StgLetNoEscape b e    -> let (bm', b') = reconBinding bm b
+                           in StgLet b' (reconExpr bm' e)
 
 reconBinding :: BinderMap -> SBinding -> (BinderMap, Binding)
 reconBinding bm = \case

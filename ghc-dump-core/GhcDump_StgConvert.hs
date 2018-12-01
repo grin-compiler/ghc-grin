@@ -17,7 +17,10 @@ import qualified Module       as GHC
 import qualified Name         as GHC
 import qualified Outputable   as GHC
 import qualified PrimOp       as GHC
+import qualified RepType      as GHC
 import qualified StgSyn       as GHC
+import qualified TyCon        as GHC
+import qualified Type         as GHC
 import qualified Unique       as GHC
 import qualified Var          as GHC
 
@@ -40,11 +43,43 @@ fastStringToText = GHC.fastStringToByteString
 occNameToText :: GHC.OccName -> T_Text
 occNameToText = GHC.fastStringToByteString . GHC.occNameFS
 
+typeToRep :: GHC.Type -> [PrimRep]
+typeToRep t
+  | not $ GHC.resultIsLevPoly t = map cvtPrimRep . GHC.typePrimRepArgs $ t
+  | otherwise = [NotRunimeRep . cvtSDoc . GHC.ppr $ t]
+
 cvtSDoc :: GHC.SDoc -> T_Text
 cvtSDoc = BS8.pack . GHC.showSDoc GHC.unsafeGlobalDynFlags
 
 cvtModuleName :: GHC.ModuleName -> ModuleName
 cvtModuleName = ModuleName . fastStringToText . GHC.moduleNameFS
+
+cvtPrimElemRep :: GHC.PrimElemRep -> PrimElemRep
+cvtPrimElemRep = \case
+  GHC.Int8ElemRep   -> Int8ElemRep
+  GHC.Int16ElemRep  -> Int16ElemRep
+  GHC.Int32ElemRep  -> Int32ElemRep
+  GHC.Int64ElemRep  -> Int64ElemRep
+  GHC.Word8ElemRep  -> Word8ElemRep
+  GHC.Word16ElemRep -> Word16ElemRep
+  GHC.Word32ElemRep -> Word32ElemRep
+  GHC.Word64ElemRep -> Word64ElemRep
+  GHC.FloatElemRep  -> FloatElemRep
+  GHC.DoubleElemRep -> DoubleElemRep
+
+cvtPrimRep :: GHC.PrimRep -> PrimRep
+cvtPrimRep = \case
+  GHC.VoidRep     -> VoidRep
+  GHC.LiftedRep   -> LiftedRep
+  GHC.UnliftedRep -> UnliftedRep
+  GHC.IntRep      -> IntRep
+  GHC.WordRep     -> WordRep
+  GHC.Int64Rep    -> Int64Rep
+  GHC.Word64Rep   -> Word64Rep
+  GHC.AddrRep     -> AddrRep
+  GHC.FloatRep    -> FloatRep
+  GHC.DoubleRep   -> DoubleRep
+  GHC.VecRep i e  -> VecRep i $ cvtPrimElemRep e
 
 cvtLitNumType :: GHC.LitNumType -> LitNumType
 cvtLitNumType = \case
@@ -72,7 +107,7 @@ cvtUnique u = Unique a b
 data Env
   = Env
   { envExternals  :: IntMap GHC.Id
-  , envDataCons   :: IntMap GHC.Name
+  , envDataCons   :: IntMap GHC.DataCon
   }
 
 emptyEnv :: Env
@@ -101,8 +136,9 @@ cvtVar x = do
 cvtBinder :: GHC.Id -> SBinder
 cvtBinder v
   | GHC.isId v = SBinder
-      { sbinderName  = occNameToText $ GHC.getOccName v
-      , sbinderId    = BinderId . cvtUnique . GHC.idUnique $ v
+      { sbinderName = occNameToText $ GHC.getOccName v
+      , sbinderId   = BinderId . cvtUnique . GHC.idUnique $ v
+      , sbinderRep  = typeToRep $ GHC.idType v
       }
   | otherwise = error $ "Type binder in STG: " ++ (show $ occNameToText $ GHC.getOccName v)
 
@@ -111,7 +147,7 @@ cvtDataCon x = do
   let name  = GHC.getName x
       key   = uniqueKey x
   new <- IntMap.notMember key <$> gets envDataCons
-  when new $ modify' $ \m@Env{..} -> m {envDataCons = IntMap.insert key name envDataCons}
+  when new $ modify' $ \m@Env{..} -> m {envDataCons = IntMap.insert key x envDataCons}
   pure . BinderId . cvtUnique . GHC.getUnique $ x
 
 cvtCCallTarget :: GHC.CCallTarget -> CCallTarget
@@ -166,8 +202,8 @@ cvtExpr :: GHC.StgExpr -> M SExpr
 cvtExpr = \case
   GHC.StgApp f ps         -> StgApp <$> cvtVar f <*> mapM cvtArg ps
   GHC.StgLit l            -> pure $ StgLit (cvtLit l)
-  GHC.StgConApp dc ps _   -> StgConApp <$> cvtDataCon dc <*> mapM cvtArg ps
-  GHC.StgOpApp o ps t     -> StgOpApp (cvtOp o) <$> mapM cvtArg ps <*> pure (cvtSDoc $ GHC.ppr t)
+  GHC.StgConApp dc ps ts  -> StgConApp <$> cvtDataCon dc <*> mapM cvtArg ps <*> pure (map (cvtSDoc . GHC.ppr) ts) <*> pure (map typeToRep ts)
+  GHC.StgOpApp o ps t     -> StgOpApp (cvtOp o) <$> mapM cvtArg ps <*> pure (cvtSDoc $ GHC.ppr t) <*> pure (typeToRep t)
   GHC.StgLam bs e         -> StgLam (map cvtBinder $ NonEmpty.toList bs) <$> cvtExpr e
   GHC.StgCase e b _ al    -> StgCase <$> cvtExpr e <*> pure (cvtBinder b) <*> mapM cvtAlt al
   GHC.StgLet b e          -> StgLet <$> cvtBind b <*> cvtExpr e
@@ -217,11 +253,13 @@ groupByModule = Map.toList . foldl' (\a (m,b) -> Map.insertWith (++) m [b] a) Ma
 mkExternalName :: GHC.Id -> (ModuleName, SBinder)
 mkExternalName x = (cvtModuleName $ GHC.moduleName $ GHC.nameModule $ GHC.getName x, cvtBinder x)
 
-mkDataCon :: GHC.Name -> (ModuleName, SBinder)
-mkDataCon x = (cvtModuleName $ GHC.moduleName $ GHC.nameModule x, b) where
+mkDataCon :: GHC.DataCon -> (ModuleName, SBinder)
+mkDataCon dc = (cvtModuleName $ GHC.moduleName $ GHC.nameModule x, b) where
+  x = GHC.getName dc
   b = SBinder
       { sbinderName = occNameToText $ GHC.getOccName x
       , sbinderId   = BinderId . cvtUnique . GHC.getUnique $ x
+      , sbinderRep  = typeToRep $ GHC.dataConRepType dc
       }
 
 topBindIds :: GHC.StgTopBinding -> [GHC.Id]

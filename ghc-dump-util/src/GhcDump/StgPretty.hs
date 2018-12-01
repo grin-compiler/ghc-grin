@@ -34,8 +34,11 @@ maybeParens :: Bool -> Doc -> Doc
 maybeParens True  = parens
 maybeParens False = id
 
+ppRep :: [PrimRep] -> Doc
+ppRep = comment . text . show
+
 pprBinder :: Binder -> Doc
-pprBinder b = (pretty . binderUniqueName $ b) <+> text "{-" <> text (show u) <> exported <> text "-}" where
+pprBinder b = (pretty . binderUniqueName $ b) <+> comment (text (show u) <> exported) <+> ppRep (binderRep b) where
   BinderId u  = binderId b
   exported    = if binderIsExported b then text " exported" else mempty
 
@@ -112,12 +115,12 @@ pprExpr' parens exp = case exp of
                                , indent 2 $ vcat $ map (pprAlt) alts
                                , "}"
                                ]
-  StgApp f args       -> maybeParens parens $ hang' (pprBinder f) 2 (sep $ map (pprArg) args)
-  StgOpApp op args ty -> maybeParens parens $ hang' (pprOp op <+> braces (pretty ty)) 2 (sep $ map (pprArg) args)
-  StgConApp dc args   -> maybeParens parens $ hang' (pretty dc) 2 (sep $ map (pprArg) args)
-  StgLam b x          -> maybeParens parens $ hang' ("\\" <+> sep (map (pprBinder) b) <+> smallRArrow) 2 (pprExpr' False x)
-  StgLet b e          -> maybeParens parens $ "let" <+> (align $ pprBinding b) <$$> "in" <+> align (pprExpr' False e)
-  StgLetNoEscape b e  -> maybeParens parens $ "lettail" <+> (align $ pprBinding b) <$$> "in" <+> align (pprExpr' False e)
+  StgApp f args         -> maybeParens parens $ hang' (pprBinder f) 2 (sep $ map (pprArg) args)
+  StgOpApp op args ty r -> maybeParens parens $ hang' (pprOp op <+> braces (pretty ty)) 2 (sep $ map (pprArg) args) <+> ppRep r
+  StgConApp dc args t r -> maybeParens parens $ hang' (pretty dc <+> comment (pretty t)) 2 (sep $ map (pprArg) args) <+> (hsep $ map ppRep r)
+  StgLam b x            -> maybeParens parens $ hang' ("\\" <+> sep (map (pprBinder) b) <+> smallRArrow) 2 (pprExpr' False x)
+  StgLet b e            -> maybeParens parens $ "let" <+> (align $ pprBinding b) <$$> "in" <+> align (pprExpr' False e)
+  StgLetNoEscape b e    -> maybeParens parens $ "lettail" <+> (align $ pprBinding b) <$$> "in" <+> align (pprExpr' False e)
 
 
 instance Pretty Expr where
