@@ -22,8 +22,7 @@ instance Show Unique where
  show (Unique c n) = c : show n
 
 data PrimRep
-  = NotRunimeRep T_Text
-  | VoidRep
+  = VoidRep
   | LiftedRep
   | UnliftedRep   -- ^ Unlifted pointer
   | IntRep        -- ^ Signed, word-sized value
@@ -49,6 +48,13 @@ data PrimElemRep
   | DoubleElemRep
   deriving (Eq, Ord, Generic, Show)
 
+data TypeInfo
+  = TypeInfo
+  { tRep   :: !(Maybe [PrimRep])
+  , tType  :: T_Text
+  }
+  deriving (Eq, Ord, Generic, Show)
+
 newtype ModuleName
   = ModuleName { getModuleName :: T_Text }
   deriving (Eq, Ord, Binary, Show)
@@ -61,7 +67,7 @@ data SBinder
   = SBinder
     { sbinderName :: !T_Text
     , sbinderId   :: !BinderId
-    , sbinderRep  :: [PrimRep]
+    , sbinderType :: !TypeInfo
     }
   deriving (Eq, Ord, Generic, Show)
 
@@ -69,7 +75,7 @@ data Binder
   = Binder
     { binderName        :: !T_Text
     , binderId          :: !BinderId
-    , binderRep         :: [PrimRep]
+    , binderType        :: !TypeInfo
     , binderModule      :: !ModuleName
     , binderIsTop       :: !Bool
     , binderIsExported  :: !Bool
@@ -142,13 +148,11 @@ data Expr' bndr occ
         -- which can't be let-bound first
   | StgConApp   occ        -- DataCon
                 [Arg' occ] -- Saturated
-                [T_Text]   -- types
-                [[PrimRep]]-- types rep
+                [TypeInfo] -- types
 
   | StgOpApp    StgOp      -- Primitive op or foreign call
                 [Arg' occ] -- Saturated.
-                T_Text     -- TODO: serialize type properly
-                [PrimRep]  -- result rep
+                TypeInfo   -- result type
 
   | StgLam
         [bndr]
@@ -259,6 +263,7 @@ data Module' bndr occ
 instance Binary Unique
 instance Binary PrimElemRep
 instance Binary PrimRep
+instance Binary TypeInfo
 instance Binary Binder
 instance Binary SBinder
 instance Binary LitNumType

@@ -40,7 +40,7 @@ reconLocalBinder (BinderMap n m) SBinder{..} = -- HINT: local binders only
   Binder
   { binderName        = sbinderName
   , binderId          = sbinderId
-  , binderRep         = sbinderRep
+  , binderType        = sbinderType
   , binderModule      = n
   , binderIsTop       = False
   , binderIsExported  = False
@@ -67,7 +67,7 @@ reconModule Module{..} = Module modulePhase moduleName moduleDependency exts con
       Binder
       { binderName        = sbinderName
       , binderId          = sbinderId
-      , binderRep         = sbinderRep
+      , binderType        = sbinderType
       , binderModule      = m
       , binderIsTop       = True
       , binderIsExported  = exported
@@ -98,8 +98,8 @@ reconExpr bm = \case
                                bm'  = insertBinder b' bm
                            in StgCase (reconExpr bm x) b' (map (reconAlt bm') alts)
   StgApp f args         -> StgApp (getBinder bm f) (map (reconArg bm) args)
-  StgOpApp op args t r  -> StgOpApp op (map (reconArg bm) args) t r
-  StgConApp dc args t r -> StgConApp (getBinder bm dc) (map (reconArg bm) args) t r
+  StgOpApp op args t    -> StgOpApp op (map (reconArg bm) args) t
+  StgConApp dc args t   -> StgConApp (getBinder bm dc) (map (reconArg bm) args) t
   StgLet b e            -> let (bm', b') = reconBinding bm b
                            in StgLet b' (reconExpr bm' e)
   StgLetNoEscape b e    -> let (bm', b') = reconBinding bm b

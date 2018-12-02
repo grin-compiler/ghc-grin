@@ -42,9 +42,9 @@ genName :: C.Binder -> CG Name
 genName = pure . packName . BS8.unpack . C.binderUniqueName
 
 isPointer :: C.Binder -> Bool
-isPointer b = case C.binderRep b of
-  [C.LiftedRep]   -> True
-  [C.UnliftedRep] -> True
+isPointer b = case C.tRep $ C.binderType b of
+  Just [C.LiftedRep]   -> True
+  Just [C.UnliftedRep] -> True
   _               -> False
 
 {-
@@ -86,8 +86,8 @@ visitExpr = \case
   C.StgLit lit          -> pure . Lit $ convertLit lit
   C.StgApp fun []       -> Var (isPointer fun) <$> genName fun
   C.StgApp fun args     -> App <$> genName fun <*> mapM visitArg args
-  C.StgConApp con args t r  -> Con <$> genConName con <*> mapM visitArg args
-  C.StgOpApp op args ty r   -> case op of
+  C.StgConApp con args t  -> Con <$> genConName con <*> mapM visitArg args
+  C.StgOpApp op args ty   -> case op of
     C.StgPrimOp prim  -> App ("_ghc_" <> (packName $ BS8.unpack prim) <> (TS.pack . show . P.braces $ P.pretty ty)) <$> mapM visitArg args
     C.StgPrimCallOp _ -> App ("_ghc__stg_primCall_TODO_" <> (TS.pack . show . P.braces $ P.pretty ty)) <$> mapM visitArg args -- TODO
     C.StgFCallOp f    -> App ("_ghc__stg_foreign_call " <> (TS.pack . show . P.pretty $ f) <> (TS.pack . show . P.braces $ P.pretty ty)) <$> mapM visitArg args -- TODO

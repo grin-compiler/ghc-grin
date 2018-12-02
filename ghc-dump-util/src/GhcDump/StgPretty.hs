@@ -34,13 +34,16 @@ maybeParens :: Bool -> Doc -> Doc
 maybeParens True  = parens
 maybeParens False = id
 
-ppRep :: [PrimRep] -> Doc
-ppRep = comment . text . show
+ppTypeInfo :: TypeInfo -> Doc
+ppTypeInfo = comment . text . show
 
 pprBinder :: Binder -> Doc
-pprBinder b = (pretty . binderUniqueName $ b) <+> comment (text (show u) <> exported) <+> ppRep (binderRep b) where
+pprBinder b = (pretty . binderUniqueName $ b) <+> comment (text (show u) <> exported) <+> ppTypeInfo (binderType b) where
   BinderId u  = binderId b
   exported    = if binderIsExported b then text " exported" else mempty
+
+instance Pretty TypeInfo where
+    pretty = ppTypeInfo
 
 instance Pretty T_Text where
     pretty = text . BS.unpack
@@ -116,8 +119,8 @@ pprExpr' parens exp = case exp of
                                , "}"
                                ]
   StgApp f args         -> maybeParens parens $ hang' (pprBinder f) 2 (sep $ map (pprArg) args)
-  StgOpApp op args ty r -> maybeParens parens $ hang' (pprOp op <+> braces (pretty ty)) 2 (sep $ map (pprArg) args) <+> ppRep r
-  StgConApp dc args t r -> maybeParens parens $ hang' (pretty dc <+> comment (pretty t)) 2 (sep $ map (pprArg) args) <+> (hsep $ map ppRep r)
+  StgOpApp op args ty   -> maybeParens parens $ hang' (pprOp op <+> braces (pretty ty)) 2 (sep $ map (pprArg) args)
+  StgConApp dc args t   -> maybeParens parens $ hang' (pretty dc <+> comment (pretty t)) 2 (sep $ map (pprArg) args)
   StgLam b x            -> maybeParens parens $ hang' ("\\" <+> sep (map (pprBinder) b) <+> smallRArrow) 2 (pprExpr' False x)
   StgLet b e            -> maybeParens parens $ "let" <+> (align $ pprBinding b) <$$> "in" <+> align (pprExpr' False e)
   StgLetNoEscape b e    -> maybeParens parens $ "lettail" <+> (align $ pprBinding b) <$$> "in" <+> align (pprExpr' False e)

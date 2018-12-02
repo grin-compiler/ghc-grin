@@ -43,10 +43,13 @@ fastStringToText = GHC.fastStringToByteString
 occNameToText :: GHC.OccName -> T_Text
 occNameToText = GHC.fastStringToByteString . GHC.occNameFS
 
-typeToRep :: GHC.Type -> [PrimRep]
-typeToRep t
-  | not $ GHC.resultIsLevPoly t = map cvtPrimRep . GHC.typePrimRepArgs $ t
-  | otherwise = [NotRunimeRep . cvtSDoc . GHC.ppr $ t]
+typeToRep :: GHC.Type -> TypeInfo
+typeToRep t = TypeInfo
+  { tType = cvtSDoc . GHC.ppr $ t
+  , tRep  = if GHC.resultIsLevPoly t
+              then Nothing
+              else Just . map cvtPrimRep . GHC.typePrimRep $ t
+  }
 
 cvtSDoc :: GHC.SDoc -> T_Text
 cvtSDoc = BS8.pack . GHC.showSDoc GHC.unsafeGlobalDynFlags
@@ -138,7 +141,7 @@ cvtBinder v
   | GHC.isId v = SBinder
       { sbinderName = occNameToText $ GHC.getOccName v
       , sbinderId   = BinderId . cvtUnique . GHC.idUnique $ v
-      , sbinderRep  = typeToRep $ GHC.idType v
+      , sbinderType = typeToRep $ GHC.idType v
       }
   | otherwise = error $ "Type binder in STG: " ++ (show $ occNameToText $ GHC.getOccName v)
 
@@ -202,8 +205,8 @@ cvtExpr :: GHC.StgExpr -> M SExpr
 cvtExpr = \case
   GHC.StgApp f ps         -> StgApp <$> cvtVar f <*> mapM cvtArg ps
   GHC.StgLit l            -> pure $ StgLit (cvtLit l)
-  GHC.StgConApp dc ps ts  -> StgConApp <$> cvtDataCon dc <*> mapM cvtArg ps <*> pure (map (cvtSDoc . GHC.ppr) ts) <*> pure (map typeToRep ts)
-  GHC.StgOpApp o ps t     -> StgOpApp (cvtOp o) <$> mapM cvtArg ps <*> pure (cvtSDoc $ GHC.ppr t) <*> pure (typeToRep t)
+  GHC.StgConApp dc ps ts  -> StgConApp <$> cvtDataCon dc <*> mapM cvtArg ps <*> pure (map typeToRep ts)
+  GHC.StgOpApp o ps t     -> StgOpApp (cvtOp o) <$> mapM cvtArg ps <*> pure (typeToRep t)
   GHC.StgLam bs e         -> StgLam (map cvtBinder $ NonEmpty.toList bs) <$> cvtExpr e
   GHC.StgCase e b _ al    -> StgCase <$> cvtExpr e <*> pure (cvtBinder b) <*> mapM cvtAlt al
   GHC.StgLet b e          -> StgLet <$> cvtBind b <*> cvtExpr e
@@ -259,7 +262,7 @@ mkDataCon dc = (cvtModuleName $ GHC.moduleName $ GHC.nameModule x, b) where
   b = SBinder
       { sbinderName = occNameToText $ GHC.getOccName x
       , sbinderId   = BinderId . cvtUnique . GHC.getUnique $ x
-      , sbinderRep  = typeToRep $ GHC.dataConRepType dc
+      , sbinderType = typeToRep $ GHC.dataConRepType dc
       }
 
 topBindIds :: GHC.StgTopBinding -> [GHC.Id]
