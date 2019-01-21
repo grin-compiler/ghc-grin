@@ -129,7 +129,7 @@ genExp = hyloM folder builder where
   builder (mode, lambdaExp) = gets _arityMap >>= \arityMap -> case lambdaExp of
     AppExp {} -> error "grin codegen - illegal expression: AppExp"
     Lam {}    -> error "grin codegen - illegal expression: Lam"
-    Program defs      -> pure . G $ G.ProgramF [(mode, d) | d <- defs]
+    Program exts defs -> pure . G $ G.ProgramF exts [(mode, d) | d <- defs]
     Def name args exp -> pure . G $ G.DefF name args (mode, exp)
     Alt pat exp       -> pure . G $ G.AltF (genCPat pat) (mode, exp)
     Lit lit           -> pure . G . G.SReturnF . G.Lit $ genLit lit
@@ -200,7 +200,7 @@ codegenGrin exp = evalState (evalStateT (genExp (R, exp)) (Env (buildArityMap ex
 
 -- HINT: arity map for lambda
 buildArityMap :: Program -> Map Name Int
-buildArityMap (Program defs) = Map.fromList [(name, length args) | Def name args _ <- defs]
+buildArityMap (Program _ defs) = Map.fromList [(name, length args) | Def name args _ <- defs]
 buildArityMap _ = error "invalid expression, program expected"
 
 {-

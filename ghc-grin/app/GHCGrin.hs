@@ -14,7 +14,7 @@ import GhcDump.StgUtil
 import Lambda.FromStg
 import Lambda.Syntax
 import Lambda.Pretty
-import Lambda.GrinCodeGen
+--import Lambda.GrinCodeGen
 import Lambda.Lint
 import Lambda.StaticSingleAssignment
 import Lambda.ClosureConversion
@@ -81,7 +81,7 @@ cg_main opts = do
   -- compile pruned program
   defList <- forM prunedDeps $ \fname -> do
     stgModule <- readDump fname
-    program@(Program defs) <- codegenLambda stgModule
+    program@(Program exts defs) <- codegenLambda stgModule
 
     let lambdaName = replaceExtension fname "lambda"
     writeFile lambdaName . show . plain $ pretty program
@@ -97,15 +97,15 @@ cg_main opts = do
       , PrintGrin ondullblack
       ]
     -}
-  let sortDefs (Program defs) = Program . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
-      wholeProgramBloat = eliminateLams [] $ singleStaticAssignment $ Program $ concat defList
+  let sortDefs (Program exts defs) = Program exts . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
+      wholeProgramBloat = eliminateLams [] $ singleStaticAssignment $ Program [{-TODO: exts-}] $ concat defList
       wholeProgram      = sortDefs $ deadFunctionElimination wholeProgramBloat
       output_fn         = output opts
   writeFile (output_fn ++ ".lambda") . show . plain $ pretty wholeProgram
   lintLambda wholeProgram
   printf "all: %d pruned: %d\n" (length $ inputs opts) (length prunedDeps)
-  let Program defsStripped  = wholeProgram
-      Program defsBloat     = wholeProgramBloat
+  let Program extsStripped  defsStripped  = wholeProgram
+      Program extsBloat     defsBloat     = wholeProgramBloat
       conDefCount           = length [() | Def _ _ (Con{}) <- defsStripped]
   printf "bloat    lambda def count: %d\n" (length defsBloat)
   printf "stripped lambda def count: %d\n" (length defsStripped)

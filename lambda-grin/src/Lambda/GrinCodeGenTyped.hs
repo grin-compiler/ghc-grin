@@ -270,7 +270,7 @@ remapNames prog names = do
 genProgram :: Program -> CG G.Program
 genProgram prog' = do
   prog <- remapNames prog' ["apply", "eval", "grinMain"]
-  let Program defs = prog
+  let Program exts defs = prog
   grinDefs <- forM defs $ \(Def name args exp) -> do
     clearState
     result <- genExp exp
@@ -280,9 +280,10 @@ genProgram prog' = do
   evalFun <- lift $ genEval mempty "eval" grinDefs
   applyDef <- lift $ genApply mempty "apply" grinDefs
 
-  let G.Program ghcPrimDefs = ghcPrimOps
+  let G.Program ghcPrimExts ghcPrimDefs = ghcPrimOps
+      exts' = map genExternal exts
 
-  pure . staticSingleAssignment $ G.Program $ ghcPrimDefs ++ evalFun : applyDef : grinDefs
+  pure . staticSingleAssignment $ G.Program (ghcPrimExts ++ exts') $ ghcPrimDefs ++ evalFun : applyDef : grinDefs
 
 codegenGrin :: Program -> G.Program
 codegenGrin exp = evalState (evalStateT (genProgram exp) emptyEnv) (mkNameEnv exp) where
@@ -294,5 +295,30 @@ codegenGrin exp = evalState (evalStateT (genProgram exp) emptyEnv) (mkNameEnv ex
 
 -- HINT: arity map for lambda
 buildArityMap :: Program -> Map Name Int
-buildArityMap (Program defs) = Map.fromList [(name, length args) | Def name args _ <- defs]
+buildArityMap (Program exts defs) = Map.fromList $ [(name, length args) | Def name args _ <- defs] ++ [] -- TODO: primops
 buildArityMap _ = error "invalid expression, program expected"
+
+genExternal :: External -> G.External
+genExternal External{..} =
+  G.External
+  { G.eName       = eName
+  , G.eRetType    = genTy eRetType
+  , G.eArgsType   = map genTy eArgsType
+  , G.eEffectful  = eEffectful
+  }
+
+genTy :: Ty -> G.Ty
+genTy = \case
+  TyCon n tys   -> G.TyCon n (map genTy tys)
+  TyVar n       -> G.TyVar n
+  TySimple sTy  -> G.TySimple (genSimpleType sTy)
+
+genSimpleType :: SimpleType -> G.SimpleType
+genSimpleType = \case
+  T_Int64   -> G.T_Int64
+  T_Word64  -> G.T_Word64
+  T_Float   -> G.T_Float
+  T_Bool    -> G.T_Bool
+  T_Unit    -> G.T_Unit
+  T_String  -> G.T_String
+  T_Char    -> G.T_Char

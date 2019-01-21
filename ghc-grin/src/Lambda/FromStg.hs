@@ -140,4 +140,4 @@ codegenLambda mod = do
   unless (Set.null dataCons) $ do
     printf "%s data constructors:\n%s" modName  (unlines . map (("  "++).unpackName) . Set.toList $ dataCons)
   -}
-  pure . Program $ defs
+  pure . Program [] $ defs

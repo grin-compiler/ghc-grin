@@ -16,15 +16,15 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:
-    Lambda.GrinCodeGen
-    Lambda.GrinCodeGenUnboxed
-    Lambda.GrinCodeGenBoxed
+    --Lambda.GrinCodeGen
+    --Lambda.GrinCodeGenUnboxed
+    --Lambda.GrinCodeGenBoxed
     Lambda.GrinCodeGenTyped
     Lambda.Parse
     Lambda.Pretty
     Lambda.PrimOps
     Lambda.GhcPrimOps
-    Lambda.GhcPrimOpsBoxed
+    --Lambda.GhcPrimOpsBoxed
     Lambda.Syntax
     Lambda.Util
     Lambda.Lint
@@ -44,6 +44,7 @@ library
     , megaparsec
     , text-short
     , text
+    , vector
 
   default-language:    Haskell2010
 

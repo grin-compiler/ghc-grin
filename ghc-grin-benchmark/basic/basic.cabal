@@ -90,3 +90,11 @@ executable basic06_opt
   main-is:        basic06.hs
   ghc-options:    -O
   c-sources:      clib.c
+
+-- opt
+
+executable ffi00_opt
+  build-depends:  base
+  main-is:        ffi00.hs
+  ghc-options:    -O
+  c-sources:      clib.c

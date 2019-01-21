@@ -4,6 +4,7 @@ resolver: nightly-2018-11-07
 allow-newer: true
 
 packages:
+  - 'ghc-primop'
   - 'ghc-dump-core'
   - 'ghc-dump-util'
   - 'ghc-grin'
@@ -11,14 +12,16 @@ packages:
 #  - '../grin/grin'
   - location:
       git: https://github.com/grin-tech/grin
-      commit: 05983c972880884780bf2c66324fd7da6a55841a
+      commit: f8ace8188f61bb28bf480f691ed1c65aa1eccf67
     subdirs:
       - grin
     extra-dep: true
 
   - location:
-      git: https://github.com/llvm-hs/llvm-hs-pretty
-      commit: 0d04346ea179e96797a284d094e44e538fbddcf2
+      git: https://github.com/csabahruska/llvm-hs.git
+      commit: 37aaa694d2f7907634f7af602d9aae125101db8d
+    subdirs:
+      - llvm-hs
     extra-dep: true
 
 
@@ -28,6 +31,7 @@ extra-deps:
   - megaparsec-6.5.0
   - neat-interpolation-0.3.2.2
   - set-extra-1.4.1
+  - llvm-hs-pretty-0.6.1.0
 
 flags:
   llvm-hs:

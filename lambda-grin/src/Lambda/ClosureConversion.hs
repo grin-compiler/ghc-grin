@@ -84,7 +84,7 @@ smash = cata folder where
     e                   -> embed e
 -}
 eliminateLams :: [Name] -> Program -> Program
-eliminateLams globals prg@(Program defs) = Program $ defs' ++ envClosures where
-  (Program defs', Env{..}) = evalState (runStateT (liftLam{- . smash . closConv (defNames ++ globals)-} $ prg) emptyEnv) (mkNameEnv prg)
+eliminateLams globals prg@(Program exts defs) = Program exts $ defs' ++ envClosures where
+  (Program exts defs', Env{..}) = evalState (runStateT (liftLam{- . smash . closConv (defNames ++ globals)-} $ prg) emptyEnv) (mkNameEnv prg)
   defNames = [n | Def n _ _ <- defs]
   emptyEnv = Env [] ""

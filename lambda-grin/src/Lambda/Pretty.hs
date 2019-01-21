@@ -1,14 +1,18 @@
 {-# LANGUAGE LambdaCase, RecordWildCards #-}
 module Lambda.Pretty
   ( printLambda
+  , prettyExternals
   ) where
+
+import qualified Data.Vector as V
+import Data.List (groupBy)
 
 import Data.Functor.Foldable as Foldable
 import Text.PrettyPrint.ANSI.Leijen
 
 import Lambda.Syntax
 import Grin.Grin (isPrimName)
-import Grin.Pretty ()
+import Grin.Pretty (prettyFunction)
 
 printLambda :: Exp -> IO ()
 printLambda exp = putDoc (pretty exp) >> putStrLn ""
@@ -25,7 +29,7 @@ comment d = text "{-" <+> d <+> text "-}"
 instance Pretty Exp where
   pretty = cata folder where
     folder = \case
-      ProgramF defs       -> vcat (map pretty defs)
+      ProgramF exts defs  -> vcat (prettyExternals exts : map pretty defs)
       DefF name args exp  -> hsep (pretty name : map pretty args) <+> text "=" <$$> indent 2 (pretty exp) <> line
       -- Exp
       AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : text "@" : map pretty args)
@@ -59,3 +63,19 @@ instance Pretty Pat where
     NodePat tag vars  -> parens $ hsep (pretty tag : map pretty vars)
     LitPat  lit       -> pretty lit
     DefaultPat        -> keyword "_"
+
+prettyExternals :: [External] -> Doc
+prettyExternals exts = vcat (map prettyExtGroup $ groupBy (\a b -> eEffectful a == eEffectful b) exts) where
+  prettyExtGroup [] = mempty
+  prettyExtGroup l@(a : _) = keyword "primop" <+> (if eEffectful a then keyword "effectful" else keyword "pure") <$$> indent 2
+    (vsep [prettyFunction (eName, (eRetType, V.fromList eArgsType)) | External{..} <- l] <> line)
+
+instance Pretty Ty where
+  pretty = \case
+    TyCon name tys      -> braces . hsep $ (green $ pretty name) : map pretty tys
+    TyVar name          -> text "%" <> cyan (pretty name)
+    TySimple simpleType -> pretty simpleType
+
+instance Pretty SimpleType where
+  pretty = \case
+    ty -> red $ text $ show ty

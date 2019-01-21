@@ -100,7 +100,7 @@ literal = (try $ LFloat . realToFrac <$> signedFloat) <|>
 
 
 lambdaModule :: Parser Program
-lambdaModule = Program <$> some def <* sc <* eof
+lambdaModule = Program [{-TODO-}] <$> some def <* sc <* eof
 
 parseLambda :: String -> Text -> Either (ParseError Char Void) Program
 parseLambda filename content = runParser lambdaModule filename content

@@ -20,13 +20,39 @@ import qualified Grin.Grin as Grin
 
 type Name = Grin.Name
 
+data Ty
+  = TyCon     Name [Ty]
+  | TyVar     Name
+  | TySimple  SimpleType
+  deriving (Generic, Eq, Ord, Show)
+
+data SimpleType
+  = T_Int64
+  | T_Word64
+  | T_Float
+  | T_Double
+  | T_Bool
+  | T_Unit
+  | T_String
+  | T_Char
+  deriving (Generic, Eq, Ord, Show)
+
+data External
+  = External
+  { eName       :: Name
+  , eRetType    :: Ty
+  , eArgsType   :: [Ty]
+  , eEffectful  :: Bool
+  }
+  deriving (Generic, Eq, Ord, Show)
+
 type Atom = Exp
 type Alt = Exp
 type Def = Exp
 type Program = Exp
 
 data Exp
-  = Program     [Def]
+  = Program     [External] [Def]
   -- Binding
   | Def         Name [Name] Exp
   -- Exp
@@ -75,3 +101,6 @@ makeBaseFunctor ''Exp
 instance Binary Exp
 instance Binary Lit
 instance Binary Pat
+instance Binary Ty
+instance Binary SimpleType
+instance Binary External

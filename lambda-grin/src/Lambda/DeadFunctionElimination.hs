@@ -13,7 +13,7 @@ import qualified Data.Foldable
 import Lambda.Syntax
 
 deadFunctionElimination :: Program -> Program
-deadFunctionElimination (Program defs) = Program [def | def@(Def name _ _) <- defs, Set.member name liveDefs] where
+deadFunctionElimination (Program exts defs) = Program exts [def | def@(Def name _ _) <- defs, Set.member name liveDefs] where
   defMap :: Map Name Def
   defMap = Map.fromList [(name, def) | def@(Def name _ _) <- defs]
 

@@ -325,7 +325,7 @@ remapNames prog names = do
 genProgram :: Program -> CG G.Program
 genProgram prog' = do
   prog <- remapNames prog' ["apply", "eval", "grinMain"]
-  let Program defs = prog
+  let Program exts defs = prog
   grinDefs <- forM defs $ \(Def name args exp) -> do
     clearState
     forM_ args $ \n -> addRepr n $ ptrN n
@@ -336,9 +336,9 @@ genProgram prog' = do
   evalFun <- lift $ genEval mempty "eval" grinDefs
   applyDef <- lift $ genApply mempty "apply" grinDefs
 
-  let G.Program ghcPrimDefs = ghcPrimOps
+  let G.Program ghcPrimExts ghcPrimDefs = ghcPrimOps
 
-  pure . staticSingleAssignment $ G.Program $ ghcPrimDefs ++ evalFun : applyDef : grinDefs
+  pure . staticSingleAssignment $ G.Program (ghcPrimExts ++ exts) $ ghcPrimDefs ++ evalFun : applyDef : grinDefs
 
 codegenGrin :: Program -> G.Program
 codegenGrin exp = evalState (evalStateT (genProgram exp) emptyEnv) (mkNameEnv exp) where
@@ -350,5 +350,5 @@ codegenGrin exp = evalState (evalStateT (genProgram exp) emptyEnv) (mkNameEnv ex
 
 -- HINT: arity map for lambda
 buildArityMap :: Program -> Map Name Int
-buildArityMap (Program defs) = Map.fromList [(name, length args) | Def name args _ <- defs]
+buildArityMap (Program _ defs) = Map.fromList [(name, length args) | Def name args _ <- defs]
 buildArityMap _ = error "invalid expression, program expected"
