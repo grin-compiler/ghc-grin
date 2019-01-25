@@ -55,8 +55,8 @@ instance Pretty Lit where
     LBool a   -> text "#" <> text (show a)
     LChar a   -> text "#" <> text (show a)
     LString a -> text "#" <> text (show a)
-    LDummy a  -> red $ text "%" <> pretty a
-    LError a  -> red $ text "!" <> pretty a
+--    LDummy a  -> red $ text "%" <> pretty a
+    LError a  -> red $ text "!" <> text (show a)
 
 instance Pretty Pat where
   pretty = \case

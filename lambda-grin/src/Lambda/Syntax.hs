@@ -15,7 +15,7 @@ import Data.ByteString (ByteString)
 import Data.Functor.Foldable as Foldable
 import Data.Functor.Foldable.TH
 import Data.Binary
-import Data.Text.Short (ShortText)
+import Data.Text (Text)
 import qualified Grin.Grin as Grin
 
 type Name = Grin.Name
@@ -35,6 +35,7 @@ data SimpleType
   | T_Unit
   | T_String
   | T_Char
+  | T_Addr
   deriving (Generic, Eq, Ord, Show)
 
 data External
@@ -84,8 +85,8 @@ data Lit
   | LLabelAddr  ByteString
   | LNullAddr
   -- special
-  | LError  ShortText  -- marks an error
-  | LDummy  ShortText  -- should be ignored
+  | LError  Text  -- marks an error ; dead code elimination may elminate
+--  | LDummy  Text  -- should be ignored
   deriving (Generic, Eq, Ord, Show)
 
 data Pat

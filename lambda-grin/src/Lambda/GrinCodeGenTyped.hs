@@ -9,7 +9,7 @@ import Text.Printf
 import Control.Monad
 import Control.Monad.State
 
-import qualified Data.Text.Short as TS
+import Data.List (isPrefixOf)
 import Data.Foldable
 import Data.Map (Map)
 import qualified Data.Map as Map
@@ -171,7 +171,7 @@ genLazyExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
   exp -> error $ "genLazyExp: " ++ show exp
 
 isGhcPrim :: Name -> Bool
-isGhcPrim = TS.isPrefixOf "_ghc_"
+isGhcPrim = isPrefixOf "_ghc_" . unpackName
 
 genStrictExp :: Exp -> CG G.SimpleExp
 genStrictExp lambdaExp = get >>= \Env{..} -> case lambdaExp of

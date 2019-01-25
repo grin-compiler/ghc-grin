@@ -2,7 +2,7 @@
 
 module Lambda.Parse (parseLambda) where
 
-import qualified Data.Text.Short as TS
+import qualified Data.Text as T
 import Data.Text (Text)
 import qualified Data.ByteString.Char8 as BS8
 import Data.Void
@@ -41,7 +41,7 @@ kw w = lexeme $ string w
 op w = L.symbol sc' w
 
 var :: Parser Name
-var = try $ lexeme ((\c s -> TS.cons c $ packName s) <$> lowerChar <*> many (alphaNumChar <|> oneOf ("'_.:!@{}$-" :: String))) >>= \x -> case Set.member x keywords of
+var = try $ lexeme ((\c s -> packName $ c:s) <$> lowerChar <*> many (alphaNumChar <|> oneOf ("'_.:!@{}$-" :: String))) >>= \x -> case Set.member x keywords of
   True -> fail $ "keyword: " ++ unpackName x
   False -> pure x
 

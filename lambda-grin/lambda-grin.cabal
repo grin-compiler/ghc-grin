@@ -42,7 +42,6 @@ library
     , recursion-schemes
     , ansi-wl-pprint
     , megaparsec
-    , text-short
     , text
     , vector
 

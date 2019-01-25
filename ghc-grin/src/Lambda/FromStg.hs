@@ -3,11 +3,13 @@ module Lambda.FromStg (codegenLambda) where
 
 import Data.Set (Set)
 import qualified Data.Set as Set
+import Data.Map (Map)
+import qualified Data.Map as Map
 import Control.Monad
 import Control.Monad.State
 import Text.Printf
 import qualified Data.ByteString.Char8 as BS8
-import qualified Data.Text.Short as TS
+import qualified Data.Text as T
 
 -- GHC Dump
 import qualified GhcDump_StgAst as C
@@ -24,10 +26,11 @@ data Env
   = Env
   { moduleName  :: Name
   , dataCons    :: Set Name
+  , externals   :: Map Name External
   }
 
 convertUnique :: C.Unique -> Name
-convertUnique (C.Unique c i) = TS.cons c $ showTS i
+convertUnique (C.Unique c i) = packName $  c : show i
 
 genConName :: C.Binder -> CG Name
 genConName b = do
@@ -38,6 +41,9 @@ genConName b = do
     modify $ \env@Env{..} -> env {dataCons = Set.insert name dataCons}
   pure name
 
+addExternal :: External -> CG ()
+addExternal ext = modify $ \env@Env{..} -> env {externals = Map.insert (eName ext) ext externals}
+
 genName :: C.Binder -> CG Name
 genName = pure . packName . BS8.unpack . C.binderUniqueName
 
@@ -47,12 +53,47 @@ isPointer b = case C.tRep $ C.binderType b of
   Just [C.UnliftedRep] -> True
   _               -> False
 
-{-
-TODO - support these:
-data Lit = MachNullAddr
-         | MachLabel T_Text
-         | LitInteger Integer
--}
+litType :: C.Lit -> SimpleType
+litType = \case
+  C.MachChar{}    -> T_Char
+  C.MachStr{}     -> T_Addr
+  C.MachNullAddr  -> T_Addr
+  C.MachFloat{}   -> T_Float
+  C.MachDouble{}  -> T_Double
+  C.MachLabel{}   -> T_Addr
+  C.LitNumber t _ -> case t of
+    C.LitNumInteger -> T_Int64
+    C.LitNumNatural -> T_Int64
+    C.LitNumInt     -> T_Int64
+    C.LitNumInt64   -> T_Int64
+    C.LitNumWord    -> T_Word64
+    C.LitNumWord64  -> T_Word64
+
+repType :: C.PrimRep -> Maybe SimpleType
+repType = \case
+  C.IntRep    -> Just T_Int64
+  C.WordRep   -> Just T_Word64
+  C.Int64Rep  -> Just T_Int64
+  C.Word64Rep -> Just T_Word64
+  C.AddrRep   -> Just T_Addr
+  C.FloatRep  -> Just T_Float
+  C.DoubleRep -> Just T_Double
+
+  -- NOTE:
+  --  1. FFI does not support thunks and boxed types
+  --  2. VecRep is not supported yet
+  _ -> Nothing
+
+typeInfoType :: C.TypeInfo -> Maybe SimpleType
+typeInfoType ti = case filter (/= C.VoidRep) <$> C.tRep ti of
+  Just [t]  -> repType t
+  _         -> Nothing
+
+ffiArgType :: C.Arg -> Maybe SimpleType
+ffiArgType = \case
+  C.StgLitArg l -> Just $ litType l
+  C.StgVarArg b -> typeInfoType $ C.binderType b
+
 convertLit :: C.Lit -> Lit
 convertLit = \case
   C.LitNumber t i -> case t of
@@ -66,7 +107,8 @@ convertLit = \case
   C.MachDouble  f -> LFloat $ realToFrac f
   C.MachStr     s -> LString s
   C.MachChar    c -> LChar c
-  lit -> LError . showTS $ lit
+  C.MachLabel   l -> LLabelAddr l
+  C.MachNullAddr  -> LNullAddr
 
 visitAlt :: C.Alt -> CG Alt
 visitAlt (C.Alt altCon argIds body) = do
@@ -88,9 +130,31 @@ visitExpr = \case
   C.StgApp fun args     -> App <$> genName fun <*> mapM visitArg args
   C.StgConApp con args t  -> Con <$> genConName con <*> mapM visitArg args
   C.StgOpApp op args ty   -> case op of
-    C.StgPrimOp prim  -> App ("_ghc_" <> (packName $ BS8.unpack prim) <> (TS.pack . show . P.braces $ P.pretty ty)) <$> mapM visitArg args
-    C.StgPrimCallOp _ -> App ("_ghc__stg_primCall_TODO_" <> (TS.pack . show . P.braces $ P.pretty ty)) <$> mapM visitArg args -- TODO
-    C.StgFCallOp f    -> App ("_ghc__stg_foreign_call " <> (TS.pack . show . P.pretty $ f) <> (TS.pack . show . P.braces $ P.pretty ty)) <$> mapM visitArg args -- TODO
+    {-
+      TODO:
+        collect externals
+    -}
+    {-
+    C.StgPrimOp prim -> do
+      let name = "_ghc_" <> (packName $ BS8.unpack prim)
+      -- TODO: lookup primop
+      addExternal name argsTy retTy False -- TODO
+      App name <$> mapM visitArg args
+    -}
+    C.StgPrimCallOp _ -> pure . Lit $ LError "GHC PrimCallOp is not supported"
+    C.StgFCallOp f@C.ForeignCall{..} -> case foreignCTarget of
+      C.DynamicTarget -> pure . Lit $ LError "GHC FCallOp with DynamicTarget is not supported"
+      C.StaticTarget labelName -> case (typeInfoType ty, mapM ffiArgType args) of
+        (Just retTy, Just argsTy) -> do
+          let name = packName $ BS8.unpack labelName
+          addExternal External
+            { eName       = name
+            , eRetType    = TySimple retTy      -- TODO: wrap with unboxed tuple
+            , eArgsType   = map TySimple argsTy -- TODO: wrap with unboxed tuple???
+            , eEffectful  = True
+            }
+          App name <$> mapM visitArg args
+        _ -> pure . Lit . LError $ "Invalid foreign call type: " <> (T.pack . show . P.pretty $ f) <> (T.pack . show . P.braces $ P.pretty ty)
 
   C.StgCase expr result alts  -> do
     scrutName <- genName result
@@ -135,7 +199,7 @@ visitModule C.Module{..} = concat <$> mapM visitTopBinder moduleTopBindings
 codegenLambda :: C.Module -> IO Program
 codegenLambda mod = do
   let modName   = packName . BS8.unpack . C.getModuleName $ C.moduleName mod
-  (defs, Env{..}) <- runStateT (visitModule mod) (Env modName mempty)
+  (defs, Env{..}) <- runStateT (visitModule mod) (Env modName mempty mempty)
   {-
   unless (Set.null dataCons) $ do
     printf "%s data constructors:\n%s" modName  (unlines . map (("  "++).unpackName) . Set.toList $ dataCons)
