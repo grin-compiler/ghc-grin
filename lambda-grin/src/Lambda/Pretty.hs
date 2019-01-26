@@ -12,7 +12,7 @@ import Text.PrettyPrint.ANSI.Leijen
 
 import Lambda.Syntax
 import Grin.Grin (isPrimName)
-import Grin.Pretty (prettyFunction)
+import Grin.Pretty ()
 
 printLambda :: Exp -> IO ()
 printLambda exp = putDoc (pretty exp) >> putStrLn ""
@@ -66,9 +66,16 @@ instance Pretty Pat where
 
 prettyExternals :: [External] -> Doc
 prettyExternals exts = vcat (map prettyExtGroup $ groupBy (\a b -> eEffectful a == eEffectful b) exts) where
+  maxWidth = 80
   prettyExtGroup [] = mempty
-  prettyExtGroup l@(a : _) = keyword "primop" <+> (if eEffectful a then keyword "effectful" else keyword "pure") <$$> indent 2
-    (vsep [prettyFunction (eName, (eRetType, V.fromList eArgsType)) | External{..} <- l] <> line)
+  prettyExtGroup l@(a : _)
+    | maxLen <- maximum [length . show . pretty $ eName e | e <- exts]
+    , width  <- min maxLen maxWidth
+    = keyword "primop" <+> (if eEffectful a then keyword "effectful" else keyword "pure") <$$> indent 2
+        (vsep [prettyFunction width eName eRetType eArgsType | External{..} <- l] <> line)
+
+prettyFunction :: Pretty a => Int -> Name -> a -> [a] -> Doc
+prettyFunction width name ret args = fill width (pretty name) <> align (encloseSep (text " :: ") empty (text " -> ") (map pretty $ args ++ [ret]))
 
 instance Pretty Ty where
   pretty = \case
