@@ -20,9 +20,6 @@ import qualified Data.Set as Set
 import Data.Map (Map)
 import qualified Data.Map as Map
 
-prettyFunction :: Pretty a => Name -> a -> [a] -> Doc
-prettyFunction name ret args = pretty name <> align (encloseSep (text " :: ") empty (text " -> ") (map pretty $ args ++ [ret]))
-
 readInfo :: IO Info
 readInfo = do
   s <- readFile "primops.txt"
@@ -39,74 +36,11 @@ isMonomorph = \case
   TyVar {} -> False
   TyUTup a -> all isMonomorph a
 
-
-
-test = do
-  i <- readInfo
-  let Info ol el = i
-      ops   = [e | e@PrimOpSpec{} <- el]
-      mops  = [e | e@(PrimOpSpec _ n t _ _ _) <- el, isMonomorph t]
-      tys   = [e | e@PrimTypeSpec{} <- el]
-  --putStrLn " * Monomorph primops *"
-  --putStrLn $ unlines [n ++ "\t\t\t" ++ show t | PrimOpSpec _ n t _ _ _ <- el, isMonomorph t]
-  --putStrLn "\n-------------------------------\n"
-  --putStrLn " * Polymorph primops *"
-  --putStrLn $ unlines [n | PrimOpSpec _ n t _ d _ <- el, not $ isMonomorph t]
-  printf "all ops: %d\nmonomorph ops: %d\npolymorph: %d\n" (length ops) (length mops) (length ops - length mops)
-  putStrLn " * Monomorph primtypes *"
-  putStrLn $ unlines [show t | PrimTypeSpec t _ _ <- tys, isMonomorph t]
-  putStrLn " * Polymorph primtypes *"
-  putStrLn $ unlines [show t | PrimTypeSpec t _ _ <- tys, not $ isMonomorph t]
-  pure ()
-
-  let defaults = ol
-  -- NOTE: assumtion - default has_side_effects = False
-  let primExtsMono = [e | PrimOpSpec _ n t _ _ _ <- el, isMonomorph t, e <- maybeToList $ cvtExternal n t False]
-      primExtsPoly = [e | PrimOpSpec _ n t _ _ _ <- el, not $ isMonomorph t, e <- maybeToList $ cvtExternal n t False]
-      primExts = primExtsMono ++ primExtsPoly
-      ok = Set.fromList [unpackName $ eName e | e <- primExts]
-  putStrLn " * Monomorph primtypes *"
-  print $ length primExtsMono
-  print $ L.prettyExternals primExtsMono
-  putStrLn " * Polymorph primtypes *"
-  print $ length primExtsPoly
-  print $ L.prettyExternals primExtsPoly
-  putStrLn " * Fails *"
-  let fails = ["\t" ++ n{- ++ "\n\t" ++ show t-} | PrimOpSpec _ n t _ _ _ <- el, Set.notMember n ok]
-  print $ length fails
-  putStrLn . unlines $ "fails" : fails
-  putStrLn " * Bad *"
-  print $ L.prettyExternals [e | e@External{..} <- primExts, isBad eArgsType eRetType]
-  putStrLn " * Good *"
-  let showWidth :: Int -> Doc -> String
-      showWidth w x = displayS (renderPretty 0.4 w x) ""
-  let goodPrims = lines . showWidth 800 $ plain $ L.prettyExternals [e | e@External{..} <- primExts, not $ isBad eArgsType eRetType]
-  let src = unlines $
-        [ "{-# LANGUAGE OverloadedStrings, QuasiQuotes, ViewPatterns #-}"
-        , "module GHCPrimOps where"
-        , ""
-        , "import Grin.Grin"
-        , "import Grin.TH"
-        , ""
-        , "primPrelude :: Program"
-        , "primPrelude = [progConst|"
-        ]
-        ++ map ("  " ++ ) goodPrims ++
-        ["  |]"]
-
-  --putStrLn src
-  writeFile "GHCPrimOps.hs" src
-  let sections = [s | s@Section{} <- el]
-  forM_ sections $ \Section{..} -> printf "section: %s\n" title
-
-{-
-TODO
-  done - check for unknown type vars in result type: isBad
--}
-
 cvtExternal :: String -> Ty -> Bool -> Maybe External
 cvtExternal n t isEffectful = do
-  (retTy : revArgsTy) <- reverse <$> cvtTy t
+  (retTy' : revArgsTy') <- reverse <$> firstOrderFunTy t
+  retTy <- cvtTy $ prepareRetType retTy'
+  revArgsTy <- mapM cvtTy revArgsTy'
   pure External
     { eName       = packName n
     , eRetType    = retTy
@@ -114,19 +48,54 @@ cvtExternal n t isEffectful = do
     , eEffectful  = isEffectful
     }
 
-cvtTy :: Ty -> Maybe [L.Ty]
-cvtTy = \case
-  TyVar n -> Just [L.TyVar $ packName n]
-  TyApp (TyCon n) []
-    | Just t <- cvtType n -> Just [L.TySimple t]
-  TyApp (TyCon n) args
-    | Just xs <- concat <$> mapM cvtTy args
-    -> Just [L.TyCon (packName n) xs]
+mkUnboxedTuple :: [L.Ty] -> L.Ty
+mkUnboxedTuple args = case length args of
+  1 -> L.TyCon (packName "GHC.Prim.Unit#") args
+  n -> L.TyCon (packName $ "GHC.Prim.(#" ++ replicate n ',' ++ "#)") args
+
+
+isStateTy :: Ty -> Bool
+isStateTy = \case
+  TyApp (TyCon "State#") [_] -> True
+  _ -> False
+
+prepareRetType :: Ty -> Ty
+prepareRetType = \case
+  TyUTup args -> TyUTup [t | t <- args, not $ isStateTy t]
+  t | isStateTy t -> TyUTup []
+    | otherwise   -> t
+
+
+firstOrderFunTy :: Ty -> Maybe [Ty]
+firstOrderFunTy = \case
   TyF t x
-    | Just [t'] <- cvtTy t -> (t':) <$> cvtTy x
+    | Just [t'] <- firstOrderFunTy t
+    -> (t':) <$> firstOrderFunTy x
+
+  TyApp (TyCon n) args
+    | Just xs <- concat <$> mapM firstOrderFunTy args
+    -> Just [TyApp (TyCon n) xs]
+
+  TyVar n
+    -> Just [TyVar n]
+
   TyUTup args
-    | Just xs <- concat <$> mapM cvtTy args
-    -> Just [L.TyCon (packName $ "Tup" ++ show (length args)) xs]
+    | Just xs <- concat <$> mapM firstOrderFunTy args
+    -> Just [TyUTup xs]
+
+  _ -> Nothing
+
+cvtTy :: Ty -> Maybe L.Ty
+cvtTy = \case
+  TyVar n -> Just $ L.TyVar $ packName n
+  TyApp (TyCon n) []
+    | Just t <- cvtType n -> Just $ L.TySimple t
+  TyApp (TyCon n) args
+    | Just xs <- mapM cvtTy args
+    -> Just $ L.TyCon (packName n) xs
+  TyUTup args
+    | Just xs <- mapM cvtTy args
+    -> Just $ mkUnboxedTuple xs
   _ -> Nothing
 
 cvtType :: String -> Maybe SimpleType
@@ -138,115 +107,18 @@ cvtType = \case
   "Float#"  -> Just T_Float
   "Addr#"   -> Just T_Addr
   _ -> Nothing
-{-
- * Monomorph primtypes *
-TyApp Char# []
-TyApp Int# []
-TyApp Word# []
-TyApp Double# []
-TyApp Float# []
-TyApp Addr# []
 
-  = T_Int64
-  | T_Word64
-  | T_Float
-  | T_Double
-  | T_Bool
-  | T_Unit
-  | T_String
-  | T_Char
-  | T_Addr
-
-TyApp ByteArray# []
-TyApp ArrayArray# []
-TyApp RealWorld []
-TyApp ThreadId# []
-TyApp Compact# []
-TyApp BCO# []
-TyApp VECTOR []
-
- * Polymorph primtypes *
-TyApp Array# [TyVar "a"]
-TyApp MutableArray# [TyVar "s",TyVar "a"]
-TyApp SmallArray# [TyVar "a"]
-TyApp SmallMutableArray# [TyVar "s",TyVar "a"]
-TyApp MutableByteArray# [TyVar "s"]
-TyApp MutableArrayArray# [TyVar "s"]
-TyApp MutVar# [TyVar "s",TyVar "a"]
-TyApp TVar# [TyVar "s",TyVar "a"]
-TyApp MVar# [TyVar "s",TyVar "a"]
-TyApp State# [TyVar "s"]
-TyApp Weak# [TyVar "b"]
-TyApp StablePtr# [TyVar "a"]
-TyApp StableName# [TyVar "a"]
-TyApp Proxy# [TyVar "a"]
-
--}
 tyVars :: L.Ty -> Set.Set Name
 tyVars = \case
   L.TyCon _ a -> Set.unions $ map tyVars a
   L.TyVar n   -> Set.singleton n
   _ -> Set.empty
 
+-- check for unknown type vars in result type
 isBad :: [L.Ty] -> L.Ty -> Bool
 isBad args res = not (Set.null $ Set.difference r a) where
   a = Set.unions $ map tyVars args
   r = tyVars res
-
-{-
-TyApp ByteArray# []
-TyApp ArrayArray# []
-TyApp Addr# []
-TyApp RealWorld []
-TyApp ThreadId# []
-TyApp Compact# []
-TyApp BCO# []
-TyApp VECTOR []
--}
-
-{-
-data Ty
-   = TyF    Ty Ty
-   | TyC    Ty Ty -- We only allow one constraint, keeps the grammar simpler
-   | TyApp  TyCon [Ty]
-   | TyVar  TyVar
-   | TyUTup [Ty]   -- unboxed tuples; just a TyCon really, 
-                   -- but convenient like this
-   deriving (Eq,Show)
-
-type TyVar = String
-
-data TyCon = TyCon String
-           | SCALAR
-           | VECTOR
-           | VECTUPLE
-           | VecTyCon String String
--}
-
--- ==========================================
-
-{-
-  generate GHC primop prelude module for Lambda
-    done - handle attributes
-    done - collect:
-        done - unsupported primops
-        done - supported primops group by sections
-    - generate header
-    - generate ghcUnsupportedPrimopSet
-    - generate ghcPrimopPrelude
--}
-{-
-defaults
-   has_side_effects = False
-   out_of_line      = False   -- See Note Note [PrimOp can_fail and has_side_effects] in PrimOp
-   can_fail         = False   -- See Note Note [PrimOp can_fail and has_side_effects] in PrimOp
-   commutable       = False
-   code_size        = { primOpCodeSizeDefault }
-   strictness       = { \ arity -> mkClosedStrictSig (replicate arity topDmd) topRes }
-   fixity           = Nothing
-   llvm_only        = False
-   vector           = []
--}
 
 data Env
   = Env
@@ -265,10 +137,6 @@ emptyEnv opts = Env
   , envSectionTitle     = ""
   , envExternals        = []
   }
-{-
-  , envHasSideEffects   = attrBool opts "has_side_effects"
-  , envCanFail          = attrBool opts "can_fail"
--}
 
 type G = State Env
 
@@ -324,40 +192,6 @@ processEntries ents = do
   mapM_ visitEntry ents
   flushSection
 
-{-
-data Entry
-    = PrimOpSpec { cons  :: String,      -- PrimOp name
-                   name  :: String,      -- name in prog text
-                   ty    :: Ty,          -- type
-                   cat   :: Category,    -- category
-                   desc  :: String,      -- description
-                   opts  :: [Option] }   -- default overrides
-    | PrimVecOpSpec { cons    :: String,    -- PrimOp name
-                      name    :: String,    -- name in prog text
-                      prefix  :: String,    -- prefix for generated names
-                      veclen  :: Int,       -- vector length
-                      elemrep :: String,    -- vector ElemRep
-                      ty      :: Ty,        -- type
-                      cat     :: Category,  -- category
-                      desc    :: String,    -- description
-                      opts    :: [Option] } -- default overrides
-    | PseudoOpSpec { name  :: String,      -- name in prog text
-                     ty    :: Ty,          -- type
-                     desc  :: String,      -- description
-                     opts  :: [Option] }   -- default overrides
-    | PrimTypeSpec { ty    :: Ty,      -- name in prog text
-                     desc  :: String,      -- description
-                     opts  :: [Option] }   -- default overrides
-    | PrimVecTypeSpec { ty    :: Ty,      -- name in prog text
-                        prefix  :: String,    -- prefix for generated names
-                        veclen  :: Int,       -- vector length
-                        elemrep :: String,    -- vector ElemRep
-                        desc  :: String,      -- description
-                        opts  :: [Option] }   -- default overrides
-    | Section { title :: String,         -- section title
-                desc  :: String }        -- description
--}
-
 showWidth :: Int -> Doc -> String
 showWidth w x = displayS (renderPretty 0.4 w x) ""
 
@@ -371,8 +205,8 @@ genGHCPrimOps = do
         , "module GHCPrimOps where"
         , ""
         , "import qualified Data.Set as Set"
-        , "import Grin.Grin"
-        , "import Grin.TH"
+        , "import Lambda.Syntax"
+        , "import Lambda.TH"
         , ""
         ]
 
@@ -398,3 +232,23 @@ genGHCPrimOps = do
         ] ++ ["  [ " ++ intercalate "\n  , " (map show envUnsupported) ++ "\n  ]"]
 
   writeFile "GHCPrimOps.hs" $ unlines $ header ++ primPrelude ++ unsupported
+
+{-
+  generate GHC primop prelude module for Lambda
+    done - handle attributes
+    done - collect:
+        done - unsupported primops
+        done - supported primops group by sections
+    done - generate header
+    done - generate ghcUnsupportedPrimopSet
+    done - generate ghcPrimopPrelude
+    no - transform primop names to   GHC:op_name
+    no - transform primtype names to GHC:type_name
+    done - filter out void representations from the result ; State#
+    done - map unboxed tuples properly
+-}
+{-
+  STG state convention:
+    - passes as arg
+    - does not return ; filtered out from the result
+-}
