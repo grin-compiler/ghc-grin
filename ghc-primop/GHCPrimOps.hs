@@ -29,14 +29,14 @@ primPrelude = [progConst|
     "mulIntMayOflo#"     :: T_Int64 -> T_Int64 -> T_Int64
     "quotInt#"           :: T_Int64 -> T_Int64 -> T_Int64
     "remInt#"            :: T_Int64 -> T_Int64 -> T_Int64
-    "quotRemInt#"        :: T_Int64 -> T_Int64 -> {"GHC.Prim.(#,,#)" T_Int64 T_Int64}
+    "quotRemInt#"        :: T_Int64 -> T_Int64 -> {"GHC.Prim.(#,#)" T_Int64 T_Int64}
     "andI#"              :: T_Int64 -> T_Int64 -> T_Int64
     "orI#"               :: T_Int64 -> T_Int64 -> T_Int64
     "xorI#"              :: T_Int64 -> T_Int64 -> T_Int64
     "notI#"              :: T_Int64 -> T_Int64
     "negateInt#"         :: T_Int64 -> T_Int64
-    "addIntC#"           :: T_Int64 -> T_Int64 -> {"GHC.Prim.(#,,#)" T_Int64 T_Int64}
-    "subIntC#"           :: T_Int64 -> T_Int64 -> {"GHC.Prim.(#,,#)" T_Int64 T_Int64}
+    "addIntC#"           :: T_Int64 -> T_Int64 -> {"GHC.Prim.(#,#)" T_Int64 T_Int64}
+    "subIntC#"           :: T_Int64 -> T_Int64 -> {"GHC.Prim.(#,#)" T_Int64 T_Int64}
     ">#"                 :: T_Int64 -> T_Int64 -> T_Int64
     ">=#"                :: T_Int64 -> T_Int64 -> T_Int64
     "==#"                :: T_Int64 -> T_Int64 -> T_Int64
@@ -58,16 +58,16 @@ primPrelude = [progConst|
   -}
   primop pure
     "plusWord#"         :: T_Word64 -> T_Word64 -> T_Word64
-    "addWordC#"         :: T_Word64 -> T_Word64 -> {"GHC.Prim.(#,,#)" T_Word64 T_Int64}
-    "subWordC#"         :: T_Word64 -> T_Word64 -> {"GHC.Prim.(#,,#)" T_Word64 T_Int64}
-    "plusWord2#"        :: T_Word64 -> T_Word64 -> {"GHC.Prim.(#,,#)" T_Word64 T_Word64}
+    "addWordC#"         :: T_Word64 -> T_Word64 -> {"GHC.Prim.(#,#)" T_Word64 T_Int64}
+    "subWordC#"         :: T_Word64 -> T_Word64 -> {"GHC.Prim.(#,#)" T_Word64 T_Int64}
+    "plusWord2#"        :: T_Word64 -> T_Word64 -> {"GHC.Prim.(#,#)" T_Word64 T_Word64}
     "minusWord#"        :: T_Word64 -> T_Word64 -> T_Word64
     "timesWord#"        :: T_Word64 -> T_Word64 -> T_Word64
-    "timesWord2#"       :: T_Word64 -> T_Word64 -> {"GHC.Prim.(#,,#)" T_Word64 T_Word64}
+    "timesWord2#"       :: T_Word64 -> T_Word64 -> {"GHC.Prim.(#,#)" T_Word64 T_Word64}
     "quotWord#"         :: T_Word64 -> T_Word64 -> T_Word64
     "remWord#"          :: T_Word64 -> T_Word64 -> T_Word64
-    "quotRemWord#"      :: T_Word64 -> T_Word64 -> {"GHC.Prim.(#,,#)" T_Word64 T_Word64}
-    "quotRemWord2#"     :: T_Word64 -> T_Word64 -> T_Word64 -> {"GHC.Prim.(#,,#)" T_Word64 T_Word64}
+    "quotRemWord#"      :: T_Word64 -> T_Word64 -> {"GHC.Prim.(#,#)" T_Word64 T_Word64}
+    "quotRemWord2#"     :: T_Word64 -> T_Word64 -> T_Word64 -> {"GHC.Prim.(#,#)" T_Word64 T_Word64}
     "and#"              :: T_Word64 -> T_Word64 -> T_Word64
     "or#"               :: T_Word64 -> T_Word64 -> T_Word64
     "xor#"              :: T_Word64 -> T_Word64 -> T_Word64
@@ -153,8 +153,8 @@ primPrelude = [progConst|
     "coshDouble#"         :: T_Double -> T_Double
     "tanhDouble#"         :: T_Double -> T_Double
     "**##"                :: T_Double -> T_Double -> T_Double
-    "decodeDouble_2Int#"  :: T_Double -> {"GHC.Prim.(#,,,,#)" T_Int64 T_Word64 T_Word64 T_Int64}
-    "decodeDouble_Int64#" :: T_Double -> {"GHC.Prim.(#,,#)" T_Int64 T_Int64}
+    "decodeDouble_2Int#"  :: T_Double -> {"GHC.Prim.(#,,,#)" T_Int64 T_Word64 T_Word64 T_Int64}
+    "decodeDouble_Int64#" :: T_Double -> {"GHC.Prim.(#,#)" T_Int64 T_Int64}
 
   {-
     Float#
@@ -187,7 +187,7 @@ primPrelude = [progConst|
     "tanhFloat#"       :: T_Float -> T_Float
     "powerFloat#"      :: T_Float -> T_Float -> T_Float
     "float2Double#"    :: T_Float -> T_Double
-    "decodeFloat_Int#" :: T_Float -> {"GHC.Prim.(#,,#)" T_Int64 T_Int64}
+    "decodeFloat_Int#" :: T_Float -> {"GHC.Prim.(#,#)" T_Int64 T_Int64}
 
   {-
     Arrays
@@ -216,7 +216,7 @@ primPrelude = [progConst|
     "cloneMutableArray#"  :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
     "freezeArray#"        :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"Array#" %a}}
     "thawArray#"          :: {"Array#" %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
-    "casArray#"           :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,,#)" T_Int64 %a}
+    "casArray#"           :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 
   {-
     Small Arrays
@@ -245,7 +245,7 @@ primPrelude = [progConst|
     "cloneSmallMutableArray#"  :: {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
     "freezeSmallArray#"        :: {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallArray#" %a}}
     "thawSmallArray#"          :: {"SmallArray#" %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
-    "casSmallArray#"           :: {"SmallMutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,,#)" T_Int64 %a}
+    "casSmallArray#"           :: {"SmallMutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 
   {-
     Byte Arrays
@@ -485,7 +485,7 @@ primPrelude = [progConst|
     "sameMutVar#"  :: {"MutVar#" %s %a} -> {"MutVar#" %s %a} -> T_Int64
 
   primop effectful
-    "casMutVar#"   :: {"MutVar#" %s %a} -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,,#)" T_Int64 %a}
+    "casMutVar#"   :: {"MutVar#" %s %a} -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 
   {-
     Exceptions
@@ -510,11 +510,11 @@ primPrelude = [progConst|
   -}
   primop effectful
     "takeMVar#"    :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
-    "tryTakeMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.(#,,#)" T_Int64 %a}
+    "tryTakeMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
     "putMVar#"     :: {"MVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
     "tryPutMVar#"  :: {"MVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
     "readMVar#"    :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
-    "tryReadMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.(#,,#)" T_Int64 %a}
+    "tryReadMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 
   primop pure
     "sameMVar#"    :: {"MVar#" %s %a} -> {"MVar#" %s %a} -> T_Int64
@@ -542,7 +542,7 @@ primPrelude = [progConst|
     "labelThread#"          :: {"ThreadId#"} -> T_Addr -> {"State#" {RealWorld}} -> {"GHC.Prim.(##)"}
     "isCurrentThreadBound#" :: {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Int64}
     "noDuplicate#"          :: {"State#" %s} -> {"GHC.Prim.(##)"}
-    "threadStatus#"         :: {"ThreadId#"} -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,,,#)" T_Int64 T_Int64 T_Int64}
+    "threadStatus#"         :: {"ThreadId#"} -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,,#)" T_Int64 T_Int64 T_Int64}
 
   {-
     Weak pointers
@@ -550,7 +550,7 @@ primPrelude = [progConst|
   primop effectful
     "mkWeakNoFinalizer#"   :: %o -> %b -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"Weak#" %b}}
     "addCFinalizerToWeak#" :: T_Addr -> T_Addr -> T_Int64 -> T_Addr -> {"Weak#" %b} -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Int64}
-    "deRefWeak#"           :: {"Weak#" %a} -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,,#)" T_Int64 %a}
+    "deRefWeak#"           :: {"Weak#" %a} -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,#)" T_Int64 %a}
     "touch#"               :: %o -> {"State#" {RealWorld}} -> {"GHC.Prim.(##)"}
 
   {-
@@ -576,12 +576,12 @@ primPrelude = [progConst|
   primop pure
     "compactContains#"       :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Int64}
     "compactContainsAny#"    :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Int64}
-    "compactGetFirstBlock#"  :: {"Compact#"} -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,,#)" T_Addr T_Word64}
-    "compactGetNextBlock#"   :: {"Compact#"} -> T_Addr -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,,#)" T_Addr T_Word64}
+    "compactGetFirstBlock#"  :: {"Compact#"} -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,#)" T_Addr T_Word64}
+    "compactGetNextBlock#"   :: {"Compact#"} -> T_Addr -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,#)" T_Addr T_Word64}
 
   primop effectful
     "compactAllocateBlock#"  :: T_Word64 -> T_Addr -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Addr}
-    "compactFixupPointers#"  :: T_Addr -> T_Addr -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,,#)" {"Compact#"} T_Addr}
+    "compactFixupPointers#"  :: T_Addr -> T_Addr -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,#)" {"Compact#"} T_Addr}
     "compactAdd#"            :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
     "compactAddWithSharing#" :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
     "compactSize#"           :: {"Compact#"} -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Word64}
