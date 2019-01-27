@@ -51,7 +51,7 @@ cvtExternal n t isEffectful = do
 mkUnboxedTuple :: [L.Ty] -> L.Ty
 mkUnboxedTuple args = case length args of
   1 -> L.TyCon (packName "GHC.Prim.Unit#") args
-  n -> L.TyCon (packName $ "GHC.Prim.(#" ++ replicate n ',' ++ "#)") args
+  n -> L.TyCon (packName $ "GHC.Prim.(#" ++ replicate (max 0 $ n-1) ',' ++ "#)") args
 
 
 isStateTy :: Ty -> Bool
