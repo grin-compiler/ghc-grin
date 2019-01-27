@@ -9,6 +9,7 @@ import Text.Printf
 import Control.Monad
 import Control.Monad.State
 
+import qualified Data.Text as T
 import Data.List (isPrefixOf)
 import Data.Foldable
 import Data.Map (Map)
@@ -52,6 +53,7 @@ genLit = \case
   LWord64 v -> G.LWord64 v
   LFloat  v -> G.LFloat $ fromRational v
   LBool   v -> G.LBool v
+  LError  e -> error $ T.unpack e
   _ -> G.LWord64 999 -- TODO
 -- TODO
 {-

@@ -20,14 +20,20 @@ import qualified Text.PrettyPrint.ANSI.Leijen as P
 import Lambda.Syntax (Name)
 import Lambda.Syntax
 
+import qualified Lambda.GHCPrimOps as GHCPrim
+
 type CG = StateT Env IO
 
 data Env
   = Env
-  { moduleName  :: Name
-  , dataCons    :: Set Name
-  , externals   :: Map Name External
+  { moduleName  :: !Name
+  , dataCons    :: !(Set Name)
+  , externals   :: !(Map Name External)
   }
+
+primMap :: Map Name External
+primMap = Map.fromList [(eName, e) | e@External{..} <- prims] where
+  Program prims _ = GHCPrim.primPrelude
 
 convertUnique :: C.Unique -> Name
 convertUnique (C.Unique c i) = packName $  c : show i
@@ -84,15 +90,26 @@ repType = \case
   --  2. VecRep is not supported yet
   _ -> Nothing
 
-typeInfoType :: C.TypeInfo -> Maybe SimpleType
-typeInfoType ti = case filter (/= C.VoidRep) <$> C.tRep ti of
-  Just [t]  -> repType t
-  _         -> Nothing
-
 ffiArgType :: C.Arg -> Maybe SimpleType
 ffiArgType = \case
   C.StgLitArg l -> Just $ litType l
-  C.StgVarArg b -> typeInfoType $ C.binderType b
+  C.StgVarArg b -> case C.tRep $ C.binderType b of
+    Just [t]  -> repType t
+    _         -> Nothing
+
+ffiRetType :: C.TypeInfo -> Maybe Ty
+ffiRetType ti = case filter (/= C.VoidRep) <$> C.tRep ti of
+  Just []   -> Just $ TyCon "GHC.Prim.(##)" []
+  Just [t]  -> TyCon "GHC.Prim.Unit#" . map TySimple <$> mapM repType [t]
+  _         -> Nothing
+
+isVoidRep :: C.TypeInfo -> Bool
+isVoidRep ti = C.tRep ti == Just [C.VoidRep]
+
+isVoidArg :: C.Arg -> Bool
+isVoidArg = \case
+  C.StgVarArg b -> isVoidRep $ C.binderType b
+  _             -> False
 
 convertLit :: C.Lit -> Lit
 convertLit = \case
@@ -125,36 +142,40 @@ visitArg = \case
 
 visitExpr :: C.Expr -> CG Exp
 visitExpr = \case
-  C.StgLit lit          -> pure . Lit $ convertLit lit
-  C.StgApp fun []       -> Var (isPointer fun) <$> genName fun
-  C.StgApp fun args     -> App <$> genName fun <*> mapM visitArg args
+  C.StgLit lit            -> pure . Lit $ convertLit lit
+  C.StgApp fun []         -> Var (isPointer fun) <$> genName fun
+  C.StgApp fun args       -> App <$> genName fun <*> mapM visitArg args
   C.StgConApp con args t  -> Con <$> genConName con <*> mapM visitArg args
-  C.StgOpApp op args ty   -> case op of
-    {-
-      TODO:
-        collect externals
-    -}
-    {-
-    C.StgPrimOp prim -> do
-      let name = "_ghc_" <> (packName $ BS8.unpack prim)
-      -- TODO: lookup primop
-      addExternal name argsTy retTy False -- TODO
-      App name <$> mapM visitArg args
-    -}
-    C.StgPrimCallOp _ -> pure . Lit $ LError "GHC PrimCallOp is not supported"
-    C.StgFCallOp f@C.ForeignCall{..} -> case foreignCTarget of
-      C.DynamicTarget -> pure . Lit $ LError "GHC FCallOp with DynamicTarget is not supported"
-      C.StaticTarget labelName -> case (typeInfoType ty, mapM ffiArgType args) of
-        (Just retTy, Just argsTy) -> do
-          let name = packName $ BS8.unpack labelName
-          addExternal External
-            { eName       = name
-            , eRetType    = TySimple retTy      -- TODO: wrap with unboxed tuple
-            , eArgsType   = map TySimple argsTy -- TODO: wrap with unboxed tuple???
-            , eEffectful  = True
-            }
-          App name <$> mapM visitArg args
-        _ -> pure . Lit . LError $ "Invalid foreign call type: " <> (T.pack . show . P.pretty $ f) <> (T.pack . show . P.braces $ P.pretty ty)
+  C.StgOpApp op args ty   -> do
+    let realArgs = filter (not . isVoidArg) args
+        ffiTys = do
+          argsTy <- mapM ffiArgType realArgs
+          retTy <- ffiRetType ty
+          pure (retTy, map TySimple argsTy)
+    case op of
+      C.StgPrimOp prim -> do
+        let name = packName (BS8.unpack prim)
+        case Map.lookup name primMap of
+          Nothing -> pure . Lit $ LError $ "Unsupported GHC primop: " <> T.pack (BS8.unpack prim)
+          Just e  -> do
+            addExternal e
+            App name <$> mapM visitArg realArgs
+
+      C.StgPrimCallOp _ -> pure . Lit $ LError "GHC PrimCallOp is not supported"
+
+      C.StgFCallOp f@C.ForeignCall{..} -> case foreignCTarget of
+        C.DynamicTarget -> pure . Lit $ LError "GHC FCallOp with DynamicTarget is not supported"
+        C.StaticTarget labelName -> case ffiTys of
+          Just (retTy, argsTy) -> do
+            let name = packName $ BS8.unpack labelName
+            addExternal External
+              { eName       = name
+              , eRetType    = retTy
+              , eArgsType   = argsTy
+              , eEffectful  = True
+              }
+            App name <$> mapM visitArg realArgs
+          _ -> pure . Lit . LError $ "Invalid foreign call type: " <> (T.pack . show . P.pretty $ f) <> (T.pack . show . P.braces $ P.pretty ty)
 
   C.StgCase expr result alts  -> do
     scrutName <- genName result
@@ -204,4 +225,4 @@ codegenLambda mod = do
   unless (Set.null dataCons) $ do
     printf "%s data constructors:\n%s" modName  (unlines . map (("  "++).unpackName) . Set.toList $ dataCons)
   -}
-  pure . Program [] $ defs
+  pure . Program (Map.elems externals) $ defs

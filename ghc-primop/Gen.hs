@@ -40,7 +40,7 @@ cvtExternal :: String -> Ty -> Bool -> Maybe External
 cvtExternal n t isEffectful = do
   (retTy' : revArgsTy') <- reverse <$> firstOrderFunTy t
   retTy <- cvtTy $ prepareRetType retTy'
-  revArgsTy <- mapM cvtTy revArgsTy'
+  revArgsTy <- mapM cvtTy $ filter (not . isStateTy) revArgsTy'
   pure External
     { eName       = packName n
     , eRetType    = retTy
@@ -52,7 +52,6 @@ mkUnboxedTuple :: [L.Ty] -> L.Ty
 mkUnboxedTuple args = case length args of
   1 -> L.TyCon (packName "GHC.Prim.Unit#") args
   n -> L.TyCon (packName $ "GHC.Prim.(#" ++ replicate (max 0 $ n-1) ',' ++ "#)") args
-
 
 isStateTy :: Ty -> Bool
 isStateTy = \case
@@ -116,13 +115,14 @@ tyVars = \case
 
 -- check for unknown type vars in result type
 isBad :: [L.Ty] -> L.Ty -> Bool
-isBad args res = not (Set.null $ Set.difference r a) where
+isBad args (L.TyVar res) = not (Set.null $ Set.difference r a) where
   a = Set.unions $ map tyVars args
-  r = tyVars res
+  r = Set.singleton res
+isBad _ _ = False
 
 data Env
   = Env
-  { envUnsupported      :: [String]
+  { envUnsupported      :: [(String, String)]
   , envSections         :: [(String, [External])]
   , envDefaults         :: [Option]
   , envSectionTitle     :: String
@@ -151,8 +151,8 @@ attrBool name opts = attr opts $ \case
   OptionTrue  n | n == name -> Just True
   _ -> Nothing
 
-unsupportedPrimop :: String -> G ()
-unsupportedPrimop name = modify $ \s@Env{..} -> s {envUnsupported = name : envUnsupported}
+unsupportedPrimop :: String -> String -> G ()
+unsupportedPrimop name msg = modify $ \s@Env{..} -> s {envUnsupported = (name, msg) : envUnsupported}
 
 addExternal :: External -> G ()
 addExternal e = modify $ \s@Env{..} -> s {envExternals = envExternals ++ [e]}
@@ -169,8 +169,8 @@ setSection title = modify $ \s@Env{..} -> s {envSectionTitle = title}
 
 visitEntry :: Entry -> G ()
 visitEntry = \case
-  PrimVecOpSpec{..} -> unsupportedPrimop name
-  PseudoOpSpec{..}  -> unsupportedPrimop name
+  PrimVecOpSpec{..} -> unsupportedPrimop name "SIMD is not supported yet"
+  PseudoOpSpec{..}  -> unsupportedPrimop name "pseudo ops are not supported"
 
   PrimOpSpec{..} -> do
     has_side_effects <- attrBool "has_side_effects" opts
@@ -178,7 +178,10 @@ visitEntry = \case
       Just e@External{..}
         | not (isBad eArgsType eRetType)
         -> addExternal e
-      _ -> unsupportedPrimop name
+        | otherwise
+        -> unsupportedPrimop name "unknown type parameters in the result type"
+      Nothing
+        -> unsupportedPrimop name "contains unsupported type"
 
   Section{..} -> do
     flushSection
@@ -202,7 +205,7 @@ genGHCPrimOps = do
       Env{..} = execState (processEntries ents) (emptyEnv opts)
   let header =
         [ "{-# LANGUAGE OverloadedStrings, QuasiQuotes #-}"
-        , "module GHCPrimOps where"
+        , "module Lambda.GHCPrimOps where"
         , ""
         , "import qualified Data.Set as Set"
         , "import Lambda.Syntax"
@@ -229,7 +232,7 @@ genGHCPrimOps = do
       unsupported =
         [ "unsupported :: Set.Set String"
         , "unsupported = Set.fromList"
-        ] ++ ["  [ " ++ intercalate "\n  , " (map show envUnsupported) ++ "\n  ]"]
+        ] ++ ["  [ " ++ intercalate "\n  , " [(take 40 $ show n ++ repeat ' ') ++ " -- " ++ msg | (n, msg) <- envUnsupported] ++ "\n  ]"]
 
   writeFile "GHCPrimOps.hs" $ unlines $ header ++ primPrelude ++ unsupported
 

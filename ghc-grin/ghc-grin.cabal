@@ -17,6 +17,7 @@ library
   hs-source-dirs:      src
   exposed-modules:
     Lambda.FromStg
+    Lambda.GHCPrimOps
 
   build-depends:
       base
