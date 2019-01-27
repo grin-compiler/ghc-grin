@@ -2,6 +2,7 @@
 
 module Lambda.Parse (parseLambda) where
 
+import Data.String (fromString)
 import qualified Data.Text as T
 import Data.Text (Text)
 import qualified Data.ByteString.Char8 as BS8
@@ -13,6 +14,13 @@ import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Char as C
 import qualified Data.Set as Set
 import Lambda.Syntax
+
+-- indetifier rules for parser and pretty printer
+allowedSpecial :: String
+allowedSpecial = "._':!@-"
+
+allowedInitial :: String
+allowedInitial = "._" ++ ['a'..'z'] ++ ['A'..'Z']
 
 keywords = Set.fromList ["case","of","let","letrec","letS", "#True", "#False", "_"]
 
@@ -39,7 +47,7 @@ parens = between (symbol "(") (symbol ")")
 kw w = lexeme $ string w
 
 op w = L.symbol sc' w
-
+{-
 var :: Parser Name
 var = try $ lexeme ((\c s -> packName $ c:s) <$> lowerChar <*> many (alphaNumChar <|> oneOf ("'_.:!@{}$-" :: String))) >>= \x -> case Set.member x keywords of
   True -> fail $ "keyword: " ++ unpackName x
@@ -47,12 +55,48 @@ var = try $ lexeme ((\c s -> packName $ c:s) <$> lowerChar <*> many (alphaNumCha
 
 con :: Parser Name
 con = lexeme $ packName <$> some (alphaNumChar)
+-}
+----
+escaped :: Parser Char
+escaped = string "\\\"" >> pure '"'
 
+quotedVar :: Parser Name
+quotedVar = packName <$ char '"' <*> someTill (escaped <|> anyChar) (char '"')
+
+escapedStringChar :: Parser Char
+escapedStringChar =
+  (string "\\\"" >> pure '"') <|>
+  (string "\\\\" >> pure '\\') <|>
+  (string "\\a" >> pure '\a') <|>
+  (string "\\b" >> pure '\b') <|>
+  (string "\\f" >> pure '\f') <|>
+  (string "\\n" >> pure '\n') <|>
+  (string "\\r" >> pure '\r') <|>
+  (string "\\t" >> pure '\t') <|>
+  (string "\\v" >> pure '\v')
+
+quotedString :: Parser Text
+quotedString = fromString <$> (char '"' *> manyTill (escapedStringChar <|> anyChar) (char '"'))
+
+simpleVar :: Parser Name
+simpleVar = (\c s -> packName $ c : s) <$> oneOf allowedInitial <*> many (alphaNumChar <|> oneOf allowedSpecial)
+
+-- TODO: allow keywords in quotes
+var :: Parser Name
+var = try $ lexeme (quotedVar <|> simpleVar) >>= \x -> case Set.member (unpackName x) keywords of
+  True -> fail $ "keyword: " ++ unpackName x
+  False -> return x
+
+con :: Parser Name
+con = var
+----
 integer = lexeme L.decimal
 signedInteger = L.signed sc' integer
 
 float = lexeme L.float
 signedFloat = L.signed sc' float
+
+braces = between (symbol "{") (symbol "}")
 
 -- lambda syntax
 
@@ -98,9 +142,53 @@ literal = (try $ LFloat . realToFrac <$> signedFloat) <|>
           LChar <$ char '#' <* char '\'' <* L.charLiteral <*> char '\'' <|>
           LString . BS8.pack <$ char '#' <*> (char '"' >> manyTill L.charLiteral (char '"'))
 
+-- externals
+
+externalBlock = do
+  L.indentGuard sc EQ pos1
+  kw "primop"
+  eff <- const False <$> kw "pure" <|> const True <$> kw "effectful"
+  i <- L.indentGuard sc GT pos1
+  some $ try (external eff i)
+
+external :: Bool -> Pos -> Parser External
+external eff i = do
+  L.indentGuard sc EQ i
+  name <- var
+  op "::"
+  ty <- reverse <$> sepBy1 tyP (op "->")
+  let (retTy:argTyRev) = ty
+  pure External
+    { eName       = name
+    , eRetType    = retTy
+    , eArgsType   = reverse argTyRev
+    , eEffectful  = eff
+    }
+
+tyP :: Parser Ty
+tyP =
+  TyVar <$ C.char '%' <*> var <|>
+  braces (TyCon <$> var <*> many tyP) <|>
+  TySimple <$> try simpleType
+
+-- type syntax
+
+simpleType :: Parser SimpleType
+simpleType =
+  T_Int64   <$ kw "T_Int64"   <|>
+  T_Word64  <$ kw "T_Word64"  <|>
+  T_Float   <$ kw "T_Float"   <|>
+  T_Double  <$ kw "T_Double"  <|>
+  T_Bool    <$ kw "T_Bool"    <|>
+  T_Unit    <$ kw "T_Unit"    <|>
+  T_String  <$ kw "T_String"  <|>
+  T_Char    <$ kw "T_Char"    <|>
+  T_Addr    <$ kw "T_Addr"
+
+-- top-level API
 
 lambdaModule :: Parser Program
-lambdaModule = Program [{-TODO-}] <$> some def <* sc <* eof
+lambdaModule = Program <$> (concat <$> many (try externalBlock)) <*> many def <* sc <* eof
 
 parseLambda :: String -> Text -> Either (ParseError Char Void) Program
 parseLambda filename content = runParser lambdaModule filename content

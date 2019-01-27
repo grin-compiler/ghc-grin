@@ -20,6 +20,7 @@ library
     --Lambda.GrinCodeGenUnboxed
     --Lambda.GrinCodeGenBoxed
     Lambda.GrinCodeGenTyped
+    Lambda.TH
     Lambda.Parse
     Lambda.Pretty
     Lambda.PrimOps
@@ -44,6 +45,7 @@ library
     , megaparsec
     , text
     , vector
+    , template-haskell
 
   default-language:    Haskell2010
 

@@ -1,6 +1,6 @@
 {-# LANGUAGE LambdaCase, TupleSections #-}
 {-# LANGUAGE TemplateHaskell, KindSignatures, TypeFamilies #-}
-{-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveGeneric #-}
+{-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveGeneric, DeriveDataTypeable #-}
 module Lambda.Syntax
   ( module Lambda.Syntax
   , Grin.packName
@@ -9,6 +9,7 @@ module Lambda.Syntax
   ) where
 
 import GHC.Generics
+import Data.Data
 import Data.Int
 import Data.Word
 import Data.ByteString (ByteString)
@@ -24,7 +25,7 @@ data Ty
   = TyCon     Name [Ty]
   | TyVar     Name
   | TySimple  SimpleType
-  deriving (Generic, Eq, Ord, Show)
+  deriving (Generic, Data, Eq, Ord, Show)
 
 data SimpleType
   = T_Int64
@@ -36,7 +37,7 @@ data SimpleType
   | T_String
   | T_Char
   | T_Addr
-  deriving (Generic, Eq, Ord, Show)
+  deriving (Generic, Data, Eq, Ord, Show)
 
 data External
   = External
@@ -45,7 +46,7 @@ data External
   , eArgsType   :: [Ty]
   , eEffectful  :: Bool
   }
-  deriving (Generic, Eq, Ord, Show)
+  deriving (Generic, Data, Eq, Ord, Show)
 
 type Atom = Exp
 type Alt = Exp
@@ -72,7 +73,7 @@ data Exp
   -- Extra
   | AppExp      Exp [Exp]         -- convenient for nested expressions i.e. lambdas
   | Lam         [Name] Exp
-  deriving (Generic, Eq, Ord, Show)
+  deriving (Generic, Data, Eq, Ord, Show)
 
 data Lit
   = LInt64      Int64
@@ -87,13 +88,13 @@ data Lit
   -- special
   | LError  Text  -- marks an error ; dead code elimination may elminate
 --  | LDummy  Text  -- should be ignored
-  deriving (Generic, Eq, Ord, Show)
+  deriving (Generic, Data, Eq, Ord, Show)
 
 data Pat
   = NodePat Name [Name]
   | LitPat  Lit
   | DefaultPat
-  deriving (Generic, Eq, Show, Ord)
+  deriving (Generic, Data, Eq, Show, Ord)
 
 -- TODO: do we need lambda?
 

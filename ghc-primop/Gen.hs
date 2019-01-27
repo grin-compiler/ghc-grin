@@ -227,7 +227,7 @@ genGHCPrimOps = do
         ["  |]\n"]
 
       unsupported =
-        [ "unsupported :: Set String"
+        [ "unsupported :: Set.Set String"
         , "unsupported = Set.fromList"
         ] ++ ["  [ " ++ intercalate "\n  , " (map show envUnsupported) ++ "\n  ]"]
 

@@ -659,7 +659,7 @@ primPrelude = [progConst|
 
   |]
 
-unsupported :: Set String
+unsupported :: Set.Set String
 unsupported = Set.fromList
   [ "writeOffAddrAs#"
   , "readOffAddrAs#"
