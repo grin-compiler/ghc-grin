@@ -52,9 +52,12 @@ instance Pretty Lit where
     LInt64 a  -> integer $ fromIntegral a
     LWord64 a -> integer (fromIntegral a) <> text "u"
     LFloat a  -> text "#" <> text (show a)
+    LDouble a -> text "#" <> text (show a) <> text "d"
     LBool a   -> text "#" <> text (show a)
     LChar a   -> text "#" <> text (show a)
     LString a -> text "#" <> text (show a)
+    LLabelAddr a -> text "#@" <> text (show a)
+    LNullAddr -> text "#NullAddr"
 --    LDummy a  -> red $ text "%" <> pretty a
     LError a  -> red $ text "!" <> text (show a)
 
@@ -69,10 +72,11 @@ prettyExternals exts = vcat (map prettyExtGroup $ groupBy (\a b -> eEffectful a 
   maxWidth = 80
   prettyExtGroup [] = mempty
   prettyExtGroup l@(a : _)
-    | maxLen <- maximum [length . show . pretty $ eName e | e <- exts]
+    | maxLen <- maximum [length . show . pretty $ eName e | e <- l]
     , width  <- min maxLen maxWidth
-    = keyword "primop" <+> (if eEffectful a then keyword "effectful" else keyword "pure") <$$> indent 2
-        (vsep [prettyFunction width eName eRetType eArgsType | External{..} <- l] <> line)
+    = (keyword "primop" <+> (if eEffectful a then keyword "effectful" else keyword "pure") <$$> indent 2
+        (vsep [prettyFunction width eName eRetType eArgsType | External{..} <- l])
+      ) <> line
 
 prettyFunction :: Pretty a => Int -> Name -> a -> [a] -> Doc
 prettyFunction width name ret args = fill width (pretty name) <> align (encloseSep (text " :: ") empty (text " -> ") (map pretty $ args ++ [ret]))
