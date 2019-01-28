@@ -64,25 +64,25 @@ prepareRetType = \case
   t | isStateTy t -> TyUTup []
     | otherwise   -> t
 
+firstOrderTy :: Ty -> Maybe Ty
+firstOrderTy = \case
+  TyApp (TyCon n) args
+    | Just xs <- mapM firstOrderTy args
+    -> Just $ TyApp (TyCon n) xs
+
+  TyVar n
+    -> Just $ TyVar n
+
+  TyUTup args
+    | Just xs <- mapM firstOrderTy args
+    -> Just $ TyUTup xs
+
+  _ -> Nothing
 
 firstOrderFunTy :: Ty -> Maybe [Ty]
 firstOrderFunTy = \case
-  TyF t x
-    | Just [t'] <- firstOrderFunTy t
-    -> (t':) <$> firstOrderFunTy x
-
-  TyApp (TyCon n) args
-    | Just xs <- concat <$> mapM firstOrderFunTy args
-    -> Just [TyApp (TyCon n) xs]
-
-  TyVar n
-    -> Just [TyVar n]
-
-  TyUTup args
-    | Just xs <- concat <$> mapM firstOrderFunTy args
-    -> Just [TyUTup xs]
-
-  _ -> Nothing
+  TyF t x -> (:)   <$> firstOrderTy t <*> firstOrderFunTy x
+  t       -> (:[]) <$> firstOrderTy t
 
 cvtTy :: Ty -> Maybe L.Ty
 cvtTy = \case
@@ -226,7 +226,7 @@ genGHCPrimOps = do
       primPrelude =
         [ "primPrelude :: Program"
         , "primPrelude = [progConst|"
-        ] ++ map tab (concat [comment title ++ (lines $ showWidth 800 $ plain $ L.prettyExternals exts) | (title, exts) <- envSections]) ++
+        ] ++ map tab (concat [comment title ++ (lines $ showWidth 800 $ plain $ L.prettyExternals exts) ++ [""] | (title, exts) <- envSections]) ++
         ["  |]\n"]
 
       unsupported =
