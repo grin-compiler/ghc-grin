@@ -70,10 +70,10 @@ badPrimops = Set.fromList
   ]
 
 lintLambda :: Program -> IO ()
-lintLambda prg = do
+lintLambda prg@(Program exts _) = do
   let Env{..} = test prg
       tab = ("  "++) . unpackName
-      unknown = Set.difference envUse $ Map.keysSet envDef
+      unknown = Set.difference envUse $ Map.keysSet envDef `Set.union` Set.fromList [eName | External{..} <- exts]
       unsupported = Set.intersection unknown badPrimops
   --printf "node pats:\n%s" . unlines . map tab $ Set.toList envCon
   
