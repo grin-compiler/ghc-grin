@@ -4,10 +4,10 @@ module Lambda.FromStg (codegenLambda) where
 import Data.List (intercalate)
 import Data.Set (Set)
 import qualified Data.Set as Set
-import Data.Map (Map)
-import qualified Data.Map as Map
+import Data.Map.Strict (Map)
+import qualified Data.Map.Strict as Map
 import Control.Monad
-import Control.Monad.State
+import Control.Monad.State.Strict
 import Text.Printf
 import qualified Data.ByteString.Char8 as BS8
 import qualified Data.Text as T
@@ -175,7 +175,10 @@ visitExpr = \case
       C.StgPrimCallOp _ -> pure . Lit $ LError "GHC PrimCallOp is not supported"
 
       C.StgFCallOp f@C.ForeignCall{..} -> case foreignCTarget of
-        C.DynamicTarget -> pure . Lit $ LError "GHC FCallOp with DynamicTarget is not supported"
+        C.DynamicTarget -> do
+          let (fnTy:argsTy) = map showArgType args
+              retTy         = showTypeInfo ty
+          pure . Lit . LError . T.pack $ "DynamicTarget is not supported: (" ++ fnTy ++ ") :: " ++ intercalate " -> " (argsTy ++ [retTy])
         C.StaticTarget labelName -> case ffiTys of
           Just (retTy, argsTy) -> do
             let name = packName $ BS8.unpack labelName
