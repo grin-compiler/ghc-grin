@@ -31,7 +31,7 @@ import qualified Data.ByteString.Lazy as BSL
 import qualified Data.ByteString as BS
 import Data.Binary
 
-import Text.PrettyPrint.ANSI.Leijen (ondullblack, putDoc, plain, pretty)
+import Text.PrettyPrint.ANSI.Leijen (ondullblack, putDoc, plain, pretty, Doc, renderPretty, displayS)
 
 import System.Posix.Resource
 
@@ -54,6 +54,16 @@ getOpts = do xs <- getArgs
 
 deriving instance Show ResourceLimit
 deriving instance Show ResourceLimits
+
+showWidth :: Int -> Doc -> String
+showWidth w x = displayS (renderPretty 0.4 w x) ""
+
+setNub :: Ord a => [a] -> [a]
+setNub = Set.toList . Set.fromList
+
+concatPrograms :: [Program] -> Program
+concatPrograms prgs = Program (setNub $ concat exts) (concat defs) where
+  (exts, defs) = unzip [(e, d) | Program e d <- prgs]
 
 cg_main :: Opts -> IO ()
 cg_main opts = do
@@ -79,14 +89,14 @@ cg_main opts = do
   putStrLn $ "dependencies:\n" ++ unlines ["  " ++ (BS8.unpack . getModuleName $! mnameMap Map.! fname) | fname <- prunedDeps]
 
   -- compile pruned program
-  defList <- forM prunedDeps $ \fname -> do
+  progList <- forM prunedDeps $ \fname -> do
     stgModule <- readDump fname
     program@(Program exts defs) <- codegenLambda stgModule
 
     let lambdaName = replaceExtension fname "lambda"
-    writeFile lambdaName . show . plain $ pretty program
+    writeFile lambdaName . showWidth 800 . plain $ pretty program
 
-    pure defs
+    pure program
 
     {-
     let lambdaGrin = codegenGrin program
@@ -98,10 +108,10 @@ cg_main opts = do
       ]
     -}
   let sortDefs (Program exts defs) = Program exts . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
-      wholeProgramBloat = eliminateLams [] $ singleStaticAssignment $ Program [{-TODO: exts-}] $ concat defList
+      wholeProgramBloat = eliminateLams [] $ singleStaticAssignment $ concatPrograms progList
       wholeProgram      = sortDefs $ deadFunctionElimination wholeProgramBloat
       output_fn         = output opts
-  writeFile (output_fn ++ ".lambda") . show . plain $ pretty wholeProgram
+  writeFile (output_fn ++ ".lambda") . showWidth 800 . plain $ pretty wholeProgram
   lintLambda wholeProgram
   printf "all: %d pruned: %d\n" (length $ inputs opts) (length prunedDeps)
   let Program extsStripped  defsStripped  = wholeProgram
