@@ -1,6 +1,7 @@
 {-# LANGUAGE LambdaCase, TupleSections, StandaloneDeriving, TypeSynonymInstances, FlexibleInstances, RecordWildCards, OverloadedStrings #-}
 module Lambda.FromStg (codegenLambda) where
 
+import Data.List (intercalate)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Map (Map)
@@ -90,6 +91,16 @@ repType = \case
   --  2. VecRep is not supported yet
   _ -> Nothing
 
+showTypeInfo :: C.TypeInfo -> String
+showTypeInfo ti = BS8.unpack (C.tType ti) ++ case C.tRep ti of
+  Nothing   -> ""
+  Just rep  -> " " ++ show rep
+
+showArgType :: C.Arg -> String
+showArgType = \case
+  C.StgLitArg l -> show $ litType l
+  C.StgVarArg b -> showTypeInfo $ C.binderType b
+
 ffiArgType :: C.Arg -> Maybe SimpleType
 ffiArgType = \case
   C.StgLitArg l -> Just $ litType l
@@ -175,7 +186,11 @@ visitExpr = \case
               , eEffectful  = True
               }
             App name <$> mapM visitArg realArgs
-          _ -> pure . Lit . LError $ "Invalid foreign call type: " <> (T.pack . show . P.pretty $ f) <> (T.pack . show . P.braces $ P.pretty ty)
+          _ -> do
+            let name    = BS8.unpack labelName
+                argsTy  = map showArgType args
+                retTy   = showTypeInfo ty
+            pure . Lit . LError . T.pack $ "Unsupported foreign function type: " ++ name ++ " :: " ++ intercalate " -> " (argsTy ++ [retTy])
 
   C.StgCase expr result alts  -> do
     scrutName <- genName result
