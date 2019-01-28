@@ -86,7 +86,7 @@ data Lit
   | LLabelAddr  ByteString
   | LNullAddr
   -- special
-  | LError  Text  -- marks an error ; dead code elimination may elminate
+  | LError  !Text  -- marks an error ; dead code elimination may elminate
 --  | LDummy  Text  -- should be ignored
   deriving (Generic, Data, Eq, Ord, Show)
 

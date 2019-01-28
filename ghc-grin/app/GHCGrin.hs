@@ -24,7 +24,7 @@ import Pipeline.Pipeline
 import Data.Maybe
 import Data.List (foldl')
 import qualified Data.Set as Set
-import qualified Data.Map as Map
+import qualified Data.Map.Strict as Map
 import qualified Data.ByteString.Char8 as BS8
 
 import qualified Data.ByteString.Lazy as BSL
