@@ -193,14 +193,14 @@ primPrelude = [progConst|
     Arrays
   -}
   primop effectful
-    "newArray#"           :: T_Int64 -> %a -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+    "newArray#" :: T_Int64 -> %a -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
 
   primop pure
-    "sameMutableArray#"   :: {"MutableArray#" %s %a} -> {"MutableArray#" %s %a} -> T_Int64
+    "sameMutableArray#" :: {"MutableArray#" %s %a} -> {"MutableArray#" %s %a} -> T_Int64
 
   primop effectful
-    "readArray#"          :: {"MutableArray#" %s %a} -> T_Int64 -> {"GHC.Prim.Unit#" %a}
-    "writeArray#"         :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> {"GHC.Prim.(##)"}
+    "readArray#"  :: {"MutableArray#" %s %a} -> T_Int64 -> {"GHC.Prim.Unit#" %a}
+    "writeArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> {"GHC.Prim.(##)"}
 
   primop pure
     "sizeofArray#"        :: {"Array#" %a} -> T_Int64
@@ -208,28 +208,28 @@ primPrelude = [progConst|
     "indexArray#"         :: {"Array#" %a} -> T_Int64 -> {"GHC.Prim.Unit#" %a}
 
   primop effectful
-    "unsafeFreezeArray#"  :: {"MutableArray#" %s %a} -> {"GHC.Prim.Unit#" {"Array#" %a}}
-    "unsafeThawArray#"    :: {"Array#" %a} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
-    "copyArray#"          :: {"Array#" %a} -> T_Int64 -> {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.(##)"}
-    "copyMutableArray#"   :: {"MutableArray#" %s %a} -> T_Int64 -> {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.(##)"}
-    "cloneArray#"         :: {"Array#" %a} -> T_Int64 -> T_Int64 -> {"Array#" %a}
-    "cloneMutableArray#"  :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
-    "freezeArray#"        :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"Array#" %a}}
-    "thawArray#"          :: {"Array#" %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
-    "casArray#"           :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"GHC.Prim.(#,#)" T_Int64 %a}
+    "unsafeFreezeArray#" :: {"MutableArray#" %s %a} -> {"GHC.Prim.Unit#" {"Array#" %a}}
+    "unsafeThawArray#"   :: {"Array#" %a} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+    "copyArray#"         :: {"Array#" %a} -> T_Int64 -> {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.(##)"}
+    "copyMutableArray#"  :: {"MutableArray#" %s %a} -> T_Int64 -> {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.(##)"}
+    "cloneArray#"        :: {"Array#" %a} -> T_Int64 -> T_Int64 -> {"Array#" %a}
+    "cloneMutableArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+    "freezeArray#"       :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"Array#" %a}}
+    "thawArray#"         :: {"Array#" %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+    "casArray#"          :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"GHC.Prim.(#,#)" T_Int64 %a}
 
   {-
     Small Arrays
   -}
   primop effectful
-    "newSmallArray#"           :: T_Int64 -> %a -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
+    "newSmallArray#" :: T_Int64 -> %a -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
 
   primop pure
-    "sameSmallMutableArray#"   :: {"SmallMutableArray#" %s %a} -> {"SmallMutableArray#" %s %a} -> T_Int64
+    "sameSmallMutableArray#" :: {"SmallMutableArray#" %s %a} -> {"SmallMutableArray#" %s %a} -> T_Int64
 
   primop effectful
-    "readSmallArray#"          :: {"SmallMutableArray#" %s %a} -> T_Int64 -> {"GHC.Prim.Unit#" %a}
-    "writeSmallArray#"         :: {"SmallMutableArray#" %s %a} -> T_Int64 -> %a -> {"GHC.Prim.(##)"}
+    "readSmallArray#"  :: {"SmallMutableArray#" %s %a} -> T_Int64 -> {"GHC.Prim.Unit#" %a}
+    "writeSmallArray#" :: {"SmallMutableArray#" %s %a} -> T_Int64 -> %a -> {"GHC.Prim.(##)"}
 
   primop pure
     "sizeofSmallArray#"        :: {"SmallArray#" %a} -> T_Int64
@@ -237,34 +237,34 @@ primPrelude = [progConst|
     "indexSmallArray#"         :: {"SmallArray#" %a} -> T_Int64 -> {"GHC.Prim.Unit#" %a}
 
   primop effectful
-    "unsafeFreezeSmallArray#"  :: {"SmallMutableArray#" %s %a} -> {"GHC.Prim.Unit#" {"SmallArray#" %a}}
-    "unsafeThawSmallArray#"    :: {"SmallArray#" %a} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
-    "copySmallArray#"          :: {"SmallArray#" %a} -> T_Int64 -> {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.(##)"}
-    "copySmallMutableArray#"   :: {"SmallMutableArray#" %s %a} -> T_Int64 -> {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.(##)"}
-    "cloneSmallArray#"         :: {"SmallArray#" %a} -> T_Int64 -> T_Int64 -> {"SmallArray#" %a}
-    "cloneSmallMutableArray#"  :: {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
-    "freezeSmallArray#"        :: {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"SmallArray#" %a}}
-    "thawSmallArray#"          :: {"SmallArray#" %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
-    "casSmallArray#"           :: {"SmallMutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"GHC.Prim.(#,#)" T_Int64 %a}
+    "unsafeFreezeSmallArray#" :: {"SmallMutableArray#" %s %a} -> {"GHC.Prim.Unit#" {"SmallArray#" %a}}
+    "unsafeThawSmallArray#"   :: {"SmallArray#" %a} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
+    "copySmallArray#"         :: {"SmallArray#" %a} -> T_Int64 -> {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.(##)"}
+    "copySmallMutableArray#"  :: {"SmallMutableArray#" %s %a} -> T_Int64 -> {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.(##)"}
+    "cloneSmallArray#"        :: {"SmallArray#" %a} -> T_Int64 -> T_Int64 -> {"SmallArray#" %a}
+    "cloneSmallMutableArray#" :: {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
+    "freezeSmallArray#"       :: {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"SmallArray#" %a}}
+    "thawSmallArray#"         :: {"SmallArray#" %a} -> T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
+    "casSmallArray#"          :: {"SmallMutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"GHC.Prim.(#,#)" T_Int64 %a}
 
   {-
     Byte Arrays
   -}
   primop effectful
-    "newByteArray#"               :: T_Int64 -> {"GHC.Prim.Unit#" {"MutableByteArray#" %s}}
-    "newPinnedByteArray#"         :: T_Int64 -> {"GHC.Prim.Unit#" {"MutableByteArray#" %s}}
-    "newAlignedPinnedByteArray#"  :: T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"MutableByteArray#" %s}}
+    "newByteArray#"              :: T_Int64 -> {"GHC.Prim.Unit#" {"MutableByteArray#" %s}}
+    "newPinnedByteArray#"        :: T_Int64 -> {"GHC.Prim.Unit#" {"MutableByteArray#" %s}}
+    "newAlignedPinnedByteArray#" :: T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" {"MutableByteArray#" %s}}
 
   primop pure
-    "isMutableByteArrayPinned#"   :: {"MutableByteArray#" %s} -> T_Int64
-    "isByteArrayPinned#"          :: {"ByteArray#"} -> T_Int64
-    "byteArrayContents#"          :: {"ByteArray#"} -> T_Addr
-    "sameMutableByteArray#"       :: {"MutableByteArray#" %s} -> {"MutableByteArray#" %s} -> T_Int64
+    "isMutableByteArrayPinned#" :: {"MutableByteArray#" %s} -> T_Int64
+    "isByteArrayPinned#"        :: {"ByteArray#"} -> T_Int64
+    "byteArrayContents#"        :: {"ByteArray#"} -> T_Addr
+    "sameMutableByteArray#"     :: {"MutableByteArray#" %s} -> {"MutableByteArray#" %s} -> T_Int64
 
   primop effectful
-    "shrinkMutableByteArray#"     :: {"MutableByteArray#" %s} -> T_Int64 -> {"GHC.Prim.(##)"}
-    "resizeMutableByteArray#"     :: {"MutableByteArray#" %s} -> T_Int64 -> {"GHC.Prim.Unit#" {"MutableByteArray#" %s}}
-    "unsafeFreezeByteArray#"      :: {"MutableByteArray#" %s} -> {"GHC.Prim.Unit#" {"ByteArray#"}}
+    "shrinkMutableByteArray#" :: {"MutableByteArray#" %s} -> T_Int64 -> {"GHC.Prim.(##)"}
+    "resizeMutableByteArray#" :: {"MutableByteArray#" %s} -> T_Int64 -> {"GHC.Prim.Unit#" {"MutableByteArray#" %s}}
+    "unsafeFreezeByteArray#"  :: {"MutableByteArray#" %s} -> {"GHC.Prim.Unit#" {"ByteArray#"}}
 
   primop pure
     "sizeofByteArray#"            :: {"ByteArray#"} -> T_Int64
@@ -364,7 +364,7 @@ primPrelude = [progConst|
     "writeWord8ArrayAsWord#"      :: {"MutableByteArray#" %s} -> T_Int64 -> T_Word64 -> {"GHC.Prim.(##)"}
 
   primop pure
-    "compareByteArrays#"          :: {"ByteArray#"} -> T_Int64 -> {"ByteArray#"} -> T_Int64 -> T_Int64 -> T_Int64
+    "compareByteArrays#" :: {"ByteArray#"} -> T_Int64 -> {"ByteArray#"} -> T_Int64 -> T_Int64 -> T_Int64
 
   primop effectful
     "copyByteArray#"              :: {"ByteArray#"} -> T_Int64 -> {"MutableByteArray#" %s} -> T_Int64 -> T_Int64 -> {"GHC.Prim.(##)"}
@@ -387,19 +387,19 @@ primPrelude = [progConst|
     Arrays of arrays
   -}
   primop effectful
-    "newArrayArray#"               :: T_Int64 -> {"GHC.Prim.Unit#" {"MutableArrayArray#" %s}}
+    "newArrayArray#" :: T_Int64 -> {"GHC.Prim.Unit#" {"MutableArrayArray#" %s}}
 
   primop pure
-    "sameMutableArrayArray#"       :: {"MutableArrayArray#" %s} -> {"MutableArrayArray#" %s} -> T_Int64
+    "sameMutableArrayArray#" :: {"MutableArrayArray#" %s} -> {"MutableArrayArray#" %s} -> T_Int64
 
   primop effectful
-    "unsafeFreezeArrayArray#"      :: {"MutableArrayArray#" %s} -> {"GHC.Prim.Unit#" {"ArrayArray#"}}
+    "unsafeFreezeArrayArray#" :: {"MutableArrayArray#" %s} -> {"GHC.Prim.Unit#" {"ArrayArray#"}}
 
   primop pure
-    "sizeofArrayArray#"            :: {"ArrayArray#"} -> T_Int64
-    "sizeofMutableArrayArray#"     :: {"MutableArrayArray#" %s} -> T_Int64
-    "indexByteArrayArray#"         :: {"ArrayArray#"} -> T_Int64 -> {"ByteArray#"}
-    "indexArrayArrayArray#"        :: {"ArrayArray#"} -> T_Int64 -> {"ArrayArray#"}
+    "sizeofArrayArray#"        :: {"ArrayArray#"} -> T_Int64
+    "sizeofMutableArrayArray#" :: {"MutableArrayArray#" %s} -> T_Int64
+    "indexByteArrayArray#"     :: {"ArrayArray#"} -> T_Int64 -> {"ByteArray#"}
+    "indexArrayArrayArray#"    :: {"ArrayArray#"} -> T_Int64 -> {"ArrayArray#"}
 
   primop effectful
     "readByteArrayArray#"          :: {"MutableArrayArray#" %s} -> T_Int64 -> {"GHC.Prim.Unit#" {"ByteArray#"}}
@@ -488,10 +488,10 @@ primPrelude = [progConst|
     "writeMutVar#" :: {"MutVar#" %s %a} -> %a -> {"GHC.Prim.(##)"}
 
   primop pure
-    "sameMutVar#"  :: {"MutVar#" %s %a} -> {"MutVar#" %s %a} -> T_Int64
+    "sameMutVar#" :: {"MutVar#" %s %a} -> {"MutVar#" %s %a} -> T_Int64
 
   primop effectful
-    "casMutVar#"   :: {"MutVar#" %s %a} -> %a -> %a -> {"GHC.Prim.(#,#)" T_Int64 %a}
+    "casMutVar#" :: {"MutVar#" %s %a} -> %a -> %a -> {"GHC.Prim.(#,#)" T_Int64 %a}
 
   {-
     Exceptions
@@ -511,7 +511,7 @@ primPrelude = [progConst|
     "writeTVar#"  :: {"TVar#" %s %a} -> %a -> {"GHC.Prim.(##)"}
 
   primop pure
-    "sameTVar#"   :: {"TVar#" %s %a} -> {"TVar#" %s %a} -> T_Int64
+    "sameTVar#" :: {"TVar#" %s %a} -> {"TVar#" %s %a} -> T_Int64
 
   {-
     Synchronized Mutable Variables
@@ -526,7 +526,7 @@ primPrelude = [progConst|
     "tryReadMVar#" :: {"MVar#" %s %a} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 
   primop pure
-    "sameMVar#"    :: {"MVar#" %s %a} -> {"MVar#" %s %a} -> T_Int64
+    "sameMVar#" :: {"MVar#" %s %a} -> {"MVar#" %s %a} -> T_Int64
 
   primop effectful
     "isEmptyMVar#" :: {"MVar#" %s %a} -> {"GHC.Prim.Unit#" T_Int64}
@@ -560,17 +560,16 @@ primPrelude = [progConst|
     "mkWeakNoFinalizer#"   :: %o -> %b -> {"GHC.Prim.Unit#" {"Weak#" %b}}
     "addCFinalizerToWeak#" :: T_Addr -> T_Addr -> T_Int64 -> T_Addr -> {"Weak#" %b} -> {"GHC.Prim.Unit#" T_Int64}
     "deRefWeak#"           :: {"Weak#" %a} -> {"GHC.Prim.(#,#)" T_Int64 %a}
-    "finalizeWeak#"        :: {"Weak#" %a} -> {"GHC.Prim.(#,#)" T_Int64 {"GHC.Prim.(#,#)" {"State#" {RealWorld}} %b}}
     "touch#"               :: %o -> {"GHC.Prim.(##)"}
 
   {-
     Stable pointers and names
   -}
   primop effectful
-    "makeStablePtr#"   :: %a -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
-    "deRefStablePtr#"  :: {"StablePtr#" %a} -> {"GHC.Prim.Unit#" %a}
-    "eqStablePtr#"     :: {"StablePtr#" %a} -> {"StablePtr#" %a} -> T_Int64
-    "makeStableName#"  :: %a -> {"GHC.Prim.Unit#" {"StableName#" %a}}
+    "makeStablePtr#"  :: %a -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
+    "deRefStablePtr#" :: {"StablePtr#" %a} -> {"GHC.Prim.Unit#" %a}
+    "eqStablePtr#"    :: {"StablePtr#" %a} -> {"StablePtr#" %a} -> T_Int64
+    "makeStableName#" :: %a -> {"GHC.Prim.Unit#" {"StableName#" %a}}
 
   primop pure
     "eqStableName#"    :: {"StableName#" %a} -> {"StableName#" %b} -> T_Int64
@@ -580,14 +579,14 @@ primPrelude = [progConst|
     Compact normal form
   -}
   primop effectful
-    "compactNew#"            :: T_Word64 -> {"GHC.Prim.Unit#" {"Compact#"}}
-    "compactResize#"         :: {"Compact#"} -> T_Word64 -> {"GHC.Prim.(##)"}
+    "compactNew#"    :: T_Word64 -> {"GHC.Prim.Unit#" {"Compact#"}}
+    "compactResize#" :: {"Compact#"} -> T_Word64 -> {"GHC.Prim.(##)"}
 
   primop pure
-    "compactContains#"       :: {"Compact#"} -> %a -> {"GHC.Prim.Unit#" T_Int64}
-    "compactContainsAny#"    :: %a -> {"GHC.Prim.Unit#" T_Int64}
-    "compactGetFirstBlock#"  :: {"Compact#"} -> {"GHC.Prim.(#,#)" T_Addr T_Word64}
-    "compactGetNextBlock#"   :: {"Compact#"} -> T_Addr -> {"GHC.Prim.(#,#)" T_Addr T_Word64}
+    "compactContains#"      :: {"Compact#"} -> %a -> {"GHC.Prim.Unit#" T_Int64}
+    "compactContainsAny#"   :: %a -> {"GHC.Prim.Unit#" T_Int64}
+    "compactGetFirstBlock#" :: {"Compact#"} -> {"GHC.Prim.(#,#)" T_Addr T_Word64}
+    "compactGetNextBlock#"  :: {"Compact#"} -> T_Addr -> {"GHC.Prim.(#,#)" T_Addr T_Word64}
 
   primop effectful
     "compactAllocateBlock#"  :: T_Word64 -> T_Addr -> {"GHC.Prim.Unit#" T_Addr}
@@ -606,11 +605,11 @@ primPrelude = [progConst|
     Parallelism
   -}
   primop effectful
-    "par#"       :: %a -> T_Int64
-    "spark#"     :: %a -> {"GHC.Prim.Unit#" %a}
+    "par#"   :: %a -> T_Int64
+    "spark#" :: %a -> {"GHC.Prim.Unit#" %a}
 
   primop pure
-    "seq#"       :: %a -> {"GHC.Prim.Unit#" %a}
+    "seq#" :: %a -> {"GHC.Prim.Unit#" %a}
 
   primop effectful
     "getSpark#"  :: {"GHC.Prim.(#,#)" T_Int64 %a}
@@ -626,12 +625,12 @@ primPrelude = [progConst|
     Bytecode operations
   -}
   primop pure
-    "addrToAny#"     :: T_Addr -> {"GHC.Prim.Unit#" %a}
-    "anyToAddr#"     :: %a -> {"GHC.Prim.Unit#" T_Addr}
-    "mkApUpd0#"      :: {"BCO#"} -> {"GHC.Prim.Unit#" %a}
+    "addrToAny#" :: T_Addr -> {"GHC.Prim.Unit#" %a}
+    "anyToAddr#" :: %a -> {"GHC.Prim.Unit#" T_Addr}
+    "mkApUpd0#"  :: {"BCO#"} -> {"GHC.Prim.Unit#" %a}
 
   primop effectful
-    "newBCO#"        :: {"ByteArray#"} -> {"ByteArray#"} -> {"Array#" %a} -> T_Int64 -> {"ByteArray#"} -> {"GHC.Prim.Unit#" {"BCO#"}}
+    "newBCO#" :: {"ByteArray#"} -> {"ByteArray#"} -> {"Array#" %a} -> T_Int64 -> {"ByteArray#"} -> {"GHC.Prim.Unit#" {"BCO#"}}
 
   primop pure
     "unpackClosure#" :: %a -> {"GHC.Prim.(#,,#)" T_Addr {"ByteArray#"} {"Array#" %b}}
@@ -707,6 +706,7 @@ unsupported = Set.fromList
   , "proxy#"                                 -- pseudo ops are not supported
   , "clearCCS#"                              -- contains unsupported type
   , "tagToEnum#"                             -- unknown type parameters in the result type
+  , "finalizeWeak#"                          -- contains unsupported type
   , "mkWeak#"                                -- contains unsupported type
   , "catchSTM#"                              -- contains unsupported type
   , "catchRetry#"                            -- contains unsupported type
