@@ -5,6 +5,14 @@
 
 GRIN backend for GHC
 
+## Status
+
+The project is under heavy development.
+
+Currently we work on GHC primop and FFI support.
+
+GHC-GRIN can not compile programs yet. 
+
 ## Components
 
 ### ghc-dump-core ghc-dump-util
