@@ -7,3 +7,8 @@ https://purelyfunctional.org/slides/writing_fast_haskell.pdf
 
 https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/Coercions
 https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/FC
+
+
+## RTS
+
+https://www.microsoft.com/en-us/research/wp-content/uploads/1998/01/new-rts.pdf
