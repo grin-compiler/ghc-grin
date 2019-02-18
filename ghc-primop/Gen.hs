@@ -36,9 +36,10 @@ isMonomorph = \case
   TyVar {} -> False
   TyUTup a -> all isMonomorph a
 
-cvtExternal :: String -> Ty -> Bool -> Maybe External
+cvtExternal :: String -> Ty -> Bool -> Either String External
 cvtExternal n t isEffectful = do
-  (retTy' : revArgsTy') <- reverse <$> firstOrderFunTy t
+  res <- reverse <$> firstOrderFunTy t
+  let (retTy' : revArgsTy') = res
   retTy <- cvtTy $ prepareRetType retTy'
   revArgsTy <- mapM cvtTy $ filter (not . isStateTy) revArgsTy'
   pure External
@@ -64,38 +65,40 @@ prepareRetType = \case
   t | isStateTy t -> TyUTup []
     | otherwise   -> t
 
-firstOrderTy :: Ty -> Maybe Ty
+firstOrderTy :: Ty -> Either String Ty
 firstOrderTy = \case
-  TyApp (TyCon n) args
-    | Just xs <- mapM firstOrderTy args
-    -> Just $ TyApp (TyCon n) xs
+  TyApp (TyCon n) args -> do
+    xs <- mapM firstOrderTy args
+    pure $ TyApp (TyCon n) xs
 
   TyVar n
-    -> Just $ TyVar n
+    -> Right $ TyVar n
 
-  TyUTup args
-    | Just xs <- mapM firstOrderTy args
-    -> Just $ TyUTup xs
+  TyUTup args -> do
+    xs <- mapM firstOrderTy args
+    pure $ TyUTup xs
 
-  _ -> Nothing
+  TyF{} -> Left "higher order type"
+  TyC{} -> Left "consraint type"
+  t -> Left $ "unsupported type: " ++ show t
 
-firstOrderFunTy :: Ty -> Maybe [Ty]
+firstOrderFunTy :: Ty -> Either String [Ty]
 firstOrderFunTy = \case
   TyF t x -> (:)   <$> firstOrderTy t <*> firstOrderFunTy x
   t       -> (:[]) <$> firstOrderTy t
 
-cvtTy :: Ty -> Maybe L.Ty
+cvtTy :: Ty -> Either String L.Ty
 cvtTy ty = case adjustTy ty of
-  TyVar n -> Just $ L.TyVar $ packName n
+  TyVar n -> Right $ L.TyVar $ packName n
   TyApp (TyCon n) []
-    | Just t <- cvtType n -> Just $ L.TySimple t
+    | Just t <- cvtType n -> Right $ L.TySimple t
   TyApp (TyCon n) args
-    | Just xs <- mapM cvtTy args
-    -> Just $ L.TyCon (packName n) xs
+    | Right xs <- mapM cvtTy args
+    -> Right $ L.TyCon (packName n) xs
   TyUTup args
-    | Just xs <- mapM cvtTy args
-    -> Just $ mkUnboxedTuple xs
-  _ -> Nothing
+    | Right xs <- mapM cvtTy args
+    -> Right $ mkUnboxedTuple xs
+  t -> Left $ "unsupported type: " ++ show t
 
 
 -- removes state variable from primitive types
@@ -173,9 +176,10 @@ addExternal e = modify $ \s@Env{..} -> s {envExternals = envExternals ++ [e]}
 flushSection :: G ()
 flushSection = do
   exts <- gets envExternals
-  if null exts
-    then modify $ \s@Env{..} -> s {envExternals = []}
-    else modify $ \s@Env{..} -> s {envExternals = [], envUnsupported = [], envSections = envSections ++ [(envSectionTitle, exts, envUnsupported)]}
+  errs <- gets envUnsupported
+  if null exts && null errs
+    then modify $ \s@Env{..} -> s {envExternals = [], envUnsupported = []}
+    else modify $ \s@Env{..} -> s {envExternals = [], envUnsupported = [], envSections = envSections ++ [(envSectionTitle, exts, errs)]}
 
 setSection :: String -> G ()
 setSection title = modify $ \s@Env{..} -> s {envSectionTitle = title}
@@ -188,13 +192,13 @@ visitEntry = \case
   PrimOpSpec{..} -> do
     has_side_effects <- attrBool "has_side_effects" opts
     case cvtExternal name ty has_side_effects of
-      Just e@External{..}
+      Right e@External{..}
         | not (isBad eArgsType eRetType)
         -> addExternal e
         | otherwise
         -> unsupportedPrimop name "unknown type parameters in the result type"
-      Nothing
-        -> unsupportedPrimop name "contains unsupported type"
+      Left err
+        -> unsupportedPrimop name err
 
   Section{..} -> do
     flushSection
