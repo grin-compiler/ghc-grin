@@ -85,7 +85,7 @@ firstOrderFunTy = \case
   t       -> (:[]) <$> firstOrderTy t
 
 cvtTy :: Ty -> Maybe L.Ty
-cvtTy = \case
+cvtTy ty = case adjustTy ty of
   TyVar n -> Just $ L.TyVar $ packName n
   TyApp (TyCon n) []
     | Just t <- cvtType n -> Just $ L.TySimple t
@@ -96,6 +96,19 @@ cvtTy = \case
     | Just xs <- mapM cvtTy args
     -> Just $ mkUnboxedTuple xs
   _ -> Nothing
+
+
+-- removes state variable from primitive types
+adjustTy :: Ty -> Ty
+adjustTy = \case
+  TyApp (TyCon "TVar#")               [s, a]  -> TyApp (TyCon "TVar#")              [a]
+  TyApp (TyCon "MVar#")               [s, a]  -> TyApp (TyCon "MVar#")              [a]
+  TyApp (TyCon "MutVar#")             [s, a]  -> TyApp (TyCon "MutVar#")            [a]
+  TyApp (TyCon "MutableArray#")       [s, a]  -> TyApp (TyCon "MutableArray#")      [a]
+  TyApp (TyCon "SmallMutableArray#")  [s, a]  -> TyApp (TyCon "SmallMutableArray#") [a]
+  TyApp (TyCon "MutableArrayArray#")  [s]     -> TyApp (TyCon "MutableArrayArray#") []
+  TyApp (TyCon "MutableByteArray#")   [s]     -> TyApp (TyCon "MutableByteArray#")  []
+  t -> t
 
 cvtType :: String -> Maybe SimpleType
 cvtType = \case
