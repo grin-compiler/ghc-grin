@@ -135,20 +135,20 @@ isBad _ _ = False
 
 data Env
   = Env
-  { envUnsupported      :: [(String, String)]
-  , envSections         :: [(String, [External])]
+  { envSections         :: [(String, [External], [(String, String)])] -- section, externals, unsupported ops
   , envDefaults         :: [Option]
   , envSectionTitle     :: String
   , envExternals        :: [External]
+  , envUnsupported      :: [(String, String)] -- NOTE: primop name, message
   }
 
 emptyEnv :: [Option] -> Env
 emptyEnv opts = Env
-  { envUnsupported      = []
-  , envSections         = []
+  { envSections         = []
   , envDefaults         = opts
   , envSectionTitle     = ""
   , envExternals        = []
+  , envUnsupported      = []
   }
 
 type G = State Env
@@ -165,7 +165,7 @@ attrBool name opts = attr opts $ \case
   _ -> Nothing
 
 unsupportedPrimop :: String -> String -> G ()
-unsupportedPrimop name msg = modify $ \s@Env{..} -> s {envUnsupported = (name, msg) : envUnsupported}
+unsupportedPrimop name msg = modify $ \s@Env{..} -> s {envUnsupported = envUnsupported ++ [(name, msg)]}
 
 addExternal :: External -> G ()
 addExternal e = modify $ \s@Env{..} -> s {envExternals = envExternals ++ [e]}
@@ -175,7 +175,7 @@ flushSection = do
   exts <- gets envExternals
   if null exts
     then modify $ \s@Env{..} -> s {envExternals = []}
-    else modify $ \s@Env{..} -> s {envExternals = [], envSections = envSections ++ [(envSectionTitle, exts)]}
+    else modify $ \s@Env{..} -> s {envExternals = [], envUnsupported = [], envSections = envSections ++ [(envSectionTitle, exts, envUnsupported)]}
 
 setSection :: String -> G ()
 setSection title = modify $ \s@Env{..} -> s {envSectionTitle = title}
@@ -239,13 +239,22 @@ genGHCPrimOps = do
       primPrelude =
         [ "primPrelude :: Program"
         , "primPrelude = [progConst|"
-        ] ++ map tab (concat [comment title ++ (lines $ showWidth 800 $ plain $ L.prettyExternals exts) ++ [""] | (title, exts) <- envSections]) ++
+        ] ++ map tab (concat [comment title ++ (lines $ showWidth 800 $ plain $ L.prettyExternals exts) ++ [""] | (title, exts, _) <- envSections]) ++
         ["  |]\n"]
 
       unsupported =
         [ "unsupported :: Set.Set String"
         , "unsupported = Set.fromList"
-        ] ++ ["  [ " ++ intercalate "\n  , " [(take 40 $ show n ++ repeat ' ') ++ " -- " ++ msg | (n, msg) <- envUnsupported] ++ "\n  ]"]
+        ] ++ go True envSections ++
+        ["  ]"]
+
+      go _ [] = []
+      go isFirst ((s,_,[]):xs) = go isFirst xs
+      go isFirst ((s,_,l):xs) = ["\n  -- " ++ s] ++ goSection isFirst l ++ go False xs
+
+      goSection _ [] = []
+      goSection True ((n,msg):xs)   = ["  [ " ++ (take 40 $ show n ++ repeat ' ') ++ " -- " ++ msg] ++ goSection False xs
+      goSection False ((n,msg):xs)  = ["  , " ++ (take 40 $ show n ++ repeat ' ') ++ " -- " ++ msg] ++ goSection False xs
 
   writeFile "GHCPrimOps.hs" $ unlines $ header ++ primPrelude ++ unsupported
 
