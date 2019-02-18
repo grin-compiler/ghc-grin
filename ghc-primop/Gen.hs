@@ -131,9 +131,9 @@ tyVars = \case
 
 -- check for unknown type vars in result type
 isBad :: [L.Ty] -> L.Ty -> Bool
-isBad args (L.TyVar res) = not (Set.null $ Set.difference r a) where
+isBad args res = not (Set.null $ Set.difference r a) where
   a = Set.unions $ map tyVars args
-  r = Set.singleton res
+  r = tyVars res
 isBad _ _ = False
 
 data Env
