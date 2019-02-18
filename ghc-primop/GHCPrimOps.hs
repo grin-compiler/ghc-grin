@@ -677,45 +677,63 @@ primPrelude = [progConst|
 
 unsupported :: Set.Set String
 unsupported = Set.fromList
-  [ "writeOffAddrAs#"                        -- contains unsupported type
-  , "readOffAddrAs#"                         -- contains unsupported type
-  , "indexOffAddrAs#"                        -- contains unsupported type
-  , "writeArrayAs#"                          -- contains unsupported type
-  , "readArrayAs#"                           -- contains unsupported type
-  , "indexArrayAs#"                          -- contains unsupported type
-  , "writeOffAddr#"                          -- contains unsupported type
-  , "readOffAddr#"                           -- contains unsupported type
-  , "indexOffAddr#"                          -- contains unsupported type
-  , "writeArray#"                            -- contains unsupported type
-  , "readArray#"                             -- contains unsupported type
-  , "indexArray#"                            -- contains unsupported type
-  , "negate#"                                -- contains unsupported type
-  , "rem#"                                   -- contains unsupported type
-  , "quot#"                                  -- contains unsupported type
-  , "divide#"                                -- contains unsupported type
-  , "times#"                                 -- contains unsupported type
-  , "minus#"                                 -- contains unsupported type
-  , "plus#"                                  -- contains unsupported type
-  , "insert#"                                -- contains unsupported type
-  , "unpack#"                                -- contains unsupported type
-  , "pack#"                                  -- contains unsupported type
-  , "broadcast#"                             -- contains unsupported type
-  , "coerce"                                 -- pseudo ops are not supported
-  , "unsafeCoerce#"                          -- pseudo ops are not supported
-  , "seq"                                    -- pseudo ops are not supported
-  , "proxy#"                                 -- pseudo ops are not supported
-  , "clearCCS#"                              -- contains unsupported type
-  , "tagToEnum#"                             -- unknown type parameters in the result type
-  , "finalizeWeak#"                          -- contains unsupported type
-  , "mkWeak#"                                -- contains unsupported type
-  , "catchSTM#"                              -- contains unsupported type
-  , "catchRetry#"                            -- contains unsupported type
-  , "atomically#"                            -- contains unsupported type
-  , "unmaskAsyncExceptions#"                 -- contains unsupported type
-  , "maskUninterruptible#"                   -- contains unsupported type
-  , "maskAsyncExceptions#"                   -- contains unsupported type
-  , "raise#"                                 -- unknown type parameters in the result type
-  , "catch#"                                 -- contains unsupported type
+
+  -- Addr#
+  [ "nullAddr#"                              -- pseudo ops are not supported
+
+  -- Mutable variables
   , "atomicModifyMutVar#"                    -- contains unsupported type
-  , "nullAddr#"                              -- pseudo ops are not supported
+
+  -- Exceptions
+  , "catch#"                                 -- contains unsupported type
+  , "raise#"                                 -- unknown type parameters in the result type
+  , "maskAsyncExceptions#"                   -- contains unsupported type
+  , "maskUninterruptible#"                   -- contains unsupported type
+  , "unmaskAsyncExceptions#"                 -- contains unsupported type
+
+  -- STM-accessible Mutable Variables
+  , "atomically#"                            -- contains unsupported type
+  , "catchRetry#"                            -- contains unsupported type
+  , "catchSTM#"                              -- contains unsupported type
+
+  -- Weak pointers
+  , "mkWeak#"                                -- contains unsupported type
+  , "finalizeWeak#"                          -- contains unsupported type
+
+  -- Tag to enum stuff
+  , "tagToEnum#"                             -- unknown type parameters in the result type
+
+  -- Misc
+  , "clearCCS#"                              -- contains unsupported type
+
+  -- Etc
+  , "proxy#"                                 -- pseudo ops are not supported
+  , "seq"                                    -- pseudo ops are not supported
+  , "unsafeCoerce#"                          -- pseudo ops are not supported
+
+  -- Prefetch
+  , "coerce"                                 -- pseudo ops are not supported
+  , "broadcast#"                             -- contains unsupported type
+  , "pack#"                                  -- contains unsupported type
+  , "unpack#"                                -- contains unsupported type
+  , "insert#"                                -- contains unsupported type
+  , "plus#"                                  -- contains unsupported type
+  , "minus#"                                 -- contains unsupported type
+  , "times#"                                 -- contains unsupported type
+  , "divide#"                                -- contains unsupported type
+  , "quot#"                                  -- contains unsupported type
+  , "rem#"                                   -- contains unsupported type
+  , "negate#"                                -- contains unsupported type
+  , "indexArray#"                            -- contains unsupported type
+  , "readArray#"                             -- contains unsupported type
+  , "writeArray#"                            -- contains unsupported type
+  , "indexOffAddr#"                          -- contains unsupported type
+  , "readOffAddr#"                           -- contains unsupported type
+  , "writeOffAddr#"                          -- contains unsupported type
+  , "indexArrayAs#"                          -- contains unsupported type
+  , "readArrayAs#"                           -- contains unsupported type
+  , "writeArrayAs#"                          -- contains unsupported type
+  , "indexOffAddrAs#"                        -- contains unsupported type
+  , "readOffAddrAs#"                         -- contains unsupported type
+  , "writeOffAddrAs#"                        -- contains unsupported type
   ]
