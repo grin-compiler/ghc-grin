@@ -267,39 +267,37 @@ primPrelude = [progConst|
     "unsafeFreezeByteArray#"  :: {"MutableByteArray#"} -> {"GHC.Prim.Unit#" {"ByteArray#"}}
 
   primop pure
-    "sizeofByteArray#"            :: {"ByteArray#"} -> T_Int64
-    "sizeofMutableByteArray#"     :: {"MutableByteArray#"} -> T_Int64
-    "getSizeofMutableByteArray#"  :: {"MutableByteArray#"} -> {"GHC.Prim.Unit#" T_Int64}
-    "indexCharArray#"             :: {"ByteArray#"} -> T_Int64 -> T_Char
-    "indexWideCharArray#"         :: {"ByteArray#"} -> T_Int64 -> T_Char
-    "indexIntArray#"              :: {"ByteArray#"} -> T_Int64 -> T_Int64
-    "indexWordArray#"             :: {"ByteArray#"} -> T_Int64 -> T_Word64
-    "indexAddrArray#"             :: {"ByteArray#"} -> T_Int64 -> T_Addr
-    "indexFloatArray#"            :: {"ByteArray#"} -> T_Int64 -> T_Float
-    "indexDoubleArray#"           :: {"ByteArray#"} -> T_Int64 -> T_Double
-    "indexStablePtrArray#"        :: {"ByteArray#"} -> T_Int64 -> {"StablePtr#" %a}
-    "indexInt8Array#"             :: {"ByteArray#"} -> T_Int64 -> T_Int64
-    "indexInt16Array#"            :: {"ByteArray#"} -> T_Int64 -> T_Int64
-    "indexInt32Array#"            :: {"ByteArray#"} -> T_Int64 -> T_Int64
-    "indexInt64Array#"            :: {"ByteArray#"} -> T_Int64 -> T_Int64
-    "indexWord8Array#"            :: {"ByteArray#"} -> T_Int64 -> T_Word64
-    "indexWord16Array#"           :: {"ByteArray#"} -> T_Int64 -> T_Word64
-    "indexWord32Array#"           :: {"ByteArray#"} -> T_Int64 -> T_Word64
-    "indexWord64Array#"           :: {"ByteArray#"} -> T_Int64 -> T_Word64
-    "indexWord8ArrayAsChar#"      :: {"ByteArray#"} -> T_Int64 -> T_Char
-    "indexWord8ArrayAsWideChar#"  :: {"ByteArray#"} -> T_Int64 -> T_Char
-    "indexWord8ArrayAsAddr#"      :: {"ByteArray#"} -> T_Int64 -> T_Addr
-    "indexWord8ArrayAsFloat#"     :: {"ByteArray#"} -> T_Int64 -> T_Float
-    "indexWord8ArrayAsDouble#"    :: {"ByteArray#"} -> T_Int64 -> T_Double
-    "indexWord8ArrayAsStablePtr#" :: {"ByteArray#"} -> T_Int64 -> {"StablePtr#" %a}
-    "indexWord8ArrayAsInt16#"     :: {"ByteArray#"} -> T_Int64 -> T_Int64
-    "indexWord8ArrayAsInt32#"     :: {"ByteArray#"} -> T_Int64 -> T_Int64
-    "indexWord8ArrayAsInt64#"     :: {"ByteArray#"} -> T_Int64 -> T_Int64
-    "indexWord8ArrayAsInt#"       :: {"ByteArray#"} -> T_Int64 -> T_Int64
-    "indexWord8ArrayAsWord16#"    :: {"ByteArray#"} -> T_Int64 -> T_Word64
-    "indexWord8ArrayAsWord32#"    :: {"ByteArray#"} -> T_Int64 -> T_Word64
-    "indexWord8ArrayAsWord64#"    :: {"ByteArray#"} -> T_Int64 -> T_Word64
-    "indexWord8ArrayAsWord#"      :: {"ByteArray#"} -> T_Int64 -> T_Word64
+    "sizeofByteArray#"           :: {"ByteArray#"} -> T_Int64
+    "sizeofMutableByteArray#"    :: {"MutableByteArray#"} -> T_Int64
+    "getSizeofMutableByteArray#" :: {"MutableByteArray#"} -> {"GHC.Prim.Unit#" T_Int64}
+    "indexCharArray#"            :: {"ByteArray#"} -> T_Int64 -> T_Char
+    "indexWideCharArray#"        :: {"ByteArray#"} -> T_Int64 -> T_Char
+    "indexIntArray#"             :: {"ByteArray#"} -> T_Int64 -> T_Int64
+    "indexWordArray#"            :: {"ByteArray#"} -> T_Int64 -> T_Word64
+    "indexAddrArray#"            :: {"ByteArray#"} -> T_Int64 -> T_Addr
+    "indexFloatArray#"           :: {"ByteArray#"} -> T_Int64 -> T_Float
+    "indexDoubleArray#"          :: {"ByteArray#"} -> T_Int64 -> T_Double
+    "indexInt8Array#"            :: {"ByteArray#"} -> T_Int64 -> T_Int64
+    "indexInt16Array#"           :: {"ByteArray#"} -> T_Int64 -> T_Int64
+    "indexInt32Array#"           :: {"ByteArray#"} -> T_Int64 -> T_Int64
+    "indexInt64Array#"           :: {"ByteArray#"} -> T_Int64 -> T_Int64
+    "indexWord8Array#"           :: {"ByteArray#"} -> T_Int64 -> T_Word64
+    "indexWord16Array#"          :: {"ByteArray#"} -> T_Int64 -> T_Word64
+    "indexWord32Array#"          :: {"ByteArray#"} -> T_Int64 -> T_Word64
+    "indexWord64Array#"          :: {"ByteArray#"} -> T_Int64 -> T_Word64
+    "indexWord8ArrayAsChar#"     :: {"ByteArray#"} -> T_Int64 -> T_Char
+    "indexWord8ArrayAsWideChar#" :: {"ByteArray#"} -> T_Int64 -> T_Char
+    "indexWord8ArrayAsAddr#"     :: {"ByteArray#"} -> T_Int64 -> T_Addr
+    "indexWord8ArrayAsFloat#"    :: {"ByteArray#"} -> T_Int64 -> T_Float
+    "indexWord8ArrayAsDouble#"   :: {"ByteArray#"} -> T_Int64 -> T_Double
+    "indexWord8ArrayAsInt16#"    :: {"ByteArray#"} -> T_Int64 -> T_Int64
+    "indexWord8ArrayAsInt32#"    :: {"ByteArray#"} -> T_Int64 -> T_Int64
+    "indexWord8ArrayAsInt64#"    :: {"ByteArray#"} -> T_Int64 -> T_Int64
+    "indexWord8ArrayAsInt#"      :: {"ByteArray#"} -> T_Int64 -> T_Int64
+    "indexWord8ArrayAsWord16#"   :: {"ByteArray#"} -> T_Int64 -> T_Word64
+    "indexWord8ArrayAsWord32#"   :: {"ByteArray#"} -> T_Int64 -> T_Word64
+    "indexWord8ArrayAsWord64#"   :: {"ByteArray#"} -> T_Int64 -> T_Word64
+    "indexWord8ArrayAsWord#"     :: {"ByteArray#"} -> T_Int64 -> T_Word64
 
   primop effectful
     "readCharArray#"              :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Char}
@@ -309,7 +307,6 @@ primPrelude = [progConst|
     "readAddrArray#"              :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Addr}
     "readFloatArray#"             :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Float}
     "readDoubleArray#"            :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Double}
-    "readStablePtrArray#"         :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
     "readInt8Array#"              :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
     "readInt16Array#"             :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
     "readInt32Array#"             :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
@@ -323,7 +320,6 @@ primPrelude = [progConst|
     "readWord8ArrayAsAddr#"       :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Addr}
     "readWord8ArrayAsFloat#"      :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Float}
     "readWord8ArrayAsDouble#"     :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Double}
-    "readWord8ArrayAsStablePtr#"  :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
     "readWord8ArrayAsInt16#"      :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
     "readWord8ArrayAsInt32#"      :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
     "readWord8ArrayAsInt64#"      :: {"MutableByteArray#"} -> T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
@@ -417,33 +413,32 @@ primPrelude = [progConst|
     Addr#
   -}
   primop pure
-    "plusAddr#"              :: T_Addr -> T_Int64 -> T_Addr
-    "minusAddr#"             :: T_Addr -> T_Addr -> T_Int64
-    "remAddr#"               :: T_Addr -> T_Int64 -> T_Int64
-    "addr2Int#"              :: T_Addr -> T_Int64
-    "int2Addr#"              :: T_Int64 -> T_Addr
-    "gtAddr#"                :: T_Addr -> T_Addr -> T_Int64
-    "geAddr#"                :: T_Addr -> T_Addr -> T_Int64
-    "eqAddr#"                :: T_Addr -> T_Addr -> T_Int64
-    "neAddr#"                :: T_Addr -> T_Addr -> T_Int64
-    "ltAddr#"                :: T_Addr -> T_Addr -> T_Int64
-    "leAddr#"                :: T_Addr -> T_Addr -> T_Int64
-    "indexCharOffAddr#"      :: T_Addr -> T_Int64 -> T_Char
-    "indexWideCharOffAddr#"  :: T_Addr -> T_Int64 -> T_Char
-    "indexIntOffAddr#"       :: T_Addr -> T_Int64 -> T_Int64
-    "indexWordOffAddr#"      :: T_Addr -> T_Int64 -> T_Word64
-    "indexAddrOffAddr#"      :: T_Addr -> T_Int64 -> T_Addr
-    "indexFloatOffAddr#"     :: T_Addr -> T_Int64 -> T_Float
-    "indexDoubleOffAddr#"    :: T_Addr -> T_Int64 -> T_Double
-    "indexStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"StablePtr#" %a}
-    "indexInt8OffAddr#"      :: T_Addr -> T_Int64 -> T_Int64
-    "indexInt16OffAddr#"     :: T_Addr -> T_Int64 -> T_Int64
-    "indexInt32OffAddr#"     :: T_Addr -> T_Int64 -> T_Int64
-    "indexInt64OffAddr#"     :: T_Addr -> T_Int64 -> T_Int64
-    "indexWord8OffAddr#"     :: T_Addr -> T_Int64 -> T_Word64
-    "indexWord16OffAddr#"    :: T_Addr -> T_Int64 -> T_Word64
-    "indexWord32OffAddr#"    :: T_Addr -> T_Int64 -> T_Word64
-    "indexWord64OffAddr#"    :: T_Addr -> T_Int64 -> T_Word64
+    "plusAddr#"             :: T_Addr -> T_Int64 -> T_Addr
+    "minusAddr#"            :: T_Addr -> T_Addr -> T_Int64
+    "remAddr#"              :: T_Addr -> T_Int64 -> T_Int64
+    "addr2Int#"             :: T_Addr -> T_Int64
+    "int2Addr#"             :: T_Int64 -> T_Addr
+    "gtAddr#"               :: T_Addr -> T_Addr -> T_Int64
+    "geAddr#"               :: T_Addr -> T_Addr -> T_Int64
+    "eqAddr#"               :: T_Addr -> T_Addr -> T_Int64
+    "neAddr#"               :: T_Addr -> T_Addr -> T_Int64
+    "ltAddr#"               :: T_Addr -> T_Addr -> T_Int64
+    "leAddr#"               :: T_Addr -> T_Addr -> T_Int64
+    "indexCharOffAddr#"     :: T_Addr -> T_Int64 -> T_Char
+    "indexWideCharOffAddr#" :: T_Addr -> T_Int64 -> T_Char
+    "indexIntOffAddr#"      :: T_Addr -> T_Int64 -> T_Int64
+    "indexWordOffAddr#"     :: T_Addr -> T_Int64 -> T_Word64
+    "indexAddrOffAddr#"     :: T_Addr -> T_Int64 -> T_Addr
+    "indexFloatOffAddr#"    :: T_Addr -> T_Int64 -> T_Float
+    "indexDoubleOffAddr#"   :: T_Addr -> T_Int64 -> T_Double
+    "indexInt8OffAddr#"     :: T_Addr -> T_Int64 -> T_Int64
+    "indexInt16OffAddr#"    :: T_Addr -> T_Int64 -> T_Int64
+    "indexInt32OffAddr#"    :: T_Addr -> T_Int64 -> T_Int64
+    "indexInt64OffAddr#"    :: T_Addr -> T_Int64 -> T_Int64
+    "indexWord8OffAddr#"    :: T_Addr -> T_Int64 -> T_Word64
+    "indexWord16OffAddr#"   :: T_Addr -> T_Int64 -> T_Word64
+    "indexWord32OffAddr#"   :: T_Addr -> T_Int64 -> T_Word64
+    "indexWord64OffAddr#"   :: T_Addr -> T_Int64 -> T_Word64
 
   primop effectful
     "readCharOffAddr#"       :: T_Addr -> T_Int64 -> {"GHC.Prim.Unit#" T_Char}
@@ -453,7 +448,6 @@ primPrelude = [progConst|
     "readAddrOffAddr#"       :: T_Addr -> T_Int64 -> {"GHC.Prim.Unit#" T_Addr}
     "readFloatOffAddr#"      :: T_Addr -> T_Int64 -> {"GHC.Prim.Unit#" T_Float}
     "readDoubleOffAddr#"     :: T_Addr -> T_Int64 -> {"GHC.Prim.Unit#" T_Double}
-    "readStablePtrOffAddr#"  :: T_Addr -> T_Int64 -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
     "readInt8OffAddr#"       :: T_Addr -> T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
     "readInt16OffAddr#"      :: T_Addr -> T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
     "readInt32OffAddr#"      :: T_Addr -> T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
@@ -497,14 +491,12 @@ primPrelude = [progConst|
     Exceptions
   -}
   primop effectful
-    "raiseIO#"         :: %a -> {"GHC.Prim.Unit#" %b}
     "getMaskingState#" :: {"GHC.Prim.Unit#" T_Int64}
 
   {-
     STM-accessible Mutable Variables
   -}
   primop effectful
-    "retry#"      :: {"GHC.Prim.Unit#" %a}
     "newTVar#"    :: %a -> {"GHC.Prim.Unit#" {"TVar#" %a}}
     "readTVar#"   :: {"TVar#" %a} -> {"GHC.Prim.Unit#" %a}
     "readTVarIO#" :: {"TVar#" %a} -> {"GHC.Prim.Unit#" %a}
@@ -517,7 +509,6 @@ primPrelude = [progConst|
     Synchronized Mutable Variables
   -}
   primop effectful
-    "newMVar#"     :: {"GHC.Prim.Unit#" {"MVar#" %a}}
     "takeMVar#"    :: {"MVar#" %a} -> {"GHC.Prim.Unit#" %a}
     "tryTakeMVar#" :: {"MVar#" %a} -> {"GHC.Prim.(#,#)" T_Int64 %a}
     "putMVar#"     :: {"MVar#" %a} -> %a -> {"GHC.Prim.(##)"}
@@ -612,7 +603,6 @@ primPrelude = [progConst|
     "seq#" :: %a -> {"GHC.Prim.Unit#" %a}
 
   primop effectful
-    "getSpark#"  :: {"GHC.Prim.(#,#)" T_Int64 %a}
     "numSparks#" :: {"GHC.Prim.Unit#" T_Int64}
 
   {-
@@ -625,16 +615,10 @@ primPrelude = [progConst|
     Bytecode operations
   -}
   primop pure
-    "addrToAny#" :: T_Addr -> {"GHC.Prim.Unit#" %a}
     "anyToAddr#" :: %a -> {"GHC.Prim.Unit#" T_Addr}
-    "mkApUpd0#"  :: {"BCO#"} -> {"GHC.Prim.Unit#" %a}
 
   primop effectful
     "newBCO#" :: {"ByteArray#"} -> {"ByteArray#"} -> {"Array#" %a} -> T_Int64 -> {"ByteArray#"} -> {"GHC.Prim.Unit#" {"BCO#"}}
-
-  primop pure
-    "unpackClosure#" :: %a -> {"GHC.Prim.(#,,#)" T_Addr {"ByteArray#"} {"Array#" %b}}
-    "getApStackVal#" :: %a -> T_Int64 -> {"GHC.Prim.(#,#)" T_Int64 %b}
 
   {-
     Misc
@@ -686,8 +670,16 @@ primPrelude = [progConst|
 unsupported :: Set.Set String
 unsupported = Set.fromList
 
+  -- Byte Arrays
+  [ "indexStablePtrArray#"                   -- unknown type parameters in the result type
+  , "indexWord8ArrayAsStablePtr#"            -- unknown type parameters in the result type
+  , "readStablePtrArray#"                    -- unknown type parameters in the result type
+  , "readWord8ArrayAsStablePtr#"             -- unknown type parameters in the result type
+
   -- Addr#
-  [ "nullAddr#"                              -- pseudo ops are not supported
+  , "nullAddr#"                              -- pseudo ops are not supported
+  , "indexStablePtrOffAddr#"                 -- unknown type parameters in the result type
+  , "readStablePtrOffAddr#"                  -- unknown type parameters in the result type
 
   -- Mutable variables
   , "atomicModifyMutVar#"                    -- higher order type
@@ -695,21 +687,35 @@ unsupported = Set.fromList
   -- Exceptions
   , "catch#"                                 -- higher order type
   , "raise#"                                 -- unknown type parameters in the result type
+  , "raiseIO#"                               -- unknown type parameters in the result type
   , "maskAsyncExceptions#"                   -- higher order type
   , "maskUninterruptible#"                   -- higher order type
   , "unmaskAsyncExceptions#"                 -- higher order type
 
   -- STM-accessible Mutable Variables
   , "atomically#"                            -- higher order type
+  , "retry#"                                 -- unknown type parameters in the result type
   , "catchRetry#"                            -- higher order type
   , "catchSTM#"                              -- higher order type
+
+  -- Synchronized Mutable Variables
+  , "newMVar#"                               -- unknown type parameters in the result type
 
   -- Weak pointers
   , "mkWeak#"                                -- higher order type
   , "finalizeWeak#"                          -- higher order type
 
+  -- Parallelism
+  , "getSpark#"                              -- unknown type parameters in the result type
+
   -- Tag to enum stuff
   , "tagToEnum#"                             -- unknown type parameters in the result type
+
+  -- Bytecode operations
+  , "addrToAny#"                             -- unknown type parameters in the result type
+  , "mkApUpd0#"                              -- unknown type parameters in the result type
+  , "unpackClosure#"                         -- unknown type parameters in the result type
+  , "getApStackVal#"                         -- unknown type parameters in the result type
 
   -- Misc
   , "clearCCS#"                              -- higher order type
