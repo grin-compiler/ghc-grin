@@ -653,6 +653,14 @@ primPrelude = [progConst|
     "setThreadAllocationCounter#" :: T_Int64 -> {"GHC.Prim.(##)"}
 
   {-
+    Safe coercions
+  -}
+
+  {-
+    SIMD Vectors
+  -}
+
+  {-
     Prefetch
   -}
   primop effectful
@@ -682,58 +690,60 @@ unsupported = Set.fromList
   [ "nullAddr#"                              -- pseudo ops are not supported
 
   -- Mutable variables
-  , "atomicModifyMutVar#"                    -- contains unsupported type
+  , "atomicModifyMutVar#"                    -- higher order type
 
   -- Exceptions
-  , "catch#"                                 -- contains unsupported type
+  , "catch#"                                 -- higher order type
   , "raise#"                                 -- unknown type parameters in the result type
-  , "maskAsyncExceptions#"                   -- contains unsupported type
-  , "maskUninterruptible#"                   -- contains unsupported type
-  , "unmaskAsyncExceptions#"                 -- contains unsupported type
+  , "maskAsyncExceptions#"                   -- higher order type
+  , "maskUninterruptible#"                   -- higher order type
+  , "unmaskAsyncExceptions#"                 -- higher order type
 
   -- STM-accessible Mutable Variables
-  , "atomically#"                            -- contains unsupported type
-  , "catchRetry#"                            -- contains unsupported type
-  , "catchSTM#"                              -- contains unsupported type
+  , "atomically#"                            -- higher order type
+  , "catchRetry#"                            -- higher order type
+  , "catchSTM#"                              -- higher order type
 
   -- Weak pointers
-  , "mkWeak#"                                -- contains unsupported type
-  , "finalizeWeak#"                          -- contains unsupported type
+  , "mkWeak#"                                -- higher order type
+  , "finalizeWeak#"                          -- higher order type
 
   -- Tag to enum stuff
   , "tagToEnum#"                             -- unknown type parameters in the result type
 
   -- Misc
-  , "clearCCS#"                              -- contains unsupported type
+  , "clearCCS#"                              -- higher order type
 
   -- Etc
   , "proxy#"                                 -- pseudo ops are not supported
   , "seq"                                    -- pseudo ops are not supported
   , "unsafeCoerce#"                          -- pseudo ops are not supported
 
-  -- Prefetch
+  -- Safe coercions
   , "coerce"                                 -- pseudo ops are not supported
-  , "broadcast#"                             -- contains unsupported type
-  , "pack#"                                  -- contains unsupported type
-  , "unpack#"                                -- contains unsupported type
-  , "insert#"                                -- contains unsupported type
-  , "plus#"                                  -- contains unsupported type
-  , "minus#"                                 -- contains unsupported type
-  , "times#"                                 -- contains unsupported type
-  , "divide#"                                -- contains unsupported type
-  , "quot#"                                  -- contains unsupported type
-  , "rem#"                                   -- contains unsupported type
-  , "negate#"                                -- contains unsupported type
-  , "indexArray#"                            -- contains unsupported type
-  , "readArray#"                             -- contains unsupported type
-  , "writeArray#"                            -- contains unsupported type
-  , "indexOffAddr#"                          -- contains unsupported type
-  , "readOffAddr#"                           -- contains unsupported type
-  , "writeOffAddr#"                          -- contains unsupported type
-  , "indexArrayAs#"                          -- contains unsupported type
-  , "readArrayAs#"                           -- contains unsupported type
-  , "writeArrayAs#"                          -- contains unsupported type
-  , "indexOffAddrAs#"                        -- contains unsupported type
-  , "readOffAddrAs#"                         -- contains unsupported type
-  , "writeOffAddrAs#"                        -- contains unsupported type
+
+  -- SIMD Vectors
+  , "broadcast#"                             -- unsupported type: TyApp SCALAR []
+  , "pack#"                                  -- unsupported type: TyApp VECTUPLE []
+  , "unpack#"                                -- unsupported type: TyApp VECTOR []
+  , "insert#"                                -- unsupported type: TyApp VECTOR []
+  , "plus#"                                  -- unsupported type: TyApp VECTOR []
+  , "minus#"                                 -- unsupported type: TyApp VECTOR []
+  , "times#"                                 -- unsupported type: TyApp VECTOR []
+  , "divide#"                                -- unsupported type: TyApp VECTOR []
+  , "quot#"                                  -- unsupported type: TyApp VECTOR []
+  , "rem#"                                   -- unsupported type: TyApp VECTOR []
+  , "negate#"                                -- unsupported type: TyApp VECTOR []
+  , "indexArray#"                            -- unsupported type: TyApp VECTOR []
+  , "readArray#"                             -- unsupported type: TyApp VECTOR []
+  , "writeArray#"                            -- unsupported type: TyApp VECTOR []
+  , "indexOffAddr#"                          -- unsupported type: TyApp VECTOR []
+  , "readOffAddr#"                           -- unsupported type: TyApp VECTOR []
+  , "writeOffAddr#"                          -- unsupported type: TyApp VECTOR []
+  , "indexArrayAs#"                          -- unsupported type: TyApp VECTOR []
+  , "readArrayAs#"                           -- unsupported type: TyApp VECTOR []
+  , "writeArrayAs#"                          -- unsupported type: TyApp VECTOR []
+  , "indexOffAddrAs#"                        -- unsupported type: TyApp VECTOR []
+  , "readOffAddrAs#"                         -- unsupported type: TyApp VECTOR []
+  , "writeOffAddrAs#"                        -- unsupported type: TyApp VECTOR []
   ]
