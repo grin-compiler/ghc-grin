@@ -254,7 +254,8 @@ genGHCPrimOps = do
 
       go _ [] = []
       go isFirst ((s,_,[]):xs) = go isFirst xs
-      go isFirst ((s,_,l):xs) = ["\n  -- " ++ s] ++ goSection isFirst l ++ go False xs
+      go True  ((s,_,l):xs) = ["  -- " ++ s] ++ goSection True l ++ go False xs
+      go False ((s,_,l):xs) = ["\n  -- " ++ s] ++ goSection False l ++ go False xs
 
       goSection _ [] = []
       goSection True ((n,msg):xs)   = ["  [ " ++ (take 40 $ show n ++ repeat ' ') ++ " -- " ++ msg] ++ goSection False xs
