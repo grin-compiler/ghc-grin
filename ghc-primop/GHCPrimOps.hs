@@ -491,6 +491,8 @@ primPrelude = [progConst|
     Exceptions
   -}
   primop effectful
+    "raise#"           :: %b -> %o
+    "raiseIO#"         :: %a -> {"GHC.Prim.Unit#" %b}
     "getMaskingState#" :: {"GHC.Prim.Unit#" T_Int64}
 
   {-
@@ -509,6 +511,7 @@ primPrelude = [progConst|
     Synchronized Mutable Variables
   -}
   primop effectful
+    "newMVar#"     :: {"GHC.Prim.Unit#" {"MVar#" %a}}
     "takeMVar#"    :: {"MVar#" %a} -> {"GHC.Prim.Unit#" %a}
     "tryTakeMVar#" :: {"MVar#" %a} -> {"GHC.Prim.(#,#)" T_Int64 %a}
     "putMVar#"     :: {"MVar#" %a} -> %a -> {"GHC.Prim.(##)"}
@@ -603,6 +606,7 @@ primPrelude = [progConst|
     "seq#" :: %a -> {"GHC.Prim.Unit#" %a}
 
   primop effectful
+    "getSpark#"  :: {"GHC.Prim.(#,#)" T_Int64 %a}
     "numSparks#" :: {"GHC.Prim.Unit#" T_Int64}
 
   {-
@@ -686,8 +690,6 @@ unsupported = Set.fromList
 
   -- Exceptions
   , "catch#"                                 -- higher order type
-  , "raise#"                                 -- unknown type parameters in the result type
-  , "raiseIO#"                               -- unknown type parameters in the result type
   , "maskAsyncExceptions#"                   -- higher order type
   , "maskUninterruptible#"                   -- higher order type
   , "unmaskAsyncExceptions#"                 -- higher order type
@@ -698,15 +700,9 @@ unsupported = Set.fromList
   , "catchRetry#"                            -- higher order type
   , "catchSTM#"                              -- higher order type
 
-  -- Synchronized Mutable Variables
-  , "newMVar#"                               -- unknown type parameters in the result type
-
   -- Weak pointers
   , "mkWeak#"                                -- higher order type
   , "finalizeWeak#"                          -- higher order type
-
-  -- Parallelism
-  , "getSpark#"                              -- unknown type parameters in the result type
 
   -- Tag to enum stuff
   , "tagToEnum#"                             -- unknown type parameters in the result type

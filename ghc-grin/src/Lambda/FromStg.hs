@@ -164,13 +164,7 @@ visitExpr = \case
           retTy <- ffiRetType ty
           pure (retTy, map TySimple argsTy)
     case op of
-      C.StgPrimOp prim -> do
-        let name = packName (BS8.unpack prim)
-        case Map.lookup name primMap of
-          Nothing -> pure . Lit $ LError $ "Unsupported GHC primop: " <> T.pack (BS8.unpack prim)
-          Just e  -> do
-            addExternal e
-            App name <$> mapM visitArg realArgs
+      C.StgPrimOp prim -> genPrimOpWithFix prim args realArgs
 
       C.StgPrimCallOp _ -> pure . Lit $ LError "GHC PrimCallOp is not supported"
 
@@ -244,3 +238,35 @@ codegenLambda mod = do
     printf "%s data constructors:\n%s" modName  (unlines . map (("  "++).unpackName) . Set.toList $ dataCons)
   -}
   pure . Program (Map.elems externals) $ defs
+
+------------------------------------------------------------
+-- Workaround for higher order and other problematic primops
+------------------------------------------------------------
+
+genPrimOp :: BS8.ByteString -> [C.Arg] -> CG Exp
+genPrimOp prim realArgs = do
+  let name = packName (BS8.unpack prim)
+  case Map.lookup name primMap of
+    Nothing -> pure . Lit $ LError $ "Unsupported GHC primop: " <> T.pack (BS8.unpack prim)
+    Just e  -> do
+      addExternal e
+      App name <$> mapM visitArg realArgs
+
+
+genPrimOpWithFix :: BS8.ByteString -> [C.Arg] -> [C.Arg] -> CG Exp
+
+-- wrapper like higher order functions
+genPrimOpWithFix "clearCCS#"               [C.StgVarArg f, s]    realArgs = App <$> genName f <*> mapM visitArg [s]
+genPrimOpWithFix "atomically#"             [C.StgVarArg f, s]    realArgs = App <$> genName f <*> mapM visitArg [s]
+genPrimOpWithFix "maskAsyncExceptions#"    [C.StgVarArg f, s]    realArgs = App <$> genName f <*> mapM visitArg [s]
+genPrimOpWithFix "maskUninterruptible#"    [C.StgVarArg f, s]    realArgs = App <$> genName f <*> mapM visitArg [s]
+genPrimOpWithFix "unmaskAsyncExceptions#"  [C.StgVarArg f, s]    realArgs = App <$> genName f <*> mapM visitArg [s]
+genPrimOpWithFix "catch#"                  [C.StgVarArg f, _, s] realArgs = App <$> genName f <*> mapM visitArg [s]
+genPrimOpWithFix "catchRetry#"             [C.StgVarArg f, _, s] realArgs = App <$> genName f <*> mapM visitArg [s]
+genPrimOpWithFix "catchSTM#"               [C.StgVarArg f, _, s] realArgs = App <$> genName f <*> mapM visitArg [s]
+
+-- other
+genPrimOpWithFix "mkWeak#"  [o, b, _, s] realArgs = genPrimOp "mkWeakNoFinalizer#" [o, b]
+
+-- normal primop
+genPrimOpWithFix prim args realArgs = genPrimOp prim realArgs

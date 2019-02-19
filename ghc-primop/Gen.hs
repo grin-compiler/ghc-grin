@@ -184,6 +184,14 @@ flushSection = do
 setSection :: String -> G ()
 setSection title = modify $ \s@Env{..} -> s {envSectionTitle = title}
 
+whiteList :: Set String
+whiteList = Set.fromList
+  [ "newMVar#"
+  , "raise#"
+  , "raiseIO#"
+  , "getSpark#"
+  ]
+
 visitEntry :: Entry -> G ()
 visitEntry = \case
   PrimVecOpSpec{..} -> unsupportedPrimop name "SIMD is not supported yet"
@@ -193,7 +201,7 @@ visitEntry = \case
     has_side_effects <- attrBool "has_side_effects" opts
     case cvtExternal name ty has_side_effects of
       Right e@External{..}
-        | not (isBad eArgsType eRetType)
+        | not (isBad eArgsType eRetType) || Set.member name whiteList
         -> addExternal e
         | otherwise
         -> unsupportedPrimop name "unknown type parameters in the result type"
@@ -254,8 +262,7 @@ genGHCPrimOps = do
 
       go _ [] = []
       go isFirst ((s,_,[]):xs) = go isFirst xs
-      go True  ((s,_,l):xs) = ["  -- " ++ s] ++ goSection True l ++ go False xs
-      go False ((s,_,l):xs) = ["\n  -- " ++ s] ++ goSection False l ++ go False xs
+      go isFirst ((s,_,l):xs) = ["\n  -- " ++ s] ++ goSection isFirst l ++ go False xs
 
       goSection _ [] = []
       goSection True ((n,msg):xs)   = ["  [ " ++ (take 40 $ show n ++ repeat ' ') ++ " -- " ++ msg] ++ goSection False xs
