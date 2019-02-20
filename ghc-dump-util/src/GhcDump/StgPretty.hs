@@ -178,6 +178,12 @@ data TyCon' occ
   , tcDataCons  :: [occ]
   }
 -}
+pprTyCon :: TyCon -> Doc
+pprTyCon TyCon{..} = pretty tcName <$$> (indent 2 $ vsep (map pretty tcDataCons)) <> line
+
+instance Pretty TyCon where
+  pretty = pprTyCon
+
 pprModule :: Module -> Doc
 pprModule m =
   comment (pretty $ modulePhase m)
@@ -185,7 +191,7 @@ pprModule m =
   <$$> vsep [text "using" <+> pretty n | n <- moduleDependency m] <> line
   <$$> text "externals" <$$> vsep [indent 2 $ vsep (map pretty bl) | (n, bl) <- moduleExternals m] <> line
   <$$> text "data" <$$> vsep [indent 2 $ vsep (map pretty bl) | (n, bl) <- moduleDataCons m] <> line
-  -- TODO: TyCons
+  <$$> text "type" <$$> vsep [indent 2 $ vsep (map pretty tl) | (n, tl) <- moduleTyCons m] <> line
   <$$> vsep (map (pprTopBinding) (moduleTopBindings m))
 
 instance Pretty Module where
