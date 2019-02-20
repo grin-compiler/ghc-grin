@@ -47,7 +47,7 @@ reconLocalBinder (BinderMap n m) SBinder{..} = -- HINT: local binders only
   }
 
 reconModule :: SModule -> Module
-reconModule Module{..} = Module modulePhase moduleName moduleDependency exts cons moduleExported binds
+reconModule Module{..} = Module modulePhase moduleName moduleDependency exts cons tyCons moduleExported binds
   where
     bm    = BinderMap moduleName $ HM.fromList [(binderId b, b) | b <- tops ++ concatMap snd (exts ++ cons)]
     binds = map reconTopBinding moduleTopBindings
@@ -59,8 +59,9 @@ reconModule Module{..} = Module modulePhase moduleName moduleDependency exts con
             , let modName   = HM.lookupDefault moduleName sbinderId modNameMap
             , let exported  = HM.member sbinderId modNameMap
             ]
-    exts  = [(m, map (mkTopBinder m True) l) | (m, l) <- moduleExternals]
-    cons  = [(m, map (mkTopBinder m True) l) | (m, l) <- moduleDataCons]
+    exts    = [(m, map (mkTopBinder m True) l) | (m, l) <- moduleExternals]
+    cons    = [(m, map (mkTopBinder m True) l) | (m, l) <- moduleDataCons]
+    tyCons  = [(m, map (reconTyCon bm) l) | (m, l) <- moduleTyCons]
 
     mkTopBinder :: ModuleName -> Bool -> SBinder -> Binder
     mkTopBinder m exported SBinder{..} =
@@ -81,6 +82,14 @@ reconModule Module{..} = Module modulePhase moduleName moduleDependency exts con
       StgTopStringLit b s           -> StgTopStringLit (reconTopBinder b) s
       StgTopLifted (StgNonRec b r)  -> StgTopLifted $ StgNonRec (reconTopBinder b) (reconRhs bm r)
       StgTopLifted (StgRec bs)      -> StgTopLifted $ StgRec [(reconTopBinder b, reconRhs bm r) | (b,r) <- bs]
+
+reconTyCon :: BinderMap -> STyCon -> TyCon
+reconTyCon bm TyCon{..}
+  = TyCon
+  { tcName      = tcName
+  , tcId        = tcId
+  , tcDataCons  = map (getBinder bm) tcDataCons
+  }
 
 topBindings :: TopBinding' bndr occ -> [bndr]
 topBindings = \case

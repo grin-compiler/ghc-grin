@@ -48,9 +48,25 @@ data PrimElemRep
   | DoubleElemRep
   deriving (Eq, Ord, Generic, Show)
 
+newtype TyConId
+  = TyConId Unique
+  deriving (Eq, Ord, Binary, Show)
+
+data TyCon' occ
+  = TyCon
+  { tcName      :: T_Text
+  , tcId        :: TyConId
+  , tcDataCons  :: [occ]
+  }
+  deriving (Eq, Ord, Generic, Show)
+
+type STyCon = TyCon' BinderId
+type TyCon  = TyCon' Binder
+
 data TypeInfo
   = TypeInfo
   { tRep   :: !(Maybe [PrimRep])
+  , tTyCon :: !(Maybe TyConId)
   , tType  :: T_Text
   }
   deriving (Eq, Ord, Generic, Show)
@@ -255,6 +271,7 @@ data Module' bndr occ
     , moduleDependency  :: [ModuleName]
     , moduleExternals   :: [(ModuleName, [bndr])]
     , moduleDataCons    :: [(ModuleName, [bndr])]
+    , moduleTyCons      :: [(ModuleName, [TyCon' occ])]
     , moduleExported    :: [(ModuleName, [BinderId])]
     , moduleTopBindings :: [TopBinding' bndr occ]
     }
@@ -275,6 +292,7 @@ instance Binary ForeignCall
 instance Binary PrimCall
 instance Binary UpdateFlag
 instance Binary StgOp
+instance (Binary occ) => Binary (TyCon' occ)
 instance (Binary occ) => Binary (AltCon' occ)
 instance (Binary occ) => Binary (Arg' occ)
 instance (Binary bndr, Binary occ) => Binary (TopBinding' bndr occ)

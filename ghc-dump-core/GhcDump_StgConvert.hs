@@ -43,13 +43,40 @@ fastStringToText = GHC.fastStringToByteString
 occNameToText :: GHC.OccName -> T_Text
 occNameToText = GHC.fastStringToByteString . GHC.occNameFS
 
+mkTyConId :: GHC.TyCon -> TyConId
+mkTyConId = TyConId . cvtUnique . GHC.getUnique
+
+getTyCon :: GHC.Type -> Maybe GHC.TyCon
+getTyCon t = fst <$> GHC.splitTyConApp_maybe t
+
+cvtTyCon :: GHC.TyCon -> M TyConId
+cvtTyCon x = do
+  let key = uniqueKey x
+  new <- IntMap.notMember key <$> gets envTyCons
+  when new $ modify' $ \m@Env{..} -> m {envTyCons = IntMap.insert key x envTyCons}
+  pure $ mkTyConId x
+
+-- NOTE: does not collect TyCon
 typeToRep :: GHC.Type -> TypeInfo
 typeToRep t = TypeInfo
-  { tType = cvtSDoc . GHC.ppr $ t
-  , tRep  = if GHC.resultIsLevPoly t
+  { tType  = cvtSDoc . GHC.ppr $ t
+  , tTyCon = mkTyConId <$> getTyCon t
+  , tRep   = if GHC.resultIsLevPoly t
               then Nothing
               else Just . map cvtPrimRep . GHC.typePrimRep $ t
   }
+
+-- NOTE: collects TyCon
+typeToRepM :: GHC.Type -> M TypeInfo
+typeToRepM t = do
+  tyConId <- sequence (cvtTyCon <$> getTyCon t)
+  pure TypeInfo
+    { tType  = cvtSDoc . GHC.ppr $ t
+    , tTyCon = tyConId
+    , tRep   = if GHC.resultIsLevPoly t
+                then Nothing
+                else Just . map cvtPrimRep . GHC.typePrimRep $ t
+    }
 
 cvtSDoc :: GHC.SDoc -> T_Text
 cvtSDoc = BS8.pack . GHC.showSDoc GHC.unsafeGlobalDynFlags
@@ -111,12 +138,14 @@ data Env
   = Env
   { envExternals  :: IntMap GHC.Id
   , envDataCons   :: IntMap GHC.DataCon
+  , envTyCons     :: IntMap GHC.TyCon
   }
 
 emptyEnv :: Env
 emptyEnv = Env
   { envExternals  = IntMap.empty
   , envDataCons   = IntMap.empty
+  , envTyCons     = IntMap.empty
   }
 
 type M = State Env
@@ -124,8 +153,8 @@ type M = State Env
 uniqueKey :: GHC.Uniquable a => a -> Int
 uniqueKey = GHC.getKey . GHC.getUnique
 
-mkBinderId :: GHC.Id -> BinderId
-mkBinderId = BinderId . cvtUnique . GHC.idUnique
+mkBinderId :: GHC.Uniquable a => a -> BinderId
+mkBinderId = BinderId . cvtUnique . GHC.getUnique
 
 cvtVar :: GHC.Id -> M BinderId
 cvtVar x = do
@@ -147,8 +176,7 @@ cvtBinder v
 
 cvtDataCon :: GHC.DataCon -> M BinderId
 cvtDataCon x = do
-  let name  = GHC.getName x
-      key   = uniqueKey x
+  let key = uniqueKey x
   new <- IntMap.notMember key <$> gets envDataCons
   when new $ modify' $ \m@Env{..} -> m {envDataCons = IntMap.insert key x envDataCons}
   pure . BinderId . cvtUnique . GHC.getUnique $ x
@@ -205,8 +233,8 @@ cvtExpr :: GHC.StgExpr -> M SExpr
 cvtExpr = \case
   GHC.StgApp f ps         -> StgApp <$> cvtVar f <*> mapM cvtArg ps
   GHC.StgLit l            -> pure $ StgLit (cvtLit l)
-  GHC.StgConApp dc ps ts  -> StgConApp <$> cvtDataCon dc <*> mapM cvtArg ps <*> pure (map typeToRep ts)
-  GHC.StgOpApp o ps t     -> StgOpApp (cvtOp o) <$> mapM cvtArg ps <*> pure (typeToRep t)
+  GHC.StgConApp dc ps ts  -> StgConApp <$> cvtDataCon dc <*> mapM cvtArg ps <*> mapM typeToRepM ts
+  GHC.StgOpApp o ps t     -> StgOpApp (cvtOp o) <$> mapM cvtArg ps <*> typeToRepM t
   GHC.StgLam bs e         -> StgLam (map cvtBinder $ NonEmpty.toList bs) <$> cvtExpr e
   GHC.StgCase e b _ al    -> StgCase <$> cvtExpr e <*> pure (cvtBinder b) <*> mapM cvtAlt al
   GHC.StgLet b e          -> StgLet <$> cvtBind b <*> cvtExpr e
@@ -228,6 +256,18 @@ cvtTopBind = \case
   GHC.StgTopLifted b        -> StgTopLifted <$> cvtBind b
   GHC.StgTopStringLit b bs  -> pure $ StgTopStringLit (cvtBinder b) bs
 
+cvtTopBinds :: [GHC.StgTopBinding] -> M [STopBinding]
+cvtTopBinds binds = do
+  bs <- mapM cvtTopBind binds
+  addTyConDataCons
+  pure bs
+
+addTyConDataCons :: M ()
+addTyConDataCons = do
+  tcs <- IntMap.elems . envTyCons <$> get
+  forM_ tcs $ \tc -> do
+    mapM_ cvtDataCon (GHC.tyConDataCons tc)
+
 cvtModule :: String -> GHC.ModuleName -> [GHC.StgTopBinding] -> SModule
 cvtModule phase modName' binds =
   Module
@@ -236,10 +276,11 @@ cvtModule phase modName' binds =
   , moduleDependency  = Set.toList . Set.delete modName . Set.fromList . map fst $ externals
   , moduleExternals   = externals
   , moduleDataCons    = dataCons
+  , moduleTyCons      = tyCons
   , moduleExported    = exported
   , moduleTopBindings = topBinds
   } where
-      (topBinds, Env{..}) = runState (mapM cvtTopBind binds) emptyEnv
+      (topBinds, Env{..}) = runState (cvtTopBinds binds) emptyEnv
       stgTopIds           = concatMap topBindIds binds
       topKeys             = IntSet.fromList $ map uniqueKey stgTopIds
       exported            = groupByModule [ (maybe modName (cvtModuleName . GHC.moduleName) $ GHC.nameModule_maybe $ GHC.getName id, mkBinderId id)
@@ -247,6 +288,7 @@ cvtModule phase modName' binds =
       modName             = cvtModuleName modName'
       externals           = groupByModule [mkExternalName e | (k,e) <- IntMap.toList envExternals, IntSet.notMember k topKeys]
       dataCons            = groupByModule . map mkDataCon $ IntMap.elems envDataCons
+      tyCons              = groupByModule . map mkTyCon $ IntMap.elems envTyCons
 
 -- utils
 
@@ -263,6 +305,15 @@ mkDataCon dc = (cvtModuleName $ GHC.moduleName $ GHC.nameModule x, b) where
       { sbinderName = occNameToText $ GHC.getOccName x
       , sbinderId   = BinderId . cvtUnique . GHC.getUnique $ x
       , sbinderType = typeToRep $ GHC.dataConRepType dc
+      }
+
+mkTyCon :: GHC.TyCon -> (ModuleName, STyCon)
+mkTyCon tc = (cvtModuleName $ GHC.moduleName $ GHC.nameModule x, b) where
+  x = GHC.getName tc
+  b = TyCon
+      { tcName      = occNameToText $ GHC.getOccName x
+      , tcId        = mkTyConId tc
+      , tcDataCons  = map mkBinderId $ GHC.tyConDataCons tc
       }
 
 topBindIds :: GHC.StgTopBinding -> [GHC.Id]
