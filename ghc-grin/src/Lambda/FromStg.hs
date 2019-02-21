@@ -1,5 +1,5 @@
 {-# LANGUAGE LambdaCase, TupleSections, StandaloneDeriving, TypeSynonymInstances, FlexibleInstances, RecordWildCards, OverloadedStrings #-}
-module Lambda.FromStg (codegenLambda, addVoidDefs) where
+module Lambda.FromStg (codegenLambda) where
 
 import Data.List (intercalate)
 import Data.Set (Set)
@@ -157,8 +157,13 @@ visitAlt (C.Alt altCon argIds body) = do
 
 visitArg :: C.Arg -> CG Exp
 visitArg = \case
-  C.StgVarArg o -> Var (isPointer o) <$> genName o
   C.StgLitArg l -> pure . Lit $ convertLit l
+  C.StgVarArg o -> genName o >>= \case
+    -- FXIME: filter out VoidRep ; do not generate dead code
+    "GHC.Prim.coercionToken#" -> pure . Lit $ LString "GHC.Prim.coercionToken#"
+    "GHC.Prim.realWorld#"     -> pure . Lit $ LString "GHC.Prim.realWorld#"
+    "GHC.Prim.void#"          -> pure . Lit $ LString "GHC.Prim.void#"
+    name -> pure $ Var (isPointer o) name
 
 visitExpr :: C.Expr -> CG Exp
 visitExpr = \case
@@ -248,14 +253,6 @@ codegenLambda mod = do
     printf "%s data constructors:\n%s" modName  (unlines . map (("  "++).unpackName) . Set.toList $ dataCons)
   -}
   pure . Program (Map.elems externals) $ defs
-
-addVoidDefs :: Program -> Program
-addVoidDefs (Program exts defs) = Program exts (defs ++ voidDefs) where
-  voidDefs =
-    [ Def "GHC.Prim.coercionToken#" [] (Con "GHC.Prim.coercionToken#" [])
-    , Def "GHC.Prim.realWorld#"     [] (Con "GHC.Prim.realWorld#" [])
-    , Def "GHC.Prim.void#"          [] (Con "GHC.Prim.void#" [])
-    ]
 
 ------------------------------------------------------------
 -- Workaround for higher order and other problematic primops

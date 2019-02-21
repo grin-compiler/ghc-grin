@@ -109,7 +109,7 @@ cg_main opts = do
     -}
   let sortDefs (Program exts defs) = Program exts . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
       wholeProgramBloat = eliminateLams [] $ singleStaticAssignment $ concatPrograms progList
-      wholeProgram      = addVoidDefs $ sortDefs $ deadFunctionElimination wholeProgramBloat
+      wholeProgram      = sortDefs $ deadFunctionElimination wholeProgramBloat
       output_fn         = output opts
   writeFile (output_fn ++ ".lambda") . showWidth 800 . plain $ pretty wholeProgram
   lintLambda wholeProgram
