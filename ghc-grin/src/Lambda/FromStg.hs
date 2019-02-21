@@ -29,6 +29,7 @@ data Env
   = Env
   { moduleName  :: !Name
   , dataCons    :: !(Set Name)
+  , tyCons      :: !(Map C.TyConId C.TyCon)
   , externals   :: !(Map Name External)
   }
 
@@ -38,6 +39,9 @@ primMap = Map.fromList [(eName, e) | e@External{..} <- prims] where
 
 convertUnique :: C.Unique -> Name
 convertUnique (C.Unique c i) = packName $  c : show i
+
+getTCDataCons :: C.TyConId -> CG (Maybe [C.Binder])
+getTCDataCons i = fmap C.tcDataCons . Map.lookup i . tyCons <$> get
 
 genConName :: C.Binder -> CG Name
 genConName b = do
@@ -232,7 +236,8 @@ visitModule C.Module{..} = concat <$> mapM visitTopBinder moduleTopBindings
 codegenLambda :: C.Module -> IO Program
 codegenLambda mod = do
   let modName   = packName . BS8.unpack . C.getModuleName $ C.moduleName mod
-  (defs, Env{..}) <- runStateT (visitModule mod) (Env modName mempty mempty)
+      tyCons    = Map.fromList [(C.tcId tc, tc) | tc <- concatMap snd $ C.moduleTyCons mod]
+  (defs, Env{..}) <- runStateT (visitModule mod) (Env modName mempty tyCons mempty)
   {-
   unless (Set.null dataCons) $ do
     printf "%s data constructors:\n%s" modName  (unlines . map (("  "++).unpackName) . Set.toList $ dataCons)
@@ -265,8 +270,17 @@ genPrimOpWithFix "catch#"                  [C.StgVarArg f, _, s] realArgs ti = A
 genPrimOpWithFix "catchRetry#"             [C.StgVarArg f, _, s] realArgs ti = App <$> genName f <*> mapM visitArg [s]
 genPrimOpWithFix "catchSTM#"               [C.StgVarArg f, _, s] realArgs ti = App <$> genName f <*> mapM visitArg [s]
 
--- other
+-- other ; custom cases
+
 genPrimOpWithFix "mkWeak#"  [o, b, _, s] realArgs ti = genPrimOp "mkWeakNoFinalizer#" [o, b] ti
+
+genPrimOpWithFix prim@"tagToEnum#"  [i] realArgs ti
+  | Just tc <- C.tTyCon ti
+  = getTCDataCons tc >>= \case
+      Nothing -> genPrimOp prim realArgs ti -- will report unsupported primop
+      Just dl -> do
+        dcNames <- mapM genConName dl
+        Case <$> visitArg i <*> pure [Alt (LitPat $ LInt64 idx) (Con dc []) | (idx, dc) <- zip [0..] dcNames]
 
 -- normal primop
 genPrimOpWithFix prim args realArgs ti = genPrimOp prim realArgs ti
