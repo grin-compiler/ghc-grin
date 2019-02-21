@@ -1,5 +1,5 @@
 {-# LANGUAGE LambdaCase, TupleSections, StandaloneDeriving, TypeSynonymInstances, FlexibleInstances, RecordWildCards, OverloadedStrings #-}
-module Lambda.FromStg (codegenLambda) where
+module Lambda.FromStg (codegenLambda, addVoidDefs) where
 
 import Data.List (intercalate)
 import Data.Set (Set)
@@ -105,11 +105,16 @@ showArgType = \case
   C.StgLitArg l -> show $ litType l
   C.StgVarArg b -> showTypeInfo $ C.binderType b
 
-ffiArgType :: C.Arg -> Maybe SimpleType
+ffiArgType :: C.Arg -> Maybe Ty
 ffiArgType = \case
-  C.StgLitArg l -> Just $ litType l
+  C.StgLitArg l -> Just . TySimple $ litType l
   C.StgVarArg b -> case C.tRep $ C.binderType b of
-    Just [t]  -> repType t
+    Just [C.UnliftedRep] -> case C.tType $ C.binderType b of
+      -- NOTE: byte array is allowed as FFI argument ; this is GHC special case
+      "MutableByteArray# RealWorld" -> Just $ TyCon "MutableByteArray#" [TyCon "RealWorld" []]
+      "ByteArray#"                  -> Just $ TyCon "ByteArray#" []
+      _                             -> Nothing
+    Just [t]  -> TySimple <$> repType t
     _         -> Nothing
 
 ffiRetType :: C.TypeInfo -> Maybe Ty
@@ -166,7 +171,7 @@ visitExpr = \case
         ffiTys = do
           argsTy <- mapM ffiArgType realArgs
           retTy <- ffiRetType ty
-          pure (retTy, map TySimple argsTy)
+          pure (retTy, argsTy)
     case op of
       C.StgPrimOp prim -> genPrimOpWithFix prim args realArgs ty
 
@@ -243,6 +248,14 @@ codegenLambda mod = do
     printf "%s data constructors:\n%s" modName  (unlines . map (("  "++).unpackName) . Set.toList $ dataCons)
   -}
   pure . Program (Map.elems externals) $ defs
+
+addVoidDefs :: Program -> Program
+addVoidDefs (Program exts defs) = Program exts (defs ++ voidDefs) where
+  voidDefs =
+    [ Def "GHC.Prim.coercionToken#" [] (Con "GHC.Prim.coercionToken#" [])
+    , Def "GHC.Prim.realWorld#"     [] (Con "GHC.Prim.realWorld#" [])
+    , Def "GHC.Prim.void#"          [] (Con "GHC.Prim.void#" [])
+    ]
 
 ------------------------------------------------------------
 -- Workaround for higher order and other problematic primops
