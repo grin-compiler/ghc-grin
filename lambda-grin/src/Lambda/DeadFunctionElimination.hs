@@ -13,15 +13,21 @@ import qualified Data.Foldable
 import Lambda.Syntax
 
 deadFunctionElimination :: Program -> Program
-deadFunctionElimination (Program exts defs) = Program exts [def | def@(Def name _ _) <- defs, Set.member name liveDefs] where
+deadFunctionElimination (Program exts defs) = Program liveExts liveDefs where
+
+  liveExts = [ext | ext <- exts, Set.member (eName ext) liveNames]
+  liveDefs = [def | def@(Def name _ _) <- defs, Set.member name liveSet]
+
+  liveNames = cata collectAll $ Program [] liveDefs -- collect all live names
+
   defMap :: Map Name Def
   defMap = Map.fromList [(name, def) | def@(Def name _ _) <- defs]
 
   lookupDef :: Name -> Maybe Def
   lookupDef name = Map.lookup name defMap
 
-  liveDefs :: Set Name
-  liveDefs = fst $ until (\(live, visited) -> live == visited) visit (Set.singleton {- ":Main.main" -} "Main.main", mempty)
+  liveSet :: Set Name
+  liveSet = fst $ until (\(live, visited) -> live == visited) visit (Set.singleton {- ":Main.main" -} "Main.main", mempty)
 
   visit :: (Set Name, Set Name) -> (Set Name, Set Name)
   visit (live, visited) = (mappend live seen, mappend visited toVisit) where
@@ -32,4 +38,10 @@ deadFunctionElimination (Program exts defs) = Program exts [def | def@(Def name 
   collect = \case
     AppF name args  | Map.member name defMap  -> mconcat $ Set.singleton name : args
     VarF _ name     | Map.member name defMap  -> Set.singleton name
+    exp -> Data.Foldable.fold exp
+
+  collectAll :: ExpF (Set Name) -> Set Name
+  collectAll = \case
+    AppF name args  -> mconcat $ Set.singleton name : args
+    VarF _ name     -> Set.singleton name
     exp -> Data.Foldable.fold exp
