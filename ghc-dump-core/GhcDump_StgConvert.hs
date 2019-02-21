@@ -63,7 +63,7 @@ typeToRep t = TypeInfo
   , tTyCon = mkTyConId <$> getTyCon t
   , tRep   = if GHC.resultIsLevPoly t
               then Nothing
-              else Just . map cvtPrimRep . GHC.typePrimRep $ t
+              else Just . map cvtPrimRep . GHC.typePrimRepArgs $ t
   }
 
 -- NOTE: collects TyCon
@@ -75,7 +75,7 @@ typeToRepM t = do
     , tTyCon = tyConId
     , tRep   = if GHC.resultIsLevPoly t
                 then Nothing
-                else Just . map cvtPrimRep . GHC.typePrimRep $ t
+                else Just . map cvtPrimRep . GHC.typePrimRepArgs $ t
     }
 
 cvtSDoc :: GHC.SDoc -> T_Text
