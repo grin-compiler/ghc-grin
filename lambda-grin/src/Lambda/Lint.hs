@@ -14,7 +14,6 @@ import Data.Functor.Foldable
 import qualified Data.Foldable
 
 import Lambda.Syntax
-import Grin.Grin (isPrimName)
 import Transformations.Util
 import Lambda.Util
 

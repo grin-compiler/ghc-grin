@@ -6,12 +6,12 @@ module Lambda.Pretty
 
 import qualified Data.Vector as V
 import Data.List (groupBy)
+import qualified Data.Set as Set
 
 import Data.Functor.Foldable as Foldable
 import Text.PrettyPrint.ANSI.Leijen
 
 import Lambda.Syntax
-import Grin.Grin (isPrimName)
 import Grin.Pretty ()
 
 printLambda :: Exp -> IO ()
@@ -27,7 +27,12 @@ prettyBind (name, exp) = pretty name <+> text "=" <+> pretty exp
 comment d = text "{-" <+> d <+> text "-}"
 
 instance Pretty Exp where
-  pretty = cata folder where
+  pretty prg = cata folder prg where
+    extNames      = case prg of
+                      Program exts _  -> Set.fromList $ map eName exts
+                      _               -> Set.empty
+    isPrimName n  = Set.member n extNames
+
     folder = \case
       ProgramF exts defs  -> vcat (prettyExternals exts : map pretty defs)
       DefF name args exp  -> hsep (pretty name : map pretty args) <+> text "=" <$$> indent 2 (pretty exp) <> line
