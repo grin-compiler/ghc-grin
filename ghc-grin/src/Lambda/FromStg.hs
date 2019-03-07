@@ -113,6 +113,7 @@ ffiArgType = \case
       -- NOTE: byte array is allowed as FFI argument ; this is GHC special case
       "MutableByteArray# RealWorld" -> Just $ TyCon "MutableByteArray#" [TyCon "RealWorld" []]
       "ByteArray#"                  -> Just $ TyCon "ByteArray#" []
+      "Weak# ThreadId"              -> Just $ TyCon "Weak#" [TyCon "ThreadId" []]
       _                             -> Nothing
     Just [t]  -> TySimple <$> repType t
     _         -> Nothing
