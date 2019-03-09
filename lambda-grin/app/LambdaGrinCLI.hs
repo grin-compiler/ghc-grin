@@ -55,7 +55,12 @@ cg_main opts = do
     program <- decode <$> BSL.readFile fname :: IO Exp
     lintLambda program
     let lambdaGrin = codegenGrin program
-    writeFile (fname ++ ".grin") $ show $ plain $ pretty lambdaGrin
+    void $ pipeline pipelineOpts Nothing lambdaGrin
+      [ T TrivialCaseElimination
+      , T BindNormalisation
+      , SaveGrin (Rel $ fname ++ ".grin")
+      , SaveBinary (fname ++ ".grin")
+      ]
 
 main :: IO ()
 main = do opts <- getOpts
