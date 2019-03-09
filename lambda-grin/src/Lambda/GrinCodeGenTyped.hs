@@ -9,6 +9,7 @@ import Text.Printf
 import Control.Monad
 import Control.Monad.State
 
+import qualified Data.ByteString.Char8 as BS8
 import qualified Data.Text as T
 import Data.List (isPrefixOf)
 import Data.Foldable
@@ -54,7 +55,11 @@ genLit = \case
   LFloat  v -> G.LFloat $ fromRational v
   LBool   v -> G.LBool v
   LError  e -> error $ T.unpack e
-  _ -> G.LWord64 999 -- TODO
+  LString v -> G.LString . T.pack . BS8.unpack $ v
+  LChar   v -> G.LChar v
+  LLabelAddr v  -> G.LString $ T.pack . BS8.unpack $ v -- TODO
+  LNullAddr     -> G.LString "LNullAddr"
+  l         -> error $ "unsupported: " ++ show l
 -- TODO
 {-
 data Lit
@@ -64,6 +69,7 @@ data Lit
   | LError  String  -- marks an error
   | LDummy  String  -- should be ignored
 -}
+
 genCPat :: Pat -> G.CPat
 genCPat = \case
   NodePat name args -> G.NodePat (G.Tag G.C name) args
@@ -98,10 +104,14 @@ withBlock m = do
 cmdToExp :: CG G.Exp
 cmdToExp = do
   let go [] = G.SReturn G.Unit
-      go [G e] = e
-      go [B n e] = G.EBind e (G.Var n) (G.SReturn $ G.Var n)
+      go [G e] = f e
+      go [B n1 e, G (G.SReturn (G.Var n2))] | n1 == n2 = f e -- G.EBind e (G.Var n) (G.SReturn $ G.Var n)
+      go [B n e] = f e -- G.EBind e (G.Var n) (G.SReturn $ G.Var n)
       go ((G e) : xs) = G.EBind e G.Unit $ go xs
       go ((B n e) : xs) = G.EBind e (G.Var n) $ go xs
+
+      f (G.SBlock e@G.ECase{}) = e
+      f e = e
   cmds <- gets _commands
   pure $ go $ reverse cmds
 
@@ -132,9 +142,6 @@ genVal = \case
     emit . B ptrName $ G.SStore $ mkCon name vals
     pure $ G.Var ptrName
 
-  -- FIXME: handle GHC prim types properly
-  Var _ "GHC.Prim.void#" -> pure . G.Lit . G.LBool $ False
-
   Var isPtr name -> arityM name >>= \case
     Nothing
       | not isPtr -> pure $ G.Var name
@@ -150,27 +157,38 @@ genVal = \case
 genVals :: [Exp] -> CG [G.Val]
 genVals = mapM genVal
 
-genLazyExp :: Exp -> CG G.SimpleExp
-genLazyExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
+genLazyExpVal :: Exp -> CG G.Val
+genLazyExpVal lambdaExp = get >>= \Env{..} -> case lambdaExp of
 
   Con name args -> do
-    G.SStore . mkCon name <$> genVals args
+    mkCon name <$> genVals args
 
   Var isPtr name -> arityM name >>= \case
     Nothing
-      | not isPtr -> pure . G.SReturn $ G.Var name
-      | otherwise -> G.SReturn . G.Var <$> getPtrName name
+      | not isPtr -> pure $ G.Var name
+      | otherwise -> G.Var <$> getPtrName name
 
-    Just ar -> pure $ G.SStore $ mkThunk ar name []
+    Just ar -> pure $ mkThunk ar name []
 
   App name args
     | argCount <- length args
     -> case arity _arityMap name of
       -- known function
       Just ar -> case argCount `compare` ar of
-        EQ -> G.SStore . mkThunk ar name <$> genVals args
+        EQ -> mkThunk ar name <$> genVals args
+        LT -> mkThunk ar name <$> genVals args
+        x  -> error $ "non-matching arity: " ++ show x ++ " for function: " ++ show name
 
-  exp -> error $ "genLazyExp: " ++ show exp
+      Nothing -> error $ "unknown function: " ++ show name
+
+  exp -> error $ "genLazyExpVal: " ++ show exp
+
+genLazyExp :: Exp -> CG G.SimpleExp
+genLazyExp lambdaExp = do
+  val <- genLazyExpVal lambdaExp
+  case val of
+    G.Var{} -> pure $ G.SReturn val
+    _       -> pure $ G.SStore val
 
 isGhcPrim :: Name -> Bool
 isGhcPrim = isPrefixOf "_ghc_" . unpackName
@@ -182,6 +200,9 @@ genStrictExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
     -> if isPtr
         then getPtrName name >>= \n -> pure (G.SApp "eval" [G.Var n])
         else pure . G.SReturn $ G.Var name
+
+    | Just 0 <- arity _arityMap name
+    -> pure $ G.SApp name []
 
   App name args | isGhcPrim name -> G.SApp name <$> genVals args
 
@@ -201,6 +222,26 @@ genStrictExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
                 emit (B newName $ G.SApp "apply" [G.Var n, arg])
                 pure newName
           G.SReturn . G.Var <$> foldM applyArg fName extraArgs
+        LT -> error $ "strict function application: " ++ show name
+
+      --Nothing -> error $ "unknown function: " ++ show name
+      _ -> do
+        vals <- genVals args
+        fName <- tmpName "result_" name
+        emit $ B fName $ G.SApp "eval" [G.Var name]
+        let applyArg n arg = do
+              newName <- tmpName "result_" name
+              emit (B newName $ G.SApp "apply" [G.Var n, arg])
+              pure newName
+        G.SReturn . G.Var <$> foldM applyArg fName vals
+
+  Let binds exp -> do
+    forM_ binds $ \(name, rhs) -> genLazyExp rhs >>= emit . B name
+    genExp exp
+
+  LetS binds exp -> do
+    forM_ binds $ \(name, rhs) -> genStrictExp rhs >>= emit . B name >> addValueName name Nothing
+    genExp exp
 
   exp -> error $ "genStrictExp: " ++ show exp
 
@@ -209,6 +250,9 @@ genExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
   Con name args -> do
     vals <- genVals args
     pure . G.SReturn $ mkCon name vals
+
+  Lit lit -> do
+    pure . G.SReturn . G.Lit $ genLit lit
 
   Var isPtr name
     | Just ar <- arity _arityMap name -> do
@@ -235,6 +279,8 @@ genExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
                 emit (B newName $ G.SApp "apply" [G.Var n, arg])
                 pure newName
           G.SReturn . G.Var <$> foldM applyArg fName extraArgs
+        LT -> G.SReturn . mkThunk ar name <$> genVals args
+
       _ -> do
         vals <- genVals args
         fName <- tmpName "result_" name
@@ -251,6 +297,13 @@ genExp lambdaExp = get >>= \Env{..} -> case lambdaExp of
 
   Let binds exp -> do
     forM_ binds $ \(name, rhs) -> genLazyExp rhs >>= emit . B name
+    genExp exp
+
+  LetRec binds exp -> do
+    forM_ binds $ \(name, rhs) -> do
+      blackholeName <- tmpName "blackhole_" name
+      emit . B name $ G.SStore $ mkCon blackholeName []
+    forM_ binds $ \(name, rhs) -> genLazyExpVal rhs >>= emit . G . G.SUpdate name
     genExp exp
 
   Case (Var isPtr name) alts -> do
@@ -297,7 +350,7 @@ codegenGrin exp = evalState (evalStateT (genProgram exp) emptyEnv) (mkNameEnv ex
 
 -- HINT: arity map for lambda
 buildArityMap :: Program -> Map Name Int
-buildArityMap (Program exts defs) = Map.fromList $ [(name, length args) | Def name args _ <- defs] ++ [] -- TODO: primops
+buildArityMap (Program exts defs) = Map.fromList $ [(name, length args) | Def name args _ <- defs] ++ [(eName, length eArgsType) | External{..} <- exts]
 buildArityMap _ = error "invalid expression, program expected"
 
 genExternal :: External -> G.External
@@ -313,6 +366,7 @@ genTy :: Ty -> G.Ty
 genTy = \case
   TyCon n tys   -> G.TyCon n (map genTy tys)
   TyVar n       -> G.TyVar n
+  TySimple T_Addr -> G.TyCon "T_Addr" []
   TySimple sTy  -> G.TySimple (genSimpleType sTy)
 
 genSimpleType :: SimpleType -> G.SimpleType
@@ -324,3 +378,4 @@ genSimpleType = \case
   T_Unit    -> G.T_Unit
   T_String  -> G.T_String
   T_Char    -> G.T_Char
+  t         -> error $ "unsupported: " ++ show t
