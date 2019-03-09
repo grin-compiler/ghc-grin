@@ -31,12 +31,12 @@ data SimpleType
   = T_Int64
   | T_Word64
   | T_Float
-  | T_Double
+  | T_Double  -- TODO: missing from GRIN
   | T_Bool
   | T_Unit
   | T_String
   | T_Char
-  | T_Addr
+  | T_Addr    -- TODO: missing from GRIN
   deriving (Generic, Data, Eq, Ord, Show)
 
 data External
@@ -79,12 +79,12 @@ data Lit
   = LInt64      Int64
   | LWord64     Word64
   | LFloat      Rational
-  | LDouble     Rational
+  | LDouble     Rational    -- TODO: missing from GRIN
   | LBool       Bool
   | LChar       Char
   | LString     ByteString
-  | LLabelAddr  ByteString
-  | LNullAddr
+  | LLabelAddr  ByteString  -- TODO: missing from GRIN
+  | LNullAddr               -- TODO: missing from GRIN
   -- special
   | LError  !Text  -- marks an error ; dead code elimination may elminate
 --  | LDummy  Text  -- should be ignored
