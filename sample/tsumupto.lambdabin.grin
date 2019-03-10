@@ -1,38 +1,19 @@
 primop pure
-  "*#" :: T_Int64
-       -> T_Int64
-       -> T_Int64
-  "+#" :: T_Int64
-       -> T_Int64
-       -> T_Int64
-  "-#" :: T_Int64
-       -> T_Int64
-       -> T_Int64
-  "/=#" :: T_Int64
-        -> T_Int64
-        -> T_Int64
-  "<#" :: T_Int64
-       -> T_Int64
-       -> T_Int64
-  "<=#" :: T_Int64
-        -> T_Int64
-        -> T_Int64
-  "==#" :: T_Int64
-        -> T_Int64
-        -> T_Int64
-  ">#" :: T_Int64
-       -> T_Int64
-       -> T_Int64
-  ">=#" :: T_Int64
-        -> T_Int64
-        -> T_Int64
+  "*#" :: T_Int64 -> T_Int64 -> T_Int64
+  "+#" :: T_Int64 -> T_Int64 -> T_Int64
+  "-#" :: T_Int64 -> T_Int64 -> T_Int64
+  "/=#" :: T_Int64 -> T_Int64 -> T_Int64
+  "<#" :: T_Int64 -> T_Int64 -> T_Int64
+  "<=#" :: T_Int64 -> T_Int64 -> T_Int64
+  "==#" :: T_Int64 -> T_Int64 -> T_Int64
+  ">#" :: T_Int64 -> T_Int64 -> T_Int64
+  ">=#" :: T_Int64 -> T_Int64 -> T_Int64
   
 primop effectful
   __hsbase_MD5Final :: {T_Addr}
                     -> {T_Addr}
                     -> {"GHC.Prim.(##)"}
-  __hsbase_MD5Init :: {T_Addr}
-                   -> {"GHC.Prim.(##)"}
+  __hsbase_MD5Init :: {T_Addr} -> {"GHC.Prim.(##)"}
   __hsbase_MD5Update :: {T_Addr}
                      -> {T_Addr}
                      -> T_Int64
@@ -48,13 +29,11 @@ primop effectful
   __hscore_get_saved_termios :: T_Int64
                              -> {"GHC.Prim.Unit#" {T_Addr}}
   __hscore_icanon :: {"GHC.Prim.Unit#" T_Int64}
-  __hscore_lflag :: {T_Addr}
-                 -> {"GHC.Prim.Unit#" T_Word64}
+  __hscore_lflag :: {T_Addr} -> {"GHC.Prim.Unit#" T_Word64}
   __hscore_poke_lflag :: {T_Addr}
                       -> T_Word64
                       -> {"GHC.Prim.(##)"}
-  __hscore_ptr_c_cc :: {T_Addr}
-                    -> {"GHC.Prim.Unit#" {T_Addr}}
+  __hscore_ptr_c_cc :: {T_Addr} -> {"GHC.Prim.Unit#" {T_Addr}}
   __hscore_set_saved_termios :: T_Int64
                              -> {T_Addr}
                              -> {"GHC.Prim.(##)"}
@@ -64,52 +43,32 @@ primop effectful
   __hscore_sizeof_sigset_t :: {"GHC.Prim.Unit#" T_Int64}
   __hscore_sizeof_stat :: {"GHC.Prim.Unit#" T_Int64}
   __hscore_sizeof_termios :: {"GHC.Prim.Unit#" T_Int64}
-  __hscore_st_dev :: {T_Addr}
-                  -> {"GHC.Prim.Unit#" T_Word64}
-  __hscore_st_ino :: {T_Addr}
-                  -> {"GHC.Prim.Unit#" T_Word64}
-  __hscore_st_mode :: {T_Addr}
-                   -> {"GHC.Prim.Unit#" T_Word64}
-  __hscore_st_size :: {T_Addr}
-                   -> {"GHC.Prim.Unit#" T_Int64}
+  __hscore_st_dev :: {T_Addr} -> {"GHC.Prim.Unit#" T_Word64}
+  __hscore_st_ino :: {T_Addr} -> {"GHC.Prim.Unit#" T_Word64}
+  __hscore_st_mode :: {T_Addr} -> {"GHC.Prim.Unit#" T_Word64}
+  __hscore_st_size :: {T_Addr} -> {"GHC.Prim.Unit#" T_Int64}
   __hscore_tcsanow :: {"GHC.Prim.Unit#" T_Int64}
   __hscore_vmin :: {"GHC.Prim.Unit#" T_Int64}
   __hscore_vtime :: {"GHC.Prim.Unit#" T_Int64}
   
 primop pure
-  "and#" :: T_Word64
-         -> T_Word64
-         -> T_Word64
-  "andI#" :: T_Int64
-          -> T_Int64
-          -> T_Int64
-  "byteArrayContents#" :: {"ByteArray#"}
-                       -> {T_Addr}
+  "and#" :: T_Word64 -> T_Word64 -> T_Word64
+  "andI#" :: T_Int64 -> T_Int64 -> T_Int64
+  "byteArrayContents#" :: {"ByteArray#"} -> {T_Addr}
   "chr#" :: T_Int64 -> T_Char
   
 primop effectful
-  close :: T_Int64
-        -> {"GHC.Prim.Unit#" T_Int64}
+  close :: T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
   "deRefStablePtr#" :: {"StablePtr#" %a}
                     -> {"GHC.Prim.Unit#" %a}
-  "deRefWeak#" :: {"Weak#" %a}
-               -> {"GHC.Prim.(#,#)" T_Int64 %a}
-  dup :: T_Int64
-      -> {"GHC.Prim.Unit#" T_Int64}
-  dup2 :: T_Int64
-       -> T_Int64
-       -> {"GHC.Prim.Unit#" T_Int64}
+  "deRefWeak#" :: {"Weak#" %a} -> {"GHC.Prim.(#,#)" T_Int64 %a}
+  dup :: T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
+  dup2 :: T_Int64 -> T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
   
 primop pure
-  "eqAddr#" :: {T_Addr}
-            -> {T_Addr}
-            -> T_Int64
-  "eqChar#" :: T_Char
-            -> T_Char
-            -> T_Int64
-  "eqWord#" :: T_Word64
-            -> T_Word64
-            -> T_Int64
+  "eqAddr#" :: {T_Addr} -> {T_Addr} -> T_Int64
+  "eqChar#" :: T_Char -> T_Char -> T_Int64
+  "eqWord#" :: T_Word64 -> T_Word64 -> T_Int64
   
 primop effectful
   fdReady :: T_Int64
@@ -123,11 +82,8 @@ primop effectful
                       -> {"GHC.Prim.Unit#" T_Int64}
   
 primop pure
-  "geWord#" :: T_Word64
-            -> T_Word64
-            -> T_Int64
-  "getCurrentCCS#" :: %a
-                   -> {"GHC.Prim.Unit#" {T_Addr}}
+  "geWord#" :: T_Word64 -> T_Word64 -> T_Int64
+  "getCurrentCCS#" :: %a -> {"GHC.Prim.Unit#" {T_Addr}}
   
 primop effectful
   "getMaskingState#" :: {"GHC.Prim.Unit#" T_Int64}
@@ -188,21 +144,17 @@ primop effectful
                                                              -> {"GHC.Prim.Unit#" T_Int64}
   
 primop pure
-  "gtWord#" :: T_Word64
-            -> T_Word64
-            -> T_Int64
+  "gtWord#" :: T_Word64 -> T_Word64 -> T_Int64
   
 primop effectful
-  hs_free_stable_ptr :: {T_Addr}
-                     -> {"GHC.Prim.(##)"}
+  hs_free_stable_ptr :: {T_Addr} -> {"GHC.Prim.(##)"}
   hs_iconv :: T_Int64
            -> {T_Addr}
            -> {T_Addr}
            -> {T_Addr}
            -> {T_Addr}
            -> {"GHC.Prim.Unit#" T_Word64}
-  hs_iconv_close :: T_Int64
-                 -> {"GHC.Prim.Unit#" T_Int64}
+  hs_iconv_close :: T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
   hs_iconv_open :: {T_Addr}
                 -> {T_Addr}
                 -> {"GHC.Prim.Unit#" T_Int64}
@@ -211,43 +163,28 @@ primop pure
   "indexArray#" :: {"Array#" %a}
                 -> T_Int64
                 -> {"GHC.Prim.Unit#" %a}
-  "indexCharOffAddr#" :: {T_Addr}
-                      -> T_Int64
-                      -> T_Char
-  "indexIntArray#" :: {"ByteArray#"}
-                   -> T_Int64
-                   -> T_Int64
-  "int2Word#" :: T_Int64
-              -> T_Word64
+  "indexCharOffAddr#" :: {T_Addr} -> T_Int64 -> T_Char
+  "indexIntArray#" :: {"ByteArray#"} -> T_Int64 -> T_Int64
+  "int2Word#" :: T_Int64 -> T_Word64
   
 primop effectful
-  isatty :: T_Int64
-         -> {"GHC.Prim.Unit#" T_Int64}
-  "killThread#" :: {"ThreadId#"}
-                -> %a
-                -> {"GHC.Prim.(##)"}
+  isatty :: T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
+  "killThread#" :: {"ThreadId#"} -> %a -> {"GHC.Prim.(##)"}
   
 primop pure
-  "leChar#" :: T_Char
-            -> T_Char
-            -> T_Int64
-  "leWord#" :: T_Word64
-            -> T_Word64
-            -> T_Int64
+  "leChar#" :: T_Char -> T_Char -> T_Int64
+  "leWord#" :: T_Word64 -> T_Word64 -> T_Int64
   
 primop effectful
   localeEncoding :: {"GHC.Prim.Unit#" {T_Addr}}
   
 primop pure
-  "ltWord#" :: T_Word64
-            -> T_Word64
-            -> T_Int64
+  "ltWord#" :: T_Word64 -> T_Word64 -> T_Int64
   
 primop effectful
   "makeStablePtr#" :: %a
                    -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
-  malloc :: T_Word64
-         -> {"GHC.Prim.Unit#" {T_Addr}}
+  malloc :: T_Word64 -> {"GHC.Prim.Unit#" {T_Addr}}
   memcpy :: {T_Addr}
          -> {T_Addr}
          -> T_Word64
@@ -258,21 +195,13 @@ primop effectful
   "myThreadId#" :: {"GHC.Prim.Unit#" {"ThreadId#"}}
   
 primop pure
-  "narrow16Word#" :: T_Word64
-                  -> T_Word64
-  "narrow32Int#" :: T_Int64
-                 -> T_Int64
-  "narrow32Word#" :: T_Word64
-                  -> T_Word64
-  "narrow8Int#" :: T_Int64
-                -> T_Int64
-  "narrow8Word#" :: T_Word64
-                 -> T_Word64
-  "neChar#" :: T_Char
-            -> T_Char
-            -> T_Int64
-  "negateInt#" :: T_Int64
-               -> T_Int64
+  "narrow16Word#" :: T_Word64 -> T_Word64
+  "narrow32Int#" :: T_Int64 -> T_Int64
+  "narrow32Word#" :: T_Word64 -> T_Word64
+  "narrow8Int#" :: T_Int64 -> T_Int64
+  "narrow8Word#" :: T_Word64 -> T_Word64
+  "neChar#" :: T_Char -> T_Char -> T_Int64
+  "negateInt#" :: T_Int64 -> T_Int64
   
 primop effectful
   "newAlignedPinnedByteArray#" :: T_Int64
@@ -282,31 +211,20 @@ primop effectful
               -> %a
               -> {"GHC.Prim.Unit#" {"MutableArray#" %a}}
   "newMVar#" :: {"GHC.Prim.Unit#" {"MVar#" %a}}
-  "newMutVar#" :: %a
-               -> {"GHC.Prim.Unit#" {"MutVar#" %a}}
+  "newMutVar#" :: %a -> {"GHC.Prim.Unit#" {"MutVar#" %a}}
   "newPinnedByteArray#" :: T_Int64
                         -> {"GHC.Prim.Unit#" {"MutableByteArray#"}}
   "noDuplicate#" :: {"GHC.Prim.(##)"}
   
 primop pure
-  "or#" :: T_Word64
-        -> T_Word64
-        -> T_Word64
-  "orI#" :: T_Int64
-         -> T_Int64
-         -> T_Int64
+  "or#" :: T_Word64 -> T_Word64 -> T_Word64
+  "orI#" :: T_Int64 -> T_Int64 -> T_Int64
   "ord#" :: T_Char -> T_Int64
-  "plusAddr#" :: {T_Addr}
-              -> T_Int64
-              -> {T_Addr}
-  "plusWord#" :: T_Word64
-              -> T_Word64
-              -> T_Word64
+  "plusAddr#" :: {T_Addr} -> T_Int64 -> {T_Addr}
+  "plusWord#" :: T_Word64 -> T_Word64 -> T_Word64
   
 primop effectful
-  "putMVar#" :: {"MVar#" %a}
-             -> %a
-             -> {"GHC.Prim.(##)"}
+  "putMVar#" :: {"MVar#" %a} -> %a -> {"GHC.Prim.(##)"}
   
 primop pure
   "quotRemInt#" :: T_Int64
@@ -315,8 +233,7 @@ primop pure
   
 primop effectful
   "raise#" :: %b -> %o
-  "raiseIO#" :: %a
-             -> {"GHC.Prim.Unit#" %b}
+  "raiseIO#" :: %a -> {"GHC.Prim.Unit#" %b}
   "readAddrOffAddr#" :: {T_Addr}
                      -> T_Int64
                      -> {"GHC.Prim.Unit#" {T_Addr}}
@@ -332,8 +249,7 @@ primop effectful
   "readIntOffAddr#" :: {T_Addr}
                     -> T_Int64
                     -> {"GHC.Prim.Unit#" T_Int64}
-  "readMutVar#" :: {"MutVar#" %a}
-                -> {"GHC.Prim.Unit#" %a}
+  "readMutVar#" :: {"MutVar#" %a} -> {"GHC.Prim.Unit#" %a}
   "readWideCharOffAddr#" :: {T_Addr}
                          -> T_Int64
                          -> {"GHC.Prim.Unit#" T_Char}
@@ -344,58 +260,40 @@ primop effectful
                       -> T_Int64
                       -> {"GHC.Prim.Unit#" T_Word64}
   rtsSupportsBoundThreads :: {"GHC.Prim.Unit#" T_Int64}
-  rts_setMainThread :: {"Weak#" {ThreadId}}
-                    -> {"GHC.Prim.(##)"}
+  rts_setMainThread :: {"Weak#" {ThreadId}} -> {"GHC.Prim.(##)"}
   
 primop pure
-  "sizeofMutableArray#" :: {"MutableArray#" %a}
-                        -> T_Int64
+  "sizeofMutableArray#" :: {"MutableArray#" %a} -> T_Int64
   
 primop effectful
   stg_sig_install :: T_Int64
                   -> T_Int64
                   -> {T_Addr}
                   -> {"GHC.Prim.Unit#" T_Int64}
-  strerror :: T_Int64
-           -> {"GHC.Prim.Unit#" {T_Addr}}
-  "takeMVar#" :: {"MVar#" %a}
-              -> {"GHC.Prim.Unit#" %a}
+  strerror :: T_Int64 -> {"GHC.Prim.Unit#" {T_Addr}}
+  "takeMVar#" :: {"MVar#" %a} -> {"GHC.Prim.Unit#" %a}
   "threadStatus#" :: {"ThreadId#"}
                   -> {"GHC.Prim.(#,,#)" T_Int64 T_Int64 T_Int64}
-  "touch#" :: %o
-           -> {"GHC.Prim.(##)"}
-  u_towupper :: T_Int64
-             -> {"GHC.Prim.Unit#" T_Int64}
+  "touch#" :: %o -> {"GHC.Prim.(##)"}
+  u_towupper :: T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
   
 primop pure
-  "uncheckedIShiftL#" :: T_Int64
-                      -> T_Int64
-                      -> T_Int64
-  "uncheckedIShiftRA#" :: T_Int64
-                       -> T_Int64
-                       -> T_Int64
-  "uncheckedShiftL#" :: T_Word64
-                     -> T_Int64
-                     -> T_Word64
-  "uncheckedShiftRL#" :: T_Word64
-                      -> T_Int64
-                      -> T_Word64
+  "uncheckedIShiftL#" :: T_Int64 -> T_Int64 -> T_Int64
+  "uncheckedIShiftRA#" :: T_Int64 -> T_Int64 -> T_Int64
+  "uncheckedShiftL#" :: T_Word64 -> T_Int64 -> T_Word64
+  "uncheckedShiftRL#" :: T_Word64 -> T_Int64 -> T_Word64
   
 primop effectful
-  unlockFile :: T_Int64
-             -> {"GHC.Prim.Unit#" T_Int64}
+  unlockFile :: T_Int64 -> {"GHC.Prim.Unit#" T_Int64}
   "unsafeFreezeArray#" :: {"MutableArray#" %a}
                        -> {"GHC.Prim.Unit#" {"Array#" %a}}
   "unsafeFreezeByteArray#" :: {"MutableByteArray#"}
                            -> {"GHC.Prim.Unit#" {"ByteArray#"}}
-  "waitRead#" :: T_Int64
-              -> {"GHC.Prim.(##)"}
-  "waitWrite#" :: T_Int64
-               -> {"GHC.Prim.(##)"}
+  "waitRead#" :: T_Int64 -> {"GHC.Prim.(##)"}
+  "waitWrite#" :: T_Int64 -> {"GHC.Prim.(##)"}
   
 primop pure
-  "word2Int#" :: T_Word64
-              -> T_Int64
+  "word2Int#" :: T_Word64 -> T_Int64
   
 primop effectful
   "writeAddrOffAddr#" :: {T_Addr}
@@ -414,9 +312,7 @@ primop effectful
                      -> T_Int64
                      -> T_Int64
                      -> {"GHC.Prim.(##)"}
-  "writeMutVar#" :: {"MutVar#" %a}
-                 -> %a
-                 -> {"GHC.Prim.(##)"}
+  "writeMutVar#" :: {"MutVar#" %a} -> %a -> {"GHC.Prim.(##)"}
   "writeWideCharOffAddr#" :: {T_Addr}
                           -> T_Int64
                           -> T_Char
@@ -431,74 +327,15 @@ primop effectful
                        -> {"GHC.Prim.(##)"}
   
 primop pure
-  "xor#" :: T_Word64
-         -> T_Word64
-         -> T_Word64
+  "xor#" :: T_Word64 -> T_Word64 -> T_Word64
   
 grinMain =
-  result_main <- Main.main $ #False
+  result_main <- ":Main.main" $ #"GHC.Prim.realWorld#"
   case result_main of
     (C"GHC.Prim.Unit#" ptr) ->
       _prim_int_print $ 0
     #default ->
       _prim_int_print $ -1
-
-"_ghc__stg_foreign_call {PlaySafe CCallConv StaticTarget \"_prim_int_print\"}{(# State# RealWorld #)}" i b =
-  _prim_int_print $ i
-  pure (C"GHC.Prim.(##)")
-
-"_ghc_negateInt#{Int#}" a =
-  _prim_int_mul $ -1 a
-
-"_ghc_*#{Int#}" a_1 b_2 =
-  _prim_int_mul $ a_1 b_2
-
-"_ghc_+#{Int#}" a_3 b_4 =
-  _prim_int_add $ a_3 b_4
-
-"_ghc_-#{Int#}" a_5 b_6 =
-  _prim_int_sub $ a_5 b_6
-
-"_ghc_<#{Int#}" a_7 b_8 =
-  r <- _prim_int_lt $ a_7 b_8
-  _ghc_bool_to_int $ r
-
-"_ghc_>=#{Int#}" a_9 b_10 =
-  r_11 <- _prim_int_ge $ a_9 b_10
-  _ghc_bool_to_int $ r_11
-
-"_ghc_/=#{Int#}" a_12 b_13 =
-  r_14 <- _prim_int_ne $ a_12 b_13
-  _ghc_bool_to_int $ r_14
-
-"_ghc_<=#{Int#}" a_15 b_16 =
-  r_17 <- _prim_int_le $ a_15 b_16
-  _ghc_bool_to_int $ r_17
-
-"_ghc_==#{Int#}" a_18 b_19 =
-  r_20 <- _prim_int_eq $ a_18 b_19
-  _ghc_bool_to_int $ r_20
-
-"_ghc_>#{Int#}" a_21 b_22 =
-  r_23 <- _prim_int_gt $ a_21 b_22
-  _ghc_bool_to_int $ r_23
-
-_ghc_bool_to_int a_24 =
-  case a_24 of
-    #False ->
-      pure 0
-    #True ->
-      pure 1
-
-"_ghc_tagToEnum#{Bool}" a_25 =
-  case a_25 of
-    0 ->
-      pure (CGHC.Types.False)
-    1 ->
-      pure (CGHC.Types.True)
-
-"_ghc_indexIntArray#{Int#}" array index =
-  pure 0
 
 eval p.0 =
   v.0 <- fetch p.0
