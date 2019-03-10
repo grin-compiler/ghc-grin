@@ -1,0 +1,255 @@
+input length: 251
+ResourceLimits {softLimit = ResourceLimit 1024, hardLimit = ResourceLimit 1048576}
+dependencies:
+  Control.Exception.Base
+  Data.Bits
+  Data.Maybe
+  Data.OldList
+  Data.Proxy
+  Data.Semigroup.Internal
+  Data.Tuple
+  Data.Type.Equality
+  Data.Typeable.Internal
+  Foreign.C.Error
+  Foreign.C.String
+  Foreign.C.Types
+  Foreign.Marshal.Alloc
+  Foreign.Marshal.Array
+  Foreign.Storable
+  GHC.Arr
+  GHC.Base
+  GHC.CString
+  GHC.Char
+  GHC.Classes
+  GHC.Conc.Signal
+  GHC.Conc.Sync
+  GHC.Enum
+  GHC.Err
+  GHC.Event.Arr
+  GHC.Event.Array
+  GHC.Event.Control
+  GHC.Event.EPoll
+  GHC.Event.IntTable
+  GHC.Event.Internal
+  GHC.Event.Manager
+  GHC.Event.PSQ
+  GHC.Event.Poll
+  GHC.Event.Thread
+  GHC.Event.TimerManager
+  GHC.Event.Unique
+  GHC.Exception
+  GHC.Exception.Type
+  GHC.Fingerprint
+  GHC.Fingerprint.Type
+  GHC.Float
+  GHC.Float.ConversionUtils
+  GHC.Float.RealFracMethods
+  GHC.Foreign
+  GHC.ForeignPtr
+  GHC.Generics
+  GHC.IO
+  GHC.IO.Buffer
+  GHC.IO.BufferedIO
+  GHC.IO.Device
+  GHC.IO.Encoding
+  GHC.IO.Encoding.Failure
+  GHC.IO.Encoding.Iconv
+  GHC.IO.Encoding.Latin1
+  GHC.IO.Encoding.Types
+  GHC.IO.Encoding.UTF16
+  GHC.IO.Encoding.UTF32
+  GHC.IO.Encoding.UTF8
+  GHC.IO.Exception
+  GHC.IO.FD
+  GHC.IO.Handle
+  GHC.IO.Handle.FD
+  GHC.IO.Handle.Internals
+  GHC.IO.Handle.Text
+  GHC.IO.Handle.Types
+  GHC.IO.IOMode
+  GHC.IO.Unsafe
+  GHC.IORef
+  GHC.Int
+  GHC.Integer.Logarithms
+  GHC.Integer.Logarithms.Internals
+  GHC.Integer.Type
+  GHC.List
+  GHC.MVar
+  GHC.Maybe
+  GHC.Natural
+  GHC.Num
+  GHC.Ptr
+  GHC.Read
+  GHC.Real
+  GHC.STRef
+  GHC.Show
+  GHC.Stack.CCS
+  GHC.Stack.Types
+  GHC.Storable
+  GHC.TopHandler
+  GHC.Tuple
+  GHC.TypeLits
+  GHC.Types
+  GHC.Unicode
+  GHC.Word
+  Main
+  Numeric
+  System.IO
+  System.Posix.Internals
+  System.Posix.Types
+  Text.ParserCombinators.ReadP
+  Text.ParserCombinators.ReadPrec
+  Text.Read.Lex
+
+unknown:
+errors:
+duplicates:
+all: 251 pruned: 99
+bloat    lambda def count: 54431
+stripped lambda def count: 1831
+stripped lambda con def count: 276
+program ast size: 38265
+def size histogram (size: count, sample def name)
+        2:     243     Control.Exception.Base.lvl
+        3:     378     :Main.main
+        4:     116     Data.OldList.prependToAll.closure.0
+        5:      29     Data.Typeable.Internal.$dIP3
+        6:      40     Foreign.C.Error.$wlvl.closure.0
+        7:      70     Data.OldList.intercalate_$spoly_go
+        8:      76     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable.closure.17
+        9:      35     Data.Typeable.Internal.$dIP
+       10:      78     Control.Exception.Base.absentError
+       11:      14     Data.Typeable.Internal.$mApp3
+       12:      22     Foreign.C.String.$wpeekCAString
+       13:      21     Foreign.C.Error.throwErrno1
+       14:      20     Data.OldList.poly_go2
+       15:      18     Data.Typeable.Internal.$mApp3.closure.0
+       16:      23     Data.Typeable.Internal.tyConTYPE
+       17:     118     Data.Typeable.Internal.$wmkTrCon.closure.1
+       18:       7     Data.OldList.prependToAll
+       19:      57     Data.Typeable.Internal.$dTypeable
+       20:      12     Data.Typeable.Internal.splitApps_pkg
+       21:      32     Foreign.C.String.withCAString1
+       22:      14     Data.Typeable.Internal.$mApp6
+       23:      71     Data.Typeable.Internal.$sshowArgs
+       24:      15     Data.Typeable.Internal.someTypeRepFingerprint
+       25:       5     Data.Typeable.Internal.$wmkTrCon.closure.7
+       26:      10     Data.Typeable.Internal.go
+       27:       1     GHC.IO.FD.$wsetSize
+       28:       2     GHC.Foreign.$wpeekCString.closure.1
+       29:      11     Data.Typeable.Internal.$wmkTrCon.closure.4
+       30:       7     GHC.Event.Thread.threadWaitRead1.closure.6
+       31:      17     Data.Typeable.Internal.$wshowTyCon
+       32:       6     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable.closure.28
+       33:       5     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable.closure.31
+       34:       3     Foreign.Storable.$fStorableFingerprint_$s$wpokeW64
+       35:       6     Data.Typeable.Internal.$wmkTrCon.closure.8
+       36:       5     Foreign.C.Error.throwErrnoIfMinus1Retry2
+       37:       5     Foreign.Storable.$fStorableFingerprint_$s$wpeekW64
+       38:       3     Data.Typeable.Internal.$wmkTrCon.closure.2
+       39:       2     Data.Typeable.Internal.mkTypeLitFromString
+       40:       3     GHC.Fingerprint.fingerprintString.closure.2
+       41:       6     GHC.Event.Manager.$wcloseFd_.closure.0
+       42:       2     GHC.Foreign.charIsRepresentable3.closure.16
+       43:       4     GHC.IO.FD.$fBufferedIOFD5
+       44:       5     Data.Typeable.Internal.$wmkTrCon
+       45:       9     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable
+       46:       4     GHC.Event.IntTable.$wgrow.closure.2
+       47:       5     Foreign.C.Error.$werrnoToIOError
+       48:       2     GHC.IO.Handle.Text.$wwriteBlocks.closure.10
+       49:       2     GHC.Foreign.$wpeekCString.closure.15
+       50:       3     Data.Typeable.Internal.showTypeable
+       51:       1     GHC.IO.Encoding.Iconv.iconvEncoding6
+       52:       2     GHC.Foreign.charIsRepresentable1.closure.0
+       53:       5     Foreign.Storable.$fStorableFingerprint2
+       54:       2     Data.Typeable.Internal.$wmkTrCon.closure.3
+       55:       5     Foreign.C.String.$wpeekCAString.closure.0
+       56:       3     GHC.Conc.Signal.setHandler1.closure.0
+       57:       2     GHC.Foreign.$wpeekCString.closure.20
+       58:      16     GHC.Event.Manager.unregisterFd2.closure.5
+       59:       5     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable.closure.36
+       60:       2     GHC.Event.Manager.unregisterFd2.closure.1
+       61:       2     GHC.IO.FD.$wreadRawBufferPtr
+       62:       3     GHC.IO.Encoding.UTF32.mkUTF3.closure.7
+       63:       4     GHC.Event.Manager.unregisterFd2.closure.3
+       64:       3     GHC.Event.IntTable.$wgrow
+       65:       1     Data.Typeable.Internal.runtimeRepTypeRep.closure.10
+       66:       4     GHC.IO.Encoding.Iconv.iconvEncoding6.closure.1
+       67:       2     GHC.Event.Thread.closeFdWith1.closure.14
+       68:       2     GHC.IO.Handle.Internals.mkDuplexHandle9
+       70:       1     GHC.IO.Encoding.Latin1.latin5.closure.4
+       71:       6     GHC.IO.Encoding.Latin1.ascii3
+       72:       3     GHC.Event.Thread.closeFdWith1.closure.1
+       73:       1     Data.Typeable.Internal.runtimeRepTypeRep
+       74:       3     GHC.Event.Thread.closeFdWith1.closure.37
+       75:       4     Data.Typeable.Internal.mkTrApp.closure.2
+       76:       3     GHC.IO.Encoding.UTF32.mkUTF1.closure.8
+       77:       2     GHC.Event.Thread.getSystemEventManager1
+       78:       2     GHC.IO.Encoding.UTF8.mkUTF4.closure.11
+       79:       2     GHC.Event.Thread.threadWaitRead1.closure.20
+       80:       3     GHC.Conc.Signal.lvl2
+       81:       1     GHC.IO.Exception.$w$cshowsPrec4
+       82:       3     GHC.Event.Thread.closeFdWith1.closure.12
+       84:       2     GHC.IO.Encoding.UTF16.mkUTF1
+       86:       2     GHC.IO.Encoding.Latin1.ascii3.closure.6
+       89:       1     GHC.Event.Thread.closeFdWith1
+       90:       3     Data.Typeable.Internal.sameTypeRep.closure.0
+       91:       1     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable.closure.23
+       92:       1     GHC.Conc.Signal.setHandler1
+       93:       2     GHC.Event.Manager.$wcloseFd_
+       94:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.53
+      100:       1     GHC.Event.Manager.unregisterFd2.closure.6
+      102:       1     GHC.IO.Encoding.UTF8.mkUTF1
+      103:       1     GHC.IO.Handle.Internals.$wwriteCharBuffer
+      106:       2     Data.Typeable.Internal.showTypeable.closure.23
+      107:       1     GHC.IO.Handle.Text.hPutStr2
+      110:       2     GHC.IO.Encoding.UTF16.$wutf16_encode
+      112:       1     GHC.Stack.CCS.$wgo
+      114:       2     GHC.Foreign.$wpeekCString.closure.18
+      116:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.21
+      117:       1     GHC.Event.Thread.closeFdWith1.closure.0
+      118:       1     GHC.IO.Handle.FD.$wstdHandleFinalizer.closure.5
+      122:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.30
+      124:       1     GHC.IO.Encoding.UTF32.$wutf32_decode.closure.0
+      132:       1     GHC.IO.Handle.Text.$wwriteBlocks.closure.24
+      133:       1     GHC.IO.Encoding.Iconv.iconvEncoding6.closure.7
+      134:       1     GHC.IO.Encoding.UTF16.$wutf16_decode
+      136:       6     GHC.IO.Encoding.UTF16.mkUTF1.closure.9
+      138:       2     GHC.IO.Handle.Internals.mkDuplexHandle9.closure.7
+      140:       3     GHC.IO.Handle.Text.$wwriteBlocks.closure.12
+      141:       4     GHC.IO.FD.$w$cwriteNonBlocking
+      142:       1     GHC.IO.Encoding.getFileSystemEncoding5
+      143:       2     GHC.IO.Encoding.UTF8.mkUTF4.closure.65
+      144:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.67
+      146:       2     GHC.IO.Handle.Text.$wwriteBlocks.closure.19
+      147:       2     GHC.IO.Handle.Text.$whPutChar.closure.1
+      149:       2     GHC.IO.Handle.Text.$wwriteBlocks.closure.22
+      150:       2     GHC.IO.Encoding.UTF32.$wutf32_encode
+      152:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.61
+      155:       1     GHC.Event.Manager.unregisterFd2
+      156:       1     GHC.IO.Handle.Text.$wwriteBlocks.closure.28
+      157:       1     GHC.IO.Handle.Text.$wwriteBlocks.closure.54
+      161:       1     GHC.IO.Handle.Text.$wwriteBlocks.closure.43
+      162:       1     GHC.IO.Handle.Text.$wwriteBlocks.closure.63
+      163:       1     GHC.IO.Handle.Text.$wwriteBlocks.closure.50
+      166:       1     GHC.IO.Encoding.Failure.recoverEncode1
+      168:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.64
+      169:       1     GHC.Foreign.$wpeekCString.closure.23
+      175:       2     GHC.IO.Encoding.UTF32.mkUTF3.closure.8
+      177:       1     Foreign.C.Error.$werrnoToIOError.closure.0
+      180:       1     GHC.IO.Encoding.UTF8.mkUTF4
+      186:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.54
+      188:       1     GHC.IO.Encoding.UTF32.$wutf32_decode
+      202:       1     GHC.CString.unpackCStringUtf8#.closure.4
+      209:       1     Data.Typeable.Internal.$wmkTrCon.closure.12
+      210:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.52
+      211:       1     GHC.IO.Handle.Internals.$wwantWritableHandle'.closure.4
+      223:       2     GHC.IO.Encoding.UTF16.mkUTF1.closure.10
+      226:       1     GHC.IO.Encoding.Failure.recoverDecode1
+      244:       2     GHC.IO.Encoding.UTF32.mkUTF1.closure.7
+      245:       1     System.Posix.Internals.$wfdStat.closure.1
+      264:       1     GHC.Event.Thread.closeFdWith1.closure.25
+      274:       1     GHC.Event.Thread.threadWaitRead1.closure.19
+      286:       1     GHC.Event.Thread.threadWaitRead1.closure.3
+      313:       2     GHC.IO.Encoding.UTF16.mkUTF3.closure.16
+      906:       1     GHC.IO.Encoding.UTF8.mkUTF1.closure.13
