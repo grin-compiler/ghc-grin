@@ -30,6 +30,39 @@ converts the dumped GHC ~~Core~~ STG to Lambda
 ### ghc-grin-benchmark
 sample (stack based) projects to test the modified GHC with the GRIN backend
 
+## How to install GRIN and compile the benchmark programs
+
+1. Compile included GHC-8.6.2
+  `$ python3 boot`
+  `$ ./configure`
+  `$ make -j8`
+2. as soon as an error pops up: cannot execute 'grin-ghc'
+   create a shell script with just this content (+ chmod 750):
+```
+#!/bin/sh
+
+exit 0
+```
+3. Install `llvm-hs` (on Mac: `brew install llvm-hs/llvm/llvm-7`)
+  this will take some time to finish..
+4. Build the executables in directory `ghc-grin/`:
+  `stack setup; stack build`
+5. link the compiled binaries to a directory in your path (e.g. ~/.local/bin)
+   and also change the script that the patched GHC will call to:
+```
+#!/bin/sh
+
+set -e
+
+echo "GRIN..."
+
+ghc-grin $@ | tee ${!#}.out
+```
+6. Build the benchmark programs in directory `ghc-grin-benchmark`:
+   `./c`
+  - you should see the output of "GRIN..." from the script that calls the grin optimizer
+
+
 ## Preliminary Benchmark
 
 Comparison of Boquist PhD results *(Sparc, RISC)* with GHC 8.2 *(x64, CISC)* based on the CPU instruction count.
