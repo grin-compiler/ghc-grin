@@ -7,13 +7,13 @@ build-type: Simple
 flag libm
   default: True
 flag librt
-  default: True
+  default: False
 flag libdl
   default: True
 flag ffi
   default: False
 flag need-pthread
-  default: True
+  default: False
 flag libbfd
   default: False
 flag mingwex
@@ -25,7 +25,7 @@ flag libnuma
 flag 64bit
   default: False
 flag leading-underscore
-  default: False
+  default: True
 flag smp
   default: True
 flag profiling

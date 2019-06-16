@@ -18,8 +18,11 @@ packages:
     extra-dep: true
 
   - location:
-      git: https://github.com/csabahruska/llvm-hs.git
-      commit: 5e5feb5d125df3c789ef85ca344bced283b2fbaa
+    # git: https://github.com/csabahruska/llvm-hs.git
+      git: https://github.com/llvm-hs/llvm-hs
+    # commit: 5e5feb5d125df3c789ef85ca344bced283b2fbaa
+    # this sticks to llvm-7.0:
+      commit: 3b4e35e1abd88f8f30400242503d7cb25f9be253
     subdirs:
       - llvm-hs
       - llvm-hs-pure

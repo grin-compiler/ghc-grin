@@ -44,8 +44,9 @@ extra-deps:
   - megaparsec-6.5.0
   - cheapskate-0.1.1
 
+# comment out to compile with your local unpatched GHC
 extra-path:
-- /home/csaba/haskell/grin-tech/ghc-grin/ghc-8.6.2/inplace/bin
+  - /Volumes/Coding/src/hs/ghc-grin.git/ghc-8.6.2/inplace/bin
 
 # Turn on system GHC
 system-ghc: true

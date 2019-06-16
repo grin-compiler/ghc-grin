@@ -71,8 +71,13 @@ cg_main opts = do
   printf "input length: %d\n" inputLen
   r <- getResourceLimit ResourceOpenFiles
   print r
-  let ResourceLimits (ResourceLimit minNum) (ResourceLimit maxNum) = r
-  setResourceLimit ResourceOpenFiles $ ResourceLimits (ResourceLimit $ max minNum $ min (fromIntegral inputLen + minNum) maxNum) (ResourceLimit maxNum)
+  let reqNum = max 1024 $ fromIntegral inputLen
+  case r of
+    ResourceLimits (ResourceLimit minNum) (ResourceLimit maxNum) ->
+      setResourceLimit ResourceOpenFiles $ ResourceLimits (ResourceLimit $ max minNum $ min (fromIntegral inputLen + minNum) maxNum) (ResourceLimit maxNum)
+    ResourceLimits _ ResourceLimitInfinity ->
+      setResourceLimit ResourceOpenFiles $ ResourceLimits (ResourceLimit reqNum) (ResourceLimit reqNum)
+
   -- filter dependenies only
   depList <- mapM readDumpInfo (inputs opts)
   let fnameMap  = Map.fromList $ zip (map fst depList) (inputs opts)
