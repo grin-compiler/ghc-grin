@@ -26,7 +26,7 @@ library
     , text
     , bytestring
     , lambda-grin
-    , ghc-dump-core
+    , ghc-dump-stg
     , ghc-dump-util
     , ansi-wl-pprint
 
@@ -51,7 +51,7 @@ executable ghc-grin
                      , bytestring
                      , grin
                      , ghc-grin
-                     , ghc-dump-core
+                     , ghc-dump-stg
                      , ghc-dump-util
                      , lambda-grin
   default-language:    Haskell2010

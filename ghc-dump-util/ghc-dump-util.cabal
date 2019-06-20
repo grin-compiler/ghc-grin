@@ -27,7 +27,7 @@ library
                        GhcDump.StgReconstruct
   hs-source-dirs:      src
   build-depends:       base < 5.0,
-                       ghc-dump-core,
+                       ghc-dump-stg,
                        bytestring,
                        unordered-containers,
                        hashable,
@@ -38,7 +38,7 @@ library
 executable stg-dump
   main-is:             StgMain.hs
   build-depends:       base < 5.0,
-                       ghc-dump-core,
+                       ghc-dump-stg,
                        ghc-dump-util,
                        ansi-wl-pprint,
                        regex-tdfa,

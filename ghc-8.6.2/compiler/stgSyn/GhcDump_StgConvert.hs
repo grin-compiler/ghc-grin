@@ -1,1 +1,1 @@
-../../../ghc-dump-core/GhcDump_StgConvert.hs
+../../../ghc-dump-stg/GhcDump_StgConvert.hs

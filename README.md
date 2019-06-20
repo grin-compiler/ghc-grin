@@ -15,11 +15,11 @@ GHC-GRIN can not compile programs yet.
 
 ## Components
 
-### ghc-dump-core ghc-dump-util
+### ghc-dump-stg ghc-dump-util
 custom AST Data type for GHC ~~Core~~ STG with serialization support and tooling
 
 ### ghc-8.2.2
-modified GHC which serializes the ~~core~~ STG AST of each compiled module using `ghc-dump-core`, and calls an external tool to link them at link-time
+modified GHC which serializes the ~~core~~ STG AST of each compiled module using `ghc-dump-stg`, and calls an external tool to link them at link-time
 
 ### lambda-grin
 utility (lambda calculus) layer for GRIN frontends

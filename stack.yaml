@@ -5,7 +5,7 @@ allow-newer: true
 
 packages:
   - 'ghc-primop'
-  - 'ghc-dump-core'
+  - 'ghc-dump-stg'
   - 'ghc-dump-util'
   - 'ghc-grin'
   - 'lambda-grin'
