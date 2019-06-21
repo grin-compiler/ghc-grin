@@ -4,6 +4,7 @@ resolver: nightly-2018-11-07
 allow-newer: true
 
 packages:
+  - 'ghc-primop-lib'
   - 'ghc-primop-gen'
   - 'ghc-dump-stg'
   - 'ghc-dump-util'
