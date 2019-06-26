@@ -3,9 +3,9 @@ module GHCPrimOp where
 import Data.Int
 import Data.Word
 
--- 32 bit platform semantics
-type PrimWord = Word32
-type PrimInt  = Int32
+-- 64 bit platform semantics
+type PrimWord = Word64
+type PrimInt  = Int64
 
 data Value
   = CharV   Word32  -- HINT: utf32 encoding
@@ -80,22 +80,21 @@ data PrimOp
   | WordNeOp
   | WordLtOp
   | WordLeOp
-----------------------------
   | PopCnt8Op
   | PopCnt16Op
   | PopCnt32Op
   | PopCnt64Op
   | PopCntOp
-  | Pdep8Op
-  | Pdep16Op
-  | Pdep32Op
-  | Pdep64Op
-  | PdepOp
-  | Pext8Op
-  | Pext16Op
-  | Pext32Op
-  | Pext64Op
-  | PextOp
+  | Pdep8Op   -- TODO
+  | Pdep16Op  -- TODO
+  | Pdep32Op  -- TODO
+  | Pdep64Op  -- TODO
+  | PdepOp    -- TODO
+  | Pext8Op   -- TODO
+  | Pext16Op  -- TODO
+  | Pext32Op  -- TODO
+  | Pext64Op  -- TODO
+  | PextOp    -- TODO
   | Clz8Op
   | Clz16Op
   | Clz32Op
@@ -117,6 +116,7 @@ data PrimOp
   | Narrow8WordOp
   | Narrow16WordOp
   | Narrow32WordOp
+----------------------------
   -- Double#
   | DoubleGtOp
   | DoubleGeOp

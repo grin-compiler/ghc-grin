@@ -97,6 +97,52 @@ evalPrimOp WordNeOp   [WordV a, WordV b] = IntV $ if a /= b then 1 else 0
 evalPrimOp WordLtOp   [WordV a, WordV b] = IntV $ if a < b  then 1 else 0
 evalPrimOp WordLeOp   [WordV a, WordV b] = IntV $ if a <= b then 1 else 0
 
+evalPrimOp PopCnt8Op  [WordV a] = WordV . fromIntegral $ popCount (fromIntegral a :: Word8)
+evalPrimOp PopCnt16Op [WordV a] = WordV . fromIntegral $ popCount (fromIntegral a :: Word16)
+evalPrimOp PopCnt32Op [WordV a] = WordV . fromIntegral $ popCount (fromIntegral a :: Word32)
+evalPrimOp PopCnt64Op [WordV a] = WordV . fromIntegral $ popCount (fromIntegral a :: Word64)
+evalPrimOp PopCntOp   [WordV a] = WordV . fromIntegral $ popCount a
+
+{-
+  HINT:
+    https://en.wikipedia.org/wiki/Bit_Manipulation_Instruction_Sets#Parallel_bit_deposit_and_extract
+    https://www.felixcloutier.com/x86/pdep
+-}
+
+{-
+  Pdep8Op
+  Pdep16Op
+  Pdep32Op
+  Pdep64Op
+  PdepOp
+  Pext8Op
+  Pext16Op
+  Pext32Op
+  Pext64Op
+  PextOp
+-}
+evalPrimOp Clz8Op   [WordV a] = WordV . fromIntegral $ countLeadingZeros (fromIntegral a :: Word8)
+evalPrimOp Clz16Op  [WordV a] = WordV . fromIntegral $ countLeadingZeros (fromIntegral a :: Word16)
+evalPrimOp Clz32Op  [WordV a] = WordV . fromIntegral $ countLeadingZeros (fromIntegral a :: Word32)
+evalPrimOp Clz64Op  [WordV a] = WordV . fromIntegral $ countLeadingZeros (fromIntegral a :: Word64)
+evalPrimOp ClzOp    [WordV a] = WordV . fromIntegral $ countLeadingZeros a
+evalPrimOp Ctz8Op   [WordV a] = WordV . fromIntegral $ countTrailingZeros (fromIntegral a :: Word8)
+evalPrimOp Ctz16Op  [WordV a] = WordV . fromIntegral $ countTrailingZeros (fromIntegral a :: Word16)
+evalPrimOp Ctz32Op  [WordV a] = WordV . fromIntegral $ countTrailingZeros (fromIntegral a :: Word32)
+evalPrimOp Ctz64Op  [WordV a] = WordV . fromIntegral $ countTrailingZeros (fromIntegral a :: Word64)
+evalPrimOp CtzOp    [WordV a] = WordV . fromIntegral $ countTrailingZeros a
+
+evalPrimOp BSwap16Op  [WordV a] = WordV . fromIntegral $ byteSwap16 (fromIntegral a :: Word16)
+evalPrimOp BSwap32Op  [WordV a] = WordV . fromIntegral $ byteSwap32 (fromIntegral a :: Word32)
+evalPrimOp BSwap64Op  [WordV a] = WordV . fromIntegral $ byteSwap64 (fromIntegral a :: Word64)
+evalPrimOp BSwapOp    [WordV a] = WordV $ byteSwap64 a
+
+-- Narrowings
+evalPrimOp Narrow8IntOp   [IntV a]  = IntV  $ fromIntegral (fromIntegral a :: Int8)
+evalPrimOp Narrow16IntOp  [IntV a]  = IntV  $ fromIntegral (fromIntegral a :: Int16)
+evalPrimOp Narrow32IntOp  [IntV a]  = IntV  $ fromIntegral (fromIntegral a :: Int32)
+evalPrimOp Narrow8WordOp  [WordV a] = WordV $ fromIntegral (fromIntegral a :: Word8)
+evalPrimOp Narrow16WordOp [WordV a] = WordV $ fromIntegral (fromIntegral a :: Word16)
+evalPrimOp Narrow32WordOp [WordV a] = WordV $ fromIntegral (fromIntegral a :: Word32)
+
 evalPrimOp op args = error $ "unsupported op: " ++ show op ++ " with args: " ++ show args
-
-
