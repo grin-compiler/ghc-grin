@@ -3,10 +3,18 @@ module GHCPrimOp where
 import Data.Int
 import Data.Word
 
+-- 32 bit platform semantics
+type PrimWord = Word32
+type PrimInt  = Int32
+
 data Value
-  = CharV Word32 -- HINT: utf32 encoding
-  | IntV  Int32
-  | WordV Word32
+  = CharV   Word32  -- HINT: utf32 encoding
+  | IntV    PrimInt
+  | WordV   PrimWord
+  | FloatV  Float   -- 32 bit floating point
+  | DoubleV Double  -- 64 bit floating point
+  | TupleV  [Value] -- HINT: tuples can not contain tuples, just simple values i.e. int, word, char
+  deriving (Eq, Ord, Show)
 
 data PrimOp
   -- Char#
@@ -21,17 +29,17 @@ data PrimOp
   | IntAddOp
   | IntSubOp
   | IntMulOp
-  | IntMulMayOfloOp -- TODO
-  | IntQuotOp       -- TODO
-  | IntRemOp        -- TODO
-  | IntQuotRemOp    -- TODO
+  | IntMulMayOfloOp
+  | IntQuotOp
+  | IntRemOp
+  | IntQuotRemOp
   | AndIOp
   | OrIOp
   | XorIOp
   | NotIOp
   | IntNegOp
-  | IntAddCOp -- TODO
-  | IntSubCOp -- TODO
+  | IntAddCOp
+  | IntSubCOp
   | IntGtOp
   | IntGeOp
   | IntEqOp
@@ -40,13 +48,12 @@ data PrimOp
   | IntLeOp
   | ChrOp
   | Int2WordOp
-  | Int2FloatOp   -- TODO
-  | Int2DoubleOp  -- TODO
-  | Word2FloatOp  -- TODO
-  | Word2DoubleOp -- TODO
+  | Int2FloatOp
+  | Int2DoubleOp
+  | Word2FloatOp
+  | Word2DoubleOp
   | ISllOp
   | ISraOp
-
   | ISrlOp
   -- Word#
   | WordAddOp
@@ -73,6 +80,7 @@ data PrimOp
   | WordNeOp
   | WordLtOp
   | WordLeOp
+----------------------------
   | PopCnt8Op
   | PopCnt16Op
   | PopCnt32Op
