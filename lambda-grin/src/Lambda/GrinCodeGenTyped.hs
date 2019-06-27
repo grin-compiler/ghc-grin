@@ -360,7 +360,13 @@ genExternal External{..} =
   , G.eRetType    = genTy eRetType
   , G.eArgsType   = map genTy eArgsType
   , G.eEffectful  = eEffectful
+  , G.eKind       = genExternalKind eKind
   }
+
+genExternalKind :: ExternalKind -> G.ExternalKind
+genExternalKind = \case
+  PrimOp  -> G.PrimOp
+  FFI     -> G.FFI
 
 genTy :: Ty -> G.Ty
 genTy = \case

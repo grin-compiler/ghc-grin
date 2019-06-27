@@ -146,6 +146,7 @@ literal = (try $ LFloat . realToFrac <$> signedFloat) <|>
 
 externalBlock = do
   L.indentGuard sc EQ pos1
+  -- TODO: support eKind
   kw "primop"
   eff <- const False <$> kw "pure" <|> const True <$> kw "effectful"
   i <- L.indentGuard sc GT pos1
@@ -163,6 +164,7 @@ external eff i = do
     , eRetType    = retTy
     , eArgsType   = reverse argTyRev
     , eEffectful  = eff
+    , eKind       = PrimOp -- TODO: handle eKind properly
     }
 
 tyP :: Parser Ty

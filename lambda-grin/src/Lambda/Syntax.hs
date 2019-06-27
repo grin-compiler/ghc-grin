@@ -39,12 +39,18 @@ data SimpleType
   | T_Addr    -- TODO: missing from GRIN
   deriving (Generic, Data, Eq, Ord, Show)
 
+data ExternalKind
+  = PrimOp -- ^ Implemented in the internal code generator
+  | FFI    -- ^ Implemented in C and linked during the linker phase
+  deriving (Generic, Data, Eq, Ord, Show)
+
 data External
   = External
   { eName       :: Name
   , eRetType    :: Ty
   , eArgsType   :: [Ty]
   , eEffectful  :: Bool
+  , eKind       :: ExternalKind
   }
   deriving (Generic, Data, Eq, Ord, Show)
 
@@ -105,4 +111,5 @@ instance Binary Lit
 instance Binary Pat
 instance Binary Ty
 instance Binary SimpleType
+instance Binary ExternalKind
 instance Binary External

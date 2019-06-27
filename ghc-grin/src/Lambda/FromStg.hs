@@ -196,6 +196,7 @@ visitExpr = \case
               , eRetType    = retTy
               , eArgsType   = argsTy
               , eEffectful  = True
+              , eKind       = PrimOp -- TODO: handle eKind properly
               }
             App name <$> mapM visitArg realArgs
           _ -> do

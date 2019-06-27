@@ -79,6 +79,7 @@ prettyExternals exts = vcat (map prettyExtGroup $ groupBy (\a b -> eEffectful a 
   prettyExtGroup l@(a : _)
     | maxLen <- maximum [length . show . pretty $ eName e | e <- l]
     , width  <- min maxLen maxWidth
+    -- TODO: support eKind
     = (keyword "primop" <+> (if eEffectful a then keyword "effectful" else keyword "pure") <$$> indent 2
         (vsep [prettyFunction width eName eRetType eArgsType | External{..} <- l])
       ) <> line
