@@ -116,7 +116,6 @@ data PrimOp
   | Narrow8WordOp
   | Narrow16WordOp
   | Narrow32WordOp
-----------------------------
   -- Double#
   | DoubleGtOp
   | DoubleGeOp
@@ -145,8 +144,8 @@ data PrimOp
   | DoubleCoshOp
   | DoubleTanhOp
   | DoublePowerOp
-  | DoubleDecode_2IntOp
-  | DoubleDecode_Int64Op
+  | DoubleDecode_2IntOp   -- TODO
+  | DoubleDecode_Int64Op  -- TODO
   -- Float#
   | FloatGtOp
   | FloatGeOp
@@ -175,7 +174,8 @@ data PrimOp
   | FloatTanhOp
   | FloatPowerOp
   | Float2DoubleOp
-  | FloatDecode_IntOp
+  | FloatDecode_IntOp -- TODO
+----------------------------
   -- Arrays
   | NewArrayOp
   | SameMutableArrayOp

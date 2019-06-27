@@ -145,4 +145,71 @@ evalPrimOp Narrow8WordOp  [WordV a] = WordV $ fromIntegral (fromIntegral a :: Wo
 evalPrimOp Narrow16WordOp [WordV a] = WordV $ fromIntegral (fromIntegral a :: Word16)
 evalPrimOp Narrow32WordOp [WordV a] = WordV $ fromIntegral (fromIntegral a :: Word32)
 
+-- Double#
+evalPrimOp DoubleGtOp     [DoubleV a, DoubleV b] = IntV $ if a > b  then 1 else 0
+evalPrimOp DoubleGeOp     [DoubleV a, DoubleV b] = IntV $ if a >= b then 1 else 0
+evalPrimOp DoubleEqOp     [DoubleV a, DoubleV b] = IntV $ if a == b then 1 else 0
+evalPrimOp DoubleNeOp     [DoubleV a, DoubleV b] = IntV $ if a /= b then 1 else 0
+evalPrimOp DoubleLtOp     [DoubleV a, DoubleV b] = IntV $ if a < b  then 1 else 0
+evalPrimOp DoubleLeOp     [DoubleV a, DoubleV b] = IntV $ if a <= b then 1 else 0
+evalPrimOp DoubleAddOp    [DoubleV a, DoubleV b] = DoubleV $ a + b
+evalPrimOp DoubleSubOp    [DoubleV a, DoubleV b] = DoubleV $ a - b
+evalPrimOp DoubleMulOp    [DoubleV a, DoubleV b] = DoubleV $ a * b
+evalPrimOp DoubleDivOp    [DoubleV a, DoubleV b] = DoubleV $ a / b
+evalPrimOp DoubleNegOp    [DoubleV a] = DoubleV (-a)
+evalPrimOp DoubleFabsOp   [DoubleV a] = DoubleV (abs a)
+evalPrimOp Double2IntOp   [DoubleV a] = IntV $ truncate a
+evalPrimOp Double2FloatOp [DoubleV a] = FloatV $ realToFrac a
+evalPrimOp DoubleExpOp    [DoubleV a] = DoubleV $ exp a
+evalPrimOp DoubleLogOp    [DoubleV a] = DoubleV $ log a
+evalPrimOp DoubleSqrtOp   [DoubleV a] = DoubleV $ sqrt a
+evalPrimOp DoubleSinOp    [DoubleV a] = DoubleV $ sin a
+evalPrimOp DoubleCosOp    [DoubleV a] = DoubleV $ cos a
+evalPrimOp DoubleTanOp    [DoubleV a] = DoubleV $ tan a
+evalPrimOp DoubleAsinOp   [DoubleV a] = DoubleV $ asin a
+evalPrimOp DoubleAcosOp   [DoubleV a] = DoubleV $ acos a
+evalPrimOp DoubleAtanOp   [DoubleV a] = DoubleV $ atan a
+evalPrimOp DoubleSinhOp   [DoubleV a] = DoubleV $ sinh a
+evalPrimOp DoubleCoshOp   [DoubleV a] = DoubleV $ cosh a
+evalPrimOp DoubleTanhOp   [DoubleV a] = DoubleV $ tanh a
+evalPrimOp DoublePowerOp  [DoubleV a, DoubleV b] = DoubleV $ a ** b
+
+{-
+  DoubleDecode_2IntOp
+  DoubleDecode_Int64Op
+-}
+
+-- Float#
+evalPrimOp FloatGtOp      [FloatV a, FloatV b] = IntV $ if a > b  then 1 else 0
+evalPrimOp FloatGeOp      [FloatV a, FloatV b] = IntV $ if a >= b then 1 else 0
+evalPrimOp FloatEqOp      [FloatV a, FloatV b] = IntV $ if a == b then 1 else 0
+evalPrimOp FloatNeOp      [FloatV a, FloatV b] = IntV $ if a /= b then 1 else 0
+evalPrimOp FloatLtOp      [FloatV a, FloatV b] = IntV $ if a < b  then 1 else 0
+evalPrimOp FloatLeOp      [FloatV a, FloatV b] = IntV $ if a <= b then 1 else 0
+evalPrimOp FloatAddOp     [FloatV a, FloatV b] = FloatV $ a + b
+evalPrimOp FloatSubOp     [FloatV a, FloatV b] = FloatV $ a - b
+evalPrimOp FloatMulOp     [FloatV a, FloatV b] = FloatV $ a * b
+evalPrimOp FloatDivOp     [FloatV a, FloatV b] = FloatV $ a / b
+evalPrimOp FloatNegOp     [FloatV a] = FloatV (-a)
+evalPrimOp FloatFabsOp    [FloatV a] = FloatV (abs a)
+evalPrimOp Float2IntOp    [FloatV a] = IntV $ truncate a
+evalPrimOp FloatExpOp     [FloatV a] = FloatV $ exp a
+evalPrimOp FloatLogOp     [FloatV a] = FloatV $ log a
+evalPrimOp FloatSqrtOp    [FloatV a] = FloatV $ sqrt a
+evalPrimOp FloatSinOp     [FloatV a] = FloatV $ sin a
+evalPrimOp FloatCosOp     [FloatV a] = FloatV $ cos a
+evalPrimOp FloatTanOp     [FloatV a] = FloatV $ tan a
+evalPrimOp FloatAsinOp    [FloatV a] = FloatV $ asin a
+evalPrimOp FloatAcosOp    [FloatV a] = FloatV $ acos a
+evalPrimOp FloatAtanOp    [FloatV a] = FloatV $ atan a
+evalPrimOp FloatSinhOp    [FloatV a] = FloatV $ sinh a
+evalPrimOp FloatCoshOp    [FloatV a] = FloatV $ cosh a
+evalPrimOp FloatTanhOp    [FloatV a] = FloatV $ tanh a
+evalPrimOp FloatPowerOp   [FloatV a, FloatV b] = FloatV $ a ** b
+evalPrimOp Float2DoubleOp [FloatV a] = DoubleV $ realToFrac a
+
+{-
+  FloatDecode_IntOp
+-}
+
 evalPrimOp op args = error $ "unsupported op: " ++ show op ++ " with args: " ++ show args
