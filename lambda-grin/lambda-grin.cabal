@@ -27,6 +27,8 @@ library
     Lambda.GhcPrimOps
     --Lambda.GhcPrimOpsBoxed
     Lambda.Syntax
+    Lambda.Syntax2
+    Lambda.ToSyntax2
     Lambda.Util
     Lambda.Lint
     Lambda.StaticSingleAssignment
