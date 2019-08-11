@@ -71,14 +71,12 @@ data Exp
   | LetS        [(Name, Exp)] Exp -- strict let
   | Con         Name [Atom]
   -- Atom
---  | Var         Name
   | Var         Bool Name -- is pointer
   | Lit         Lit
   -- Alt
   | Alt         Pat Exp
   -- Extra
-  | AppExp      Exp [Exp]         -- convenient for nested expressions i.e. lambdas
-  | Lam         [Name] Exp
+  | Closure     [Name] [Name] Exp -- closure's captured variables ; arguments ; body
   deriving (Generic, Data, Eq, Ord, Show)
 
 data Lit
