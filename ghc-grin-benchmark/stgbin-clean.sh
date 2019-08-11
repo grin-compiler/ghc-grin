@@ -1,3 +1,5 @@
+set -e -x
+
 find . -name '*.corebin' -delete
 find . -name '*.stgbin' -delete
 find . -name '*.lambda' -delete
