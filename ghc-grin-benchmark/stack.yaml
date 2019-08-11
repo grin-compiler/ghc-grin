@@ -20,22 +20,22 @@ packages:
 
 #- 'lambdacube-quake3-master'
 
-- location:
-    git: https://github.com/lambdacube3d/lambdacube-ir.git
-    commit: b8b4ec9fa985b2eb756ac1a5a65af483a0bd586b
-  subdirs:
-    - lambdacube-ir.haskell
-  extra-dep: true
+#- location:
+#    git: https://github.com/lambdacube3d/lambdacube-ir.git
+#    commit: b8b4ec9fa985b2eb756ac1a5a65af483a0bd586b
+#  subdirs:
+#    - lambdacube-ir.haskell
+#  extra-dep: true
 
-- location:
-    git: https://github.com/lambdacube3d/lambdacube-gl.git
-    commit: 297828bdcf105c5942ed0e43d9f28130f543f34c
-  extra-dep: true
+#- location:
+#    git: https://github.com/lambdacube3d/lambdacube-gl.git
+#    commit: 297828bdcf105c5942ed0e43d9f28130f543f34c
+#  extra-dep: true
 
-- location:
-    git: https://github.com/lambdacube3d/lambdacube-compiler.git
-    commit: dc10dc255638b86f4a20a29a1b492e2415640b60
-  extra-dep: true
+#- location:
+#    git: https://github.com/lambdacube3d/lambdacube-compiler.git
+#    commit: dc10dc255638b86f4a20a29a1b492e2415640b60
+#  extra-dep: true
 
 extra-deps:
   - proteaaudio-0.7.0.1
@@ -45,7 +45,7 @@ extra-deps:
   - cheapskate-0.1.1
 
 extra-path:
-- /home/csaba/haskell/grin-tech/ghc-grin/ghc-8.6.2/inplace/bin
+- /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/inplace/bin
 
 # Turn on system GHC
 system-ghc: true

@@ -2,7 +2,7 @@ reset
 
 set -xe
 
-GRINGHCPATH=/home/csaba/haskell/grin-tech/ghc-grin/ghc-8.6.2/inplace/bin
+GRINGHCPATH=/home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/inplace/bin
 ln -f -s $GRINGHCPATH/ghc-stage2 $GRINGHCPATH/ghc
 
 #rm -fr .stack-root/setup-exe-cache
