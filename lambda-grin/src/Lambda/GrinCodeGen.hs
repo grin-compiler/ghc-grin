@@ -127,8 +127,8 @@ genExp = hyloM folder builder where
 
   builder :: (Mode, Exp) -> CG (CmdF (Mode, Exp))
   builder (mode, lambdaExp) = gets _arityMap >>= \arityMap -> case lambdaExp of
-    AppExp {} -> error "grin codegen - illegal expression: AppExp"
-    Lam {}    -> error "grin codegen - illegal expression: Lam"
+    --AppExp {} -> error "grin codegen - illegal expression: AppExp"
+    --Lam {}    -> error "grin codegen - illegal expression: Lam"
     Program exts defs -> pure . G $ G.ProgramF exts [(mode, d) | d <- defs]
     Def name args exp -> pure . G $ G.DefF name args (mode, exp)
     Alt pat exp       -> pure . G $ G.AltF (genCPat pat) (mode, exp)

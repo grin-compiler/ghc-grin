@@ -62,15 +62,18 @@ liftLam = hyloM folder builder where
     e -> pure $ project e
 
   folder = \case
+    {-
     LamF vs e -> do
       defName <- gets envCurrentDefName
       fresh <- lift $ deriveNewName $ defName <> ".closure"
       addDef $ Def fresh vs e
       pure $ Var False fresh
-
+    -}
     -- smash
+    {-
     AppExpF (Var _ n) args
       | all isAtom args       -> pure $ App n args
+    -}
     LetF l1 (Let l2 e)        -> pure $ Let (l1 ++ l2) e
     LetSF l1 (LetS l2 e)      -> pure $ LetS (l1 ++ l2) e
     e                         -> pure $ embed e
