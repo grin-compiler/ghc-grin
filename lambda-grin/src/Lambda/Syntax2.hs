@@ -43,8 +43,8 @@ data Exp
   | Let         [(Name, Exp)] Bind -- lazy let
   | LetRec      [(Name, Exp)] Bind -- lazy let with mutually recursive bindings
   | LetS        [(Name, Exp)] Bind -- strict let
-  | Var         Bool Name -- is pointer
-  -- Simple Exp
+  | Var         Name
+  -- Simple Exp / let RHS
   | App         Name [Name]
   | Case        Name [Alt]
   | Con         Name [Name]

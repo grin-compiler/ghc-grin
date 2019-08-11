@@ -32,7 +32,7 @@ simplifyVar exp
 simplify :: L.Exp -> SM Name
 simplify = \case
   -- Atom
-  L.Var p n -> pure n
+  L.Var _ n -> pure n
   exp -> do
     e <- simplifyArgs exp
     name <- lift $ deriveNewName $ "val"
@@ -103,7 +103,7 @@ toSyntax2M = hyloM folder builder where
     L.Con n l | all isVar l -> pure $ ConF n [a | L.Var _ a <- l]
     L.Case (L.Var _ n) l -> pure $ CaseF n l
     L.Lit l -> pure $ LitF l
-    L.Var p n -> pure $ VarF p n
+    L.Var _ n -> pure $ VarF n
 
     -- impossible / internal error
     exp -> error $ "simple exp was not simplified: " ++ show exp
