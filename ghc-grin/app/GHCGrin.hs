@@ -13,11 +13,13 @@ import GhcDump.StgUtil
 
 import Lambda.FromStg
 import Lambda.Syntax
+import qualified Lambda.Syntax2 as L2
 import Lambda.Pretty
+import Lambda.ToSyntax2
 --import Lambda.GrinCodeGen
 import Lambda.Lint
 import Lambda.StaticSingleAssignment
-import Lambda.ClosureConversion
+--import Lambda.ClosureConversion
 import Lambda.DeadFunctionElimination
 import Pipeline.Pipeline
 
@@ -108,10 +110,12 @@ cg_main opts = do
       ]
     -}
   let sortDefs (Program exts defs) = Program exts . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
-      wholeProgramBloat = eliminateLams [] $ singleStaticAssignment $ concatPrograms progList
+      wholeProgramBloat = singleStaticAssignment $ concatPrograms progList
       wholeProgram      = sortDefs $ deadFunctionElimination wholeProgramBloat
+      wholeProgram2     = toSyntax2 wholeProgram :: L2.Program
       output_fn         = output opts
   writeFile (output_fn ++ ".lambda") . showWidth 800 . plain $ pretty wholeProgram
+  writeFile (output_fn ++ ".2.lambda") . showWidth 800 . plain $ pretty wholeProgram2
   lintLambda wholeProgram
   printf "all: %d pruned: %d\n" (length $ inputs opts) (length prunedDeps)
   let Program extsStripped  defsStripped  = wholeProgram
@@ -129,6 +133,7 @@ cg_main opts = do
   --printf "dead modules:\n%s" (unlines $ Set.toList $ aset Set.\\ pset)
 
   BSL.writeFile (output_fn ++ ".lambdabin") $ encode wholeProgram
+  BSL.writeFile (output_fn ++ ".2.lambdabin") $ encode wholeProgram2
   {-
   let lambdaGrin = codegenGrin wholeProgram
   writeFile (output_fn ++ ".grin") $ show $ plain $ pretty lambdaGrin
