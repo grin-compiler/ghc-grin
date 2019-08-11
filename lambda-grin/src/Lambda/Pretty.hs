@@ -9,9 +9,10 @@ import Data.List (groupBy)
 import qualified Data.Set as Set
 
 import Data.Functor.Foldable as Foldable
-import Text.PrettyPrint.ANSI.Leijen
+import Text.PrettyPrint.ANSI.Leijen as Leijen
 
 import Lambda.Syntax
+import qualified Lambda.Syntax2 as L2
 import Grin.Pretty ()
 
 printLambda :: Exp -> IO ()
@@ -49,8 +50,32 @@ instance Pretty Exp where
       -- Alt
       AltF cpat exp       -> pretty cpat <+> text "->" <$$> indent 4 (pretty exp)
       -- Extra
-      AppExpF exp args    -> hsep $ parens exp : map pretty args
-      LamF name exp       -> keyword "\\" <> hsep (map pretty name) <+> text "->" <+> align (pretty exp)
+      ClosureF vars args exp -> nest 2 (keyword "\\" <> brackets (hsep (map pretty vars)) <+> hsep (map pretty args) <+> text "->" Leijen.<$> pretty exp)
+
+instance Pretty L2.Exp where
+  pretty prg = cata folder prg where
+    extNames      = case prg of
+                      L2.Program exts _  -> Set.fromList $ map eName exts
+                      _               -> Set.empty
+    isPrimName n  = Set.member n extNames
+
+    folder = \case
+      L2.ProgramF exts defs  -> vcat (prettyExternals exts : map pretty defs)
+      L2.DefF name args exp  -> nest 2 (hsep (pretty name : map pretty args) <+> text "=" <$$> pretty exp) <> line
+      -- Exp
+      L2.AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : text "@" : map pretty args)
+      L2.CaseF atom alts     -> nest 2 (keyword "case" <+> pretty atom <+> keyword "of" <$$> vsep (map pretty alts))
+      L2.LetF binds exp      -> nest 2 (keyword "let"    <$$> vsep (map prettyBind binds)) <$$> pretty exp
+      L2.LetRecF binds exp   -> nest 2 (keyword "letrec" <$$> vsep (map prettyBind binds)) <$$> pretty exp
+      L2.LetSF binds exp     -> nest 2 (keyword "letS"   <$$> vsep (map prettyBind binds)) <$$> pretty exp
+      L2.ConF tag args       -> brackets $ hsep (pretty tag : map pretty args)
+      -- Atom
+      L2.VarF name           -> pretty name
+      L2.LitF lit            -> pretty lit
+      -- Alt
+      L2.AltF name cpat exp  -> nest 4 (pretty cpat <+> text "@" <+> pretty name <+> text "->" <$$> pretty exp)
+      -- Extra
+      L2.ClosureF vars args exp -> nest 2 (keyword "\\" <> brackets (hsep (map pretty vars)) <+> hsep (map pretty args) <+> text "->" Leijen.<$> pretty exp)
 
 instance Pretty Lit where
   pretty = \case
