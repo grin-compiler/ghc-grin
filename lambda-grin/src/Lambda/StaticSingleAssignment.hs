@@ -47,9 +47,9 @@ singleStaticAssignment e = evalState (anaM build (mempty, e)) (mkNameEnv e) wher
       let newEnv = addMany env $ zip ns newNs
       pure $ LetRecF [(n, (newEnv, b)) | (n, (_, b)) <- zip newNs bs] (newEnv, e)
 
-    Lam ns e -> do
+    Closure vs ns e -> do
       newNs <- mapM deriveNewName ns
-      pure $ LamF newNs (addMany env $ zip ns newNs, e)
+      pure $ ClosureF (map (subst env) vs) newNs (addMany env $ zip ns newNs, e)
 
     Def n ns e -> do
       newNs <- mapM deriveNewName ns

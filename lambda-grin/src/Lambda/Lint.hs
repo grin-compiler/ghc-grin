@@ -51,6 +51,8 @@ env = Env
 addDef n = Map.singleton n 1
 addDefs ns = Map.unionsWith (+) $ map addDef ns
 
+addNames ns = Set.fromList ns
+
 test = cata folder where
   folder = \case
     -- use
@@ -61,49 +63,11 @@ test = cata folder where
     LetRecF binds e   -> mconcat [env {envDef = addDef name} <> a | (name, a) <- binds] <> e
     LetSF binds e     -> mconcat [env {envDef = addDef name} <> a | (name, a) <- binds] <> e
     LetF binds e      -> mconcat [env {envDef = addDef name} <> a | (name, a) <- binds] <> e
-    LamF names e      -> env {envDef = addDefs names} <> e
+    ClosureF v p e    -> env {envUse = addNames v, envDef = addDefs p} <> e
     AltF (NodePat con args) e -> env {envDef = addDefs args, envCon = Set.singleton $ showTS (length args) <> "-" <> con} <> e
     -- err
     LitF (LError err) -> env {envErr = Set.singleton $ packName $ T.unpack err}
     e -> Data.Foldable.fold e
-
-{-
-data Exp
-  = Program     [Def]
-  -- Binding
-  | Def         Name [Name] Exp
-  -- Exp
-  | App         Name [Atom]
-  | Case        Atom [Alt]
-  | Let         [(Name, Exp)] Exp -- lazy let
-  | LetRec      [(Name, Exp)] Exp -- lazy let with mutually recursive bindings
-  | LetS        [(Name, Exp)] Exp -- strict let
-  | Con         Name [Atom]
-  -- Atom
-  | Var         Name
-  | Lit         Lit
-  -- Alt
-  | Alt         Pat Exp
-  -- Extra
-  | AppExp      Exp [Exp]         -- convenient for nested expressions i.e. lambdas
-  | Lam         [Name] Exp
-
-data Lit
-  = LInt64  Int64
-  | LWord64 Word64
-  | LFloat  Float
-  | LBool   Bool
-  | LChar   Char
-  | LString ByteString
-  -- special
-  | LError  String  -- marks an error
-  | LDummy  String  -- should be ignored
-
-data Pat
-  = NodePat Name [Name]
-  | LitPat  Lit
-  | DefaultPat
--}
 
 expSize :: Exp -> Int
 expSize = cata folder where

@@ -28,7 +28,7 @@ foldNameDefExpF f = \case
   LetRecF bs _          -> mconcat $ map (f . fst) bs
   LetSF bs _            -> mconcat $ map (f . fst) bs
   AltF (NodePat _ bs) _ -> mconcat $ map f bs
-  LamF bs _             -> mconcat $ map f bs
+  ClosureF _ bs _       -> mconcat $ map f bs
   _                     -> mempty
 
 mapNameExp :: (Name -> Name) -> Exp -> Exp
@@ -44,7 +44,7 @@ mapLocalNameExp f = \case
   Let bs e              -> Let  [(f n, a) | (n,a) <- bs] e
   LetS bs e             -> LetS [(f n, a) | (n,a) <- bs] e
   Alt (NodePat n bs) e  -> Alt (NodePat n (map f bs)) e
-  Lam bs e              -> Lam (map f bs) e
+  Closure vs bs e       -> Closure (map f vs) (map f bs) e
   -- use
   App n l               -> App (f n) l
   Var p n               -> Var p (f n)
