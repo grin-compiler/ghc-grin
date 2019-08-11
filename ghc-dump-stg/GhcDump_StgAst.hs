@@ -170,6 +170,7 @@ data Expr' bndr occ
                 [Arg' occ] -- Saturated.
                 TypeInfo   -- result type
 
+        -- StgLam is used *only* during CoreToStg's work. Before CoreToStg has finished it encodes (\x -> e) as (let f = \x -> e in f)
   | StgLam
         [bndr]
         (Expr' bndr occ)   -- Body of lambda
