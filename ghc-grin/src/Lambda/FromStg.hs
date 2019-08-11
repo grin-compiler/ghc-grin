@@ -166,44 +166,48 @@ visitArg = \case
     "GHC.Prim.void#"          -> pure . Lit $ LString "GHC.Prim.void#"
     name -> pure $ Var (isPointer o) name
 
+-- GHC/Stg Prim Op call conversion
+visitOpApp :: C.StgOp -> [C.Arg] -> C.TypeInfo -> CG Exp
+visitOpApp op args ty = do
+  let realArgs = filter (not . isVoidArg) args
+      ffiTys = do
+        argsTy <- mapM ffiArgType realArgs
+        retTy <- ffiRetType ty
+        pure (retTy, argsTy)
+  case op of
+    C.StgPrimOp prim -> genPrimOpWithFix prim args realArgs ty
+
+    C.StgPrimCallOp _ -> pure . Lit $ LError "GHC PrimCallOp is not supported"
+
+    C.StgFCallOp f@C.ForeignCall{..} -> case foreignCTarget of
+      C.DynamicTarget -> do
+        let (fnTy:argsTy) = map showArgType args
+            retTy         = showTypeInfo ty
+        pure . Lit . LError . T.pack $ "DynamicTarget is not supported: (" ++ fnTy ++ ") :: " ++ intercalate " -> " (argsTy ++ [retTy])
+      C.StaticTarget labelName -> case ffiTys of
+        Just (retTy, argsTy) -> do
+          let name = packName $ BS8.unpack labelName
+          addExternal External
+            { eName       = name
+            , eRetType    = retTy
+            , eArgsType   = argsTy
+            , eEffectful  = True
+            , eKind       = PrimOp -- TODO: handle eKind properly
+            }
+          App name <$> mapM visitArg realArgs
+        _ -> do
+          let name    = BS8.unpack labelName
+              argsTy  = map showArgType args
+              retTy   = showTypeInfo ty
+          pure . Lit . LError . T.pack $ "Unsupported foreign function type: " ++ name ++ " :: " ++ intercalate " -> " (argsTy ++ [retTy])
+
 visitExpr :: C.Expr -> CG Exp
 visitExpr = \case
   C.StgLit lit            -> pure . Lit $ convertLit lit
-  C.StgApp fun []         -> Var (isPointer fun) <$> genName fun
+  --C.StgApp fun []         -> Var (isPointer fun) <$> genName fun
   C.StgApp fun args       -> App <$> genName fun <*> mapM visitArg args
   C.StgConApp con args t  -> Con <$> genConName con <*> mapM visitArg args
-  C.StgOpApp op args ty   -> do
-    let realArgs = filter (not . isVoidArg) args
-        ffiTys = do
-          argsTy <- mapM ffiArgType realArgs
-          retTy <- ffiRetType ty
-          pure (retTy, argsTy)
-    case op of
-      C.StgPrimOp prim -> genPrimOpWithFix prim args realArgs ty
-
-      C.StgPrimCallOp _ -> pure . Lit $ LError "GHC PrimCallOp is not supported"
-
-      C.StgFCallOp f@C.ForeignCall{..} -> case foreignCTarget of
-        C.DynamicTarget -> do
-          let (fnTy:argsTy) = map showArgType args
-              retTy         = showTypeInfo ty
-          pure . Lit . LError . T.pack $ "DynamicTarget is not supported: (" ++ fnTy ++ ") :: " ++ intercalate " -> " (argsTy ++ [retTy])
-        C.StaticTarget labelName -> case ffiTys of
-          Just (retTy, argsTy) -> do
-            let name = packName $ BS8.unpack labelName
-            addExternal External
-              { eName       = name
-              , eRetType    = retTy
-              , eArgsType   = argsTy
-              , eEffectful  = True
-              , eKind       = PrimOp -- TODO: handle eKind properly
-              }
-            App name <$> mapM visitArg realArgs
-          _ -> do
-            let name    = BS8.unpack labelName
-                argsTy  = map showArgType args
-                retTy   = showTypeInfo ty
-            pure . Lit . LError . T.pack $ "Unsupported foreign function type: " ++ name ++ " :: " ++ intercalate " -> " (argsTy ++ [retTy])
+  C.StgOpApp op args ty   -> visitOpApp op args ty
 
   C.StgCase expr result alts  -> do
     scrutName <- genName result
@@ -220,7 +224,7 @@ visitExpr = \case
   C.StgLetNoEscape (C.StgRec bs) e      -> LetRec <$> mapM (\(b,r) -> (,) <$> genName b <*> visitRhs r) bs <*> visitExpr e
 
   -- NOTE: STG must not contain lambdas
-  C.StgLam bs expr -> Lam <$> mapM genName bs <*> visitExpr expr
+  --C.StgLam bs expr -> Lam <$> mapM genName bs <*> visitExpr expr
 
   expr -> error . printf "unsupported expr %s" $ show expr
 
@@ -228,8 +232,9 @@ visitExpr = \case
 visitRhs :: C.Rhs -> CG Exp
 visitRhs = \case
   C.StgRhsCon con args      -> Con <$> genConName con <*> mapM visitArg args
-  C.StgRhsClosure [] _ bs e -> Lam <$> mapM genName bs <*> visitExpr e
-  C.StgRhsClosure vs _ bs e -> AppExp <$> (Lam <$> mapM genName (vs' ++ bs) <*> visitExpr e) <*> mapM (\v -> Var (isPointer v) <$> genName v) vs' where vs' = Set.toList . Set.fromList $ vs
+  --C.StgRhsClosure [] _ bs e -> Lam <$> mapM genName bs <*> visitExpr e
+  --C.StgRhsClosure vs _ bs e -> AppExp <$> (Lam <$> mapM genName (vs' ++ bs) <*> visitExpr e) <*> mapM (\v -> Var (isPointer v) <$> genName v) vs' where vs' = Set.toList . Set.fromList $ vs
+  C.StgRhsClosure vs _ bs e -> Closure <$> mapM genName vs' <*> mapM genName bs <*> visitExpr e where vs' = Set.toList . Set.fromList $ vs
 
 visitTopRhs :: C.Binder -> C.Rhs -> CG Def
 visitTopRhs b = \case
