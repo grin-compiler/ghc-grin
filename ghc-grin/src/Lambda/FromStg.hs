@@ -192,7 +192,7 @@ visitOpApp op args ty = do
             , eRetType    = retTy
             , eArgsType   = argsTy
             , eEffectful  = True
-            , eKind       = PrimOp -- TODO: handle eKind properly
+            , eKind       = FFI
             }
           App name <$> mapM visitArg realArgs
         _ -> do
