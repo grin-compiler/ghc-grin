@@ -29,6 +29,7 @@ library
     Lambda.Syntax
     Lambda.Syntax2
     Lambda.ToSyntax2
+    Lambda.ToDatalog
     Lambda.Util
     Lambda.Lint
     Lambda.StaticSingleAssignment
