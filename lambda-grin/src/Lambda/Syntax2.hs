@@ -6,6 +6,12 @@ module Lambda.Syntax2
   , Grin.packName
   , Grin.unpackName
   , Grin.showTS
+  , Ty(..)
+  , SimpleType(..)
+  , ExternalKind(..)
+  , External(..)
+  , Lit(..)
+  , Pat(..)
   ) where
 
 import GHC.Generics
@@ -29,10 +35,11 @@ import Lambda.Syntax
 
 type Name = Grin.Name
 
-type Alt      = Exp
-type Def      = Exp
-type Program  = Exp
-type Bind     = Exp
+type Alt        = Exp
+type Def        = Exp
+type Program    = Exp
+type Bind       = Exp
+type SimpleExp  = Exp
 
 data Exp
   = Program     [External] [Def]
@@ -40,9 +47,9 @@ data Exp
   | Def         Name [Name] Bind
   -- Exp
   -- Bind chain / result var
-  | Let         [(Name, Exp)] Bind -- lazy let
-  | LetRec      [(Name, Exp)] Bind -- lazy let with mutually recursive bindings
-  | LetS        [(Name, Exp)] Bind -- strict let
+  | Let         [(Name, SimpleExp)] Bind -- lazy let
+  | LetRec      [(Name, SimpleExp)] Bind -- lazy let with mutually recursive bindings
+  | LetS        [(Name, SimpleExp)] Bind -- strict let
   | Var         Name
   -- Simple Exp / let RHS
   | App         Name [Name]

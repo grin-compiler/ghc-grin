@@ -4,6 +4,7 @@ module Lambda.ToSyntax2 where
 import Data.Functor.Foldable as Foldable
 import qualified Data.Foldable
 
+import Data.List (groupBy)
 import Control.Monad
 import Control.Monad.Writer
 import Control.Monad.State
@@ -108,13 +109,42 @@ toSyntax2M = hyloM folder builder where
     -- impossible / internal error
     exp -> error $ "simple exp was not simplified: " ++ show exp
 
-  folder = \case
-    LetF l1 (Let l2 e)        -> pure $ Let (l1 ++ l2) e
-    LetSF l1 (LetS l2 e)      -> pure $ LetS (l1 ++ l2) e
-    e                         -> pure $ embed e
+  folder = pure . smash . project . flat
 
-test :: Program
-test = toSyntax2 (L.Program [] [L.Def "fun" [] $ L.Lit $ L.LInt64 0])
+-- flattens nested lets
+data LetKind = S | L | R deriving Eq
+
+flat :: ExpF Exp -> Exp
+flat = \case
+  LetF l e    -> mkBind (groupBy letEq $ concatMap (mark L) l) e
+  LetSF l e   -> mkBind (groupBy letEq $ concatMap (mark S) l) e
+  LetRecF l e -> mkBind (groupBy letEq $ concatMap (mark R) l) e
+  e -> embed e
+
+letEq a b = fst a == fst b
+
+mkBind [] e = e
+mkBind (x@((k,_):_) : xs) exp = case k of
+  L -> Let    (map snd x) $ mkBind xs exp
+  S -> LetS   (map snd x) $ mkBind xs exp
+  R -> LetRec (map snd x) $ mkBind xs exp
+
+mark k@R (n, exp) = case exp of
+  Let l e     -> map (R,) l ++ mark k (n, e)
+  LetS l e    -> error $ "letS is not allowed in letrec RHS: " ++ show exp
+  LetRec l e  -> map (R,) l ++ mark k (n, e)
+  _ -> [(k, (n, exp))]
+mark k (n, exp) = case exp of
+  Let l e     -> map (L,) l ++ mark k (n, e)
+  LetS l e    -> map (S,) l ++ mark k (n, e)
+  LetRec l e  -> map (R,) l ++ mark k (n, e)
+  _ -> [(k, (n, exp))]
+
+-- merges let seqences of the same kind
+smash = \case
+  LetF l1 (Let l2 e)    -> Let (l1 ++ l2) e
+  LetSF l1 (LetS l2 e)  -> LetS (l1 ++ l2) e
+  e                     -> embed e
 
 toSyntax2 :: L.Program -> Program
 toSyntax2 prg = evalState (toSyntax2M prg) (mkNameEnv prg)
