@@ -38,7 +38,7 @@ instance Pretty Exp where
       ProgramF exts defs  -> vcat (prettyExternals exts : map pretty defs)
       DefF name args exp  -> hsep (pretty name : map pretty args) <+> text "=" <$$> indent 2 (pretty exp) <> line
       -- Exp
-      AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : text "@" : map pretty args)
+      AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : text "$" : map pretty args)
       CaseF atom alts     -> keyword "case" <+> pretty atom <+> keyword "of" <$$> indent 2 (vsep (map pretty alts))
       LetF binds exp      -> keyword "let"    <+> align (vsep (map prettyBind binds)) <$$> pretty exp
       LetRecF binds exp   -> keyword "letrec" <+> align (vsep (map prettyBind binds)) <$$> pretty exp
@@ -63,7 +63,7 @@ instance Pretty L2.Exp where
       L2.ProgramF exts defs  -> vcat (prettyExternals exts : map pretty defs)
       L2.DefF name args exp  -> nest 2 (hsep (pretty name : map pretty args) <+> text "=" <$$> pretty exp) <> line
       -- Exp
-      L2.AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : text "@" : map pretty args)
+      L2.AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : text "$" : map pretty args)
       L2.CaseF atom alts     -> nest 2 (keyword "case" <+> pretty atom <+> keyword "of" <$$> vsep (map pretty alts))
       L2.LetF binds exp      -> nest 2 (keyword "let"    <$$> vsep (map prettyBind binds)) <$$> pretty exp
       L2.LetRecF binds exp   -> nest 2 (keyword "letrec" <$$> vsep (map prettyBind binds)) <$$> pretty exp
@@ -73,7 +73,7 @@ instance Pretty L2.Exp where
       L2.VarF name           -> pretty name
       L2.LitF lit            -> pretty lit
       -- Alt
-      L2.AltF name cpat exp  -> nest 4 (pretty cpat <+> text "@" <+> pretty name <+> text "->" <$$> pretty exp)
+      L2.AltF name cpat exp  -> nest 2 (pretty cpat <+> text "@" <+> pretty name <+> text "->" <$$> pretty exp)
       -- Extra
       L2.ClosureF vars args exp -> nest 2 (keyword "\\" <> brackets (hsep (map pretty vars)) <+> hsep (map pretty args) <+> text "->" Leijen.<$> pretty exp)
 
