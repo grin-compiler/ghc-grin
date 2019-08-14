@@ -1,11 +1,11 @@
 
-.type Alternative
-.type Closure
+.type External
 .type Function
 .type Variable
 .type Tag
-.type CodeName = Function | Alternative | Closure
-.type Mode // 'lazy' or 'strict'
+.type CodeName = Function | Variable | External
+.type Mode  // 'lazy' or 'strict'
+.type Eff   // 'pure' or 'effectful'
 
 // strictness context
 .decl EvalMode(result:Variable, mode:Mode)
@@ -18,7 +18,7 @@
 .decl NodeArgument(result_node:Variable, i:number, item:Variable)
 
 // app a.k.a. call
-.decl Call(call_result:Variable, f:Function)
+.decl Call(call_result:Variable, f:CodeName)
 .decl CallArgument(call_result:Variable, i:number, value:Variable)
 
 // function
@@ -32,8 +32,8 @@
 
 // closure
 // example: \[captured0 captured1] param0 param1 = ...
-.decl ClosureVariable(c:Closure, i:number, captured:Variable)
-.decl ClosureParameter(c:Closure, i:number, parameter:Variable)
+.decl ClosureVariable(result:Variable, i:number, captured:Variable)
+.decl ClosureParameter(result:Variable, i:number, parameter:Variable)
 
 // return value
 .decl ReturnValue(n:CodeName, value:Variable)
@@ -45,20 +45,36 @@
 // letrec
 .decl RecGroup(first:Variable, v:Variable)
 
-/*
-  TODO:
-    externals
-*/
+// external
+.decl ExternalFunction(f:External, eff:Eff, arity:number)
 
-/*
-GHC.Show.show v.s37198.0 =
-  letS
-    v.s37199.0 = v.s37198.0 @
-    val.7158 = case v.s37199.0 of
-      (GHC.Show.C:Show v.s37200.0 v.s37201.0 v.s37202.0) @ alt.3439 ->
-          letS
-            val.7159 = v.s37201.0 @
-          val.7159
-  val.7158
-*/
+.input EvalMode
+.input Move
+.input Node
+.input NodeArgument
+.input Call
+.input CallArgument
+.input FunctionParameter
+.input Case
+.input Alt
+.input AltParameter
+.input ClosureVariable
+.input ClosureParameter
+.input ReturnValue
+.input FirstInst
+.input NextInst
+.input RecGroup
+.input ExternalFunction
 
+// output
+
+// Reachability
+.decl CodeNameInst(n:CodeName, v:Variable)
+
+CodeNameInst(n, v) :-
+  FirstInst(n, v).
+CodeNameInst(n, v) :-
+  CodeNameInst(n, v0),
+  NextInst(v0, v).
+
+.output CodeNameInst(delimiter=",")
