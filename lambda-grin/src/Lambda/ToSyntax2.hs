@@ -82,22 +82,19 @@ toSyntax2M = hyloM folder builder where
       l2 <- forM l $ \(n,se) -> do
         (se2, se2Binds) <- runWriterT $ simplifyArgs se
         pure $ se2Binds ++ [(n,se2)]
-      (e2, e2Binds) <- runWriterT $ simplifyVar e
-      pure $ LetF (concat l2 ++ e2Binds) e2
+      LetF (concat l2) <$> simplifyExp Strict e
 
     L.LetS l e -> do
       l2 <- forM l $ \(n,se) -> do
         (se2, se2Binds) <- runWriterT $ simplifyArgs se
         pure $ se2Binds ++ [(n,se2)]
-      (e2, e2Binds) <- runWriterT $ simplifyVar e
-      pure $ LetSF (concat l2 ++ e2Binds) e2
+      LetSF (concat l2) <$> simplifyExp Strict e
 
     L.LetRec l e -> do
       l2 <- forM l $ \(n,se) -> do
         (se2, se2Binds) <- runWriterT $ simplifyArgs se
         pure $ se2Binds ++ [(n,se2)]
-      (e2, e2Binds) <- runWriterT $ simplifyVar e
-      pure $ LetRecF (concat l2 ++ e2Binds) e2
+      LetRecF (concat l2) <$> simplifyExp Strict e
 
     -- (already simplified simple exps)
     L.App n l | all isVar l -> pure $ AppF n [a | L.Var _ a <- l]
