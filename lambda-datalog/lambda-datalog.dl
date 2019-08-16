@@ -23,6 +23,7 @@
 
 // function
 // example: f param0 param1 = ...
+.decl IsFunction(f:CodeName)
 .decl FunctionParameter(f:Function, i:number, parameter:Variable)
 
 // case + alt
@@ -31,7 +32,8 @@
 .decl AltParameter(alt_value:Variable, i:number, parameter:Variable)
 
 // closure
-// example: \[captured0 captured1] param0 param1 = ...
+// example: result = \[captured0 captured1] param0 param1 = ...
+.decl IsClosure(result:CodeName)
 .decl ClosureVariable(result:Variable, i:number, captured:Variable)
 .decl ClosureParameter(result:Variable, i:number, parameter:Variable)
 
@@ -54,10 +56,12 @@
 .input NodeArgument
 .input Call
 .input CallArgument
+.input IsFunction
 .input FunctionParameter
 .input Case
 .input Alt
 .input AltParameter
+.input IsClosure
 .input ClosureVariable
 .input ClosureParameter
 .input ReturnValue
@@ -68,7 +72,7 @@
 
 // output
 
-// Reachability
+// utility
 .decl CodeNameInst(n:CodeName, v:Variable)
 
 CodeNameInst(n, v) :-
@@ -77,4 +81,94 @@ CodeNameInst(n, v) :-
   CodeNameInst(n, v0),
   NextInst(v0, v).
 
-.output CodeNameInst(delimiter=",")
+.output CodeNameInst
+
+// reachibility
+//.decl ReachableCode(n:CodeName)
+//.decl ReachableInst(v:Variable)
+
+
+// value origin computation = created by
+.decl Value(v:CodeName, value:CodeName)
+.output Value
+
+// base cases = value origins
+Value(v, v) :- Node(v,_).
+Value(v, v) :- IsFunction(v).
+Value(v, v) :- IsClosure(v).
+
+// external
+Value(v, v) :-
+  Call(v, f),
+  ExternalFunction(f, _, _).
+
+// Move
+Value(v1, v) :-
+  Value(v0, v),
+  Move(v1, v0).
+
+// fun param
+Value(p, val) :-
+  CallArgument(s, i, a),
+  Call(s, fv),
+  Value(fv, f),
+  FunctionParameter(f, i, p),
+  Value(a, val).
+
+// closure param
+Value(p, val) :-
+  CallArgument(s, i, a),
+  Call(s, fv),
+  Value(fv, f),
+  ClosureParameter(f, i, p),
+  Value(a, val).
+
+// node forcing
+Value(s, n) :-
+  Call(s, fv),
+  Value(fv, n),
+  Node(n, _).
+
+// return
+Value(r, val) :-
+  Call(r, fv),
+  Value(fv, f),
+  ReturnValue(f, v),
+  Value(v, val).
+
+
+//// case - alt
+Value(alt_val, scrut_val) :-
+  Case(case_result, scrut),
+  Alt(case_result, alt_val, tag),
+  Value(scrut, scrut_val),
+  Node(scrut_val, tag).
+
+/*
+  TODO: support default
+*/
+/*
+// default
+Value(alt_val, scrut_val) :-
+  Case(case_result, scrut),
+  Alt(case_result, alt_val, ":default"),
+  Value(scrut, scrut_val).
+//  !Alt(case_result, _, tag),
+//  Node(scrut_val, tag).
+*/
+
+// alt params
+Value(p, val) :-
+  Alt(_, alt, tag),
+  AltParameter(alt, i, p),
+  Value(alt, node),
+  Node(node, tag),
+  NodeArgument(node, i, narg),
+  Value(narg, val).
+
+// alt result
+Value(case_result, val) :-
+  Case(case_result, _),
+  Alt(case_result, alt, _),
+  ReturnValue(alt, v),
+  Value(v, val).
