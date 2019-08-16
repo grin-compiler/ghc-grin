@@ -204,7 +204,8 @@ visitOpApp op args ty = do
 visitExpr :: C.Expr -> CG Exp
 visitExpr = \case
   C.StgLit lit            -> pure . Lit $ convertLit lit
-  --C.StgApp fun []         -> Var (isPointer fun) <$> genName fun
+  C.StgApp var []
+    | not (isPointer var) -> Var False <$> genName var
   C.StgApp fun args       -> App <$> genName fun <*> mapM visitArg args
   C.StgConApp con args t  -> Con <$> genConName con <*> mapM visitArg args
   C.StgOpApp op args ty   -> visitOpApp op args ty
