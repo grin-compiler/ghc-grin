@@ -37,7 +37,7 @@ toDatalog prg = unlines . map prettyFact . execWriter $ convertProgram prg where
     N n -> show $ unpackName n
 
 toFacts :: Program -> [(String, String)]
-toFacts prg = map prettyFacts . Map.toList . Map.unionsWith (++) . map (\(f,a) -> Map.singleton f [a]) . execWriter $ convertProgram prg where
+toFacts prg = map prettyFacts . Map.toList . addEmpty . Map.unionsWith (++) . map (\(f,a) -> Map.singleton f [a]) . execWriter $ convertProgram prg where
   factEq a b = fst a == fst b
 
   prettyFacts :: (String, [[Param]]) -> (String, String)
@@ -48,6 +48,12 @@ toFacts prg = map prettyFacts . Map.toList . Map.unionsWith (++) . map (\(f,a) -
     S s -> s
     I i -> show i
     N n -> unpackName n
+
+  addEmpty  = Map.unionWith (++) (Map.fromList $ zip factNames $ repeat [])
+  factNames = [ "EvalMode", "Move", "Node", "NodeArgument", "Call", "CallArgument", "IsFunction", "FunctionParameter"
+              , "Case", "Alt", "AltParameter", "IsClosure", "ClosureVariable", "ClosureParameter", "ReturnValue", "FirstInst"
+              , "NextInst", "RecGroup", "ExternalFunction"
+              ]
 
 convertExternal :: External -> DL ()
 convertExternal e = tell
@@ -68,6 +74,7 @@ convertProgram = \case
 convertDef :: Exp -> DL ()
 convertDef = \case
   Def n a b -> do
+    tell [("IsFunction", [N n])]
     tell [("FunctionParameter", [N n, I i, N p]) | (i,p) <- zip [0..] a]
     -- bind
     ret <- convertBind (CodeName n) b
@@ -127,9 +134,10 @@ convertSimpleExp result = \case
 
   Case n a -> do
     tell [("Case", [N result, N n])]
-    mapM_ (convertAlt n) a
+    mapM_ (convertAlt result) a
 
   Closure v p b -> do
+    tell [("IsClosure", [N result])]
     tell [("ClosureVariable",  [N result, I i, N x]) | (i,x) <- zip [0..] v]
     tell [("ClosureParameter", [N result, I i, N x]) | (i,x) <- zip [0..] p]
     -- bind
