@@ -6,9 +6,10 @@ import qualified Data.Foldable
 
 import qualified Data.Map as Map
 
+import System.IO
+
 import Control.Monad
-import Control.Monad.Writer hiding (Alt)
-import Control.Monad.State
+import Control.Monad.Reader
 import Data.List (intercalate, groupBy)
 
 import Lambda.Syntax2
@@ -17,16 +18,53 @@ import Transformations.Util
 import Lambda.Util
 
 type Fact = (String, [Param])
-type DL = Writer [Fact]
+type DL = ReaderT ([Fact] -> IO ()) IO
 
 data Param
   = S String
   | N Name
   | I Int
 
+emit :: [Fact] -> DL ()
+emit l = do
+  f <- ask
+  liftIO $ f l
 
-toDatalog :: Program -> String
-toDatalog prg = unlines . map prettyFact . execWriter $ convertProgram prg where
+logWriteFile :: String -> String -> IO ()
+logWriteFile fname str = do
+  putStrLn $ "  " ++ fname
+  writeFile fname str
+
+programToDatalogM :: String -> Program -> IO ()
+programToDatalogM fname prg = do
+  h <- openFile fname WriteMode
+  runReaderT (convertProgram prg) $ hPutStr h . toDatalog
+  hFlush h
+  hClose h
+
+programToFactsM :: Program -> IO ()
+programToFactsM prg = do
+  let factNames = [ "EvalMode", "Move", "Node", "NodeArgument", "Call", "CallArgument", "IsFunction", "FunctionParameter"
+                  , "Case", "Alt", "AltParameter", "IsClosure", "ClosureVariable", "ClosureParameter", "ReturnValue", "FirstInst"
+                  , "NextInst", "RecGroup", "ExternalFunction"
+                  ]
+  files <- forM factNames $ \fname -> do
+    let filename = fname ++ ".facts"
+    putStrLn $ "\t" ++ filename
+    h <- openFile filename WriteMode
+    pure (filename, h)
+
+  let fileMap = Map.fromList files
+      writeFact (f, str) = hPutStr (fileMap Map.! f) str
+
+  runReaderT (convertProgram prg) $ mapM_ writeFact . toFacts
+
+  forM_ (Map.elems fileMap) $ \h -> do
+    hFlush h
+    hClose h
+
+toDatalog :: [Fact] -> String
+toDatalog = unlines . map prettyFact where
   prettyFact :: Fact -> String
   prettyFact (n, args) = n ++ "(" ++ intercalate ", " (map showParam args) ++ ")."
 
@@ -36,8 +74,8 @@ toDatalog prg = unlines . map prettyFact . execWriter $ convertProgram prg where
     I i -> show i
     N n -> show $ unpackName n
 
-toFacts :: Program -> [(String, String)]
-toFacts prg = map prettyFacts . Map.toList . addEmpty . Map.unionsWith (++) . map (\(f,a) -> Map.singleton f [a]) . execWriter $ convertProgram prg where
+toFacts :: [Fact] -> [(String, String)]
+toFacts = map prettyFacts . Map.toList . Map.unionsWith (++) . map (\(f,a) -> Map.singleton f [a]) where
   factEq a b = fst a == fst b
 
   prettyFacts :: (String, [[Param]]) -> (String, String)
@@ -49,14 +87,8 @@ toFacts prg = map prettyFacts . Map.toList . addEmpty . Map.unionsWith (++) . ma
     I i -> show i
     N n -> unpackName n
 
-  addEmpty  = Map.unionWith (++) (Map.fromList $ zip factNames $ repeat [])
-  factNames = [ "EvalMode", "Move", "Node", "NodeArgument", "Call", "CallArgument", "IsFunction", "FunctionParameter"
-              , "Case", "Alt", "AltParameter", "IsClosure", "ClosureVariable", "ClosureParameter", "ReturnValue", "FirstInst"
-              , "NextInst", "RecGroup", "ExternalFunction"
-              ]
-
 convertExternal :: External -> DL ()
-convertExternal e = tell
+convertExternal e = emit
   [ ("ExternalFunction"
     , [ N $ eName e
       , S $ if eEffectful e then "effectful" else "pure"
@@ -74,11 +106,11 @@ convertProgram = \case
 convertDef :: Exp -> DL ()
 convertDef = \case
   Def n a b -> do
-    tell [("IsFunction", [N n])]
-    tell [("FunctionParameter", [N n, I i, N p]) | (i,p) <- zip [0..] a]
+    emit [("IsFunction", [N n])]
+    emit [("FunctionParameter", [N n, I i, N p]) | (i,p) <- zip [0..] a]
     -- bind
     ret <- convertBind (CodeName n) b
-    tell [("ReturnValue", [N n, N ret])]
+    emit [("ReturnValue", [N n, N ret])]
 
 data InstInfo
   = CodeName  Name  -- first instruction's parent
@@ -86,8 +118,8 @@ data InstInfo
 
 emitInstSeq :: InstInfo -> (Name, a) -> DL InstInfo
 emitInstSeq i (n,_) = case i of
-  CodeName p  -> tell [("FirstInst", [N p, N n])] >> pure (InstName n)
-  InstName p  -> tell [("NextInst", [N p, N n])] >> pure (InstName n)
+  CodeName p  -> emit [("FirstInst", [N p, N n])] >> pure (InstName n)
+  InstName p  -> emit [("NextInst", [N p, N n])] >> pure (InstName n)
 
 convertBind :: InstInfo -> Bind -> DL Name
 convertBind prevInst = \case
@@ -95,22 +127,22 @@ convertBind prevInst = \case
     pure n
   Let l b -> do
     forM_ l $ \(n,e) -> do
-      tell [("EvalMode", [N n, S "lazy"])]
+      emit [("EvalMode", [N n, S "lazy"])]
       convertSimpleExp n e
     i <- foldM emitInstSeq prevInst l
     convertBind i b
   LetS l b -> do
     forM_ l $ \(n,e) -> do
-      tell [("EvalMode", [N n, S "strict"])]
+      emit [("EvalMode", [N n, S "strict"])]
       convertSimpleExp n e
     i <- foldM emitInstSeq prevInst l
     convertBind i b
   LetRec l b -> do
     forM_ l $ \(n,e) -> do
-      tell [("EvalMode", [N n, S "lazy"])]
+      emit [("EvalMode", [N n, S "lazy"])]
       convertSimpleExp n e
     case l of
-      (x,_) : _ -> tell [("RecGroup", [N x, N n]) | (n,_) <- l]
+      (x,_) : _ -> emit [("RecGroup", [N x, N n]) | (n,_) <- l]
       _ -> pure ()
     i <- foldM emitInstSeq prevInst l
     convertBind i b
@@ -118,31 +150,31 @@ convertBind prevInst = \case
 convertSimpleExp :: Name -> Exp -> DL ()
 convertSimpleExp result = \case
   Var n -> do
-    tell [("Move", [N result, N n])]
+    emit [("Move", [N result, N n])]
 
   App n a -> do
-    tell [("Call", [N result, N n])]
-    tell [("CallArgument", [N result, I i, N p]) | (i,p) <- zip [0..] a]
+    emit [("Call", [N result, N n])]
+    emit [("CallArgument", [N result, I i, N p]) | (i,p) <- zip [0..] a]
 
   Con n a -> do
-    tell [("Node", [N result, N n])]
-    tell [("NodeArgument", [N result, I i, N p]) | (i,p) <- zip [0..] a]
+    emit [("Node", [N result, N n])]
+    emit [("NodeArgument", [N result, I i, N p]) | (i,p) <- zip [0..] a]
 
   Lit l -> do
-    tell [("Node", [N result, S $ litTag l])]
-    tell [("NodeArgument", [N result, I 0, S $ show l])]
+    emit [("Node", [N result, S $ litTag l])]
+    emit [("NodeArgument", [N result, I 0, S $ show l])]
 
   Case n a -> do
-    tell [("Case", [N result, N n])]
+    emit [("Case", [N result, N n])]
     mapM_ (convertAlt result) a
 
   Closure v p b -> do
-    tell [("IsClosure", [N result])]
-    tell [("ClosureVariable",  [N result, I i, N x]) | (i,x) <- zip [0..] v]
-    tell [("ClosureParameter", [N result, I i, N x]) | (i,x) <- zip [0..] p]
+    emit [("IsClosure", [N result])]
+    emit [("ClosureVariable",  [N result, I i, N x]) | (i,x) <- zip [0..] v]
+    emit [("ClosureParameter", [N result, I i, N x]) | (i,x) <- zip [0..] p]
     -- bind
     ret <- convertBind (CodeName result) b
-    tell [("ReturnValue", [N result, N ret])]
+    emit [("ReturnValue", [N result, N ret])]
 
   e -> error $ "Simple Expression expected, got: " ++ show e
 
@@ -151,15 +183,15 @@ convertAlt result = \case
   Alt a p b -> do
     case p of
       NodePat t l -> do
-        tell [("Alt", [N result, N a, N t])]
-        tell [("AltParameter", [N a, I i, N p]) | (i,p) <- zip [0..] l]
+        emit [("Alt", [N result, N a, N t])]
+        emit [("AltParameter", [N a, I i, N p]) | (i,p) <- zip [0..] l]
       LitPat l -> do
-        tell [("Alt", [N result, N a, S $ litTag l])]
+        emit [("Alt", [N result, N a, S $ litTag l])]
       DefaultPat -> do
-        tell [("Alt", [N result, N a, S "default:"])]
+        emit [("Alt", [N result, N a, S "default:"])]
     -- bind
     ret <- convertBind (CodeName a) b
-    tell [("ReturnValue", [N a, N ret])]
+    emit [("ReturnValue", [N a, N ret])]
 
 litTag :: Lit -> String
 litTag l = "lit:" ++ case l of
