@@ -1,0 +1,17 @@
+.type Name
+
+.decl DefReference(def:Name, ref:Name)
+.decl LiveSource(name:Name)
+
+.input DefReference
+.input LiveSource
+
+.decl LiveName(name:Name)
+.output LiveName
+
+LiveName(n) :-
+  LiveSource(n).
+
+LiveName(ref) :-
+  DefReference(n, ref),
+  LiveName(n).
