@@ -1,12 +1,14 @@
-{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE StandaloneDeriving, LambdaCase #-}
 module Main where
 
 import Text.Printf
 import Control.Monad
 
+import System.Directory
 import System.FilePath
 import System.Environment
 import System.Exit
+import System.IO
 
 import GhcDump_StgAst (ModuleName(..), moduleName)
 import GhcDump.StgUtil
@@ -20,18 +22,18 @@ import Lambda.ToSyntax2
 import Lambda.Lint
 import Lambda.StaticSingleAssignment
 --import Lambda.ClosureConversion
-import Lambda.DeadFunctionElimination
+import Lambda.DeadFunctionEliminationM
 import Pipeline.Pipeline
 
 import Data.Maybe
-import Data.List (foldl')
+import Data.List (foldl', nubBy)
 import qualified Data.Set as Set
 import qualified Data.Map.Strict as Map
 import qualified Data.ByteString.Char8 as BS8
 
-import qualified Data.ByteString.Lazy as BSL
 import qualified Data.ByteString as BS
-import Data.Binary
+import Data.Store
+import qualified Crypto.Hash.BLAKE2.BLAKE2bp as BLAKE2
 
 import Text.PrettyPrint.ANSI.Leijen (ondullblack, putDoc, plain, pretty, Doc, renderPretty, displayS)
 
@@ -60,12 +62,78 @@ deriving instance Show ResourceLimits
 showWidth :: Int -> Doc -> String
 showWidth w x = displayS (renderPretty 0.4 w x) ""
 
-setNub :: Ord a => [a] -> [a]
-setNub = Set.toList . Set.fromList
-
 concatPrograms :: [Program] -> Program
-concatPrograms prgs = Program (setNub $ concat exts) (concat defs) where
+concatPrograms prgs = Program (nubExts $ concat exts) (concat defs) where
   (exts, defs) = unzip [(e, d) | Program e d <- prgs]
+  nubExts = nubBy (\a b -> eName a == eName b)
+
+collectImportedModules :: [FilePath] -> String -> IO [FilePath]
+collectImportedModules stgbinFileNames mod = do
+  -- filter dependenies only
+  depList <- mapM readDumpInfo stgbinFileNames
+  let fnameMap  = Map.fromList $ zip (map fst depList) stgbinFileNames
+      mnameMap  = Map.fromList $ zip stgbinFileNames (map fst depList)
+      depMap    = Map.fromList depList
+      calcDep s n
+        | Set.member n s = s
+        | Just l <- Map.lookup n depMap = foldl' calcDep (Set.insert n s) l
+        | otherwise = Set.insert n s -- error $ printf "missing module: %s" . show $ getModuleName n
+
+      modMain = ModuleName $ BS8.pack mod
+      prunedDeps = catMaybes [Map.lookup m fnameMap | m <- Set.toList $ calcDep mempty modMain]
+
+  putStrLn $ "dependencies:\n" ++ unlines ["  " ++ (BS8.unpack . getModuleName $! mnameMap Map.! fname) | fname <- prunedDeps]
+
+  pure prunedDeps
+
+hashSize :: Int
+hashSize = 64
+
+type Hash = BS.ByteString
+
+hashFile :: FilePath -> IO Hash
+hashFile n = do
+  BLAKE2.hash hashSize mempty <$> BS.readFile n
+
+cache :: Hash -> FilePath -> (BS.ByteString -> IO a) -> (IO (a, BS.ByteString)) -> IO a
+cache h1 n actionMatch actionNew = do
+  eq <- doesFileExist n >>= \case
+    False -> pure False
+    True -> do
+      f <- openFile n ReadMode
+      h2 <- BS.hGet f hashSize
+      hClose f
+      pure $ h1 == h2
+  case eq of
+    True  -> BS.drop hashSize <$> BS.readFile n >>= actionMatch
+    False -> do
+      (new, newBin) <- actionNew
+      BS.writeFile n $ h1 <> newBin
+      pure new
+
+toLambda :: String -> IO Program
+toLambda fname = do
+  h <- hashFile fname
+  let lambdabinName = replaceExtension fname ".cache.lambdabin"
+
+      load b = do
+        printf "[cached] toLambda: %s\n" fname
+        decodeIO b
+
+      new = do
+        printf "toLambda: %s\n" fname
+        stgModule <- readDump fname
+        program@(Program exts defs) <- codegenLambda stgModule
+
+        let lambdaName = replaceExtension fname "lambda"
+        writeFile lambdaName . showWidth 800 . plain $ pretty program
+
+        pure (program, encode program)
+
+  cache h lambdabinName load new
+
+sortDefs :: Program -> Program
+sortDefs (Program exts defs) = Program exts . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
 
 cg_main :: Opts -> IO ()
 cg_main opts = do
@@ -75,44 +143,17 @@ cg_main opts = do
   print r
   let ResourceLimits (ResourceLimit minNum) (ResourceLimit maxNum) = r
   setResourceLimit ResourceOpenFiles $ ResourceLimits (ResourceLimit $ max minNum $ min (fromIntegral inputLen + minNum) maxNum) (ResourceLimit maxNum)
-  -- filter dependenies only
-  depList <- mapM readDumpInfo (inputs opts)
-  let fnameMap  = Map.fromList $ zip (map fst depList) (inputs opts)
-      mnameMap  = Map.fromList $ zip (inputs opts) (map fst depList)
-      depMap    = Map.fromList depList
-      calcDep s n
-        | Set.member n s = s
-        | Just l <- Map.lookup n depMap = foldl' calcDep (Set.insert n s) l
-        | otherwise = Set.insert n s -- error $ printf "missing module: %s" . show $ getModuleName n
 
-      modMain = ModuleName $ BS8.pack "Main"
-      prunedDeps = catMaybes [Map.lookup m fnameMap | m <- Set.toList $ calcDep mempty modMain]
-
-  putStrLn $ "dependencies:\n" ++ unlines ["  " ++ (BS8.unpack . getModuleName $! mnameMap Map.! fname) | fname <- prunedDeps]
+  prunedDeps <- collectImportedModules (inputs opts) "Main"
+  printf "pruned length: %d\n" $ length prunedDeps
 
   -- compile pruned program
-  progList <- forM prunedDeps $ \fname -> do
-    stgModule <- readDump fname
-    program@(Program exts defs) <- codegenLambda stgModule
+  progList <- mapM toLambda prunedDeps
+  putStrLn "finished toLambda"
 
-    let lambdaName = replaceExtension fname "lambda"
-    writeFile lambdaName . showWidth 800 . plain $ pretty program
-
-    pure program
-
-    {-
-    let lambdaGrin = codegenGrin program
-    void $ pipeline pipelineOpts lambdaGrin
-      [ SaveGrin "from-lambda.grin"
-      , T GenerateEval
-      , SaveGrin (output opts)
-      , PrintGrin ondullblack
-      ]
-    -}
-  let sortDefs (Program exts defs) = Program exts . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
-      wholeProgramBloat = singleStaticAssignment $ concatPrograms progList
-      wholeProgram      = sortDefs $ deadFunctionElimination wholeProgramBloat
-      wholeProgram2     = toSyntax2 wholeProgram :: L2.Program
+  let wholeProgramBloat = concatPrograms progList
+  wholeProgram <- sortDefs . singleStaticAssignment <$> deadFunctionEliminationM [":Main.main", "Main.main"] wholeProgramBloat
+  let wholeProgram2     = toSyntax2 wholeProgram :: L2.Program
       output_fn         = output opts
   writeFile (output_fn ++ ".lambda") . showWidth 800 . plain $ pretty wholeProgram
   writeFile (output_fn ++ ".2.lambda") . showWidth 800 . plain $ pretty wholeProgram2
@@ -132,18 +173,20 @@ cg_main opts = do
       aset = Set.fromList $ inputs opts
   --printf "dead modules:\n%s" (unlines $ Set.toList $ aset Set.\\ pset)
 
-  BSL.writeFile (output_fn ++ ".lambdabin") $ encode wholeProgram
-  BSL.writeFile (output_fn ++ ".2.lambdabin") $ encode wholeProgram2
+  BS.writeFile (output_fn ++ ".lambdabin") $ encode wholeProgram
+  BS.writeFile (output_fn ++ ".2.lambdabin") $ encode wholeProgram2
   {-
   let lambdaGrin = codegenGrin wholeProgram
   writeFile (output_fn ++ ".grin") $ show $ plain $ pretty lambdaGrin
   -}
 
 main :: IO ()
-main = do opts <- getOpts
-          if (null (inputs opts))
-             then showUsage
-             else cg_main opts
+main = do
+  hSetBuffering stdout NoBuffering
+  opts <- getOpts
+  if (null (inputs opts))
+     then showUsage
+     else cg_main opts
 
 pipelineOpts :: PipelineOpts
 pipelineOpts = defaultOpts

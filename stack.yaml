@@ -19,6 +19,7 @@ extra-deps:
   - neat-interpolation-0.3.2.2
   - set-extra-1.4.1
   - llvm-hs-pretty-0.6.1.0
+  - blake2-0.3.0
   - github: grin-compiler/grin
     commit: 8b0c264a35caba335c662ae064d5b5d5a7e6214d
     subdirs:
