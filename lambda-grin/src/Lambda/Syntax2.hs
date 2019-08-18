@@ -21,7 +21,8 @@ import Data.Word
 import Data.ByteString (ByteString)
 import Data.Functor.Foldable as Foldable
 import Data.Functor.Foldable.TH
-import Data.Binary
+import Data.Store
+import Data.Store.TH
 import Data.Text (Text)
 import qualified Grin.Grin as Grin
 import Lambda.Syntax
@@ -62,5 +63,4 @@ data Exp
   deriving (Generic, Data, Eq, Ord, Show)
 
 makeBaseFunctor ''Exp
-
-instance Binary Exp
+makeStore ''Exp

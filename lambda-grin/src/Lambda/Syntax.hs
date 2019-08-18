@@ -1,5 +1,5 @@
 {-# LANGUAGE LambdaCase, TupleSections #-}
-{-# LANGUAGE TemplateHaskell, KindSignatures, TypeFamilies #-}
+{-# LANGUAGE TemplateHaskell, KindSignatures, TypeFamilies, ScopedTypeVariables #-}
 {-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveGeneric, DeriveDataTypeable #-}
 module Lambda.Syntax
   ( module Lambda.Syntax
@@ -15,7 +15,8 @@ import Data.Word
 import Data.ByteString (ByteString)
 import Data.Functor.Foldable as Foldable
 import Data.Functor.Foldable.TH
-import Data.Binary
+import Data.Store
+import Data.Store.TH
 import Data.Text (Text)
 import qualified Grin.Grin as Grin
 
@@ -104,10 +105,11 @@ data Pat
 
 makeBaseFunctor ''Exp
 
-instance Binary Exp
-instance Binary Lit
-instance Binary Pat
-instance Binary Ty
-instance Binary SimpleType
-instance Binary ExternalKind
-instance Binary External
+makeStore ''Grin.Name
+makeStore ''SimpleType
+makeStore ''Ty
+makeStore ''ExternalKind
+makeStore ''External
+makeStore ''Lit
+makeStore ''Pat
+makeStore ''Exp

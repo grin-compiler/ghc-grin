@@ -44,10 +44,12 @@ executable ghc-grin
   build-depends:       base
                      , mtl
                      , filepath
+                     , directory
                      , containers
                      , unix
                      , ansi-wl-pprint
-                     , binary
+                     , store
+                     , blake2
                      , bytestring
                      , grin
                      , ghc-grin
