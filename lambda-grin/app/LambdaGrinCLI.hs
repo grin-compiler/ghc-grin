@@ -16,8 +16,8 @@ import Pipeline.Pipeline
 
 import Text.PrettyPrint.ANSI.Leijen (ondullblack, plain)
 
-import qualified Data.ByteString.Lazy as BSL
-import Data.Binary
+import qualified Data.ByteString as BS
+import Data.Store
 
 data Opts
   = Opts
@@ -52,7 +52,7 @@ cg_main opts = do
       , PrintGrin ondullblack
       ]
     -}
-    program <- decode <$> BSL.readFile fname :: IO Exp
+    program <- decodeEx <$> BS.readFile fname :: IO Exp
     lintLambda program
     let lambdaGrin = codegenGrin program
     void $ pipeline pipelineOpts Nothing lambdaGrin
