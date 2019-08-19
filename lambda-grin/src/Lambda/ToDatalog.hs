@@ -195,13 +195,13 @@ convertAlt result = \case
 
 litTag :: Lit -> String
 litTag l = "lit:" ++ case l of
-  LInt64{}      -> "LInt64"
-  LWord64{}     -> "LWord64"
-  LFloat{}      -> "LFloat"
-  LDouble{}     -> "LDouble"
-  LBool{}       -> "LBool"
-  LChar{}       -> "LChar"
-  LString{}     -> "LString"
-  LLabelAddr{}  -> "LLabelAddr"
-  LNullAddr{}   -> "LNullAddr"
+  LInt64{}      -> "T_Int64"
+  LWord64{}     -> "T_Word64"
+  LFloat{}      -> "T_Float"
+  LDouble{}     -> "T_Double"
+  LBool{}       -> "T_Bool"
+  LChar{}       -> "T_Char"
+  LString{}     -> "T_String"
+  LLabelAddr{}  -> "T_Addr"
+  LNullAddr{}   -> "T_Addr"
   LError{}      -> "LError"
