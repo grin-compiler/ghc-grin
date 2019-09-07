@@ -1,0 +1,343 @@
+
+.symbol_type External
+.symbol_type Function
+.symbol_type Variable
+.symbol_type Tag
+.type CodeName = Function | Variable | External
+.symbol_type Mode  // 'lazy' or 'strict'
+.symbol_type Eff   // 'pure' or 'effectful'
+
+// strictness context
+.decl EvalMode(result:Variable, mode:Mode)
+
+// variable
+.decl Move(result:Variable, value:Variable)
+
+// node value
+.decl Node(result_node:Variable, t:Tag)
+.decl NodeArgument(result_node:Variable, i:number, item:Variable)
+
+// app a.k.a. call
+.decl Call(call_result:Variable, f:CodeName, arg_count:number)
+.decl CallArgument(call_result:Variable, i:number, value:Variable)
+
+// function
+// example: f param0 param1 = ...
+.decl IsFunction(f:CodeName)
+.decl FunctionParameter(f:Function, i:number, parameter:Variable)
+
+// case + alt
+.decl Case(case_result:Variable, scrutinee:Variable)
+.decl Alt(case_result:Variable, alt_value:Variable, t:Tag)
+.decl AltParameter(alt_value:Variable, i:number, parameter:Variable)
+
+// closure
+// example: result = \[captured0 captured1] param0 param1 = ...
+.decl IsClosure(result:CodeName)
+.decl ClosureVariable(result:Variable, i:number, captured:Variable)
+.decl ClosureParameter(result:Variable, i:number, parameter:Variable)
+
+// return value
+.decl ReturnValue(n:CodeName, value:Variable)
+
+// instruction ordering
+.decl FirstInst(n:CodeName, result:Variable)
+.decl NextInst(prev:Variable, next:Variable)
+
+// letrec
+.decl RecGroup(first:Variable, v:Variable)
+
+// external
+.decl ExternalFunction(f:External, eff:Eff, arity:number)
+.decl ExternalParameterType(f:External, i:number, t:Tag)
+.decl ExternalReturnType(f:External, t:Tag)
+
+// arity
+.decl CodeArity(n:CodeName, arity:number)
+
+.input EvalMode
+.input Move
+.input Node
+.input NodeArgument
+.input Call
+.input CallArgument
+.input IsFunction
+.input FunctionParameter
+.input Case
+.input Alt
+.input AltParameter
+.input IsClosure
+.input ClosureVariable
+.input ClosureParameter
+.input ReturnValue
+.input FirstInst
+.input NextInst
+.input RecGroup
+.input ExternalFunction
+.input ExternalParameterType
+.input ExternalReturnType
+.input CodeArity
+
+// output
+
+// utility
+.decl CodeNameInst(n:CodeName, v:Variable)
+
+CodeNameInst(n, v) :-
+  FirstInst(n, v).
+CodeNameInst(n, v) :-
+  CodeNameInst(n, v0),
+  NextInst(v0, v).
+
+.output CodeNameInst
+
+
+// reachibility
+.decl InitialReachable(n:CodeName)
+
+// hardcoded edb
+InitialReachable(":Main.main").
+InitialReachable("Main.main").
+
+
+///// VALIDATION
+.decl Error(v:Variable, msg:symbol)
+.output Error
+
+// there is no lazy operation beside con and closure
+Error(v, "not closure or node") :-
+  EvalMode(v, "lazy"),
+  !(Node(v, _) ; IsClosure(v)).
+
+// there is no strict closure
+Error(v, "strict closure") :-
+  EvalMode(v, "strict"),
+  IsClosure(v).
+
+Error(v, "lazy app") :-
+  EvalMode(v, "lazy"),
+  Call(v,_,_).
+
+/*
+  control flow analysis
+
+  each value can be:
+    - constructor (node) ; collected data: source instruction name
+    - partially applied function / closure ;
+      NOTE:
+        partial application requires computation and the computattion details need to be recorded
+        collected data: apply chain; how application evolves and got saturated and results new values
+
+
+  decls
+    CNode
+    ApplyChain
+
+    Q: how to normalize/reduce apply chain?
+       how do we know the final result of it?
+
+  decl
+    PNode : store the result of apply chain if it is still a partial application
+
+  CNode and PNode is the normal form
+
+  Idea: use points-to relation for simple way value passing
+
+*/
+
+.decl CNode(v:CodeName, value:CodeName)
+
+.decl PNode(v:CodeName, fun:CodeName, arity:number, remained:number)
+.decl PNodeArgument(v:CodeName, fun:CodeName, i:number, value:CodeName)
+
+
+.decl ApplyChain(v:CodeName, f:CodeName, step:number, consumed:number, arg_count:number)
+
+.decl PointsTo(src:CodeName, dst:CodeName)
+
+.output CNode
+.output PNode
+.output PNodeArgument
+.output ApplyChain
+.output PointsTo
+
+
+// unify functions and closures
+.decl CodeParameter(f:CodeName, i:number, parameter:Variable)
+
+CodeParameter(f, i, p) :- (FunctionParameter(f, i, p) ; ClosureParameter(f, i, p)).
+
+
+//PNode(f, f, 0) :- IsFunction(f).
+//PNode(f, f, 0) :- IsClosure(f).
+
+/*
+  apply chain
+    origin cases:
+    - calling known function
+    - calling PNode
+
+    step cases:
+    - extend same PNode ; add more arguments but still understaurated
+    - PNode got saturated without leftover arguments
+    - PNode got saturated, still remain some argument ; call function then apply the remained arguments to the function result
+
+  TODO:
+    - build ApplyChains
+    - propagate call/PNode arguments to function parameters
+
+  Design Idea:
+    - the function in apply chain refers to the function which result sould be used to create the next link
+    - function parameters are applied by the rule that creates the ApplyChain value
+*/
+
+
+// propagate values via points-to
+PNodeArgument(src, pap_f, pap_i, pap_value),
+PNode(src, pap_f, pap_ar, pap_rem),
+CNode(src, ret_value) :-
+  PointsTo(src, dst),
+  CNode(dst, ret_value),
+  PNode(dst, pap_f, pap_ar, pap_rem),
+  PNodeArgument(dst, pap_f, pap_i, pap_value).
+
+// strict, saturated, known function/closure call: execute function call
+PointsTo(param, arg),   // pass arguments to function parameters
+PointsTo(r, ret_var) :- // return value
+  Call(r, f, arg_count),
+  EvalMode(r, "strict"),
+  CodeArity(f, arity),  // arity is only for known callables
+  arg_count = arity,
+  ReturnValue(f, ret_var),
+  CallArgument(r, call_arg_i, arg),
+  CodeParameter(f, call_arg_i, param).
+
+// strict, undersaturated known call: create PNode
+PNodeArgument(r, f, arg_i, arg_value),
+PNode(r, f, arity, arity - arg_count) :-
+  Call(r, f, arg_count),
+  EvalMode(r, "strict"),
+  CodeArity(f, arity),  // arity is only for known callables
+  arg_count < arity,
+  CallArgument(r, arg_i, arg_value).
+
+// strict, saturated PNode call: execute function call
+PointsTo(bound_param, pnode_arg),
+PointsTo(param, arg),
+PointsTo(r, ret_var) :- // return value
+  Call(r, pnode, arg_count),
+  EvalMode(r, "strict"),
+  PNode(pnode, fun, arity, missing),
+  arg_count = missing,
+  // return value
+  ReturnValue(f, ret_var),
+  // call parameters
+  CallArgument(r, call_arg_i, arg),
+  CodeParameter(fun, call_arg_i + arity - missing, param),
+  // pnode parameters
+  PNodeArgument(pnode, fun, pnode_i, pnode_arg),
+  CodeParameter(fun, pnode_i, bound_param).
+
+// strict, undersaturated PNode call: create PNode
+PNodeArgument(r, f, bound_i, bound_value),
+PNodeArgument(r, f, arity - missing + arg_i, arg_value),
+PNode(r, f, arity, missing - arg_count) :-
+  Call(r, pnode, arg_count),
+  EvalMode(r, "strict"),
+  PNode(pnode, f, arity, missing),
+  arg_count < missing,
+  // new pnode aruments
+  CallArgument(r, arg_i, arg_value),
+  // copy old pnode arguments
+  PNodeArgument(pnode, f, bound_i, bound_value).
+
+// strict, oversaturated, known function/closure call: create ApplyChain
+PointsTo(param, arg),   // pass arguments to function parameters
+ApplyChain(r, f, 0, arity, arg_count) :-
+  Call(r, f, arg_count),
+  EvalMode(r, "strict"),
+  CodeArity(f, arity),  // arity is only for known callables
+  arg_count > arity,
+  // call parameters
+  call_arg_i < arity,
+  CallArgument(r, call_arg_i, arg),
+  CodeParameter(fun, call_arg_i, param).
+
+// strict, oversaturated PNode call: execute function call + create ApplyChain
+PointsTo(bound_param, pnode_arg),
+PointsTo(param, arg),
+ApplyChain(r, fun, 0, arity - missing, arg_count) :-
+  Call(r, pnode, arg_count),
+  EvalMode(r, "strict"),
+  PNode(pnode, fun, arity, missing),
+  arg_count > missing,
+  // call parameters
+  call_arg_i < arity - missing,
+  CallArgument(r, call_arg_i, arg),
+  CodeParameter(fun, call_arg_i + arity - missing, param),
+  // pnode parameters
+  PNodeArgument(pnode, fun, pnode_i, pnode_arg),
+  CodeParameter(fun, pnode_i, bound_param).
+
+// SECTION: apply chain elaboration: apply remained call arguments to 'f' result PNodes
+
+// saturated apply chain link: execute function call + create result
+PointsTo(r, p_ret_var),             // return value
+PointsTo(p_old_param, p_old_value), // pass arguments to function parameters
+PointsTo(p_new_param, arg) :-       // pass arguments to function parameters
+  ApplyChain(r, f, step, consumed, arg_count),
+  ReturnValue(f, ret_var),
+  PNode(ret_var, p_f, p_arity, p_remained),
+  consumed + p_remained = arg_count,
+  // return value
+  ReturnValue(p_f, p_ret_var),
+  // pass function arguments
+  call_arg_i >= consumed,
+  call_arg_i < arg_count,
+  CallArgument(r, call_arg_i, arg),
+  // pass new call arguments
+  CodeParameter(p_f, (p_arity - p_remained) + (call_arg_i - consumed), p_new_param),
+  // pass old pnode arguments
+  bound_i < p_arity - p_remained,
+  CodeParameter(p_f, bound_i, p_old_param),
+  PNodeArgument(ret_var, p_f, bound_i, p_old_value).
+
+// undersaturated apply chain link: create PNode result
+PNodeArgument(r, p_f, (p_arity - p_remained) + (call_arg_i - consumed), arg_value), // new arguments
+PNodeArgument(r, p_f, bound_i, bound_value),                                        // old arguments
+PNode(r, p_f, p_arity, p_remained - (arg_count - consumed)) :-
+  ApplyChain(r, f, step, consumed, arg_count),
+  ReturnValue(f, ret_var),
+  PNode(ret_var, p_f, p_arity, p_remained),
+  p_remained > arg_count - consumed,
+  // copy old pnode arguments
+  PNodeArgument(ret_var, p_f, bound_i, bound_value),
+  // copy call arguments
+  call_arg_i >= consumed,
+  call_arg_i < arg_count,
+  CallArgument(r, call_arg_i, arg_value).
+
+// oversaturated apply chain link: execute function + create the next ApplyChain link
+PointsTo(p_old_param, p_old_value), // pass arguments to function parameters
+PointsTo(p_new_param, arg),         // pass arguments to function parameters
+ApplyChain(r, p_f, step + 1, consumed + p_remained, arg_count) :-
+  ApplyChain(r, f, step, consumed, arg_count),
+  ReturnValue(f, ret_var),
+  PNode(ret_var, p_f, p_arity, p_remained),
+  p_remained < arg_count - consumed,
+  // pass function arguments
+  call_arg_i >= consumed,
+  call_arg_i < consumed + p_remained,
+  CallArgument(r, call_arg_i, arg),
+  // pass new call arguments
+  CodeParameter(p_f, (p_arity - p_remained) + (call_arg_i - consumed), p_new_param),
+  // pass old pnode arguments
+  bound_i < p_arity - p_remained,
+  CodeParameter(p_f, bound_i, p_old_param),
+  PNodeArgument(ret_var, p_f, bound_i, p_old_value).
+
+/*
+  TODO:
+    case + alt
+    move
+*/
