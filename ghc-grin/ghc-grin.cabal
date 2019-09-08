@@ -18,6 +18,7 @@ library
   exposed-modules:
     Lambda.FromStg
     Lambda.GHCPrimOps
+    StgLoopback
 
   build-depends:
       base
@@ -29,6 +30,9 @@ library
     , ghc-dump-stg
     , ghc-dump-util
     , ansi-wl-pprint
+    , ghc
+    , ghc-paths
+    , time
 
   default-language:    Haskell2010
 
