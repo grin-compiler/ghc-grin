@@ -1,4 +1,4 @@
-{-# LANGUAGE LambdaCase, TupleSections, OverloadedStrings #-}
+{-# LANGUAGE LambdaCase, TupleSections, OverloadedStrings, RecordWildCards #-}
 module Lambda.ToDatalog where
 
 import Data.Functor.Foldable as Foldable
@@ -46,7 +46,7 @@ programToFactsM :: Program -> IO ()
 programToFactsM prg = do
   let factNames = [ "EvalMode", "Move", "Node", "NodeArgument", "Call", "CallArgument", "IsFunction", "FunctionParameter"
                   , "Case", "Alt", "AltParameter", "IsClosure", "ClosureVariable", "ClosureParameter", "ReturnValue", "FirstInst"
-                  , "NextInst", "RecGroup", "ExternalFunction"
+                  , "NextInst", "RecGroup", "ExternalFunction", "ExternalParameterType", "ExternalReturnType", "CodeArity"
                   ]
   files <- forM factNames $ \fname -> do
     let filename = fname ++ ".facts"
@@ -88,14 +88,18 @@ toFacts = map prettyFacts . Map.toList . Map.unionsWith (++) . map (\(f,a) -> Ma
     N n -> unpackName n
 
 convertExternal :: External -> DL ()
-convertExternal e = emit
-  [ ("ExternalFunction"
-    , [ N $ eName e
-      , S $ if eEffectful e then "effectful" else "pure"
-      , I $ length $ eArgsType e
-      ]
-    )
-  ]
+convertExternal External{..} = do
+  emit $
+    [ ("ExternalFunction", [N eName, S $ if eEffectful then "effectful" else "pure", I $ length eArgsType])
+    , ("ExternalReturnType", [N eName, tyTag eRetType])
+    ] ++
+    [ ("ExternalParameterType", [N eName, I i, tyTag ty]) | (i, ty) <- zip [0..] eArgsType]
+
+tyTag :: Ty -> Param
+tyTag = \case
+  TyCon n []    -> N n
+  TySimple sty  -> S $ "lit:" ++ show sty
+  ty -> error $ "unsupported: " ++ show ty
 
 convertProgram :: Exp -> DL ()
 convertProgram = \case
@@ -108,6 +112,7 @@ convertDef = \case
   Def n a b -> do
     emit [("IsFunction", [N n])]
     emit [("FunctionParameter", [N n, I i, N p]) | (i,p) <- zip [0..] a]
+    emit [("CodeArity", [N n, I $ length a])]
     -- bind
     ret <- convertBind (CodeName n) b
     emit [("ReturnValue", [N n, N ret])]
@@ -153,7 +158,7 @@ convertSimpleExp result = \case
     emit [("Move", [N result, N n])]
 
   App n a -> do
-    emit [("Call", [N result, N n])]
+    emit [("Call", [N result, N n, I $ length a])]
     emit [("CallArgument", [N result, I i, N p]) | (i,p) <- zip [0..] a]
 
   Con n a -> do
@@ -172,6 +177,7 @@ convertSimpleExp result = \case
     emit [("IsClosure", [N result])]
     emit [("ClosureVariable",  [N result, I i, N x]) | (i,x) <- zip [0..] v]
     emit [("ClosureParameter", [N result, I i, N x]) | (i,x) <- zip [0..] p]
+    emit [("CodeArity", [N result, I $ length p])]
     -- bind
     ret <- convertBind (CodeName result) b
     emit [("ReturnValue", [N result, N ret])]
