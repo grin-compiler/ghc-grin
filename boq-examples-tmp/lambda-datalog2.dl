@@ -212,6 +212,13 @@ PNodeArgument(src, pap_f, pap_i, pap_value) :-
     separate PNode and PNodeArgument: PNodeArguments are optionalm, so they can block PNode handling
 */
 
+/*
+  TODO:
+    handle stg style constructor calling:
+      let   con = [tag a b c]
+      letS  val = con $
+*/
+
 // strict, saturated, known function/closure call: execute function call
 Called(r, f),
 PointsTo(r, ret_var) :- // return value
@@ -482,3 +489,18 @@ ReachableCode(alt) :-
 DeadCode(n) :-
   ReturnValue(n, _),
   !ReachableCode(n).
+
+// SECTION: debug
+
+.decl MissingValue(v:Variable)
+.output MissingValue
+
+MissingValue(v) :-
+  CodeNameInst(f, v),
+  !DeadCode(f),
+  !(Origin(v, _) ; PNode(v, _, _, _)).
+
+MissingValue(v) :-
+  (FunctionParameter(f, _, v) ; AltParameter(f, _, v) ; ClosureParameter(f, _, v)),
+  !DeadCode(f),
+  !(Origin(v, _) ; PNode(v, _, _, _)).
