@@ -148,18 +148,20 @@ Error(v, "lazy app") :-
 .decl PNode(v:CodeName, fun:CodeName, arity:number, remained:number)
 .decl PNodeArgument(v:CodeName, fun:CodeName, i:number, value:CodeName)
 
-
 .decl ApplyChain(v:CodeName, f:CodeName, step:number, consumed:number, arg_count:number)
 
 .decl PointsTo(src:CodeName, dst:CodeName)
 
 .decl Origin(v:CodeName, value:CodeName)
 
+.decl Called(instruction:CodeName, f:CodeName)
+
 .output PNode
 .output PNodeArgument
 .output ApplyChain
 .output PointsTo
 .output Origin
+.output Called
 
 
 // unify functions and closures
@@ -178,7 +180,7 @@ CodeParameter(f, i, p) :- (FunctionParameter(f, i, p) ; ClosureParameter(f, i, p
     - PNode got saturated without leftover arguments
     - PNode got saturated, still remain some argument ; call function then apply the remained arguments to the function result
 
-  TODO:
+  IDEA:
     - build ApplyChains
     - propagate call/PNode arguments to function parameters
 
@@ -211,6 +213,7 @@ PNodeArgument(src, pap_f, pap_i, pap_value) :-
 */
 
 // strict, saturated, known function/closure call: execute function call
+Called(r, f),
 PointsTo(r, ret_var) :- // return value
   Call(r, f, arg_count),
   EvalMode(r, "strict"),
@@ -239,6 +242,7 @@ PNodeArgument(r, f, arg_i, arg_value) :-
   CallArgument(r, arg_i, arg_value).
 
 // strict, saturated PNode call: execute function call
+Called(r, f),
 PointsTo(r, ret_var) :- // return value
   Call(r, pnode, arg_count),
   EvalMode(r, "strict"),
@@ -285,6 +289,7 @@ PNodeArgument(r, f, bound_i, bound_value) :-
   PNodeArgument(pnode, f, bound_i, bound_value).
 
 // strict, oversaturated, known function/closure call: execute function call + create ApplyChain
+Called(r, f),
 ApplyChain(r, f, 0, arity, arg_count) :-
   Call(r, f, arg_count),
   EvalMode(r, "strict"),
@@ -301,6 +306,7 @@ PointsTo(param, arg) :- // pass arguments to function parameters
   CodeParameter(f, call_arg_i, param).
 
 // strict, oversaturated PNode call: execute function call + create ApplyChain
+Called(r, fun),
 ApplyChain(r, fun, 0, arity - missing, arg_count) :-
   Call(r, pnode, arg_count),
   EvalMode(r, "strict"),
@@ -327,6 +333,7 @@ PointsTo(param, arg) :-
 // SECTION: apply chain elaboration: apply remained call arguments to 'f' result PNodes
 
 // saturated apply chain link: execute function call + create result
+Called(r, f), Called(r, p_f),
 PointsTo(r, p_ret_var) :-             // return value
   ApplyChain(r, f, _, consumed, arg_count),
   ReturnValue(f, ret_var),
@@ -378,6 +385,7 @@ PNodeArgument(r, p_f, bound_i, bound_value) :-                                  
   PNodeArgument(ret_var, p_f, bound_i, bound_value).
 
 // oversaturated apply chain link: execute function + create the next ApplyChain link
+Called(r, f), Called(r, p_f),
 ApplyChain(r, p_f, step + 1, consumed + p_remained, arg_count) :-
   ApplyChain(r, f, step, consumed, arg_count),
   ReturnValue(f, ret_var),
@@ -445,3 +453,32 @@ Origin(r, r) :-
   Call(r, f, _),
   EvalMode(r, "strict"),
   ExternalFunction(f, _, _).
+
+// SECTION: reachability
+
+.decl ReachableCode(n:CodeName)
+.output ReachableCode
+
+ReachableCode(n) :-
+  InitialReachable(n).
+
+// call
+ReachableCode(callee) :-
+  ReachableCode(f),
+  CodeNameInst(f, r),
+  Called(r, callee).
+
+// alt ; tag insensitive
+ReachableCode(alt) :-
+  ReachableCode(f),
+  CodeNameInst(f, r),
+  Alt(r, alt, _).
+
+// SECTION: dead code
+
+.decl DeadCode(n:CodeName)
+.output DeadCode
+
+DeadCode(n) :-
+  ReturnValue(n, _),
+  !ReachableCode(n).
