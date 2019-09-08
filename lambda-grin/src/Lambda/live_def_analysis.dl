@@ -1,4 +1,4 @@
-.type Name
+.symbol_type Name
 
 .decl DefReference(def:Name, ref:Name)
 .decl LiveSource(name:Name)
