@@ -213,11 +213,16 @@ PNodeArgument(src, pap_f, pap_i, pap_value) :-
 */
 
 /*
-  TODO:
+  SECTION: calling a constructor
     handle stg style constructor calling:
       let   con = [tag a b c]
       letS  val = con $
 */
+Origin(r, val) :-
+  Call(r, f, 0),
+  EvalMode(r, "strict"),
+  Origin(f, val),
+  Node(val, _).
 
 // strict, saturated, known function/closure call: execute function call
 Called(r, f),
