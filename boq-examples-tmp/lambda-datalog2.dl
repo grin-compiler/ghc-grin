@@ -490,6 +490,15 @@ DeadCode(n) :-
   ReturnValue(n, _),
   !ReachableCode(n).
 
+.decl DeadExternal(n:External)
+.output DeadExternal
+
+DeadExternal(n) :-
+  ExternalFunction(n, _, _),
+  Call(r, n, _),
+  CodeNameInst(f, r),
+  DeadCode(f).
+
 // SECTION: debug
 
 .decl MissingValue(v:Variable)
