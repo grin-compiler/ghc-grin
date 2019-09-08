@@ -145,8 +145,6 @@ Error(v, "lazy app") :-
 
 */
 
-.decl CNode(v:CodeName, value:CodeName)
-
 .decl PNode(v:CodeName, fun:CodeName, arity:number, remained:number)
 .decl PNodeArgument(v:CodeName, fun:CodeName, i:number, value:CodeName)
 
@@ -155,11 +153,13 @@ Error(v, "lazy app") :-
 
 .decl PointsTo(src:CodeName, dst:CodeName)
 
-.output CNode
+.decl Origin(v:CodeName, value:CodeName)
+
 .output PNode
 .output PNodeArgument
 .output ApplyChain
 .output PointsTo
+.output Origin
 
 
 // unify functions and closures
@@ -189,9 +189,10 @@ CodeParameter(f, i, p) :- (FunctionParameter(f, i, p) ; ClosureParameter(f, i, p
 
 
 // propagate values via points-to
-CNode(src, ret_value) :-
+
+Origin(src, value) :-
   PointsTo(src, dst),
-  CNode(dst, ret_value).
+  Origin(dst, value).
 
 PNode(src, pap_f, pap_ar, pap_rem) :-
   PointsTo(src, dst),
@@ -202,7 +203,7 @@ PNodeArgument(src, pap_f, pap_i, pap_value) :-
   PNodeArgument(dst, pap_f, pap_i, pap_value).
 
 /*
-  TODO:
+  NOTE:
     separate return value and parameter handling
       parameters are optional, so they absence can block the return value handling
 
@@ -241,7 +242,7 @@ PNodeArgument(r, f, arg_i, arg_value) :-
 PointsTo(r, ret_var) :- // return value
   Call(r, pnode, arg_count),
   EvalMode(r, "strict"),
-  PNode(pnode, fun, arity, missing),
+  PNode(pnode, f, _, missing),
   arg_count = missing,
   // return value
   ReturnValue(f, ret_var).
@@ -256,7 +257,7 @@ PointsTo(param, arg) :-
 PointsTo(bound_param, pnode_arg) :-
   Call(r, pnode, arg_count),
   EvalMode(r, "strict"),
-  PNode(pnode, fun, arity, missing),
+  PNode(pnode, fun, _, missing),
   arg_count = missing,
   // pnode parameters
   PNodeArgument(pnode, fun, pnode_i, pnode_arg),
@@ -278,12 +279,12 @@ PNodeArgument(r, f, arity - missing + arg_i, arg_value) :-
 PNodeArgument(r, f, bound_i, bound_value) :-
   Call(r, pnode, arg_count),
   EvalMode(r, "strict"),
-  PNode(pnode, f, arity, missing),
+  PNode(pnode, f, _, missing),
   arg_count < missing,
   // copy old pnode arguments
   PNodeArgument(pnode, f, bound_i, bound_value).
 
-// strict, oversaturated, known function/closure call: create ApplyChain
+// strict, oversaturated, known function/closure call: execute function call + create ApplyChain
 ApplyChain(r, f, 0, arity, arg_count) :-
   Call(r, f, arg_count),
   EvalMode(r, "strict"),
@@ -297,7 +298,7 @@ PointsTo(param, arg) :- // pass arguments to function parameters
   // call parameters
   call_arg_i < arity,
   CallArgument(r, call_arg_i, arg),
-  CodeParameter(fun, call_arg_i, param).
+  CodeParameter(f, call_arg_i, param).
 
 // strict, oversaturated PNode call: execute function call + create ApplyChain
 ApplyChain(r, fun, 0, arity - missing, arg_count) :-
@@ -308,7 +309,7 @@ ApplyChain(r, fun, 0, arity - missing, arg_count) :-
 PointsTo(bound_param, pnode_arg) :-
   Call(r, pnode, arg_count),
   EvalMode(r, "strict"),
-  PNode(pnode, fun, arity, missing),
+  PNode(pnode, fun, _, missing),
   arg_count > missing,
   // pnode parameters
   PNodeArgument(pnode, fun, pnode_i, pnode_arg),
@@ -327,14 +328,14 @@ PointsTo(param, arg) :-
 
 // saturated apply chain link: execute function call + create result
 PointsTo(r, p_ret_var) :-             // return value
-  ApplyChain(r, f, step, consumed, arg_count),
+  ApplyChain(r, f, _, consumed, arg_count),
   ReturnValue(f, ret_var),
-  PNode(ret_var, p_f, p_arity, p_remained),
+  PNode(ret_var, p_f, _, p_remained),
   consumed + p_remained = arg_count,
   // return value
   ReturnValue(p_f, p_ret_var).
 PointsTo(p_old_param, p_old_value) :- // pass arguments to function parameters
-  ApplyChain(r, f, step, consumed, arg_count),
+  ApplyChain(_, f, _, consumed, arg_count),
   ReturnValue(f, ret_var),
   PNode(ret_var, p_f, p_arity, p_remained),
   consumed + p_remained = arg_count,
@@ -343,7 +344,7 @@ PointsTo(p_old_param, p_old_value) :- // pass arguments to function parameters
   CodeParameter(p_f, bound_i, p_old_param),
   PNodeArgument(ret_var, p_f, bound_i, p_old_value).
 PointsTo(p_new_param, arg) :-       // pass arguments to function parameters
-  ApplyChain(r, f, step, consumed, arg_count),
+  ApplyChain(r, f, _, consumed, arg_count),
   ReturnValue(f, ret_var),
   PNode(ret_var, p_f, p_arity, p_remained),
   consumed + p_remained = arg_count,
@@ -355,12 +356,12 @@ PointsTo(p_new_param, arg) :-       // pass arguments to function parameters
 
 // undersaturated apply chain link: create PNode result
 PNode(r, p_f, p_arity, p_remained - (arg_count - consumed)) :-
-  ApplyChain(r, f, step, consumed, arg_count),
+  ApplyChain(r, f, _, consumed, arg_count),
   ReturnValue(f, ret_var),
   PNode(ret_var, p_f, p_arity, p_remained),
   p_remained > arg_count - consumed.
 PNodeArgument(r, p_f, (p_arity - p_remained) + (call_arg_i - consumed), arg_value) :- // new arguments
-  ApplyChain(r, f, step, consumed, arg_count),
+  ApplyChain(r, f, _, consumed, arg_count),
   ReturnValue(f, ret_var),
   PNode(ret_var, p_f, p_arity, p_remained),
   p_remained > arg_count - consumed,
@@ -369,9 +370,9 @@ PNodeArgument(r, p_f, (p_arity - p_remained) + (call_arg_i - consumed), arg_valu
   call_arg_i < arg_count,
   CallArgument(r, call_arg_i, arg_value).
 PNodeArgument(r, p_f, bound_i, bound_value) :-                                       // old arguments
-  ApplyChain(r, f, step, consumed, arg_count),
+  ApplyChain(r, f, _, consumed, arg_count),
   ReturnValue(f, ret_var),
-  PNode(ret_var, p_f, p_arity, p_remained),
+  PNode(ret_var, p_f, _, p_remained),
   p_remained > arg_count - consumed,
   // copy old pnode arguments
   PNodeArgument(ret_var, p_f, bound_i, bound_value).
@@ -380,10 +381,10 @@ PNodeArgument(r, p_f, bound_i, bound_value) :-                                  
 ApplyChain(r, p_f, step + 1, consumed + p_remained, arg_count) :-
   ApplyChain(r, f, step, consumed, arg_count),
   ReturnValue(f, ret_var),
-  PNode(ret_var, p_f, p_arity, p_remained),
+  PNode(ret_var, p_f, _, p_remained),
   p_remained < arg_count - consumed.
 PointsTo(p_old_param, p_old_value) :- // pass arguments to function parameters
-  ApplyChain(r, f, step, consumed, arg_count),
+  ApplyChain(_, f, _, consumed, arg_count),
   ReturnValue(f, ret_var),
   PNode(ret_var, p_f, p_arity, p_remained),
   p_remained < arg_count - consumed,
@@ -392,7 +393,7 @@ PointsTo(p_old_param, p_old_value) :- // pass arguments to function parameters
   CodeParameter(p_f, bound_i, p_old_param),
   PNodeArgument(ret_var, p_f, bound_i, p_old_value).
 PointsTo(p_new_param, arg) :-         // pass arguments to function parameters
-  ApplyChain(r, f, step, consumed, arg_count),
+  ApplyChain(r, f, _, consumed, arg_count),
   ReturnValue(f, ret_var),
   PNode(ret_var, p_f, p_arity, p_remained),
   p_remained < arg_count - consumed,
@@ -405,23 +406,22 @@ PointsTo(p_new_param, arg) :-         // pass arguments to function parameters
 // Move
 PointsTo(result, value) :- Move(result, value).
 
-// Node
-CNode(n, n) :- Node(n, _).
-
 // SECTION: Case + Alt
 
 // scrutinee projection ; alt value
 PointsTo(alt_val, scrut_val) :-
   Case(case_result, scrut),
   Alt(case_result, alt_val, tag),
-  CNode(scrut, scrut_val),
-  Node(scrut_val, tag).
+  Origin(scrut, scrut_val),
+  ( Node(scrut_val, tag)
+  ; Call(scrut_val, ext_f, _), ExternalReturnType(ext_f, tag)
+  ).
 
 // alt params
 PointsTo(p, val) :-
   Alt(_, alt, tag),
   AltParameter(alt, i, p),
-  CNode(alt, node),
+  Origin(alt, node),
   Node(node, tag),
   NodeArgument(node, i, val).
 
@@ -431,15 +431,17 @@ PointsTo(case_result, val) :-
   Alt(case_result, alt, _),
   ReturnValue(alt, val).
 
-// TODO: External Functions
-// WIP
-CNode(r, r) :-
-  Call(r, f, _),
-  EvalMode(r, "strict"),
-  ExternalReturnType(f, _).
-
-// create PNodes for referred functions
+// create PNodes for referred functions in call or node argument
 PNode(f, f, arity, arity) :-
   (IsFunction(f) ; IsClosure(f)),
-  CallArgument(_, _, f),
+  (CallArgument(_, _, f) ; NodeArgument(_, _, f)),
   CodeArity(f, arity).
+
+// SECTION: Origin
+
+Origin(n, n) :- Node(n, _).
+
+Origin(r, r) :-
+  Call(r, f, _),
+  EvalMode(r, "strict"),
+  ExternalFunction(f, _, _).
