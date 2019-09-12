@@ -47,6 +47,7 @@ programToFactsM prg = do
   let factNames = [ "EvalMode", "Move", "Node", "NodeArgument", "Call", "CallArgument", "IsFunction", "FunctionParameter"
                   , "Case", "Alt", "AltParameter", "IsClosure", "ClosureVariable", "ClosureParameter", "ReturnValue", "FirstInst"
                   , "NextInst", "RecGroup", "ExternalFunction", "ExternalParameterType", "ExternalReturnType", "CodeArity"
+                  , "TypeNode", "TypeNodeArgument", "IsTypeVariable"
                   ]
   files <- forM factNames $ \fname -> do
     let filename = fname ++ ".facts"
@@ -89,17 +90,27 @@ toFacts = map prettyFacts . Map.toList . Map.unionsWith (++) . map (\(f,a) -> Ma
 
 convertExternal :: External -> DL ()
 convertExternal External{..} = do
+  retN <- convertTy eRetType
+  argsN <- mapM convertTy eArgsType
   emit $
     [ ("ExternalFunction", [N eName, S $ if eEffectful then "effectful" else "pure", I $ length eArgsType])
-    , ("ExternalReturnType", [N eName, tyTag eRetType])
+    , ("ExternalReturnType", [N eName, N retN])
     ] ++
-    [ ("ExternalParameterType", [N eName, I i, tyTag ty]) | (i, ty) <- zip [0..] eArgsType]
+    [ ("ExternalParameterType", [N eName, I i, N ty]) | (i, ty) <- zip [0..] argsN]
 
-tyTag :: Ty -> Param
-tyTag = \case
-  TyCon n []    -> N n
-  TySimple sty  -> S $ "lit:" ++ show sty
-  ty -> error $ "unsupported: " ++ show ty
+convertTy :: Ty -> DL Name
+convertTy = \case
+  TyVar v -> do
+    emit [("IsTypeVariable", [N v])]
+    pure v
+  TySimple v sty -> do
+    emit [("TypeNode", [N v, S $ "lit:" ++ show sty])]
+    pure v
+  TyCon v n args -> do
+    emit [("TypeNode", [N v, N n])]
+    argsN <- mapM convertTy args
+    emit [("TypeNodeArgument", [N v, I i, N p]) | (i,p) <- zip [0..] argsN]
+    pure v
 
 convertProgram :: Exp -> DL ()
 convertProgram = \case

@@ -47,10 +47,15 @@
 // letrec
 .decl RecGroup(first:Variable, v:Variable)
 
+// external types
+.decl TypeNode(ty_node:Variable, t:Tag)
+.decl TypeNodeArgument(ty_node:Variable, i:number, item:Variable)
+.decl IsTypeVariable(v:Variable) // tells if it refers to a corresponding TypeNode
+
 // external
 .decl ExternalFunction(f:External, eff:Eff, arity:number)
-.decl ExternalParameterType(f:External, i:number, t:Tag)
-.decl ExternalReturnType(f:External, t:Tag)
+.decl ExternalParameterType(f:External, i:number, ty_node:Variable)
+.decl ExternalReturnType(f:External, ty_node:Variable)
 
 // arity
 .decl CodeArity(n:CodeName, arity:number)
@@ -77,6 +82,9 @@
 .input ExternalParameterType
 .input ExternalReturnType
 .input CodeArity
+.input TypeNode
+.input TypeNodeArgument
+.input IsTypeVariable
 
 // output
 
@@ -130,7 +138,6 @@ Error(v, "lazy app") :-
 
 
   decls
-    CNode
     ApplyChain
 
     Q: how to normalize/reduce apply chain?
@@ -139,7 +146,7 @@ Error(v, "lazy app") :-
   decl
     PNode : store the result of apply chain if it is still a partial application
 
-  CNode and PNode is the normal form
+  Node and PNode is the normal form
 
   Idea: use points-to relation for simple way value passing
 
@@ -434,7 +441,7 @@ PointsTo(alt_val, scrut_val) :-
   Alt(case_result, alt_val, tag),
   Origin(scrut, scrut_val),
   ( Node(scrut_val, tag)
-  ; Call(scrut_val, ext_f, _), ExternalReturnType(ext_f, tag)
+  ; Call(scrut_val, ext_f, _), ExternalReturnType(ext_f, ret_ty), TypeNode(ret_ty, tag)
   ).
 
 // alt params
