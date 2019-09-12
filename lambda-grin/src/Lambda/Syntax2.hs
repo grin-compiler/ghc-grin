@@ -26,15 +26,30 @@ import Data.Store.TH
 import Data.Text (Text)
 import qualified Grin.Grin as Grin
 import Lambda.Syntax
-  ( Ty(..)
-  , SimpleType(..)
+  ( SimpleType(..)
   , ExternalKind(..)
-  , External(..)
   , Lit(..)
   , Pat(..)
   )
 
 type Name = Grin.Name
+type ConName = Name
+
+data Ty
+  = TyCon     Name ConName [Ty]
+  | TyVar     Name
+  | TySimple  Name SimpleType
+  deriving (Generic, Data, Eq, Ord, Show)
+
+data External
+  = External
+  { eName       :: Name
+  , eRetType    :: Ty
+  , eArgsType   :: [Ty]
+  , eEffectful  :: Bool
+  , eKind       :: ExternalKind
+  }
+  deriving (Generic, Data, Eq, Ord, Show)
 
 type Alt        = Exp
 type Def        = Exp
@@ -63,4 +78,6 @@ data Exp
   deriving (Generic, Data, Eq, Ord, Show)
 
 makeBaseFunctor ''Exp
+makeStore ''Ty
+makeStore ''External
 makeStore ''Exp

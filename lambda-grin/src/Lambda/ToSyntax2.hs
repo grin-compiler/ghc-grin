@@ -1,10 +1,12 @@
-{-# LANGUAGE LambdaCase, TupleSections, OverloadedStrings #-}
+{-# LANGUAGE LambdaCase, TupleSections, OverloadedStrings, RecordWildCards #-}
 module Lambda.ToSyntax2 where
 
 import Data.Functor.Foldable as Foldable
 import qualified Data.Foldable
 
-import Data.List (groupBy)
+import Data.Map (Map)
+import qualified Data.Map as Map
+import Data.List (groupBy, nub)
 import Control.Monad
 import Control.Monad.Writer
 import Control.Monad.State
@@ -17,6 +19,36 @@ import Transformations.Names hiding (mkNameEnv)
 import Lambda.Util
 
 type SM = WriterT [(Name, L.Exp)] NameM
+
+convertTy :: Map Name Name -> L.Ty -> NameM Ty
+convertTy tyVarMap = \case
+  L.TyCon con tys -> TyCon <$> deriveNewName "t" <*> pure con <*> mapM (convertTy tyVarMap) tys
+  L.TyVar v -> pure $ case Map.lookup v tyVarMap of
+    Nothing -> error $ "internal error - missing type variable: " ++ show v
+    Just n  -> TyVar n
+  L.TySimple sTy -> TySimple <$> deriveNewName "t" <*> pure sTy
+
+convertExternal :: L.External -> NameM External
+convertExternal L.External{..} = do
+  let getTyVars :: L.Ty -> [Name]
+      getTyVars = \case
+        L.TyVar v   -> [v]
+        L.TyCon _ l -> concatMap getTyVars l
+        _ -> []
+      tyVars = nub . concatMap getTyVars $ eRetType : eArgsType
+  tyVarMap <- Map.fromList <$> forM tyVars (\n -> do
+    newName <- deriveNewName n
+    pure (n, newName)
+    )
+  retType <- convertTy tyVarMap eRetType
+  argsType <- mapM (convertTy tyVarMap) eArgsType
+  pure External
+    { eName       = eName
+    , eRetType    = retType
+    , eArgsType   = argsType
+    , eEffectful  = eEffectful
+    , eKind       = eKind
+    }
 
 simplifyArgs :: L.Exp -> SM L.Exp
 simplifyArgs = \case
@@ -71,7 +103,7 @@ toSyntax2M = hyloM folder builder where
 
   builder :: L.Exp -> NameM (ExpF L.Exp)
   builder = \case
-    L.Program e d -> pure $ ProgramF e d
+    L.Program e d -> ProgramF <$> mapM convertExternal e <*> pure d
 
     -- bind sequences
     L.Def n a e -> DefF n a <$> simplifyExp Strict e
