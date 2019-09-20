@@ -80,8 +80,8 @@ litType = \case
     C.LitNumWord    -> T_Word64
     C.LitNumWord64  -> T_Word64
 
-repType :: C.PrimRep -> Maybe SimpleType
-repType = \case
+repType :: C.T_Text -> C.PrimRep -> Maybe SimpleType
+repType t = \case
   C.IntRep    -> Just T_Int64
   C.WordRep   -> Just T_Word64
   C.Int64Rep  -> Just T_Int64
@@ -89,7 +89,7 @@ repType = \case
   C.AddrRep   -> Just T_Addr
   C.FloatRep  -> Just T_Float
   C.DoubleRep -> Just T_Double
-
+  C.VoidRep   -> Just (T_Token t)
   -- NOTE:
   --  1. FFI does not support thunks and boxed types
   --  2. VecRep is not supported yet
@@ -115,22 +115,19 @@ ffiArgType = \case
       "ByteArray#"                  -> Just $ TyCon "ByteArray#" []
       "Weak# ThreadId"              -> Just $ TyCon "Weak#" [TyCon "ThreadId" []]
       _                             -> Nothing
-    Just [t]  -> TySimple <$> repType t
+    Just [t]  -> TySimple <$> repType (C.tType $ C.binderType b) t
     _         -> Nothing
 
 ffiRetType :: C.TypeInfo -> Maybe Ty
-ffiRetType ti = case filter (/= C.VoidRep) <$> C.tRep ti of
-  Just []   -> Just $ TyCon "GHC.Prim.(##)" []
-  Just [t]  -> TyCon "GHC.Prim.Unit#" . map TySimple <$> mapM repType [t]
-  _         -> Nothing
+ffiRetType ti = do
+  rep <- C.tRep ti
+  mkUnboxedTuple <$> mapM (\r -> TySimple <$> repType (C.tType ti) r) rep
 
-isVoidRep :: C.TypeInfo -> Bool
-isVoidRep ti = C.tRep ti == Just [C.VoidRep]
-
-isVoidArg :: C.Arg -> Bool
-isVoidArg = \case
-  C.StgVarArg b -> isVoidRep $ C.binderType b
-  _             -> False
+mkUnboxedTuple :: [Ty] -> Ty
+mkUnboxedTuple args = case length args of
+  0 -> TyCon "GHC.Prim.(##)" []
+  1 -> TyCon "GHC.Prim.Unit#" args
+  n -> TyCon (packName $ "GHC.Prim.(#" ++ replicate (max 0 $ n-1) ',' ++ "#)") args
 
 convertLit :: C.Lit -> Lit
 convertLit = \case
@@ -160,16 +157,15 @@ visitArg :: C.Arg -> CG Exp
 visitArg = \case
   C.StgLitArg l -> pure . Lit $ convertLit l
   C.StgVarArg o -> genName o >>= \case
-    -- FXIME: filter out VoidRep ; do not generate dead code
-    "GHC.Prim.coercionToken#" -> pure . Lit $ LString "GHC.Prim.coercionToken#"
-    "GHC.Prim.realWorld#"     -> pure . Lit $ LString "GHC.Prim.realWorld#"
-    "GHC.Prim.void#"          -> pure . Lit $ LString "GHC.Prim.void#"
+    "GHC.Prim.coercionToken#" -> pure . Lit $ LToken "GHC.Prim.coercionToken#"
+    "GHC.Prim.realWorld#"     -> pure . Lit $ LToken "GHC.Prim.realWorld#"
+    "GHC.Prim.void#"          -> pure . Lit $ LToken "GHC.Prim.void#"
     name -> pure $ Var (isPointer o) name
 
 -- GHC/Stg Prim Op call conversion
 visitOpApp :: C.StgOp -> [C.Arg] -> C.TypeInfo -> CG Exp
 visitOpApp op args ty = do
-  let realArgs = filter (not . isVoidArg) args
+  let realArgs = args
       ffiTys = do
         argsTy <- mapM ffiArgType realArgs
         retTy <- ffiRetType ty
@@ -189,8 +185,7 @@ visitOpApp op args ty = do
           let name = packName $ BS8.unpack labelName
           addExternal External
             { eName       = name
-            , eRetType    = retTy
-            , eArgsType   = argsTy
+            , eType       = foldr TyArr retTy argsTy
             , eEffectful  = True
             , eKind       = FFI
             }
@@ -277,7 +272,7 @@ genPrimOp prim realArgs ti = do
 
 
 genPrimOpWithFix :: BS8.ByteString -> [C.Arg] -> [C.Arg] -> C.TypeInfo -> CG Exp
-
+{-
 -- wrapper like higher order functions
 genPrimOpWithFix "clearCCS#"               [C.StgVarArg f, s]    realArgs ti = App <$> genName f <*> mapM visitArg [s]
 genPrimOpWithFix "atomically#"             [C.StgVarArg f, s]    realArgs ti = App <$> genName f <*> mapM visitArg [s]
@@ -299,6 +294,6 @@ genPrimOpWithFix prim@"tagToEnum#"  [i] realArgs ti
       Just dl -> do
         dcNames <- mapM genConName dl
         Case <$> visitArg i <*> pure [Alt (LitPat $ LInt64 idx) (Con dc []) | (idx, dc) <- zip [0..] dcNames]
-
+-}
 -- normal primop
 genPrimOpWithFix prim args realArgs ti = genPrimOp prim realArgs ti
