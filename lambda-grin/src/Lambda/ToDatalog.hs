@@ -47,7 +47,7 @@ programToFactsM prg = do
   let factNames = [ "EvalMode", "Move", "Node", "NodeArgument", "Call", "CallArgument", "IsFunction", "FunctionParameter"
                   , "Case", "Alt", "AltParameter", "IsClosure", "ClosureVariable", "ClosureParameter", "ReturnValue", "FirstInst"
                   , "NextInst", "RecGroup", "ExternalFunction", "ExternalParameterType", "ExternalReturnType", "CodeArity"
-                  , "TypeNode", "TypeNodeArgument", "IsTypeVariable"
+                  , "TypeNode", "TypeNodeArgument", "IsTypeVariable", "FunctionType", "FunctionTypeReturnType", "FunctionTypeParameterType"
                   ]
   files <- forM factNames $ \fname -> do
     let filename = fname ++ ".facts"
@@ -111,6 +111,13 @@ convertTy = \case
     argsN <- mapM convertTy args
     emit [("TypeNodeArgument", [N v, I i, N p]) | (i,p) <- zip [0..] argsN]
     pure v
+  TyFun n ret args -> do
+    argsN <- mapM convertTy args
+    retN <- convertTy ret
+    emit [("FunctionType", [N n, I $ length args])]
+    emit [("FunctionTypeReturnType", [N n, N retN])]
+    emit [("FunctionTypeParameterType", [N n, I i, N p]) | (i,p) <- zip [0..] argsN]
+    pure n
 
 convertProgram :: Exp -> DL ()
 convertProgram = \case
@@ -222,3 +229,4 @@ litTag l = "lit:" ++ case l of
   LLabelAddr{}  -> "T_Addr"
   LNullAddr{}   -> "T_Addr"
   LError{}      -> "LError"
+  LToken t      -> show $ T_Token t

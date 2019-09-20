@@ -52,6 +52,11 @@
 .decl TypeNodeArgument(ty_node:Variable, i:number, item:Variable)
 .decl IsTypeVariable(v:Variable) // tells if it refers to a corresponding TypeNode
 
+// higher order external types
+.decl FunctionType(ty_fun:Variable, arity:number)
+.decl FunctionTypeParameterType(ty_fun:Variable, i:number, ty_node:Variable)
+.decl FunctionTypeReturnType(ty_fun:Variable, ty_node:Variable)
+
 // external
 .decl ExternalFunction(f:External, eff:Eff, arity:number)
 .decl ExternalParameterType(f:External, i:number, ty_node:Variable)
@@ -104,6 +109,7 @@ CodeNameInst(n, v) :-
 .decl InitialReachable(n:CodeName)
 
 // hardcoded edb
+InitialReachable("::Main.main").
 InitialReachable(":Main.main").
 InitialReachable("Main.main").
 
@@ -505,11 +511,18 @@ DeadCode(n) :-
 .decl DeadExternal(n:External)
 .output DeadExternal
 
-DeadExternal(n) :-
+.decl ReachableExternal(n:External)
+.output ReachableExternal
+
+ReachableExternal(n) :-
   ExternalFunction(n, _, _),
   Call(r, n, _),
   CodeNameInst(f, r),
-  DeadCode(f).
+  ReachableCode(f).
+
+DeadExternal(n) :-
+  ExternalFunction(n, _, _),
+  !ReachableExternal(n).
 
 // SECTION: debug
 
@@ -519,6 +532,7 @@ DeadExternal(n) :-
 MissingValue(v) :-
   CodeNameInst(f, v),
   !DeadCode(f),
+  !IsClosure(v), // if closure is always used fully saturated then it will not have a PNode nor an origin, because only nodes and external functions are value origins
   !(Origin(v, _) ; PNode(v, _, _, _)).
 
 MissingValue(v) :-
