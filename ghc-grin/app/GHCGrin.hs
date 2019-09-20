@@ -135,6 +135,17 @@ toLambda fname = do
 sortDefs :: Program -> Program
 sortDefs (Program exts defs) = Program exts . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
 
+replaceMain :: Program -> Program
+replaceMain (Program exts defs) = (Program exts (mainFun : filter notMain defs)) where
+  mainName = packName ":Main.main"
+  notMain (Def n _ _) = n /= mainName
+  mainFun = Def mainName [] $ App (packName "Main.main") [Lit $ LToken $ BS8.pack "GHC.Prim.void#"]
+
+addMain :: Program -> Program
+addMain (Program exts defs) = (Program exts (mainFun : defs)) where
+  mainName = packName "::Main.main"
+  mainFun = Def mainName [] $ App (packName ":Main.main") [Lit $ LToken $ BS8.pack "GHC.Prim.void#"]
+
 cg_main :: Opts -> IO ()
 cg_main opts = do
   let inputLen = length $ inputs opts
@@ -151,8 +162,8 @@ cg_main opts = do
   progList <- mapM toLambda prunedDeps
   putStrLn "finished toLambda"
 
-  let wholeProgramBloat = concatPrograms progList
-  wholeProgram <- sortDefs . singleStaticAssignment <$> deadFunctionEliminationM [":Main.main", "Main.main"] wholeProgramBloat
+  let wholeProgramBloat = addMain $ concatPrograms progList
+  wholeProgram <- sortDefs . singleStaticAssignment <$> deadFunctionEliminationM ["::Main.main", ":Main.main", "Main.main"] wholeProgramBloat
   let wholeProgram2     = toSyntax2 wholeProgram :: L2.Program
       output_fn         = output opts
   writeFile (output_fn ++ ".lambda") . showWidth 800 . plain $ pretty wholeProgram
