@@ -27,7 +27,7 @@ readInfo = do
      Left err -> error ("parse error at " ++ (show err))
      Right p_o_specs@(Info _ _)
         -> seq (sanityTop p_o_specs) (pure p_o_specs)
-
+{-
 isMonomorph :: Ty -> Bool
 isMonomorph = \case
   TyF a b -> all isMonomorph [a, b]
@@ -35,25 +35,29 @@ isMonomorph = \case
   TyApp _ args -> null args
   TyVar {} -> False
   TyUTup a -> all isMonomorph a
-
+-}
 cvtExternal :: String -> Ty -> Bool -> Either String External
 cvtExternal n t isEffectful = do
+  {-
   res <- reverse <$> firstOrderFunTy t
   let (retTy' : revArgsTy') = res
   retTy <- cvtTy $ prepareRetType retTy'
   revArgsTy <- mapM cvtTy $ filter (not . isStateTy) revArgsTy'
+  -}
+  ty <- cvtTy t
   pure External
     { eName       = packName n
-    , eRetType    = retTy
-    , eArgsType   = reverse revArgsTy
+    , eType       = ty
     , eEffectful  = isEffectful
+    , eKind       = L.PrimOp
     }
 
 mkUnboxedTuple :: [L.Ty] -> L.Ty
 mkUnboxedTuple args = case length args of
+  0 -> L.TyCon (packName "GHC.Prim.(##)") []
   1 -> L.TyCon (packName "GHC.Prim.Unit#") args
   n -> L.TyCon (packName $ "GHC.Prim.(#" ++ replicate (max 0 $ n-1) ',' ++ "#)") args
-
+{-
 isStateTy :: Ty -> Bool
 isStateTy = \case
   TyApp (TyCon "State#") [_] -> True
@@ -78,7 +82,8 @@ firstOrderTy = \case
     xs <- mapM firstOrderTy args
     pure $ TyUTup xs
 
-  TyF{} -> Left "higher order type"
+  --TyF{} -> Left "higher order type"
+  TyF a b -> TyF <$> firstOrderTy a <*> firstOrderTy b
   TyC{} -> Left "consraint type"
   t -> Left $ "unsupported type: " ++ show t
 
@@ -86,9 +91,9 @@ firstOrderFunTy :: Ty -> Either String [Ty]
 firstOrderFunTy = \case
   TyF t x -> (:)   <$> firstOrderTy t <*> firstOrderFunTy x
   t       -> (:[]) <$> firstOrderTy t
-
+-}
 cvtTy :: Ty -> Either String L.Ty
-cvtTy ty = case adjustTy ty of
+cvtTy ty = case {-adjustTy-} ty of
   TyVar n -> Right $ L.TyVar $ packName n
   TyApp (TyCon n) []
     | Just t <- cvtType n -> Right $ L.TySimple t
@@ -98,9 +103,13 @@ cvtTy ty = case adjustTy ty of
   TyUTup args
     | Right xs <- mapM cvtTy args
     -> Right $ mkUnboxedTuple xs
+  TyF a b
+    | Right a2 <- cvtTy a
+    , Right b2 <- cvtTy b
+    -> Right $ L.TyArr a2 b2
   t -> Left $ "unsupported type: " ++ show t
 
-
+{-
 -- removes state variable from primitive types
 adjustTy :: Ty -> Ty
 adjustTy = \case
@@ -112,7 +121,7 @@ adjustTy = \case
   TyApp (TyCon "MutableArrayArray#")  [s]     -> TyApp (TyCon "MutableArrayArray#") []
   TyApp (TyCon "MutableByteArray#")   [s]     -> TyApp (TyCon "MutableByteArray#")  []
   t -> t
-
+-}
 cvtType :: String -> Maybe SimpleType
 cvtType = \case
   "Char#"   -> Just T_Char
@@ -128,14 +137,14 @@ tyVars = \case
   L.TyCon _ a -> Set.unions $ map tyVars a
   L.TyVar n   -> Set.singleton n
   _ -> Set.empty
-
+{-
 -- check for unknown type vars in result type
-isBad :: [L.Ty] -> L.Ty -> Bool
-isBad args res = not (Set.null $ Set.difference r a) where
+hasUnknownTyVar :: [L.Ty] -> L.Ty -> Bool
+hasUnknownTyVar args res = not (Set.null $ Set.difference r a) where
   a = Set.unions $ map tyVars args
   r = tyVars res
-isBad _ _ = False
-
+hasUnknownTyVar _ _ = False
+-}
 data Env
   = Env
   { envSections         :: [(String, [External], [(String, String)])] -- section, externals, unsupported ops
@@ -183,7 +192,7 @@ flushSection = do
 
 setSection :: String -> G ()
 setSection title = modify $ \s@Env{..} -> s {envSectionTitle = title}
-
+{-
 whiteList :: Set String
 whiteList = Set.fromList
   [ "newMVar#"
@@ -191,7 +200,7 @@ whiteList = Set.fromList
   , "raiseIO#"
   , "getSpark#"
   ]
-
+-}
 visitEntry :: Entry -> G ()
 visitEntry = \case
   PrimVecOpSpec{..} -> unsupportedPrimop name "SIMD is not supported yet"
@@ -201,10 +210,10 @@ visitEntry = \case
     has_side_effects <- attrBool "has_side_effects" opts
     case cvtExternal name ty has_side_effects of
       Right e@External{..}
-        | not (isBad eArgsType eRetType) || Set.member name whiteList
+        -- | not (hasUnknownTyVar eArgsType eRetType) || Set.member name whiteList
         -> addExternal e
-        | otherwise
-        -> unsupportedPrimop name "unknown type parameters in the result type"
+        -- | otherwise
+        -- -> unsupportedPrimop name "unknown type parameters in the result type"
       Left err
         -> unsupportedPrimop name err
 
