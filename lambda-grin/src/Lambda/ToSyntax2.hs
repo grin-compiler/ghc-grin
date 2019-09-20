@@ -27,6 +27,19 @@ convertTy tyVarMap = \case
     Nothing -> error $ "internal error - missing type variable: " ++ show v
     Just n  -> TyVar n
   L.TySimple sTy -> TySimple <$> deriveNewName "t" <*> pure sTy
+  t -> convertFunTy tyVarMap [] t
+
+
+convertFunTy :: Map Name Name -> [Ty] -> L.Ty -> NameM Ty
+convertFunTy tyVarMap args = \case
+  L.TyArr a b -> do
+    a2 <- convertTy tyVarMap a
+    convertFunTy tyVarMap (a2 : args) b
+  t -> do
+    retTy <- convertTy tyVarMap t
+    case args of
+      []  -> pure retTy
+      _   -> TyFun <$> deriveNewName "tf" <*> pure retTy  <*> pure (reverse args)
 
 convertExternal :: L.External -> NameM External
 convertExternal L.External{..} = do
@@ -34,14 +47,19 @@ convertExternal L.External{..} = do
       getTyVars = \case
         L.TyVar v   -> [v]
         L.TyCon _ l -> concatMap getTyVars l
+        L.TyArr a b -> concatMap getTyVars [a, b]
         _ -> []
-      tyVars = nub . concatMap getTyVars $ eRetType : eArgsType
+
+      tyVars = nub . getTyVars $ eType
+
   tyVarMap <- Map.fromList <$> forM tyVars (\n -> do
     newName <- deriveNewName n
     pure (n, newName)
     )
-  retType <- convertTy tyVarMap eRetType
-  argsType <- mapM (convertTy tyVarMap) eArgsType
+
+  ty <- convertFunTy tyVarMap [] eType
+  let TyFun _ retType argsType = ty
+
   pure External
     { eName       = eName
     , eRetType    = retType

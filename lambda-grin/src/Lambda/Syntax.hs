@@ -26,6 +26,7 @@ data Ty
   = TyCon     Name [Ty]
   | TyVar     Name
   | TySimple  SimpleType
+  | TyArr     Ty Ty
   deriving (Generic, Data, Eq, Ord, Show)
 
 data SimpleType
@@ -38,6 +39,7 @@ data SimpleType
   | T_String
   | T_Char
   | T_Addr    -- TODO: missing from GRIN
+  | T_Token   ByteString
   deriving (Generic, Data, Eq, Ord, Show)
 
 data ExternalKind
@@ -48,8 +50,7 @@ data ExternalKind
 data External
   = External
   { eName       :: Name
-  , eRetType    :: Ty
-  , eArgsType   :: [Ty]
+  , eType       :: Ty
   , eEffectful  :: Bool
   , eKind       :: ExternalKind
   }
@@ -90,6 +91,7 @@ data Lit
   | LString     ByteString
   | LLabelAddr  ByteString  -- TODO: missing from GRIN
   | LNullAddr               -- TODO: missing from GRIN
+  | LToken      ByteString
   -- special
   | LError  !Text  -- marks an error ; dead code elimination may elminate
 --  | LDummy  Text  -- should be ignored

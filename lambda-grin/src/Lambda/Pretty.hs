@@ -88,6 +88,7 @@ instance Pretty Lit where
     LString a -> text "#" <> text (show a)
     LLabelAddr a -> text "#@" <> text (show a)
     LNullAddr -> text "#NullAddr"
+    LToken a  -> text "#%" <> text (show a)
 --    LDummy a  -> red $ text "%" <> pretty a
     LError a  -> red $ text "!" <> text (show a)
 
@@ -105,7 +106,7 @@ prettyExternals exts = vcat (map prettyExtGroup $ groupBy (\a b -> (eKind a, eEf
     | maxLen <- maximum [length . show . pretty $ eName e | e <- l]
     , width  <- min maxLen maxWidth
     = (prettyEKind (eKind a) <+> (if eEffectful a then keyword "effectful" else keyword "pure") <$$> indent 2
-        (vsep [prettyFunction width eName eRetType eArgsType | External{..} <- l])
+        (vsep [prettyFunctionTy width eName eType | External{..} <- l])
       ) <> line
   prettyEKind = keyword . \case
     PrimOp  -> "primop"
@@ -125,21 +126,32 @@ prettyExternals2 exts = vcat (map prettyExtGroup $ groupBy (\a b -> (L2.eKind a,
     PrimOp  -> "primop"
     FFI     -> "ffi"
 
+prettyFunctionTy :: Int -> Name -> Ty -> Doc
+prettyFunctionTy width name ty = fill width (pretty name) <> align (text " :: " <> pretty ty) where
+
 prettyFunction :: Pretty a => Int -> Name -> a -> [a] -> Doc
 prettyFunction width name ret args = fill width (pretty name) <> align (encloseSep (text " :: ") empty (text " -> ") (map pretty $ args ++ [ret]))
 
 instance Pretty Ty where
   pretty = \case
-    TyCon name tys      -> braces . hsep $ (green $ pretty name) : map pretty tys
+    TyCon name tys      -> braces . hsep $ (green $ pretty name) : map (\a -> (if isTyArr a then parens else id) $ pretty a) tys
     TyVar name          -> text "%" <> cyan (pretty name)
     TySimple simpleType -> pretty simpleType
+    TyArr a b           -> (if isTyArr a then parens else id) (pretty a) <+> text "->" <+> pretty b where
+
+isTyArr :: Ty -> Bool
+isTyArr = \case
+  TyArr{} -> True
+  _       -> False
 
 instance Pretty L2.Ty where
   pretty = \case
     L2.TyCon varName name tys       -> braces (hsep ((green $ pretty name) : map pretty tys) <+> text "@" <+> pretty varName)
     L2.TyVar name                   -> text "%" <> cyan (pretty name)
     L2.TySimple varName simpleType  -> parens (pretty simpleType <+> text "@" <+> pretty varName)
+    L2.TyFun name retTy argsTy      -> parens (pretty name <> encloseSep (text " : ") empty (text " -> ") (map pretty $ argsTy ++ [retTy]))
 
 instance Pretty SimpleType where
   pretty = \case
-    ty -> red $ text $ show ty
+    T_Token t -> red $ text "#" <> text (show t)
+    ty        -> red $ text $ show ty

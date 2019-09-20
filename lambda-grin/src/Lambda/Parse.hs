@@ -134,41 +134,50 @@ altPat = parens (NodePat <$> tag <*> many var) <|>
 tag :: Parser Name
 tag = con
 
+bstrLiteral :: Parser BS8.ByteString
+bstrLiteral = BS8.pack <$> (char '"' >> manyTill L.charLiteral (char '"'))
+
 literal :: Parser Lit
 literal = (try $ LFloat . realToFrac <$> signedFloat) <|>
           (try $ LWord64 . fromIntegral <$> lexeme (L.decimal <* C.char 'u')) <|>
           LInt64 . fromIntegral <$> signedInteger <|>
           LBool <$> (True <$ kw "#True" <|> False <$ kw "#False") <|>
           LChar <$ char '#' <* char '\'' <* L.charLiteral <*> char '\'' <|>
-          LString . BS8.pack <$ char '#' <*> (char '"' >> manyTill L.charLiteral (char '"'))
+          LString <$ char '#' <*> bstrLiteral
 
 -- externals
 
 externalBlock = do
   L.indentGuard sc EQ pos1
   -- TODO: support eKind
-  kw "primop"
+  kind <-
+    PrimOp <$ kw "primop" <|>
+    FFI <$ kw "ffi"
   eff <- const False <$> kw "pure" <|> const True <$> kw "effectful"
   i <- L.indentGuard sc GT pos1
-  some $ try (external eff i)
+  some $ try (external kind eff i)
 
-external :: Bool -> Pos -> Parser External
-external eff i = do
+external :: ExternalKind -> Bool -> Pos -> Parser External
+external kind eff i = do
   L.indentGuard sc EQ i
   name <- var
   op "::"
-  ty <- reverse <$> sepBy1 tyP (op "->")
-  let (retTy:argTyRev) = ty
+  ty <- tyArrP
   pure External
     { eName       = name
-    , eRetType    = retTy
-    , eArgsType   = reverse argTyRev
+    , eType       = ty
     , eEffectful  = eff
-    , eKind       = PrimOp -- TODO: handle eKind properly
+    , eKind       = kind
     }
+
+tyArrP :: Parser Ty
+tyArrP =
+  try (TyArr <$> tyP <* op "->" <*> tyArrP) <|>
+  tyP
 
 tyP :: Parser Ty
 tyP =
+  parens tyArrP <|>
   TyVar <$ C.char '%' <*> var <|>
   braces (TyCon <$> var <*> many tyP) <|>
   TySimple <$> try simpleType
@@ -185,7 +194,8 @@ simpleType =
   T_Unit    <$ kw "T_Unit"    <|>
   T_String  <$ kw "T_String"  <|>
   T_Char    <$ kw "T_Char"    <|>
-  T_Addr    <$ kw "T_Addr"
+  T_Addr    <$ kw "T_Addr"    <|>
+  T_Token   <$ char '#' <*> bstrLiteral
 
 -- top-level API
 

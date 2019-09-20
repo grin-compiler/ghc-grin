@@ -39,6 +39,7 @@ data Ty
   = TyCon     Name ConName [Ty]
   | TyVar     Name
   | TySimple  Name SimpleType
+  | TyFun     Name Ty [Ty]
   deriving (Generic, Data, Eq, Ord, Show)
 
 data External
