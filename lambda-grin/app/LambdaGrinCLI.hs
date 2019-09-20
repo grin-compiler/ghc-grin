@@ -10,7 +10,7 @@ import Lambda.Syntax
 import Lambda.Parse
 import Lambda.Pretty
 import Lambda.Lint
-import Lambda.GrinCodeGenTyped
+--import Lambda.GrinCodeGenTyped
 import Grin.Pretty
 import Pipeline.Pipeline
 
@@ -54,7 +54,7 @@ cg_main opts = do
     -}
     program <- decodeEx <$> BS.readFile fname :: IO Exp
     lintLambda program
-    let lambdaGrin = codegenGrin program
+    let lambdaGrin = undefined -- codegenGrin program
     void $ pipeline pipelineOpts Nothing lambdaGrin
       [ T TrivialCaseElimination
       , T BindNormalisation
