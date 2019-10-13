@@ -5,142 +5,62 @@ import GHC
 import DynFlags
 import ErrUtils
 import Platform ( platformOS, osSubsectionsViaSymbols )
-import HscMain
 import HscTypes
 import Outputable
 import GHC.Paths ( libdir )
+import DriverPipeline
+import DriverPhases
 
--- Core Types
-import Var
+-- Stg Types
 import Name
-import Kind
-import Avail
-import IdInfo
+import Id
 import Module
---import TypeRep
 import Unique
 import OccName
-import InstEnv
-import NameSet
-import RdrName
-import FamInstEnv
 import Stream (Stream)
 import qualified Stream
-import qualified CoreSyn as Syn
 import StgSyn
 import CostCentre
 import CodeOutput
+
+import PrimOp
+import TysWiredIn
+import Literal
+import MkId
 
 -- Core Passes
 import StgCmm (codeGen)
 import Cmm
 import CmmInfo (cmmToRawCmm )
-import CmmLint (cmmLint)
 import CmmPipeline (cmmPipeline)
-import CmmBuildInfoTables (emptySRT) -- , srtToData)
-import AsmCodeGen ( nativeCodeGen )
+import CmmBuildInfoTables (emptySRT)
 import UniqSupply ( mkSplitUniqSupply, initUs_ )
 
 import System.IO
 import Data.Time
 import Control.Monad.Trans
 import Control.Monad
+import qualified Data.ByteString.Char8 as BS8
 
 -------------------------------------------------------------------------------
 -- Module
 -------------------------------------------------------------------------------
 
 mkName :: Int -> String -> Name
-mkName i n = mkInternalName (mkUnique 'n' i) (mkOccName OccName.varName n) noSrcSpan
+mkName i n = mkExternalName (mkUnique 'u' i) modl (mkOccName OccName.varName n) noSrcSpan
 
-xn :: Name
-xn = mkName 0 "x"
-
-an :: Name
-an = mkName 1 "a"
-
-fn :: Name
-fn = mkExternalName (mkUnique 'n' 2) modl (mkOccName OccName.varName "f") noSrcSpan
-{-
--- a :: *
-a :: TyVar
-a = mkTyVar an undefined--anyKind
-
--- x :: a
-x :: Var
-x = mkLocalVar VanillaId xn (TyVarTy a) vanillaIdInfo
-
--- f :: a -> a
-fv :: Var
-fv = mkGlobalVar VanillaId fn (FunTy (TyVarTy a) (TyVarTy a)) vanillaIdInfo
-
-def :: [Syn.CoreBind]
-def = [Syn.NonRec fv f]
-
-f :: Syn.Expr Var
-f = Syn.Lam x (Syn.Var x)
--}
 modl :: Module
-modl = mkModule mainUnitId (mkModuleName "Example")
-{-
-guts :: ModGuts
-guts = ModGuts
-  {
-      mg_module          = modl,
-      mg_exports         = [Avail fn],
-      mg_deps            = noDependencies,
-      mg_dir_imps        = emptyModuleEnv,
-      mg_used_names      = mkNameSet [fn],
-      mg_used_th         = False,
-      mg_rdr_env         = emptyGlobalRdrEnv,
-      mg_fix_env         = emptyFixityEnv,
-      mg_tcs             = [],
-      mg_insts           = [],
-      mg_fam_insts       = [],
-      mg_patsyns         = [],
-      mg_rules           = [],
-      mg_binds           = def,
-      mg_foreign         = NoStubs,
-      mg_warns           = NoWarnings,
-      mg_hpc_info        = NoHpcInfo False,
-      mg_modBreaks       = emptyModBreaks,
-      mg_vect_decls      = [],
-      mg_vect_info       = noVectInfo,
-      mg_boot            = False,
-      mg_anns            = [],
-      mg_inst_env        = emptyInstEnv,
-      mg_fam_inst_env    = emptyFamInstEnv,
-      mg_safe_haskell    = Sf_None,
-      mg_trust_pkg       = False,
-      mg_dependent_files = []
-  }
+modl = mkModule mainUnitId (mkModuleName ":Main")
 
-summ :: DynFlags -> ModSummary
-summ dflags = ModSummary 
-  {
-      ms_mod          = modl,
-      ms_hsc_src      = HsSrcFile,
-      ms_location     = ModLocation {
-          ml_hs_file  = Nothing
-      ,   ml_hi_file  = "Example.hi"
-      ,   ml_obj_file = "Example.o"
-      },
-      ms_hs_date      = UTCTime (toEnum 0) 0,
-      ms_obj_date     = Nothing,
-      ms_iface_date   = Nothing,
-      ms_srcimps      = [],
-      ms_textual_imps = [],
-      ms_hspp_file    = "Example.hs",
-      ms_hspp_opts    = dflags,
-      ms_hspp_buf     = Nothing
-  }
--}
 modloc :: ModLocation
-modloc = ModLocation 
+modloc = ModLocation
  { ml_hs_file  = Nothing
  , ml_hi_file  = "Example.hi"
  , ml_obj_file = "Example.o"
  }
+
+t0 :: Type
+t0 = intTy
 
 showGhc :: (Outputable a) => a -> String
 showGhc = showPpr unsafeGlobalDynFlags
@@ -158,87 +78,57 @@ main = runGhc (Just libdir) $ do
   dflags <- getSessionDynFlags
   env <- getSession
 
-  setTargets [Target
-    { targetId = TargetModule (mkModuleName "Example")
-    , targetAllowObjCode = True
-    , targetContents = Nothing }]
-{-
-  -- Run the Core prep pass
-  prep <- liftIO $ corePrepPgm env (ms_location (summ dflags)) (mg_binds guts) (mg_tcs guts)
+  setTargets
+    [ Target
+        { targetId = TargetModule (mkModuleName "Example")
+        , targetAllowObjCode = True
+        , targetContents = Nothing
+        }
+    ]
 
-  -- Transform Core into STG
-  stg <- liftIO $ coreToStg dflags (mg_module guts) prep
-
-  -- STG Transformer
-  (stg_binds2, cost_centre_info) <- liftIO $ stg2stg dflags (mg_module guts) stg
--}
-  let stg_binds2 = []
-      cost_centre_info = ([],[])
-  -- Generated Cmm
-  let cmms = codeGen dflags modl [] cost_centre_info stg_binds2 (NoHpcInfo False)
-
-  -- Initialize a name supply for the Cmm pipeline
-  us <- liftIO $ mkSplitUniqSupply 'S'
-  let initTopSRT = initUs_ us --emptySRT
-      --run_pipeline = cmmPipeline env
-      run_pipeline us cmmgroup = do
-        (_topSRT, cmmgroup) <-
-          cmmPipeline env (emptySRT modl) cmmgroup
-        return (us, cmmgroup)
-
-{-
-        let -- Make up a module name to give the NCG. We can't pass bottom here
-            -- lest we reproduce #11784.
-            mod_name = mkModuleName $ "Cmm$" ++ FilePath.takeFileName filename
-            cmm_mod = mkModule (thisPackage dflags) mod_name
-        (_, cmmgroup) <- cmmPipeline hsc_env (emptySRT cmm_mod) cmm
-        rawCmms <- cmmToRawCmm dflags (Stream.yield cmmgroup)
-
-          let run_pipeline us cmmgroup = do
-                (_topSRT, cmmgroup) <-
-                  cmmPipeline hsc_env (emptySRT this_mod) cmmgroup
-                return (us, cmmgroup)
-
-          in do _ <- Stream.mapAccumL run_pipeline us ppr_stream1
-                return ()
--}
-
-  -- Collect the Cmm code stream after running the pipeline.
-  let cmmstream = do
-        undefined
-{-
-       a <- Stream.mapAccumL run_pipeline us cmms
-       Stream.yield (a)
--}
-  -- Prepare the Cmm for
-  genraw <- liftIO $ cmmToRawCmm dflags cmmstream
-
-  -- Initialize name supply for the native code generator and generate x86 to a
-  -- file from the prepared Cmm.
-  ncg_uniqs <- liftIO $ mkSplitUniqSupply 'n'
-  fname <- liftIO $ (openFile "Example.asm" WriteMode)
-  liftIO $ nativeCodeGen dflags modl modloc fname ncg_uniqs genraw
-{-
-  -- Dump the outputted Stg and  Cmm out
-  gen <- liftIO $ Stream.collect cmmstream
-  --liftIO $ putStrLn "=== STG ==="
-  --liftIO $ putStrLn $ showGhc stg_binds2
-
-  liftIO $ putStrLn "=== CMM ==="
-  liftIO $ putStrLn $ showGhc gen
--}
+  let ccs       = ([], [])
+      hpc       = emptyHpcInfo False
+      tyCons    = []
+      --idg0      = mkVanillaGlobal xn t0
+      --idl0      = mkLocalId xn t0
+      mkIdN i n  = mkVanillaGlobal (mkName i n) t0
+      mkId i    = mkVanillaGlobal (mkName i $ 'x' : show i) t0
+      topBinds  =
+        [ StgTopStringLit (mkId 0) (BS8.pack "Hello!")
+        , StgTopLifted $ StgNonRec (mkIdN 1 "main") $
+            StgRhsClosure dontCareCCS stgSatOcc [] SingleEntry [voidArgId] $
+              StgOpApp (StgPrimOp IntAddOp)
+                [ StgLitArg $ mkMachInt dflags 1
+                , StgLitArg $ mkMachInt dflags 2
+                ] intTy
+        ]
+  liftIO $ do
+    let outFname  = "out.asm"
+    newGen dflags env outFname modl tyCons ccs topBinds hpc
+    oneShot env StopLn [(outFname, Just $ As False)]
   pure ()
 
 
-newGen dflags hsc_env this_mod data_tycons cost_centre_info hpc_info = do
-  -- TODO
-  let stg_binds = []
-      output_filename = ""
-      location = modloc
-      foreign_stubs = undefined
+-------------
+-- from GHC
+-------------
+
+newGen :: DynFlags
+       -> HscEnv
+       -> FilePath
+       -> Module
+       -> [TyCon]
+       -> CollectedCCs
+       -> [StgTopBinding]
+       -> HpcInfo
+       -> IO (FilePath, Maybe FilePath, [(ForeignSrcLang, FilePath)])
+newGen dflags hsc_env output_filename this_mod data_tycons cost_centre_info stg_binds hpc_info = do
+  -- TODO: add these to parameters
+  let location = modloc
+      foreign_stubs = NoStubs
       foreign_files = []
       dependencies = []
-      
+
   cmms <- {-# SCC "StgCmm" #-}
                   doCodeGen hsc_env this_mod data_tycons
                       cost_centre_info
