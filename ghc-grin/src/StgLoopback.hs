@@ -22,11 +22,16 @@ import qualified Stream
 import StgSyn
 import CostCentre
 import CodeOutput
+import ForeignCall
+import FastString
+import BasicTypes
+import CoreSyn (AltCon(..))
 
 import PrimOp
 import TysWiredIn
 import Literal
 import MkId
+import TyCon
 
 -- Core Passes
 import StgCmm (codeGen)
@@ -48,6 +53,9 @@ import qualified Data.ByteString.Char8 as BS8
 
 mkName :: Int -> String -> Name
 mkName i n = mkExternalName (mkUnique 'u' i) modl (mkOccName OccName.varName n) noSrcSpan
+
+--mkNameL :: Int -> String -> Name
+--mkNameL i n = mkInternalName (mkUnique 'u' i) (mkOccName OccName.varName n) noSrcSpan
 
 modl :: Module
 modl = mkModule mainUnitId (mkModuleName ":Main")
@@ -72,40 +80,69 @@ showGhc = showPpr unsafeGlobalDynFlags
 main :: IO ()
 main = runGhc (Just libdir) $ do
   dflags <- getSessionDynFlags
-
-  setSessionDynFlags $ dflags { hscTarget = HscAsm, ghcLink = LinkBinary }
-
-  dflags <- getSessionDynFlags
-  env <- getSession
-
-  setTargets
-    [ Target
-        { targetId = TargetModule (mkModuleName "Example")
-        , targetAllowObjCode = True
-        , targetContents = Nothing
-        }
-    ]
-
+  -- construct STG program manually
   let ccs       = ([], [])
       hpc       = emptyHpcInfo False
       tyCons    = []
-      --idg0      = mkVanillaGlobal xn t0
       --idl0      = mkLocalId xn t0
-      mkIdN i n  = mkVanillaGlobal (mkName i n) t0
+      mkIdN i n = mkVanillaGlobal (mkName i n) t0
       mkId i    = mkVanillaGlobal (mkName i $ 'x' : show i) t0
+      --mkIdL i   = mkLocalId (mkNameL i $ 'l' : show i) t0
+      idStr0    = mkId 0
+      idInt0    = mkId 100
       topBinds  =
-        [ StgTopStringLit (mkId 0) (BS8.pack "Hello!")
+        [ StgTopStringLit idStr0 (BS8.pack "Hello!\n1 + 2 = %d\n")
         , StgTopLifted $ StgNonRec (mkIdN 1 "main") $
             StgRhsClosure dontCareCCS stgSatOcc [] SingleEntry [voidArgId] $
-              StgOpApp (StgPrimOp IntAddOp)
-                [ StgLitArg $ mkMachInt dflags 1
-                , StgLitArg $ mkMachInt dflags 2
-                ] intTy
+              StgCase (
+                StgOpApp (StgPrimOp IntAddOp)
+                  [ StgLitArg $ mkMachInt dflags 1
+                  , StgLitArg $ mkMachInt dflags 2
+                  ] intTy
+              ) idInt0 (PrimAlt IntRep)
+              [ (DEFAULT, [],
+                  StgOpApp
+                    (StgFCallOp
+                      (CCall $ CCallSpec
+                        (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                        CCallConv
+                        PlayRisky
+                      )
+                      (mkUnique 'f' 0)
+                    )
+                    [ StgVarArg idStr0
+                    , StgVarArg idInt0
+                    ] intTy
+                )
+              ]
+
         ]
+
+  -- backend
+  let
+    outFname  = "out.ll"
+    useLLVM = True
+
+    (target, link)
+      | useLLVM   = (HscLlvm, LlvmOpt)
+      | otherwise = (HscAsm, As False)
+
+  -- Compile & Link
+  dflags <- getSessionDynFlags
+  setSessionDynFlags $
+    dflags { hscTarget = target, ghcLink = LinkBinary }
+    `gopt_set`  Opt_KeepSFiles
+    `gopt_set`  Opt_KeepLlvmFiles
+--    `dopt_set`  Opt_D_dump_cmm
+    `dopt_set`  Opt_D_dump_cmm_raw
+--    `dopt_set`  Opt_D_dump_cmm_from_stg
+
+  dflags <- getSessionDynFlags
+
+  env <- getSession
   liftIO $ do
-    let outFname  = "out.asm"
     newGen dflags env outFname modl tyCons ccs topBinds hpc
-    oneShot env StopLn [(outFname, Just $ As False)]
+    oneShot env StopLn [(outFname, Just link)]
   pure ()
 
 
