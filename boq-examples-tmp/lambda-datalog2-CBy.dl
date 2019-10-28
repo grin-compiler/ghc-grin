@@ -1,3 +1,8 @@
+/*
+  Handles:
+    - genuine value origins
+    - pattern matching
+*/
 
 // origin: node or external
 .decl NodeOrigin(v:CodeName, value:CodeName)
@@ -33,16 +38,25 @@ PointsTo(result, value) :- Move(result, value).
 
 // SECTION: Case + Alt
 
-// scrutinee projection ; alt value
+/*
+  TODO:
+    - handle default alternatives
+*/
+
+
+// scrutinee projection to alt value ; NodeOrigin
 PointsTo(alt_val, scrut_val) :-
   Case(case_result, scrut),
   Alt(case_result, alt_val, tag),
   NodeOrigin(scrut, scrut_val),
   Node(scrut_val, tag).
 
-// TODO: external pattern match
-//  ; Call(scrut_val, ext_f, _), ExternalReturnType(ext_f, ret_ty), TypeNode(ret_ty, tag)
-//  ).
+// scrutinee projection to alt value ; ExternalOrigin
+ExternalOrigin(alt_val, ext_result, ty_var) :-
+  Case(case_result, scrut),
+  Alt(case_result, alt_val, tag),
+  ExternalOrigin(scrut, ext_result, ty_var),
+  TypeNode(ty_var, tag).
 
 // alt params from Node
 PointsTo(p, val) :-
@@ -52,72 +66,16 @@ PointsTo(p, val) :-
   Node(node, tag),
   NodeArgument(node, i, val).
 
-// alt params from interpreted External (i.e. ... -> {"GHC.Prim.Unit#" %a})
-/*
-PointsTo(p, val) :-
+// alt params from External (i.e. ... -> {"GHC.Prim.Unit#" %a} or ... -> {"GHC.Prim.Unit#" T_Int})
+ExternalOrigin(p, ext_result, ty_var) :-
   Alt(_, alt, tag),
   AltParameter(alt, i, p),
-  NodeOrigin(alt, r), // TODO: ExternalOrigin
-  // find external call
-  Call(r, ext, _),
-  ExternalFunction(ext, _, _),
-  IsInterpreted(ext),
-  // lookup result node
-  ExternalReturnType(ext, ty_node),
+  ExternalOrigin(alt, ext_result, ty_node),
   TypeNode(ty_node, tag),
-  // lookup node arguments
-  TypeNodeArgument(ty_node, i, ty_var),
-  IsTypeVariable(ty_var),
-  TypeVarPointsTo(r, ty_var, val).
+  TypeNodeArgument(ty_node, i, ty_var).
 
-// alt params from simple External (i.e. ... -> {"GHC.Prim.Unit#" T_Char})
-Origin(p, ty_var) :-
-  Alt(_, alt, tag),
-  AltParameter(alt, i, p),
-  Origin(alt, r),
-  // find external call
-  Call(r, ext, _),
-  ExternalFunction(ext, _, _),
-  IsNotInterpreted(ext),
-  // lookup result node
-  ExternalReturnType(ext, ty_node),
-  TypeNode(ty_node, tag),
-  // lookup node arguments
-  TypeNodeArgument(ty_node, i, ty_var),
-  TypeNode(ty_var).
-*/
 // alt result
 PointsTo(case_result, val) :-
   Case(case_result, _),
   Alt(case_result, alt, _),
   ReturnValue(alt, val).
-
-/*
-  TODO:
-    primop return value
-      done - collect return points to relations
-      done - handle type node deconstruction in pattern bindings (general case)
-        add new rules for pattern variable binding
-*/
-/*
-// parametric externals
-.decl PatternArgFromExternal(c:External, t:Tag, v:Variable)
-.output PatternArgFromExternal
-
-PatternArgFromExternal(ext_f, tag, p) :-
-  Case(case_result, scrut),
-  Alt(case_result, alt, tag),
-  Origin(scrut, scrut_val),
-  Call(scrut_val, ext_f, _),
-  ExternalFunction(ext_f, _, _),
-  AltParameter(alt, _, p).
-
-.decl ExtRetPatMismatch(p:Tag, t:Tag, c:External)
-.output ExtRetPatMismatch
-
-ExtRetPatMismatch(p, t, e) :-
-  PatternArgFromExternal(e, p, _),
-  ExternalReturnType(e, ty_node),
-  TypeNode(ty_node, t),
-  t != p.
-*/

@@ -1,15 +1,20 @@
 // catch# + raise# + raiseIO#
 
+/*
+  NOTES for higher order primop support:
+    the higher order primops execute function calls and also pass the arguments
+    this mean that they have to collect the arguments somewhere, maybe from an accompaning other primop provides it,
+    i.e. raise provides the arguments for catch
+
+*/
+// SECTION: higher order primop evaluator
+
 .decl RaisedEx(f:Variable)
 .output RaisedEx
 
 RaisedEx(ex) :-
   (Call(r, "raise#", _) ; Call(r, "raiseIO#", _)),
   CallArgument(r, 0, ex).
-
-IsInterpreted("raise#").
-IsInterpreted("raiseIO#").
-IsInterpreted("catch#").
 
 // handle the wrapped function
 Called(r, fun),

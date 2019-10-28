@@ -18,3 +18,12 @@ PNode(src, pap_f, pap_ar, pap_rem) :-
 PNodeArgument(src, pap_f, pap_i, pap_value) :-
   PointsTo(src, dst),
   PNodeArgument(dst, pap_f, pap_i, pap_value).
+
+// handling of external sub structure result & external sub structure pattern match
+
+.decl TypeVarPointsTo(result:Variable, ty_var:Variable, dst:Variable)
+.output TypeVarPointsTo
+
+PointsTo(src, dst) :-
+  ExternalOrigin(src, r, t),
+  TypeVarPointsTo(r, t, dst).

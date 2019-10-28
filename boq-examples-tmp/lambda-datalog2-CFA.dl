@@ -1,4 +1,10 @@
 /*
+  Handles:
+    - function calls
+    - partial applications
+*/
+
+/*
   control flow analysis
 
   each value can be:
