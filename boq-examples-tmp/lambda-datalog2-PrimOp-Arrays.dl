@@ -1,0 +1,196 @@
+/*
+  HINT: is interpreted -/+
+
+  primop effectful
+    + "newArray#" :: T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+
+  primop pure
+    - "sameMutableArray#" :: {"MutableArray#" %s %a} -> {"MutableArray#" %s %a} -> T_Int64
+
+  primop effectful
+    + "readArray#"  :: {"MutableArray#" %s %a} -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+    + "writeArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
+
+  primop pure
+    - "sizeofArray#"        :: {"Array#" %a} -> T_Int64
+    - "sizeofMutableArray#" :: {"MutableArray#" %s %a} -> T_Int64
+    + "indexArray#"         :: {"Array#" %a} -> T_Int64 -> {"GHC.Prim.Unit#" %a}
+
+  primop effectful
+    + "unsafeFreezeArray#" :: {"MutableArray#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" {"Array#" %a}}
+    + "unsafeThawArray#"   :: {"Array#" %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+    + "copyArray#"         :: {"Array#" %a} -> T_Int64 -> {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    + "copyMutableArray#"  :: {"MutableArray#" %s %a} -> T_Int64 -> {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    + "cloneArray#"        :: {"Array#" %a} -> T_Int64 -> T_Int64 -> {"Array#" %a}
+    + "cloneMutableArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+    + "freezeArray#"       :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"Array#" %a}}
+    + "thawArray#"         :: {"Array#" %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+    + "casArray#"          :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
+*/
+
+/*
+  Question:
+    should we distinct Array and MutableArray?
+    can we reuse Array for each container like primitives?
+
+  Answer:
+    At first I go with the simplest approach: single reusable Array.
+*/
+
+// IDEA: Array is a kind of domain specific TypeVarPointsTo
+.decl Array(ext_result:Variable, ty_node:Variable, item:Variable)
+.output Array
+
+// "newArray#" :: T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+Array(r, ty_node, item) :-
+  Call(r, "newArray#", _),
+  // initial item
+  CallArgument(r, 1, item),
+  // extract result node
+  ExternalReturnType("newArray#", ty_res),
+  TypeNode(ty_res, "GHC.Prim.Unit#"),
+  TypeNodeArgument(ty_res, 0, ty_node).
+
+// "readArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+TypeVarPointsTo(r, ty_node, item) :-
+  Call(r, "readArray#", _),
+  // lookup array items
+  CallArgument(r, 0, arr),
+  ExternalOrigin(arr, ext_result, arr_node),
+  Array(ext_result, arr_node, item),
+  // lookup result node
+  ExternalReturnType("readArray#", ty_res),
+  TypeNode(ty_res, "GHC.Prim.Unit#"),
+  TypeNodeArgument(ty_res, 0, ty_node).
+
+// "writeArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
+Array(ext_result, ty_node, item) :-
+  Call(r, "writeArray#", _),
+  // initial item
+  CallArgument(r, 2, item),
+  // lookup array
+  CallArgument(r, 0, arr),
+  ExternalOrigin(arr, ext_result, ty_node),
+  // validation
+  Array(ext_result, ty_node, _).
+
+// "indexArray#" :: {"Array#" %a} -> T_Int64 -> {"GHC.Prim.Unit#" %a}
+TypeVarPointsTo(r, ty_node, item) :-
+  Call(r, "indexArray#", _),
+  // lookup array items
+  CallArgument(r, 0, arr),
+  ExternalOrigin(arr, ext_result, arr_node),
+  Array(ext_result, arr_node, item),
+  // lookup result node
+  ExternalReturnType("indexArray#", ty_res),
+  TypeNode(ty_res, "GHC.Prim.Unit#"),
+  TypeNodeArgument(ty_res, 0, ty_node).
+
+// "unsafeFreezeArray#" :: {"MutableArray#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" {"Array#" %a}}
+TypeVarPointsTo(r, ty_node, arr) :- // bypass argument
+  Call(r, "unsafeFreezeArray#", _),
+  // lookup array items
+  CallArgument(r, 0, arr),
+  // lookup result node
+  ExternalReturnType("unsafeFreezeArray#", ty_res),
+  TypeNode(ty_res, "GHC.Prim.Unit#"),
+  TypeNodeArgument(ty_res, 0, ty_node).
+
+// "unsafeThawArray#" :: {"Array#" %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+TypeVarPointsTo(r, ty_node, arr) :- // bypass argument
+  Call(r, "unsafeThawArray#", _),
+  // lookup array items
+  CallArgument(r, 0, arr),
+  // lookup result node
+  ExternalReturnType("unsafeThawArray#", ty_res),
+  TypeNode(ty_res, "GHC.Prim.Unit#"),
+  TypeNodeArgument(ty_res, 0, ty_node).
+
+// "copyArray#" :: {"Array#" %a} -> T_Int64 -> {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+Array(dst_ext_result, dst_arr_node, src_item) :-
+  Call(r, "copyArray#", _),
+  // lookup src array items
+  CallArgument(r, 0, src_arr),
+  ExternalOrigin(src_arr, src_ext_result, src_arr_node),
+  Array(src_ext_result, src_arr_node, src_item),
+  // lookup dst array items
+  CallArgument(r, 2, dst_arr),
+  ExternalOrigin(dst_arr, dst_ext_result, dst_arr_node),
+  Array(dst_ext_result, dst_arr_node, _).
+
+// "copyMutableArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+Array(dst_ext_result, dst_arr_node, src_item) :-
+  Call(r, "copyMutableArray#", _),
+  // lookup src array items
+  CallArgument(r, 0, src_arr),
+  ExternalOrigin(src_arr, src_ext_result, src_arr_node),
+  Array(src_ext_result, src_arr_node, src_item),
+  // lookup dst array items
+  CallArgument(r, 2, dst_arr),
+  ExternalOrigin(dst_arr, dst_ext_result, dst_arr_node),
+  Array(dst_ext_result, dst_arr_node, _).
+
+// "cloneArray#" :: {"Array#" %a} -> T_Int64 -> T_Int64 -> {"Array#" %a}
+Array(r, arr_node, src_item) :-
+  Call(r, "cloneArray#", _),
+  // lookup src array items
+  CallArgument(r, 0, src_arr),
+  ExternalOrigin(src_arr, src_ext_result, src_arr_node),
+  Array(src_ext_result, src_arr_node, src_item),
+  // extract result node
+  ExternalReturnType("cloneArray#", arr_node).
+
+// "cloneMutableArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+Array(r, arr_node, src_item) :-
+  Call(r, "cloneMutableArray#", _),
+  // lookup src array items
+  CallArgument(r, 0, src_arr),
+  ExternalOrigin(src_arr, src_ext_result, src_arr_node),
+  Array(src_ext_result, src_arr_node, src_item),
+  // extract result node
+  ExternalReturnType("cloneMutableArray#", ty_res),
+  TypeNode(ty_res, "GHC.Prim.Unit#"),
+  TypeNodeArgument(ty_res, 0, arr_node).
+
+// "freezeArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"Array#" %a}}
+Array(r, arr_node, src_item) :-
+  Call(r, "freezeArray#", _),
+  // lookup src array items
+  CallArgument(r, 0, src_arr),
+  ExternalOrigin(src_arr, src_ext_result, src_arr_node),
+  Array(src_ext_result, src_arr_node, src_item),
+  // extract result node
+  ExternalReturnType("freezeArray#", ty_res),
+  TypeNode(ty_res, "GHC.Prim.Unit#"),
+  TypeNodeArgument(ty_res, 0, arr_node).
+
+// "thawArray#" :: {"Array#" %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+Array(r, arr_node, src_item) :-
+  Call(r, "thawArray#", _),
+  // lookup src array items
+  CallArgument(r, 0, src_arr),
+  ExternalOrigin(src_arr, src_ext_result, src_arr_node),
+  Array(src_ext_result, src_arr_node, src_item),
+  // extract result node
+  ExternalReturnType("thawArray#", ty_res),
+  TypeNode(ty_res, "GHC.Prim.Unit#"),
+  TypeNodeArgument(ty_res, 0, arr_node).
+
+// "casArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
+TypeVarPointsTo(r, ty_node, new_item),
+TypeVarPointsTo(r, ty_node, old_item),
+Array(ext_result, arr_node, new_item) :-
+  Call(r, "casArray#", _),
+  // old item
+  CallArgument(r, 2, old_item),
+  // new item
+  CallArgument(r, 3, new_item),
+  // lookup array
+  CallArgument(r, 0, arr),
+  ExternalOrigin(arr, ext_result, arr_node),
+  // validation
+  Array(ext_result, arr_node, _),
+  // extract result node
+  ExternalReturnType("casArray#", ty_res),
+  TypeNode(ty_res, "GHC.Prim.(#,#)"),
+  TypeNodeArgument(ty_res, 1, ty_node).

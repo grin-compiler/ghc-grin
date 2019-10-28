@@ -38,12 +38,6 @@ PointsTo(result, value) :- Move(result, value).
 
 // SECTION: Case + Alt
 
-/*
-  TODO:
-    - handle default alternatives
-*/
-
-
 // scrutinee projection to alt value ; NodeOrigin
 PointsTo(alt_val, scrut_val) :-
   Case(case_result, scrut),
@@ -79,3 +73,14 @@ PointsTo(case_result, val) :-
   Case(case_result, _),
   Alt(case_result, alt, _),
   ReturnValue(alt, val).
+
+/*
+  TODO:
+    - handle default alternatives
+*/
+
+/*
+  Question:
+    Do we need to distinct external and interpreted-external origins?
+    Does this makes difference in perfomrmance?
+*/
