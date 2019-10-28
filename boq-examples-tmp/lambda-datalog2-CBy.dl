@@ -1,30 +1,10 @@
-.decl PointsTo(src:CodeName, dst:CodeName)
 
 // origin: node or external
 .decl NodeOrigin(v:CodeName, value:CodeName)
 .decl ExternalOrigin(v:CodeName, ext_result:Variable, ty_var:Variable)
 
-.output PointsTo
 .output NodeOrigin
 .output ExternalOrigin
-
-// propagate values via points-to
-
-NodeOrigin(src, value) :-
-  PointsTo(src, dst),
-  NodeOrigin(dst, value).
-
-ExternalOrigin(src, value, tn) :-
-  PointsTo(src, dst),
-  ExternalOrigin(dst, value, tn).
-
-PNode(src, pap_f, pap_ar, pap_rem) :-
-  PointsTo(src, dst),
-  PNode(dst, pap_f, pap_ar, pap_rem).
-
-PNodeArgument(src, pap_f, pap_i, pap_value) :-
-  PointsTo(src, dst),
-  PNodeArgument(dst, pap_f, pap_i, pap_value).
 
 /*
   SECTION: calling a constructor

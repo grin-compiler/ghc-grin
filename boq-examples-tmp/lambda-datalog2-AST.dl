@@ -100,3 +100,8 @@ HasInst(n, v) :-
   NextInst(v0, v).
 
 .output HasInst
+
+// unify functions and closures
+.decl CodeParameter(f:CodeName, i:number, parameter:Variable)
+
+CodeParameter(f, i, p) :- (FunctionParameter(f, i, p) ; ClosureParameter(f, i, p)).

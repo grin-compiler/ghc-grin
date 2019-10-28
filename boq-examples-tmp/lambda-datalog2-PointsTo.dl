@@ -1,0 +1,20 @@
+// propagates inferred properties
+
+.decl PointsTo(src:CodeName, dst:CodeName)
+.output PointsTo
+
+NodeOrigin(src, value) :-
+  PointsTo(src, dst),
+  NodeOrigin(dst, value).
+
+ExternalOrigin(src, value, tn) :-
+  PointsTo(src, dst),
+  ExternalOrigin(dst, value, tn).
+
+PNode(src, pap_f, pap_ar, pap_rem) :-
+  PointsTo(src, dst),
+  PNode(dst, pap_f, pap_ar, pap_rem).
+
+PNodeArgument(src, pap_f, pap_i, pap_value) :-
+  PointsTo(src, dst),
+  PNodeArgument(dst, pap_f, pap_i, pap_value).
