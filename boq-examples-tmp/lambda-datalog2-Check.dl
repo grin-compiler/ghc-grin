@@ -1,0 +1,33 @@
+///// VALIDATION
+.decl Error(v:Variable, msg:symbol)
+.output Error
+
+// there is no lazy operation beside con and closure
+Error(v, "not closure or node") :-
+  EvalMode(v, "lazy"),
+  !(Node(v, _) ; IsClosure(v)).
+
+// there is no strict closure
+Error(v, "strict closure") :-
+  EvalMode(v, "strict"),
+  IsClosure(v).
+
+Error(v, "lazy app") :-
+  EvalMode(v, "lazy"),
+  Call(v,_,_).
+
+// SECTION: debug
+
+.decl MissingValue(v:Variable)
+.output MissingValue
+
+MissingValue(v) :-
+  HasInst(f, v),
+  !DeadCode(f),
+  !IsClosure(v), // if closure is always used fully saturated then it will not have a PNode nor an origin, because only nodes and external functions are value origins
+  !(NodeOrigin(v, _) ; ExternalOrigin(v, _, _) ; PNode(v, _, _, _)).
+
+MissingValue(v) :-
+  (FunctionParameter(f, _, v) ; AltParameter(f, _, v) ; ClosureParameter(f, _, v)),
+  !DeadCode(f),
+  !(NodeOrigin(v, _) ; ExternalOrigin(v, _, _); PNode(v, _, _, _)).

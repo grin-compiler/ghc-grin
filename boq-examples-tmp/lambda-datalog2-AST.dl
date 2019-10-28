@@ -1,0 +1,102 @@
+.symbol_type External
+.symbol_type Function
+.symbol_type Variable
+.symbol_type Tag
+.type CodeName = Function | Variable | External
+.symbol_type Mode  // 'lazy' or 'strict'
+.symbol_type Eff   // 'pure' or 'effectful'
+
+// strictness context
+.decl EvalMode(result:Variable, mode:Mode)
+
+// variable
+.decl Move(result:Variable, value:Variable)
+
+// node value
+.decl Node(result_node:Variable, t:Tag)
+.decl NodeArgument(result_node:Variable, i:number, item:Variable)
+
+// app a.k.a. call
+.decl Call(call_result:Variable, f:CodeName, arg_count:number)
+.decl CallArgument(call_result:Variable, i:number, value:Variable)
+
+// function
+// example: f param0 param1 = ...
+.decl IsFunction(f:CodeName)
+.decl FunctionParameter(f:Function, i:number, parameter:Variable)
+
+// case + alt
+.decl Case(case_result:Variable, scrutinee:Variable)
+.decl Alt(case_result:Variable, alt_value:Variable, t:Tag)
+.decl AltParameter(alt_value:Variable, i:number, parameter:Variable)
+
+// closure
+// example: result = \[captured0 captured1] param0 param1 = ...
+.decl IsClosure(result:CodeName)
+.decl ClosureVariable(result:Variable, i:number, captured:Variable)
+.decl ClosureParameter(result:Variable, i:number, parameter:Variable)
+
+// return value
+.decl ReturnValue(n:CodeName, value:Variable)
+
+// instruction ordering
+.decl FirstInst(n:CodeName, result:Variable)
+.decl NextInst(prev:Variable, next:Variable)
+
+// letrec
+.decl RecGroup(first:Variable, v:Variable)
+
+// external types
+.decl TypeNode(ty_node:Variable, t:Tag)
+.decl TypeNodeArgument(ty_node:Variable, i:number, item:Variable)
+.decl IsTypeVariable(v:Variable) // tells if it refers to a corresponding TypeNode
+
+// higher order external types
+.decl FunctionType(ty_fun:Variable, arity:number)
+.decl FunctionTypeParameterType(ty_fun:Variable, i:number, ty_node:Variable)
+.decl FunctionTypeReturnType(ty_fun:Variable, ty_node:Variable)
+
+// external
+.decl ExternalFunction(f:External, eff:Eff, arity:number)
+.decl ExternalParameterType(f:External, i:number, ty_node:Variable)
+.decl ExternalReturnType(f:External, ty_node:Variable)
+
+// arity
+.decl CodeArity(n:CodeName, arity:number)
+
+.input EvalMode
+.input Move
+.input Node
+.input NodeArgument
+.input Call
+.input CallArgument
+.input IsFunction
+.input FunctionParameter
+.input Case
+.input Alt
+.input AltParameter
+.input IsClosure
+.input ClosureVariable
+.input ClosureParameter
+.input ReturnValue
+.input FirstInst
+.input NextInst
+.input RecGroup
+.input ExternalFunction
+.input ExternalParameterType
+.input ExternalReturnType
+.input CodeArity
+.input TypeNode
+.input TypeNodeArgument
+.input IsTypeVariable
+
+// utility
+.decl HasInst(n:CodeName, v:Variable)
+
+HasInst(n, v) :-
+  FirstInst(n, v).
+HasInst(n, v) :-
+  HasInst(n, v0),
+  NextInst(v0, v).
+
+.output HasInst

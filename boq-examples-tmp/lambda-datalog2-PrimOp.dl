@@ -1,0 +1,23 @@
+/*
+  NOTES for higher order primop support:
+    the higher order primops execute function calls and also pass the arguments
+    this mean that they have to collect the arguments somewhere, maybe from an accompaning other primop provides it,
+    i.e. raise provides the arguments for catch
+
+*/
+// SECTION: higher order primop evaluator
+
+.decl IsInterpreted(e:External)
+.decl IsNotInterpreted(e:External)
+.output IsInterpreted
+.output IsNotInterpreted
+
+IsNotInterpreted(e) :- ExternalFunction(e, _, _), !IsInterpreted(e).
+
+.decl TypeVarPointsTo(result:Variable, ty_var:Variable, dst:Variable)
+.output TypeVarPointsTo
+
+// handling of external sub structure result & external sub structure pattern match
+PointsTo(src, dst) :-
+  ExternalOrigin(src, r, t),
+  TypeVarPointsTo(r, t, dst).

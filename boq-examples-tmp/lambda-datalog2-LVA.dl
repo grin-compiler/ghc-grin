@@ -1,0 +1,52 @@
+// reachibility
+.decl InitialReachable(n:CodeName)
+
+// hardcoded edb
+InitialReachable("::Main.main").
+InitialReachable(":Main.main").
+InitialReachable("Main.main").
+
+// SECTION: reachability
+
+.decl ReachableCode(n:CodeName)
+.output ReachableCode
+
+ReachableCode(n) :-
+  InitialReachable(n).
+
+// call
+ReachableCode(callee) :-
+  ReachableCode(f),
+  HasInst(f, r),
+  Called(r, callee).
+
+// alt ; tag insensitive
+ReachableCode(alt) :-
+  ReachableCode(f),
+  HasInst(f, r),
+  Alt(r, alt, _).
+
+// SECTION: dead code
+
+.decl DeadCode(n:CodeName)
+.output DeadCode
+
+DeadCode(n) :-
+  ReturnValue(n, _),
+  !ReachableCode(n).
+
+.decl DeadExternal(n:External)
+.output DeadExternal
+
+.decl ReachableExternal(n:External)
+.output ReachableExternal
+
+ReachableExternal(n) :-
+  ExternalFunction(n, _, _),
+  Call(r, n, _),
+  HasInst(f, r),
+  ReachableCode(f).
+
+DeadExternal(n) :-
+  ExternalFunction(n, _, _),
+  !ReachableExternal(n).

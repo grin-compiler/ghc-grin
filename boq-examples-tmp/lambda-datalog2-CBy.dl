@@ -1,0 +1,143 @@
+.decl PointsTo(src:CodeName, dst:CodeName)
+
+// origin: node or external
+.decl NodeOrigin(v:CodeName, value:CodeName)
+.decl ExternalOrigin(v:CodeName, ext_result:Variable, ty_var:Variable)
+
+.output PointsTo
+.output NodeOrigin
+.output ExternalOrigin
+
+// propagate values via points-to
+
+NodeOrigin(src, value) :-
+  PointsTo(src, dst),
+  NodeOrigin(dst, value).
+
+ExternalOrigin(src, value, tn) :-
+  PointsTo(src, dst),
+  ExternalOrigin(dst, value, tn).
+
+PNode(src, pap_f, pap_ar, pap_rem) :-
+  PointsTo(src, dst),
+  PNode(dst, pap_f, pap_ar, pap_rem).
+
+PNodeArgument(src, pap_f, pap_i, pap_value) :-
+  PointsTo(src, dst),
+  PNodeArgument(dst, pap_f, pap_i, pap_value).
+
+/*
+  SECTION: calling a constructor
+    handle stg style constructor calling:
+      let   con = [tag a b c]
+      letS  val = con $
+*/
+NodeOrigin(r, val) :-
+  Call(r, f, 0),
+  EvalMode(r, "strict"),
+  NodeOrigin(f, val),
+  Node(val, _).
+
+// SECTION: Origin
+
+NodeOrigin(n, n) :- Node(n, _).
+
+ExternalOrigin(r, r, ty_node) :-
+  Call(r, f, _),
+  EvalMode(r, "strict"),
+  ExternalFunction(f, _, _),
+  ExternalReturnType(f, ty_node).
+
+// Move
+PointsTo(result, value) :- Move(result, value).
+
+// SECTION: Case + Alt
+
+// scrutinee projection ; alt value
+PointsTo(alt_val, scrut_val) :-
+  Case(case_result, scrut),
+  Alt(case_result, alt_val, tag),
+  NodeOrigin(scrut, scrut_val),
+  Node(scrut_val, tag).
+
+// TODO: external pattern match
+//  ; Call(scrut_val, ext_f, _), ExternalReturnType(ext_f, ret_ty), TypeNode(ret_ty, tag)
+//  ).
+
+// alt params from Node
+PointsTo(p, val) :-
+  Alt(_, alt, tag),
+  AltParameter(alt, i, p),
+  NodeOrigin(alt, node),
+  Node(node, tag),
+  NodeArgument(node, i, val).
+
+// alt params from interpreted External (i.e. ... -> {"GHC.Prim.Unit#" %a})
+/*
+PointsTo(p, val) :-
+  Alt(_, alt, tag),
+  AltParameter(alt, i, p),
+  NodeOrigin(alt, r), // TODO: ExternalOrigin
+  // find external call
+  Call(r, ext, _),
+  ExternalFunction(ext, _, _),
+  IsInterpreted(ext),
+  // lookup result node
+  ExternalReturnType(ext, ty_node),
+  TypeNode(ty_node, tag),
+  // lookup node arguments
+  TypeNodeArgument(ty_node, i, ty_var),
+  IsTypeVariable(ty_var),
+  TypeVarPointsTo(r, ty_var, val).
+
+// alt params from simple External (i.e. ... -> {"GHC.Prim.Unit#" T_Char})
+Origin(p, ty_var) :-
+  Alt(_, alt, tag),
+  AltParameter(alt, i, p),
+  Origin(alt, r),
+  // find external call
+  Call(r, ext, _),
+  ExternalFunction(ext, _, _),
+  IsNotInterpreted(ext),
+  // lookup result node
+  ExternalReturnType(ext, ty_node),
+  TypeNode(ty_node, tag),
+  // lookup node arguments
+  TypeNodeArgument(ty_node, i, ty_var),
+  TypeNode(ty_var).
+*/
+// alt result
+PointsTo(case_result, val) :-
+  Case(case_result, _),
+  Alt(case_result, alt, _),
+  ReturnValue(alt, val).
+
+/*
+  TODO:
+    primop return value
+      done - collect return points to relations
+      done - handle type node deconstruction in pattern bindings (general case)
+        add new rules for pattern variable binding
+*/
+/*
+// parametric externals
+.decl PatternArgFromExternal(c:External, t:Tag, v:Variable)
+.output PatternArgFromExternal
+
+PatternArgFromExternal(ext_f, tag, p) :-
+  Case(case_result, scrut),
+  Alt(case_result, alt, tag),
+  Origin(scrut, scrut_val),
+  Call(scrut_val, ext_f, _),
+  ExternalFunction(ext_f, _, _),
+  AltParameter(alt, _, p).
+
+.decl ExtRetPatMismatch(p:Tag, t:Tag, c:External)
+.output ExtRetPatMismatch
+
+ExtRetPatMismatch(p, t, e) :-
+  PatternArgFromExternal(e, p, _),
+  ExternalReturnType(e, ty_node),
+  TypeNode(ty_node, t),
+  t != p.
+*/
