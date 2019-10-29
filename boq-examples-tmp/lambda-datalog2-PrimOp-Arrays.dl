@@ -1,6 +1,8 @@
 /*
   HINT: is interpreted -/+
 
+  Arrays
+
   primop effectful
     + "newArray#" :: T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
 
@@ -26,6 +28,35 @@
     + "freezeArray#"       :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"Array#" %a}}
     + "thawArray#"         :: {"Array#" %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
     + "casArray#"          :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
+
+  Small Arrays
+
+  primop effectful
+    + "newSmallArray#" :: T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
+
+  primop pure
+    - "sameSmallMutableArray#" :: {"SmallMutableArray#" %s %a} -> {"SmallMutableArray#" %s %a} -> T_Int64
+
+  primop effectful
+    + "readSmallArray#"  :: {"SmallMutableArray#" %s %a} -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+    + "writeSmallArray#" :: {"SmallMutableArray#" %s %a} -> T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
+
+  primop pure
+    - "sizeofSmallArray#"        :: {"SmallArray#" %a} -> T_Int64
+    - "sizeofSmallMutableArray#" :: {"SmallMutableArray#" %s %a} -> T_Int64
+    + "indexSmallArray#"         :: {"SmallArray#" %a} -> T_Int64 -> {"GHC.Prim.Unit#" %a}
+
+  primop effectful
+    + "unsafeFreezeSmallArray#" :: {"SmallMutableArray#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallArray#" %a}}
+    + "unsafeThawSmallArray#"   :: {"SmallArray#" %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
+    + "copySmallArray#"         :: {"SmallArray#" %a} -> T_Int64 -> {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    + "copySmallMutableArray#"  :: {"SmallMutableArray#" %s %a} -> T_Int64 -> {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    + "cloneSmallArray#"        :: {"SmallArray#" %a} -> T_Int64 -> T_Int64 -> {"SmallArray#" %a}
+    + "cloneSmallMutableArray#" :: {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
+    + "freezeSmallArray#"       :: {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallArray#" %a}}
+    + "thawSmallArray#"         :: {"SmallArray#" %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
+    + "casSmallArray#"          :: {"SmallMutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
+
 */
 
 /*
@@ -41,32 +72,55 @@
 .decl Array(ext_result:Variable, ty_node:Variable, item:Variable)
 .output Array
 
-// "newArray#" :: T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
-Array(r, ty_node, item) :-
-  Call(r, "newArray#", _),
-  // initial item
-  CallArgument(r, 1, item),
-  // extract result node
-  ExternalReturnType("newArray#", ty_res),
+//////////////////////
+.decl RetTup1Node0(ext:External, ty_node:Variable)
+.decl RetTup(ext:External, tag:Tag, i:number, ty_node:Variable)
+
+.output RetTup1Node0
+.output RetTup
+
+RetTup1Node0(ext, ty_node) :-
+  ExternalReturnType(ext, ty_res),
   TypeNode(ty_res, "GHC.Prim.Unit#"),
   TypeNodeArgument(ty_res, 0, ty_node).
 
-// "readArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+RetTup(ext, tag, i, ty_node) :-
+  ExternalReturnType(ext, ty_res),
+  TypeNode(ty_res, tag),
+  TypeNodeArgument(ty_res, i, ty_node).
+
+/////////////////////
+
+// "newArray#"      :: T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+// "newSmallArray#" :: T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
+// new array
+Array(r, ty_node, item) :-
+  (op = "newArray#" ; op = "newSmallArray#"),
+  Call(r, op, _),
+  // initial item
+  CallArgument(r, 1, item),
+  // extract result node
+  RetTup1Node0(op, ty_node).
+
+// "readArray#"       :: {"MutableArray#" %s %a}      -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+// "readSmallArray#"  :: {"SmallMutableArray#" %s %a} -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
 TypeVarPointsTo(r, ty_node, item) :-
-  Call(r, "readArray#", _),
+  (op = "readArray#" ; op = "readSmallArray#"),
+  Call(r, op, _),
   // lookup array items
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
   Array(ext_result, arr_node, item),
   // lookup result node
-  ExternalReturnType("readArray#", ty_res),
-  TypeNode(ty_res, "GHC.Prim.Unit#"),
-  TypeNodeArgument(ty_res, 0, ty_node).
+  RetTup1Node0(op, ty_node).
 
-// "writeArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
+// "writeArray#"      :: {"MutableArray#" %s %a}      -> T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
+// "writeSmallArray#" :: {"SmallMutableArray#" %s %a} -> T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
+// extend array
 Array(ext_result, ty_node, item) :-
-  Call(r, "writeArray#", _),
-  // initial item
+  (op = "writeArray#" ; op = "writeSmallArray#"),
+  Call(r, op, _),
+  // item to write
   CallArgument(r, 2, item),
   // lookup array
   CallArgument(r, 0, arr),
@@ -74,41 +128,46 @@ Array(ext_result, ty_node, item) :-
   // validation
   Array(ext_result, ty_node, _).
 
-// "indexArray#" :: {"Array#" %a} -> T_Int64 -> {"GHC.Prim.Unit#" %a}
+// "indexArray#"      :: {"Array#" %a}      -> T_Int64 -> {"GHC.Prim.Unit#" %a}
+// "indexSmallArray#" :: {"SmallArray#" %a} -> T_Int64 -> {"GHC.Prim.Unit#" %a}
 TypeVarPointsTo(r, ty_node, item) :-
-  Call(r, "indexArray#", _),
+  (op = "indexArray#" ; op = "indexSmallArray#"),
+  Call(r, op, _),
   // lookup array items
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
   Array(ext_result, arr_node, item),
   // lookup result node
-  ExternalReturnType("indexArray#", ty_res),
-  TypeNode(ty_res, "GHC.Prim.Unit#"),
-  TypeNodeArgument(ty_res, 0, ty_node).
+  RetTup1Node0(op, ty_node).
 
-// "unsafeFreezeArray#" :: {"MutableArray#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" {"Array#" %a}}
+// "unsafeFreezeArray#"      :: {"MutableArray#" %s %a}      -> {"State#" %s} -> {"GHC.Prim.Unit#" {"Array#" %a}}
+// "unsafeFreezeSmallArray#" :: {"SmallMutableArray#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallArray#" %a}}
+// reuse array ; alias
 TypeVarPointsTo(r, ty_node, arr) :- // bypass argument
-  Call(r, "unsafeFreezeArray#", _),
+  (op = "unsafeFreezeArray#" ; op = "unsafeFreezeSmallArray#"),
+  Call(r, op, _),
   // lookup array items
   CallArgument(r, 0, arr),
   // lookup result node
-  ExternalReturnType("unsafeFreezeArray#", ty_res),
-  TypeNode(ty_res, "GHC.Prim.Unit#"),
-  TypeNodeArgument(ty_res, 0, ty_node).
+  RetTup1Node0(op, ty_node).
 
-// "unsafeThawArray#" :: {"Array#" %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+// "unsafeThawArray#"       :: {"Array#" %a}      -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+// "unsafeThawSmallArray#"  :: {"SmallArray#" %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
+// reuse array ; alias
 TypeVarPointsTo(r, ty_node, arr) :- // bypass argument
-  Call(r, "unsafeThawArray#", _),
+  (op = "unsafeThawArray#" ; op = "unsafeThawSmallArray#"),
+  Call(r, op, _),
   // lookup array items
   CallArgument(r, 0, arr),
   // lookup result node
-  ExternalReturnType("unsafeThawArray#", ty_res),
-  TypeNode(ty_res, "GHC.Prim.Unit#"),
-  TypeNodeArgument(ty_res, 0, ty_node).
+  RetTup1Node0(op, ty_node).
 
-// "copyArray#" :: {"Array#" %a} -> T_Int64 -> {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+// "copyArray#"       :: {"Array#" %a}      -> T_Int64 -> {"MutableArray#" %s %a}      -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+// "copySmallArray#"  :: {"SmallArray#" %a} -> T_Int64 -> {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+// extend array
 Array(dst_ext_result, dst_arr_node, src_item) :-
-  Call(r, "copyArray#", _),
+  (op = "copyArray#" ; op = "copySmallArray#"),
+  Call(r, op, _),
   // lookup src array items
   CallArgument(r, 0, src_arr),
   ExternalOrigin(src_arr, src_ext_result, src_arr_node),
@@ -118,9 +177,12 @@ Array(dst_ext_result, dst_arr_node, src_item) :-
   ExternalOrigin(dst_arr, dst_ext_result, dst_arr_node),
   Array(dst_ext_result, dst_arr_node, _).
 
-// "copyMutableArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+// "copyMutableArray#"      :: {"MutableArray#" %s %a}      -> T_Int64 -> {"MutableArray#" %s %a}      -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+// "copySmallMutableArray#" :: {"SmallMutableArray#" %s %a} -> T_Int64 -> {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+// extend array
 Array(dst_ext_result, dst_arr_node, src_item) :-
-  Call(r, "copyMutableArray#", _),
+  (op = "copyMutableArray#" ; op = "copySmallMutableArray#"),
+  Call(r, op, _),
   // lookup src array items
   CallArgument(r, 0, src_arr),
   ExternalOrigin(src_arr, src_ext_result, src_arr_node),
@@ -130,57 +192,66 @@ Array(dst_ext_result, dst_arr_node, src_item) :-
   ExternalOrigin(dst_arr, dst_ext_result, dst_arr_node),
   Array(dst_ext_result, dst_arr_node, _).
 
-// "cloneArray#" :: {"Array#" %a} -> T_Int64 -> T_Int64 -> {"Array#" %a}
+// "cloneArray#"      :: {"Array#" %a}      -> T_Int64 -> T_Int64 -> {"Array#" %a}
+// "cloneSmallArray#" :: {"SmallArray#" %a} -> T_Int64 -> T_Int64 -> {"SmallArray#" %a}
+// new array
 Array(r, arr_node, src_item) :-
-  Call(r, "cloneArray#", _),
+  (op = "cloneArray#" ; op = "cloneSmallArray#"),
+  Call(r, op, _),
   // lookup src array items
   CallArgument(r, 0, src_arr),
   ExternalOrigin(src_arr, src_ext_result, src_arr_node),
   Array(src_ext_result, src_arr_node, src_item),
   // extract result node
-  ExternalReturnType("cloneArray#", arr_node).
+  ExternalReturnType(op, arr_node).
 
-// "cloneMutableArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+// "cloneMutableArray#"      :: {"MutableArray#" %s %a}      -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+// "cloneSmallMutableArray#" :: {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
+// new array
 Array(r, arr_node, src_item) :-
-  Call(r, "cloneMutableArray#", _),
+  (op = "cloneMutableArray#" ; op = "cloneSmallMutableArray#"),
+  Call(r, op, _),
   // lookup src array items
   CallArgument(r, 0, src_arr),
   ExternalOrigin(src_arr, src_ext_result, src_arr_node),
   Array(src_ext_result, src_arr_node, src_item),
   // extract result node
-  ExternalReturnType("cloneMutableArray#", ty_res),
-  TypeNode(ty_res, "GHC.Prim.Unit#"),
-  TypeNodeArgument(ty_res, 0, arr_node).
+  RetTup1Node0(op, arr_node).
 
-// "freezeArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"Array#" %a}}
+// "freezeArray#"       :: {"MutableArray#" %s %a}      -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"Array#" %a}}
+// "freezeSmallArray#"  :: {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallArray#" %a}}
+// new array
 Array(r, arr_node, src_item) :-
-  Call(r, "freezeArray#", _),
+  (op = "freezeArray#" ; op = "freezeSmallArray#"),
+  Call(r, op, _),
   // lookup src array items
   CallArgument(r, 0, src_arr),
   ExternalOrigin(src_arr, src_ext_result, src_arr_node),
   Array(src_ext_result, src_arr_node, src_item),
   // extract result node
-  ExternalReturnType("freezeArray#", ty_res),
-  TypeNode(ty_res, "GHC.Prim.Unit#"),
-  TypeNodeArgument(ty_res, 0, arr_node).
+  RetTup1Node0(op, arr_node).
 
-// "thawArray#" :: {"Array#" %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+// "thawArray#"       :: {"Array#" %a}      -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+// "thawSmallArray#"  :: {"SmallArray#" %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
+// new array
 Array(r, arr_node, src_item) :-
-  Call(r, "thawArray#", _),
+  (op = "thawArray#" ; op = "thawSmallArray#"),
+  Call(r, op, _),
   // lookup src array items
   CallArgument(r, 0, src_arr),
   ExternalOrigin(src_arr, src_ext_result, src_arr_node),
   Array(src_ext_result, src_arr_node, src_item),
   // extract result node
-  ExternalReturnType("thawArray#", ty_res),
-  TypeNode(ty_res, "GHC.Prim.Unit#"),
-  TypeNodeArgument(ty_res, 0, arr_node).
+  RetTup1Node0(op, arr_node).
 
-// "casArray#" :: {"MutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
+// "casArray#"      :: {"MutableArray#" %s %a}      -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
+// "casSmallArray#" :: {"SmallMutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
+// extend array
 TypeVarPointsTo(r, ty_node, new_item),
 TypeVarPointsTo(r, ty_node, old_item),
 Array(ext_result, arr_node, new_item) :-
-  Call(r, "casArray#", _),
+  (op = "casArray#" ; op = "casSmallArray#"),
+  Call(r, op, _),
   // old item
   CallArgument(r, 2, old_item),
   // new item
@@ -191,6 +262,4 @@ Array(ext_result, arr_node, new_item) :-
   // validation
   Array(ext_result, arr_node, _),
   // extract result node
-  ExternalReturnType("casArray#", ty_res),
-  TypeNode(ty_res, "GHC.Prim.(#,#)"),
-  TypeNodeArgument(ty_res, 1, ty_node).
+  RetTup(op, "GHC.Prim.(#,#)", 1, ty_node).
