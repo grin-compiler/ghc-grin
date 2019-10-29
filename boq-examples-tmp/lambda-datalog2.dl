@@ -9,3 +9,4 @@
 #include "lambda-datalog2-PrimOp-Exception.dl"
 #include "lambda-datalog2-PrimOp-MutVar.dl"
 #include "lambda-datalog2-PrimOp-MVar.dl"
+#include "lambda-datalog2-PrimOp-StablePtr.dl"

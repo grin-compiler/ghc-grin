@@ -1,0 +1,36 @@
+/*
+  HINT: is interpreted -/+
+
+  primop effectful
+    + "makeStablePtr#"  :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
+    + "deRefStablePtr#" :: {"StablePtr#" %a} -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+    - "eqStablePtr#"    :: {"StablePtr#" %a} -> {"StablePtr#" %a} -> T_Int64
+    - "makeStableName#" :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"StableName#" %a}}
+
+  primop pure
+    - "eqStableName#"    :: {"StableName#" %a} -> {"StableName#" %b} -> T_Int64
+    - "stableNameToInt#" :: {"StableName#" %a} -> T_Int64
+
+  NOTE: StablePtr# is modeled as an Array
+*/
+
+// "makeStablePtr#" :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
+// new array
+Array(r, ty_node, item) :-
+  op = "makeStablePtr#",
+  Call(r, op, _),
+  // initial item
+  CallArgument(r, 0, item),
+  // extract result node
+  RetTup1Node0(op, ty_node).
+
+// "deRefStablePtr#" :: {"StablePtr#" %a} -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+TypeVarPointsTo(r, ty_node, item) :-
+  op = "deRefStablePtr#",
+  Call(r, op, _),
+  // lookup array items
+  CallArgument(r, 0, arr),
+  ExternalOrigin(arr, ext_result, arr_node),
+  Array(ext_result, arr_node, item),
+  // lookup result node
+  RetTup1Node0(op, ty_node).
