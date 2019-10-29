@@ -1,0 +1,32 @@
+/*
+  HINT: is interpreted -/+
+
+  primop effectful
+    + "fork#"                 :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"ThreadId#"}}
+    + "forkOn#"               :: T_Int64 -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"ThreadId#"}}
+    + "killThread#"           :: {"ThreadId#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.(##)"}
+    - "yield#"                :: {"State#" {RealWorld}} -> {"GHC.Prim.(##)"}
+    - "myThreadId#"           :: {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"ThreadId#"}}
+    - "labelThread#"          :: {"ThreadId#"} -> T_Addr -> {"State#" {RealWorld}} -> {"GHC.Prim.(##)"}
+    - "isCurrentThreadBound#" :: {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Int64}
+    - "noDuplicate#"          :: {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "threadStatus#"         :: {"ThreadId#"} -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,,#)" T_Int64 T_Int64 T_Int64}
+*/
+
+// "killThread#" :: {"ThreadId#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.(##)"}
+// collect raised exceptions
+RaisedEx(ex) :-
+  Call(r, "killThread#", _),
+  CallArgument(r, 1, ex).
+
+// "fork#" :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"ThreadId#"}}
+Called(r, fun) :-
+  Call(r, "fork#", _),
+  CallArgument(r, 0, v0),
+  PNode(v0, fun, _, 0).
+
+// "forkOn#" :: T_Int64 -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"ThreadId#"}}
+Called(r, fun) :-
+  Call(r, "forkOn#", _),
+  CallArgument(r, 1, v0),
+  PNode(v0, fun, _, 0).
