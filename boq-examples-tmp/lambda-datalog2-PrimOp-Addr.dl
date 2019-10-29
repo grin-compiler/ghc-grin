@@ -1,0 +1,88 @@
+/*
+  HINT: is interpreted -/+
+
+  primop pure
+    - "plusAddr#"              :: T_Addr -> T_Int64 -> T_Addr
+    - "minusAddr#"             :: T_Addr -> T_Addr -> T_Int64
+    - "remAddr#"               :: T_Addr -> T_Int64 -> T_Int64
+    - "addr2Int#"              :: T_Addr -> T_Int64
+    - "int2Addr#"              :: T_Int64 -> T_Addr
+    - "gtAddr#"                :: T_Addr -> T_Addr -> T_Int64
+    - "geAddr#"                :: T_Addr -> T_Addr -> T_Int64
+    - "eqAddr#"                :: T_Addr -> T_Addr -> T_Int64
+    - "neAddr#"                :: T_Addr -> T_Addr -> T_Int64
+    - "ltAddr#"                :: T_Addr -> T_Addr -> T_Int64
+    - "leAddr#"                :: T_Addr -> T_Addr -> T_Int64
+    - "indexCharOffAddr#"      :: T_Addr -> T_Int64 -> T_Char
+    - "indexWideCharOffAddr#"  :: T_Addr -> T_Int64 -> T_Char
+    - "indexIntOffAddr#"       :: T_Addr -> T_Int64 -> T_Int64
+    - "indexWordOffAddr#"      :: T_Addr -> T_Int64 -> T_Word64
+    - "indexAddrOffAddr#"      :: T_Addr -> T_Int64 -> T_Addr
+    - "indexFloatOffAddr#"     :: T_Addr -> T_Int64 -> T_Float
+    - "indexDoubleOffAddr#"    :: T_Addr -> T_Int64 -> T_Double
+    + "indexStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"StablePtr#" %a}
+    - "indexInt8OffAddr#"      :: T_Addr -> T_Int64 -> T_Int64
+    - "indexInt16OffAddr#"     :: T_Addr -> T_Int64 -> T_Int64
+    - "indexInt32OffAddr#"     :: T_Addr -> T_Int64 -> T_Int64
+    - "indexInt64OffAddr#"     :: T_Addr -> T_Int64 -> T_Int64
+    - "indexWord8OffAddr#"     :: T_Addr -> T_Int64 -> T_Word64
+    - "indexWord16OffAddr#"    :: T_Addr -> T_Int64 -> T_Word64
+    - "indexWord32OffAddr#"    :: T_Addr -> T_Int64 -> T_Word64
+    - "indexWord64OffAddr#"    :: T_Addr -> T_Int64 -> T_Word64
+
+  primop effectful
+    - "readCharOffAddr#"       :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Char}
+    - "readWideCharOffAddr#"   :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Char}
+    - "readIntOffAddr#"        :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
+    - "readWordOffAddr#"       :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Word64}
+    - "readAddrOffAddr#"       :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Addr}
+    - "readFloatOffAddr#"      :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Float}
+    - "readDoubleOffAddr#"     :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Double}
+    + "readStablePtrOffAddr#"  :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
+    - "readInt8OffAddr#"       :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
+    - "readInt16OffAddr#"      :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
+    - "readInt32OffAddr#"      :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
+    - "readInt64OffAddr#"      :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
+    - "readWord8OffAddr#"      :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Word64}
+    - "readWord16OffAddr#"     :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Word64}
+    - "readWord32OffAddr#"     :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Word64}
+    - "readWord64OffAddr#"     :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Word64}
+    - "writeCharOffAddr#"      :: T_Addr -> T_Int64 -> T_Char -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeWideCharOffAddr#"  :: T_Addr -> T_Int64 -> T_Char -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeIntOffAddr#"       :: T_Addr -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeWordOffAddr#"      :: T_Addr -> T_Int64 -> T_Word64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeAddrOffAddr#"      :: T_Addr -> T_Int64 -> T_Addr -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeFloatOffAddr#"     :: T_Addr -> T_Int64 -> T_Float -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeDoubleOffAddr#"    :: T_Addr -> T_Int64 -> T_Double -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"StablePtr#" %a} -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeInt8OffAddr#"      :: T_Addr -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeInt16OffAddr#"     :: T_Addr -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeInt32OffAddr#"     :: T_Addr -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeInt64OffAddr#"     :: T_Addr -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeWord8OffAddr#"     :: T_Addr -> T_Int64 -> T_Word64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeWord16OffAddr#"    :: T_Addr -> T_Int64 -> T_Word64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeWord32OffAddr#"    :: T_Addr -> T_Int64 -> T_Word64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+    - "writeWord64OffAddr#"    :: T_Addr -> T_Int64 -> T_Word64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
+*/
+
+/*
+  NOTE: all StablePtr is accessible via T_Addr and ByteArray#
+*/
+
+// "readStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
+TypeVarPointsTo(r, ty_node, ext_result) :-
+  op = "readStablePtrOffAddr#",
+  Call(r, op, _),
+  // lookup all stable pointers from the whole program
+  StablePtr(ext_result, _, _),
+  // lookup result node
+  RetTup1Node0(op, ty_node).
+
+// "indexStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"StablePtr#" %a}
+TypeVarPointsTo(r, ty_node, ext_result) :-
+  op = "indexStablePtrOffAddr#",
+  Call(r, op, _),
+  // lookup all stable pointers from the whole program
+  StablePtr(ext_result, _, _),
+  // lookup result node
+  ExternalReturnType(op, ty_node).
