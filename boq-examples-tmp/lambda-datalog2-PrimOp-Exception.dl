@@ -72,7 +72,7 @@ PointsTo(handler_arg_1, v2):- // pass realworld
 // "unmaskAsyncExceptions#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 Called(r, fun),
 TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
-PointsTo(fun_arg_0, v2_realworld) :-  // pass realworld
+PointsTo(fun_arg_0, v1_state) :-  // pass realworld
   ( op = "maskAsyncExceptions#"
   ; op = "maskUninterruptible#"
   ; op = "unmaskAsyncExceptions#"
@@ -82,7 +82,7 @@ PointsTo(fun_arg_0, v2_realworld) :-  // pass realworld
   CallArgument(r, 0, v0),
   PNode(v0, fun, fun_arity, 1),
   CodeParameter(fun, fun_arity-1, fun_arg_0),
-  CallArgument(r, 1, v2_realworld),
+  CallArgument(r, 1, v1_state),
   // return value
   RetTup1Node0(op, ty_res_value),
   IsTypeVariable(ty_res_value), // extra validation

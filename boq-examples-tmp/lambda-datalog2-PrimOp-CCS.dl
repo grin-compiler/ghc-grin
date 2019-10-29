@@ -1,0 +1,24 @@
+/*
+  HINT: is interpreted -/+
+
+  primop pure
+    - "getCCSOf#"      :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Addr}
+    - "getCurrentCCS#" :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Addr}
+    + "clearCCS#"      :: ({"State#" %s} -> {"GHC.Prim.Unit#" %a}) -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+*/
+
+// "clearCCS#" :: ({"State#" %s} -> {"GHC.Prim.Unit#" %a}) -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+Called(r, fun),
+TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
+PointsTo(fun_arg_0, v1_state) :-  // pass state
+  op = "clearCCS#",
+  Call(r, op, _),
+  // pass argument to the wrapped function
+  CallArgument(r, 0, v0),
+  PNode(v0, fun, fun_arity, 1),
+  CodeParameter(fun, fun_arity-1, fun_arg_0),
+  CallArgument(r, 1, v1_state),
+  // return value
+  RetTup1Node0(op, ty_res_value),
+  IsTypeVariable(ty_res_value), // extra validation
+  ReturnValue(fun, fun_ret).
