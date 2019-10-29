@@ -1,0 +1,30 @@
+/*
+  HINT: is interpreted -/+
+
+  primop effectful
+    - "compactNew#"    :: T_Word64 -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"Compact#"}}
+    - "compactResize#" :: {"Compact#"} -> T_Word64 -> {"State#" {RealWorld}} -> {"GHC.Prim.(##)"}
+
+  primop pure
+    - "compactContains#"      :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Int64}
+    - "compactContainsAny#"   :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Int64}
+    - "compactGetFirstBlock#" :: {"Compact#"} -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,#)" T_Addr T_Word64}
+    - "compactGetNextBlock#"  :: {"Compact#"} -> T_Addr -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,#)" T_Addr T_Word64}
+
+  primop effectful
+    - "compactAllocateBlock#"  :: T_Word64 -> T_Addr -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Addr}
+    - "compactFixupPointers#"  :: T_Addr -> T_Addr -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,#)" {"Compact#"} T_Addr}
+    + "compactAdd#"            :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+    + "compactAddWithSharing#" :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+    - "compactSize#"           :: {"Compact#"} -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Word64}
+*/
+
+// "compactAdd#"            :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+// "compactAddWithSharing#" :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+TypeVarPointsTo(r, ty_node, item) :-
+  (op = "compactAdd#" ; op = "compactAddWithSharing#"),
+  Call(r, op, _),
+  // item to bypass
+  CallArgument(r, 1, item),
+  // lookup result node
+  RetTup1Node0(op, ty_node).
