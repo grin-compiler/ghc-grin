@@ -1,4 +1,15 @@
-// catch# + raise# + raiseIO#
+/*
+  HINT: is interpreted -/+
+
+  primop effectful
+    + "catch#"                 :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> (%b -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+    + "raise#"                 :: %b -> %o
+    + "raiseIO#"               :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %b}
+    + "maskAsyncExceptions#"   :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+    + "maskUninterruptible#"   :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+    + "unmaskAsyncExceptions#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+    - "getMaskingState#"       :: {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Int64}
+*/
 
 /*
   NOTES for higher order primop support:
@@ -12,10 +23,17 @@
 .decl RaisedEx(f:Variable)
 .output RaisedEx
 
+// "raise#"   :: %b -> %o
+// "raiseIO#" :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %b}
+// collect raised exceptions
 RaisedEx(ex) :-
   (Call(r, "raise#", _) ; Call(r, "raiseIO#", _)),
   CallArgument(r, 0, ex).
 
+// "catch#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a})
+//          -> (%b -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a})
+//          -> {"State#" {RealWorld}}
+//          -> {"GHC.Prim.Unit#" %a}
 // handle the wrapped function
 Called(r, fun),
 TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
@@ -27,9 +45,7 @@ PointsTo(fun_arg_0, v2) :-  // pass realworld
   CodeParameter(fun, fun_arity-1, fun_arg_0),
   CallArgument(r, 2, v2),
   // return value
-  ExternalReturnType("catch#", ty_res),
-  TypeNode(ty_res, "GHC.Prim.Unit#"),
-  TypeNodeArgument(ty_res, 0, ty_res_value),
+  RetTup1Node0("catch#", ty_res_value),
   IsTypeVariable(ty_res_value), // extra validation
   ReturnValue(fun, fun_ret).
 
@@ -47,8 +63,27 @@ PointsTo(handler_arg_1, v2):- // pass realworld
   CodeParameter(handler, handler_arity-1, handler_arg_1),
   RaisedEx(ex),
   // return value
-  ExternalReturnType("catch#", ty_res),
-  TypeNode(ty_res, "GHC.Prim.Unit#"),
-  TypeNodeArgument(ty_res, 0, ty_res_value),
+  RetTup1Node0("catch#", ty_res_value),
   IsTypeVariable(ty_res_value), // extra validation
   ReturnValue(handler, handler_ret).
+
+// "maskAsyncExceptions#"   :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+// "maskUninterruptible#"   :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+// "unmaskAsyncExceptions#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+Called(r, fun),
+TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
+PointsTo(fun_arg_0, v2_realworld) :-  // pass realworld
+  ( op = "maskAsyncExceptions#"
+  ; op = "maskUninterruptible#"
+  ; op = "unmaskAsyncExceptions#"
+  ),
+  Call(r, op, _),
+  // pass argument to the wrapped function
+  CallArgument(r, 0, v0),
+  PNode(v0, fun, fun_arity, 1),
+  CodeParameter(fun, fun_arity-1, fun_arg_0),
+  CallArgument(r, 1, v2_realworld),
+  // return value
+  RetTup1Node0(op, ty_res_value),
+  IsTypeVariable(ty_res_value), // extra validation
+  ReturnValue(fun, fun_ret).
