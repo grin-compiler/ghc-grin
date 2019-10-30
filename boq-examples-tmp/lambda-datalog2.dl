@@ -14,6 +14,7 @@
 #include "lambda-datalog2-PrimOp-Exception.dl"
 #include "lambda-datalog2-PrimOp-MutVar.dl"
 #include "lambda-datalog2-PrimOp-MVar.dl"
+#include "lambda-datalog2-PrimOp-Parallelism.dl"
 #include "lambda-datalog2-PrimOp-STM.dl"
 #include "lambda-datalog2-PrimOp-StablePtr.dl"
 #include "lambda-datalog2-PrimOp-WeakPtr.dl"

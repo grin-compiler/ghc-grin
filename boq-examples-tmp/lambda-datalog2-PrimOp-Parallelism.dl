@@ -1,0 +1,58 @@
+/*
+  HINT: is interpreted -/+
+
+  primop effectful
+    + "par#"   :: %a -> T_Int64
+    + "spark#" :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+
+  primop pure
+    + "seq#" :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+
+  primop effectful
+    + "getSpark#"  :: {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
+    - "numSparks#" :: {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
+*/
+
+.decl Spark(item:Variable)
+.output Spark
+
+// "par#" :: %a -> T_Int64
+Spark(item) :-
+  Call(r, "par#", _),
+  // value
+  CallArgument(r, 0, item).
+
+// "spark#" :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+TypeVarPointsTo(r, ty_node, item),
+Spark(item) :-
+  op = "spark#",
+  Call(r, op, _),
+  // value
+  CallArgument(r, 0, item),
+  // extract result node
+  RetTup1Node0(op, ty_node).
+
+// TODO: execute call + add to Called
+// "seq#" :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+/*
+TypeVarPointsTo(r, ty_node, item) :-
+  op = "seq#",
+  Call(r, op, _),
+  // value
+  CallArgument(r, 0, item),
+  // extract result node
+  RetTup1Node0(op, ty_node).
+*/
+Error(r, "Unsupported (reachable) primop: seq# (TBD)") :-
+  Call(r, "seq#", _),
+  HasInst(f, r),
+  ReachableCode(f).
+
+// "getSpark#" :: {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
+TypeVarPointsTo(r, ty_node, item) :-
+  op = "getSpark#",
+  Call(r, op, _),
+  // lookup items
+  Spark(item),
+  // lookup result node
+  RetTup(op, "GHC.Prim.(#,#)", 1, ty_node).

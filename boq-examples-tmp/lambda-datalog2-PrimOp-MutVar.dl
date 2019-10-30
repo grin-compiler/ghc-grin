@@ -52,6 +52,10 @@ Array(ext_result, ty_node, item) :-
 
 // "atomicModifyMutVar#" :: {"MutVar#" %s %a} -> (%a -> %b) -> {"State#" %s} -> {"GHC.Prim.Unit#" %c}
 // TODO: check how atomicModifyMutVar# works, this type signature does not reflect its semantics
+Error(r, "Unsupported (reachable) primop: atomicModifyMutVar# (TBD)") :-
+  Call(r, "atomicModifyMutVar#", _),
+  HasInst(f, r),
+  ReachableCode(f).
 
 // "casMutVar#" :: {"MutVar#" %s %a} -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 // extend array
