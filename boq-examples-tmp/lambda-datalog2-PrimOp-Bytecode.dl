@@ -1,0 +1,27 @@
+/*
+  primop pure
+    "addrToAny#" :: T_Addr -> {"GHC.Prim.Unit#" %a}
+    "anyToAddr#" :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" T_Addr}
+    "mkApUpd0#"  :: {"BCO#"} -> {"GHC.Prim.Unit#" %a}
+
+  primop effectful
+    "newBCO#" :: {"ByteArray#"} -> {"ByteArray#"} -> {"Array#" %a} -> T_Int64 -> {"ByteArray#"} -> {"State#" %s} -> {"GHC.Prim.Unit#" {"BCO#"}}
+
+  primop pure
+    "unpackClosure#" :: %a -> {"GHC.Prim.(#,,#)" T_Addr {"ByteArray#"} {"Array#" %b}}
+    "getApStackVal#" :: %a -> T_Int64 -> {"GHC.Prim.(#,#)" T_Int64 %b}
+*/
+
+// Future work
+
+Error(r, "Unsupported (reachable) bytecode related primop") :-
+  ( op = "addrToAny#"
+  ; op = "anyToAddr#"
+  ; op = "mkApUpd0#"
+  ; op = "newBCO#"
+  ; op = "unpackClosure#"
+  ; op = "getApStackVal#"
+  ),
+  Call(r, op, _),
+  HasInst(f, r),
+  ReachableCode(f).

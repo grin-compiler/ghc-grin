@@ -7,6 +7,7 @@
 #include "lambda-datalog2-PrimOp-Addr.dl"
 #include "lambda-datalog2-PrimOp-Arrays.dl"
 #include "lambda-datalog2-PrimOp-ByteArray.dl"
+#include "lambda-datalog2-PrimOp-Bytecode.dl"
 #include "lambda-datalog2-PrimOp-CCS.dl"
 #include "lambda-datalog2-PrimOp-Compact.dl"
 #include "lambda-datalog2-PrimOp-Concurrency.dl"
