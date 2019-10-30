@@ -49,6 +49,7 @@ PointsTo(fun_arg_0, v2) :-  // pass realworld
   IsTypeVariable(ty_res_value), // extra validation
   ReturnValue(fun, fun_ret).
 
+// NOTE: the handler has its own rule, because it fires only when there are exceptions, while the wrapped function is always called
 // handle ex-handler
 Called(r, handler),
 TypeVarPointsTo(r, ty_res_value, handler_ret),     // handle return value

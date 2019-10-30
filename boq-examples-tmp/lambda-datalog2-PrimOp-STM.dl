@@ -1,0 +1,134 @@
+/*
+  HINT: is interpreted -/+
+
+  primop effectful
+    + "atomically#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+    - "retry#"      :: {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+    + "catchRetry#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+    + "catchSTM#"   :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> (%b -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+    + "newTVar#"    :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"TVar#" %s %a}}
+    + "readTVar#"   :: {"TVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+    + "readTVarIO#" :: {"TVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+    + "writeTVar#"  :: {"TVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
+
+  primop pure
+    - "sameTVar#" :: {"TVar#" %s %a} -> {"TVar#" %s %a} -> T_Int64
+*/
+
+// "atomically#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+Called(r, fun),
+TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
+PointsTo(fun_arg_0, v1_state) :-  // pass realworld
+  op = "atomically#",
+  Call(r, op, _),
+  // pass argument to the wrapped function
+  CallArgument(r, 0, v0),
+  PNode(v0, fun, fun_arity, 1),
+  CodeParameter(fun, fun_arity-1, fun_arg_0),
+  CallArgument(r, 1, v1_state),
+  // return value
+  RetTup1Node0(op, ty_res_value),
+  IsTypeVariable(ty_res_value), // extra validation
+  ReturnValue(fun, fun_ret).
+
+// "catchRetry#"  :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a})
+//                -> ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a})
+//                -> {"State#" {RealWorld}}
+//                -> {"GHC.Prim.Unit#" %a}
+Called(r, fun0),
+Called(r, fun1),
+TypeVarPointsTo(r, ty_res_value, fun0_ret),  // handle return value
+TypeVarPointsTo(r, ty_res_value, fun1_ret),  // handle return value
+PointsTo(fun0_arg_0, v2_state),   // pass realworld
+PointsTo(fun1_arg_0, v2_state) :- // pass realworld
+  op = "catchRetry#",
+  Call(r, op, _),
+  // pass argument to the wrapped function
+  // first function
+  CallArgument(r, 0, v0),
+  PNode(v0, fun0, fun0_arity, 1),
+  CodeParameter(fun0, fun0_arity-1, fun0_arg_0),
+  // second function
+  CallArgument(r, 1, v1),
+  PNode(v1, fun1, fun1_arity, 1),
+  CodeParameter(fun1, fun1_arity-1, fun1_arg_0),
+  // state
+  CallArgument(r, 2, v2_state),
+  // return value
+  RetTup1Node0(op, ty_res_value),
+  IsTypeVariable(ty_res_value), // extra validation
+  ReturnValue(fun0, fun0_ret),
+  ReturnValue(fun1, fun1_ret).
+
+// "catchSTM#"  :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a})
+//              -> (%b -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a})
+//              -> {"State#" {RealWorld}}
+//              -> {"GHC.Prim.Unit#" %a}
+// handle the wrapped function
+Called(r, fun),
+TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
+PointsTo(fun_arg_0, v2) :-  // pass realworld
+  Call(r, "catchSTM#", _),
+  // pass argument to the wrapped function
+  CallArgument(r, 0, v0),
+  PNode(v0, fun, fun_arity, 1),
+  CodeParameter(fun, fun_arity-1, fun_arg_0),
+  CallArgument(r, 2, v2),
+  // return value
+  RetTup1Node0("catchSTM#", ty_res_value),
+  IsTypeVariable(ty_res_value), // extra validation
+  ReturnValue(fun, fun_ret).
+
+// NOTE: the handler has its own rule, because it fires only when there are exceptions, while the wrapped function is always called
+// handle ex-handler
+Called(r, handler),
+TypeVarPointsTo(r, ty_res_value, handler_ret),     // handle return value
+PointsTo(handler_arg_0, ex),  // pass exceptions
+PointsTo(handler_arg_1, v2):- // pass realworld
+  Call(r, "catchSTM#", _),
+  // pass argument to the handler function
+  CallArgument(r, 1, v1),
+  CallArgument(r, 2, v2),
+  PNode(v1, handler, handler_arity, 2),
+  CodeParameter(handler, handler_arity-2, handler_arg_0),
+  CodeParameter(handler, handler_arity-1, handler_arg_1),
+  RaisedEx(ex),
+  // return value
+  RetTup1Node0("catchSTM#", ty_res_value),
+  IsTypeVariable(ty_res_value), // extra validation
+  ReturnValue(handler, handler_ret).
+
+// "newTVar#" :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"TVar#" %s %a}}
+// new array
+Array(r, ty_node, item) :-
+  op = "newTVar#",
+  Call(r, op, _),
+  // initial item
+  CallArgument(r, 0, item),
+  // extract result node
+  RetTup1Node0(op, ty_node).
+
+// "readTVar#"   :: {"TVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+// "readTVarIO#" :: {"TVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+TypeVarPointsTo(r, ty_node, item) :-
+  (op = "readTVar#" ; op = "readTVarIO#"),
+  Call(r, op, _),
+  // lookup array items
+  CallArgument(r, 0, arr),
+  ExternalOrigin(arr, ext_result, arr_node),
+  Array(ext_result, arr_node, item),
+  // lookup result node
+  RetTup1Node0(op, ty_node).
+
+// "writeTVar#"  :: {"TVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
+// extend array
+Array(ext_result, ty_node, item) :-
+  op = "writeTVar#",
+  Call(r, op, _),
+  // item to write
+  CallArgument(r, 1, item),
+  // lookup array
+  CallArgument(r, 0, arr),
+  ExternalOrigin(arr, ext_result, ty_node),
+  // validation
+  Array(ext_result, ty_node, _).
