@@ -16,3 +16,4 @@
 #include "lambda-datalog2-PrimOp-MVar.dl"
 #include "lambda-datalog2-PrimOp-STM.dl"
 #include "lambda-datalog2-PrimOp-StablePtr.dl"
+#include "lambda-datalog2-PrimOp-WeakPtr.dl"
