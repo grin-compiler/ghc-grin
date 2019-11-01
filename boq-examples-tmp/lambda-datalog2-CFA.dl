@@ -29,12 +29,12 @@
   Idea: use points-to relation for simple way value passing
 
 */
-.decl ApplyChain(v:CodeName, f:CodeName, step:number, consumed:number, arg_count:number)
+.decl ApplyChain(v:Variable, f:CodeName, step:number, consumed:number, arg_count:number)
 
-.decl PNode(v:CodeName, fun:CodeName, arity:number, remained:number)
-.decl PNodeArgument(v:CodeName, fun:CodeName, i:number, value:CodeName)
+.decl PNode(v:Variable, fun:CodeName, arity:number, remained:number)
+.decl PNodeArgument(v:Variable, fun:CodeName, i:number, value:CodeName)
 
-.decl Called(instruction:CodeName, f:CodeName)
+.decl Called(instruction:Variable, f:CodeName)
 
 .output PNode
 .output PNodeArgument

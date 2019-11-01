@@ -1,6 +1,6 @@
 // propagates inferred properties
 
-.decl PointsTo(src:CodeName, dst:CodeName)
+.decl PointsTo(src:Variable, dst:Variable)
 .output PointsTo
 
 NodeOrigin(src, value) :-

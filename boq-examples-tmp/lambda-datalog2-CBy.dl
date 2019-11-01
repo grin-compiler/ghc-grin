@@ -5,8 +5,8 @@
 */
 
 // origin: node or external
-.decl NodeOrigin(v:CodeName, value:CodeName)
-.decl ExternalOrigin(v:CodeName, ext_result:Variable, ty_var:Variable)
+.decl NodeOrigin(v:Variable, value:CodeName)
+.decl ExternalOrigin(v:Variable, ext_result:Variable, ty_var:Variable)
 
 .output NodeOrigin
 .output ExternalOrigin
