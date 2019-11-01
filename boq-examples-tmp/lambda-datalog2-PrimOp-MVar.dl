@@ -15,16 +15,17 @@
 
   primop effectful
     - "isEmptyMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
-
-  NOTE: MutVar# is modeled as an Array
 */
 
-.decl ArrayDef(ext_result:Variable, ty_node:Variable)
-.output ArrayDef
+.decl MVar(ext_result:Variable, ty_node:Variable, item:Variable)
+.output MVar
+
+.decl MVarDef(ext_result:Variable, ty_node:Variable)
+.output MVarDef
 
 // "newMVar#" :: {"State#" %s} -> {"GHC.Prim.Unit#" {"MVar#" %s %a}}
 // new array
-ArrayDef(r, ty_node) :-
+MVarDef(r, ty_node) :-
   op = "newMVar#",
   Call(r, op, _),
   // extract result node
@@ -38,8 +39,8 @@ TypeVarPointsTo(r, ty_node, item) :-
   // lookup array items
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
-  ArrayDef(ext_result, arr_node),
-  Array(ext_result, arr_node, item),
+  MVarDef(ext_result, arr_node),
+  MVar(ext_result, arr_node, item),
   // lookup result node
   RetTup1Node0(op, ty_node).
 
@@ -51,15 +52,15 @@ TypeVarPointsTo(r, ty_node, item) :-
   // lookup array items
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
-  ArrayDef(ext_result, arr_node),
-  Array(ext_result, arr_node, item),
+  MVarDef(ext_result, arr_node),
+  MVar(ext_result, arr_node, item),
   // lookup result node
   RetTup(op, "GHC.Prim.(#,#)", 1, ty_node).
 
 // "putMVar#"     :: {"MVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
 // "tryPutMVar#"  :: {"MVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
 // extend array
-Array(ext_result, ty_node, item) :-
+MVar(ext_result, ty_node, item) :-
   (op = "putMVar#" ; op = "tryPutMVar#"),
   Call(r, op, _),
   // item to write
@@ -68,4 +69,4 @@ Array(ext_result, ty_node, item) :-
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, ty_node),
   // validation
-  ArrayDef(ext_result, ty_node).
+  MVarDef(ext_result, ty_node).

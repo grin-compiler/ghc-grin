@@ -12,13 +12,14 @@
   primop effectful
     + "atomicModifyMutVar#" :: {"MutVar#" %s %a} -> (%a -> %b) -> {"State#" %s} -> {"GHC.Prim.Unit#" %c}
     + "casMutVar#"          :: {"MutVar#" %s %a} -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
-
-  NOTE: MutVar# is modeled as an Array
 */
+
+.decl MutVar(ext_result:Variable, ty_node:Variable, item:Variable)
+.output MutVar
 
 // "newMutVar#" :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutVar#" %s %a}}
 // new array
-Array(r, ty_node, item) :-
+MutVar(r, ty_node, item) :-
   op = "newMutVar#",
   Call(r, op, _),
   // initial item
@@ -33,13 +34,13 @@ TypeVarPointsTo(r, ty_node, item) :-
   // lookup array items
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
-  Array(ext_result, arr_node, item),
+  MutVar(ext_result, arr_node, item),
   // lookup result node
   RetTup1Node0(op, ty_node).
 
 // "writeMutVar#" :: {"MutVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
 // extend array
-Array(ext_result, ty_node, item) :-
+MutVar(ext_result, ty_node, item) :-
   op = "writeMutVar#",
   Call(r, op, _),
   // item to write
@@ -48,7 +49,7 @@ Array(ext_result, ty_node, item) :-
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, ty_node),
   // validation
-  Array(ext_result, ty_node, _).
+  MutVar(ext_result, ty_node, _).
 
 // "atomicModifyMutVar#" :: {"MutVar#" %s %a} -> (%a -> %b) -> {"State#" %s} -> {"GHC.Prim.Unit#" %c}
 // TODO: check how atomicModifyMutVar# works, this type signature does not reflect its semantics
@@ -61,7 +62,7 @@ Error(r, "Unsupported (reachable) primop: atomicModifyMutVar# (TBD)") :-
 // extend array
 TypeVarPointsTo(r, ty_node, new_item),
 TypeVarPointsTo(r, ty_node, old_item),
-Array(ext_result, arr_node, new_item) :-
+MutVar(ext_result, arr_node, new_item) :-
   op = "casMutVar#",
   Call(r, op, _),
   // old item
@@ -72,6 +73,6 @@ Array(ext_result, arr_node, new_item) :-
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
   // validation
-  Array(ext_result, arr_node, _),
+  MutVar(ext_result, arr_node, _),
   // extract result node
   RetTup(op, "GHC.Prim.(#,#)", 1, ty_node).

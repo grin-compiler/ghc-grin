@@ -10,13 +10,16 @@
     - "touch#"               :: %o -> {"State#" {RealWorld}} -> {"GHC.Prim.(##)"}
 */
 
+.decl WeakPtr(ext_result:Variable, ty_node:Variable, item:Variable)
+.output WeakPtr
+
 .decl WeakFinalizer(ext_result:Variable, finalizer:Variable)
 .output WeakFinalizer
 
 // "mkWeak#" :: %o -> %b -> ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %c}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"Weak#" %b}}
 // new array
 WeakFinalizer(r, finalizer),
-Array(r, ty_node, item) :-
+WeakPtr(r, ty_node, item) :-
   op = "mkWeak#",
   Call(r, op, _),
   // value
@@ -39,7 +42,7 @@ PointsTo(fun_arg_0, v3_state) :-  // pass realworld
 
 // "mkWeakNoFinalizer#" :: %o -> %b -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"Weak#" %b}}
 // new array
-Array(r, ty_node, item) :-
+WeakPtr(r, ty_node, item) :-
   op = "mkWeakNoFinalizer#",
   Call(r, op, _),
   // value
@@ -54,7 +57,7 @@ TypeVarPointsTo(r, ty_node, item) :-
   // lookup array items
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
-  Array(ext_result, arr_node, item),
+  WeakPtr(ext_result, arr_node, item),
   // lookup result node
   RetTup(op, "GHC.Prim.(#,#)", 1, ty_node).
 

@@ -15,6 +15,9 @@
     - "sameTVar#" :: {"TVar#" %s %a} -> {"TVar#" %s %a} -> T_Int64
 */
 
+.decl TVar(ext_result:Variable, ty_node:Variable, item:Variable)
+.output TVar
+
 // "atomically#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 Called(r, fun),
 TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
@@ -100,7 +103,7 @@ PointsTo(handler_arg_1, v2):- // pass realworld
 
 // "newTVar#" :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"TVar#" %s %a}}
 // new array
-Array(r, ty_node, item) :-
+TVar(r, ty_node, item) :-
   op = "newTVar#",
   Call(r, op, _),
   // initial item
@@ -116,13 +119,13 @@ TypeVarPointsTo(r, ty_node, item) :-
   // lookup array items
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
-  Array(ext_result, arr_node, item),
+  TVar(ext_result, arr_node, item),
   // lookup result node
   RetTup1Node0(op, ty_node).
 
 // "writeTVar#"  :: {"TVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
 // extend array
-Array(ext_result, ty_node, item) :-
+TVar(ext_result, ty_node, item) :-
   op = "writeTVar#",
   Call(r, op, _),
   // item to write
@@ -131,4 +134,4 @@ Array(ext_result, ty_node, item) :-
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, ty_node),
   // validation
-  Array(ext_result, ty_node, _).
+  TVar(ext_result, ty_node, _).
