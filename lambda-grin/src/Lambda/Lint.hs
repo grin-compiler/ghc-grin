@@ -8,7 +8,7 @@ import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Map (Map)
 import qualified Data.Map as Map
-import qualified Data.Text as T
+import qualified Data.ByteString.Char8 as BS8
 
 import Data.Functor.Foldable
 import qualified Data.Foldable
@@ -66,7 +66,7 @@ test = cata folder where
     ClosureF v p e    -> env {envUse = addNames v, envDef = addDefs p} <> e
     AltF (NodePat con args) e -> env {envDef = addDefs args, envCon = Set.singleton $ showTS (length args) <> "-" <> con} <> e
     -- err
-    LitF (LError err) -> env {envErr = Set.singleton $ packName $ T.unpack err}
+    LitF (LError err) -> env {envErr = Set.singleton $ packName $ BS8.unpack err}
     e -> Data.Foldable.fold e
 
 expSize :: Exp -> Int

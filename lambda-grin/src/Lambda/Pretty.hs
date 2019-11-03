@@ -79,18 +79,18 @@ instance Pretty L2.Exp where
 
 instance Pretty Lit where
   pretty = \case
-    LInt64 a  -> integer $ fromIntegral a
-    LWord64 a -> integer (fromIntegral a) <> text "u"
-    LFloat a  -> text "#" <> text (show a)
-    LDouble a -> text "#" <> text (show a) <> text "d"
-    LBool a   -> text "#" <> text (show a)
-    LChar a   -> text "#" <> text (show a)
-    LString a -> text "#" <> text (show a)
-    LLabelAddr a -> text "#@" <> text (show a)
-    LNullAddr -> text "#NullAddr"
-    LToken a  -> text "#%" <> text (show a)
+    LInt64 a  -> text "#T_Int64"    <+> integer (fromIntegral a)
+    LWord64 a -> text "#T_Word64"   <+> integer (fromIntegral a)
+    LFloat a  -> text "#T_Float"    <+> text (show a)
+    LDouble a -> text "#T_Double"   <+> text (show a)
+    LBool a   -> text "#T_Bool"     <+> text (show a)
+    LChar a   -> text "#T_Char"     <+> text (show a)
+    LString a -> text "#T_String"   <+> text (show a)
+    LLabelAddr a -> text "#T_Addr"  <+> text (show a)
+    LNullAddr -> text "#T_Addr"     <+> text "NullAddr"
+    LToken a  -> text "#T_Token"    <+> text (show a)
 --    LDummy a  -> red $ text "%" <> pretty a
-    LError a  -> red $ text "!" <> text (show a)
+    LError a  -> red $ text "#!" <> text (show a)
 
 instance Pretty Pat where
   pretty = \case
@@ -146,9 +146,9 @@ isTyArr = \case
 
 instance Pretty L2.Ty where
   pretty = \case
-    L2.TyCon varName name tys       -> braces (hsep ((green $ pretty name) : map pretty tys) <+> text "@" <+> pretty varName)
+    L2.TyCon varName name tys       -> braces (hsep ((green $ pretty name) : map pretty tys)) <+> text "@" <+> pretty varName
     L2.TyVar name                   -> text "%" <> cyan (pretty name)
-    L2.TySimple varName simpleType  -> parens (pretty simpleType <+> text "@" <+> pretty varName)
+    L2.TySimple varName simpleType  -> parens (pretty simpleType) <+> text "@" <+> pretty varName
     L2.TyFun name retTy argsTy      -> parens (pretty name <> encloseSep (text " : ") empty (text " -> ") (map pretty $ argsTy ++ [retTy]))
 
 instance Pretty SimpleType where

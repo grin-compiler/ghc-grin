@@ -93,7 +93,7 @@ data Lit
   | LNullAddr               -- TODO: missing from GRIN
   | LToken      ByteString
   -- special
-  | LError  !Text  -- marks an error ; dead code elimination may elminate
+  | LError      !ByteString  -- marks an error ; dead code elimination may elminate
 --  | LDummy  Text  -- should be ignored
   deriving (Generic, Data, Eq, Ord, Show)
 
