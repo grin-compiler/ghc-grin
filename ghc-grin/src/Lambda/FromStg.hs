@@ -97,7 +97,7 @@ repType t = \case
 
 showTypeInfo :: C.TypeInfo -> String
 showTypeInfo ti = BS8.unpack (C.tType ti) ++ case C.tRep ti of
-  Nothing   -> ""
+  Nothing   -> "(no-rep-info)"
   Just rep  -> " " ++ show rep
 
 showArgType :: C.Arg -> String
@@ -114,6 +114,7 @@ ffiArgType = \case
       "MutableByteArray# RealWorld" -> Just $ TyCon "MutableByteArray#" [TyCon "RealWorld" []]
       "ByteArray#"                  -> Just $ TyCon "ByteArray#" []
       "Weak# ThreadId"              -> Just $ TyCon "Weak#" [TyCon "ThreadId" []]
+      "ThreadId#"                   -> Just $ TyCon "ThreadId#" []
       _                             -> Nothing
     Just [t]  -> TySimple <$> repType (C.tType $ C.binderType b) t
     _         -> Nothing
@@ -121,7 +122,8 @@ ffiArgType = \case
 ffiRetType :: C.TypeInfo -> Maybe Ty
 ffiRetType ti = do
   rep <- C.tRep ti
-  mkUnboxedTuple <$> mapM (\r -> TySimple <$> repType (C.tType ti) r) rep
+  -- ffi functions does not return State#, so it has to be filtered out
+  mkUnboxedTuple <$> mapM (\r -> TySimple <$> repType (C.tType ti) r) (filter (/= C.VoidRep) rep)
 
 mkUnboxedTuple :: [Ty] -> Ty
 mkUnboxedTuple args = case length args of
@@ -179,7 +181,7 @@ visitOpApp op args ty = do
       C.DynamicTarget -> do
         let (fnTy:argsTy) = map showArgType args
             retTy         = showTypeInfo ty
-        pure . Lit . LError . T.pack $ "DynamicTarget is not supported: (" ++ fnTy ++ ") :: " ++ intercalate " -> " (argsTy ++ [retTy])
+        pure . Lit . LError . BS8.pack $ "DynamicTarget is not supported: (" ++ fnTy ++ ") :: " ++ intercalate " -> " (argsTy ++ [retTy])
       C.StaticTarget labelName -> case ffiTys of
         Just (retTy, argsTy) -> do
           let name = packName $ BS8.unpack labelName
@@ -194,7 +196,7 @@ visitOpApp op args ty = do
           let name    = BS8.unpack labelName
               argsTy  = map showArgType args
               retTy   = showTypeInfo ty
-          pure . Lit . LError . T.pack $ "Unsupported foreign function type: " ++ name ++ " :: " ++ intercalate " -> " (argsTy ++ [retTy])
+          pure . Lit . LError . BS8.pack $ "Unsupported foreign function type: " ++ name ++ " :: " ++ intercalate " -> " (argsTy ++ [retTy])
 
 visitExpr :: C.Expr -> CG Exp
 visitExpr = \case
@@ -265,7 +267,7 @@ genPrimOp :: BS8.ByteString -> [C.Arg] -> C.TypeInfo -> CG Exp
 genPrimOp prim realArgs ti = do
   let name = packName (BS8.unpack prim)
   case Map.lookup name primMap of
-    Nothing -> pure . Lit $ LError $ "Unsupported GHC primop: " <> T.pack (BS8.unpack prim ++ " return type: " ++ showTypeInfo ti)
+    Nothing -> pure . Lit $ LError $ "Unsupported GHC primop: " <> BS8.pack (BS8.unpack prim ++ " return type: " ++ showTypeInfo ti)
     Just e  -> do
       addExternal e
       App name <$> mapM visitArg realArgs
