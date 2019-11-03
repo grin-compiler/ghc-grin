@@ -22,6 +22,7 @@ library
     --Lambda.GrinCodeGenTyped
     Lambda.TH
     Lambda.Parse
+    Lambda.Parse2
     Lambda.Pretty
     Lambda.PrimOps
     Lambda.GhcPrimOps
