@@ -44,7 +44,7 @@ cvtExternal n t isEffectful = do
   retTy <- cvtTy $ prepareRetType retTy'
   revArgsTy <- mapM cvtTy $ filter (not . isStateTy) revArgsTy'
   -}
-  ty <- cvtTy t
+  ty <- cvtTy $ removeStateFromRetType t
   pure External
     { eName       = packName n
     , eType       = ty
@@ -57,18 +57,30 @@ mkUnboxedTuple args = case length args of
   0 -> L.TyCon (packName "GHC.Prim.(##)") []
   1 -> L.TyCon (packName "GHC.Prim.Unit#") args
   n -> L.TyCon (packName $ "GHC.Prim.(#" ++ replicate (max 0 $ n-1) ',' ++ "#)") args
-{-
+
 isStateTy :: Ty -> Bool
 isStateTy = \case
   TyApp (TyCon "State#") [_] -> True
   _ -> False
 
-prepareRetType :: Ty -> Ty
-prepareRetType = \case
-  TyUTup args -> TyUTup [t | t <- args, not $ isStateTy t]
-  t | isStateTy t -> TyUTup []
-    | otherwise   -> t
+isTyF :: Ty -> Bool
+isTyF = \case
+  TyF{} -> True
+  _     -> False
 
+removeStateFromRetType :: Ty -> Ty
+removeStateFromRetType = \case
+  TyF a b
+    | isTyF b -> TyF (removeStateFromRetType a) $ removeStateFromRetType b
+    -- last ty item aka return type
+    | otherwise -> TyF (removeStateFromRetType a) $ case b of
+        -- remove returning state
+        TyUTup args -> TyUTup [removeStateFromRetType t | t <- args, not $ isStateTy t]
+        t | isStateTy t -> TyUTup []
+          | otherwise   -> t
+
+  t -> t
+{-
 firstOrderTy :: Ty -> Either String Ty
 firstOrderTy = \case
   TyApp (TyCon n) args -> do
