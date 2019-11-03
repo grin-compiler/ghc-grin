@@ -1,5 +1,9 @@
 set -e -x
 
+cd ..
+./lambdabin-clean.sh
+cd ghc-grin-benchmark
+
 find . -name '*.corebin' -delete
 find . -name '*.stgbin' -delete
 find . -name '*.lambda' -delete
