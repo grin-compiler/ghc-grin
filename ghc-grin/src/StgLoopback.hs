@@ -12,26 +12,12 @@ import DriverPipeline
 import DriverPhases
 
 -- Stg Types
-import Name
-import Id
 import Module
-import Unique
-import OccName
 import Stream (Stream)
 import qualified Stream
 import StgSyn
 import CostCentre
 import CodeOutput
-import ForeignCall
-import FastString
-import BasicTypes
-import CoreSyn (AltCon(..))
-
-import PrimOp
-import TysWiredIn
-import Literal
-import MkId
-import TyCon
 
 -- Core Passes
 import StgCmm (codeGen)
@@ -41,21 +27,12 @@ import CmmPipeline (cmmPipeline)
 import CmmBuildInfoTables (emptySRT)
 import UniqSupply ( mkSplitUniqSupply, initUs_ )
 
-import System.IO
-import Data.Time
 import Control.Monad.Trans
 import Control.Monad
-import qualified Data.ByteString.Char8 as BS8
 
 -------------------------------------------------------------------------------
 -- Module
 -------------------------------------------------------------------------------
-
-mkName :: Int -> String -> Name
-mkName i n = mkExternalName (mkUnique 'u' i) modl (mkOccName OccName.varName n) noSrcSpan
-
---mkNameL :: Int -> String -> Name
---mkNameL i n = mkInternalName (mkUnique 'u' i) (mkOccName OccName.varName n) noSrcSpan
 
 modl :: Module
 modl = mkModule mainUnitId (mkModuleName ":Main")
@@ -67,65 +44,27 @@ modloc = ModLocation
  , ml_obj_file = "Example.o"
  }
 
-t0 :: Type
-t0 = intTy
-
-showGhc :: (Outputable a) => a -> String
-showGhc = showPpr unsafeGlobalDynFlags
-
 -------------------------------------------------------------------------------
 -- Compilation
 -------------------------------------------------------------------------------
 
-main :: IO ()
-main = runGhc (Just libdir) $ do
+data Backend = NCG | LLVM
+
+compileProgram :: Backend -> [StgTopBinding] -> IO ()
+compileProgram backend topBinds = runGhc (Just libdir) $ do
   dflags <- getSessionDynFlags
   -- construct STG program manually
   let ccs       = ([], [])
       hpc       = emptyHpcInfo False
       tyCons    = []
-      --idl0      = mkLocalId xn t0
-      mkIdN i n = mkVanillaGlobal (mkName i n) t0
-      mkId i    = mkVanillaGlobal (mkName i $ 'x' : show i) t0
-      --mkIdL i   = mkLocalId (mkNameL i $ 'l' : show i) t0
-      idStr0    = mkId 0
-      idInt0    = mkId 100
-      topBinds  =
-        [ StgTopStringLit idStr0 (BS8.pack "Hello!\n1 + 2 = %d\n")
-        , StgTopLifted $ StgNonRec (mkIdN 1 "main") $
-            StgRhsClosure dontCareCCS stgSatOcc [] SingleEntry [voidArgId] $
-              StgCase (
-                StgOpApp (StgPrimOp IntAddOp)
-                  [ StgLitArg $ mkMachInt dflags 1
-                  , StgLitArg $ mkMachInt dflags 2
-                  ] intTy
-              ) idInt0 (PrimAlt IntRep)
-              [ (DEFAULT, [],
-                  StgOpApp
-                    (StgFCallOp
-                      (CCall $ CCallSpec
-                        (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
-                        CCallConv
-                        PlayRisky
-                      )
-                      (mkUnique 'f' 0)
-                    )
-                    [ StgVarArg idStr0
-                    , StgVarArg idInt0
-                    ] intTy
-                )
-              ]
-
-        ]
 
   -- backend
   let
     outFname  = "out.ll"
-    useLLVM = True
 
-    (target, link)
-      | useLLVM   = (HscLlvm, LlvmOpt)
-      | otherwise = (HscAsm, As False)
+    (target, link) = case backend of
+      LLVM  -> (HscLlvm, LlvmOpt)
+      NCG   -> (HscAsm, As False)
 
   -- Compile & Link
   dflags <- getSessionDynFlags
@@ -144,7 +83,10 @@ main = runGhc (Just libdir) $ do
     newGen dflags env outFname modl tyCons ccs topBinds hpc
     oneShot env StopLn [(outFname, Just link)]
   pure ()
-
+{-
+  TODO:
+    prevent linking haskell libraries i.e. base, integer-gmp, ghc-prim
+-}
 
 -------------
 -- from GHC

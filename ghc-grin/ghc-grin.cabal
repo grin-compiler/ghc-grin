@@ -19,6 +19,7 @@ library
     Lambda.FromStg
     Lambda.GHCPrimOps
     StgLoopback
+    StgSample
 
   build-depends:
       base
