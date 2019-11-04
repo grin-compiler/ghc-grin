@@ -1,6 +1,9 @@
 {-# LANGUAGE TupleSections, LambdaCase, OverloadedStrings #-}
 
-module Lambda.Parse2 (parseLambda) where
+module Lambda.Parse2
+  ( parseLambda
+  , parseProg
+  ) where
 
 import Data.Ratio ((%))
 import Data.String (fromString)
@@ -306,3 +309,6 @@ lambdaModule = Program <$> (concat <$> many externalBlock) <*> many def <* sc <*
 
 parseLambda :: String -> Text -> Either (ParseError Char Void) Program
 parseLambda filename content = runParser lambdaModule filename content
+
+parseProg :: Text -> Exp
+parseProg src = either (error . parseErrorPretty' src) id . parseLambda "" $ src
