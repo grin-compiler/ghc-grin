@@ -47,6 +47,7 @@ library
     , recursion-schemes
     , ansi-wl-pprint
     , megaparsec
+    , neat-interpolation
     , text
     , vector
     , template-haskell
@@ -74,4 +75,34 @@ executable lambda-grin
                      , ansi-wl-pprint
                      , lambda-grin
                      , grin
+  default-language:    Haskell2010
+
+test-suite lambda-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  default-extensions:  OverloadedStrings
+  build-depends:       base >=4.11
+                     , containers
+                     , filepath
+                     , functor-infix
+                     , lambda-grin
+                     , hspec
+                     , hspec-core
+                     , hspec-discover
+                     , QuickCheck
+                     , deepseq
+                     , vector
+                     , text
+                     , random
+                     , microlens
+                     , transformers
+                     , mtl
+                     , ansi-wl-pprint
+                     , directory
+                     , inline-c
+                     , grin
+
+  other-modules:
+                     ParserSpec
   default-language:    Haskell2010
