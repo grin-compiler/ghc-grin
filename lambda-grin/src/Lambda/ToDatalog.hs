@@ -7,6 +7,7 @@ import qualified Data.Foldable
 import qualified Data.Map as Map
 
 import System.IO
+import System.FilePath
 
 import Control.Monad
 import Control.Monad.Reader
@@ -35,25 +36,25 @@ logWriteFile fname str = do
   putStrLn $ "  " ++ fname
   writeFile fname str
 
-programToDatalogM :: String -> Program -> IO ()
+programToDatalogM :: FilePath -> Program -> IO ()
 programToDatalogM fname prg = do
   h <- openFile fname WriteMode
   runReaderT (convertProgram prg) $ hPutStr h . toDatalog
   hFlush h
   hClose h
 
-programToFactsM :: Program -> IO ()
-programToFactsM prg = do
+programToFactsM :: FilePath -> Program -> IO ()
+programToFactsM outDir prg = do
   let factNames = [ "EvalMode", "Move", "Node", "NodeArgument", "Call", "CallArgument", "IsFunction", "FunctionParameter"
                   , "Case", "Alt", "AltParameter", "IsClosure", "ClosureVariable", "ClosureParameter", "ReturnValue", "FirstInst"
                   , "NextInst", "RecGroup", "ExternalFunction", "ExternalParameterType", "ExternalReturnType", "CodeArity"
                   , "TypeNode", "TypeNodeArgument", "IsTypeVariable", "FunctionType", "FunctionTypeReturnType", "FunctionTypeParameterType"
                   ]
   files <- forM factNames $ \fname -> do
-    let filename = fname ++ ".facts"
+    let filename = outDir </> fname ++ ".facts"
     putStrLn $ "\t" ++ filename
     h <- openFile filename WriteMode
-    pure (filename, h)
+    pure (fname ++ ".facts", h)
 
   let fileMap = Map.fromList files
       writeFact (f, str) = hPutStr (fileMap Map.! f) str

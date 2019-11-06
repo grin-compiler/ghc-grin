@@ -37,6 +37,7 @@ library
     Lambda.ClosureConversion
     Lambda.DeadFunctionElimination
     Lambda.DeadFunctionEliminationM
+    Lambda.ControlFlowAnalysisM
 
   build-depends:
       base
@@ -105,4 +106,5 @@ test-suite lambda-test
 
   other-modules:
                      ParserSpec
+                     CFASpec
   default-language:    Haskell2010
