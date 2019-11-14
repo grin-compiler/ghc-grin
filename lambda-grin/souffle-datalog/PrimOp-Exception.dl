@@ -27,6 +27,7 @@
 // "raiseIO#" :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %b}
 // collect raised exceptions
 RaisedEx(ex) :-
+  REACHABLE(r)
   (Call(r, "raise#", _) ; Call(r, "raiseIO#", _)),
   CallArgument(r, 0, ex).
 
@@ -35,15 +36,15 @@ RaisedEx(ex) :-
 //          -> {"State#" {RealWorld}}
 //          -> {"GHC.Prim.Unit#" %a}
 // handle the wrapped function
-Called(r, fun),
 TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
-PointsTo(fun_arg_0, v2) :-  // pass realworld
+CallPNode1(r, v0, v2_state) :-
+  REACHABLE(r)
   Call(r, "catch#", _),
-  // pass argument to the wrapped function
+  // wrapped fun
   CallArgument(r, 0, v0),
-  PNode(v0, fun, fun_arity, 1),
-  CodeParameter(fun, fun_arity-1, fun_arg_0),
-  CallArgument(r, 2, v2),
+  PNode(v0, fun, _, 1),
+  // state
+  CallArgument(r, 2, v2_state),
   // return value
   RetTup1Node0("catch#", ty_res_value),
   IsTypeVariable(ty_res_value), // extra validation
@@ -51,17 +52,16 @@ PointsTo(fun_arg_0, v2) :-  // pass realworld
 
 // NOTE: the handler has its own rule, because it fires only when there are exceptions, while the wrapped function is always called
 // handle ex-handler
-Called(r, handler),
 TypeVarPointsTo(r, ty_res_value, handler_ret),     // handle return value
-PointsTo(handler_arg_0, ex),  // pass exceptions
-PointsTo(handler_arg_1, v2):- // pass realworld
+CallPNode2(r, v1, ex, v2_state) :-
+  REACHABLE(r)
   Call(r, "catch#", _),
-  // pass argument to the handler function
+  // handler
   CallArgument(r, 1, v1),
-  CallArgument(r, 2, v2),
-  PNode(v1, handler, handler_arity, 2),
-  CodeParameter(handler, handler_arity-2, handler_arg_0),
-  CodeParameter(handler, handler_arity-1, handler_arg_1),
+  // state
+  CallArgument(r, 2, v2_state),
+  PNode(v1, handler, _, 2),
+  // exceptions
   RaisedEx(ex),
   // return value
   RetTup1Node0("catch#", ty_res_value),
@@ -71,9 +71,9 @@ PointsTo(handler_arg_1, v2):- // pass realworld
 // "maskAsyncExceptions#"   :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 // "maskUninterruptible#"   :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 // "unmaskAsyncExceptions#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
-Called(r, fun),
 TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
-PointsTo(fun_arg_0, v1_state) :-  // pass realworld
+CallPNode1(r, v0, v1_state) :-
+  REACHABLE(r)
   ( op = "maskAsyncExceptions#"
   ; op = "maskUninterruptible#"
   ; op = "unmaskAsyncExceptions#"
@@ -81,8 +81,7 @@ PointsTo(fun_arg_0, v1_state) :-  // pass realworld
   Call(r, op, _),
   // pass argument to the wrapped function
   CallArgument(r, 0, v0),
-  PNode(v0, fun, fun_arity, 1),
-  CodeParameter(fun, fun_arity-1, fun_arg_0),
+  PNode(v0, fun, _, 1),
   CallArgument(r, 1, v1_state),
   // return value
   RetTup1Node0(op, ty_res_value),

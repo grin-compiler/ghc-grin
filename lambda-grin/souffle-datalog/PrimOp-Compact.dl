@@ -23,6 +23,7 @@
 // "compactAddWithSharing#" :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 TypeVarPointsTo(r, ty_node, item) :-
   (op = "compactAdd#" ; op = "compactAddWithSharing#"),
+  REACHABLE(r)
   Call(r, op, _),
   // item to bypass
   CallArgument(r, 1, item),

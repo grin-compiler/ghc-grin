@@ -72,25 +72,6 @@
 .decl Array(ext_result:Variable, ty_node:Variable, item:Variable)
 .output Array
 
-//////////////////////
-.decl RetTup1Node0(ext:External, ty_node:Variable)
-.decl RetTup(ext:External, tag:Tag, i:number, ty_node:Variable)
-
-.output RetTup1Node0
-.output RetTup
-
-RetTup1Node0(ext, ty_node) :-
-  ExternalReturnType(ext, ty_res),
-  TypeNode(ty_res, "GHC.Prim.Unit#"),
-  TypeNodeArgument(ty_res, 0, ty_node).
-
-RetTup(ext, tag, i, ty_node) :-
-  ExternalReturnType(ext, ty_res),
-  TypeNode(ty_res, tag),
-  TypeNodeArgument(ty_res, i, ty_node).
-
-/////////////////////
-
 // "newArray#"      :: T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
 // "newSmallArray#" :: T_Int64 -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
 // new array
@@ -98,6 +79,7 @@ Array(r, ty_node, item) :-
   ( op = "newArray#"
   ; op = "newSmallArray#"
   ),
+  REACHABLE(r)
   Call(r, op, _),
   // initial item
   CallArgument(r, 1, item),
@@ -115,6 +97,7 @@ TypeVarPointsTo(r, ty_node, item) :-
   ; op = "indexArray#"
   ; op = "indexSmallArray#"
   ),
+  REACHABLE(r)
   Call(r, op, _),
   // lookup array items
   CallArgument(r, 0, arr),
@@ -128,6 +111,7 @@ TypeVarPointsTo(r, ty_node, item) :-
 // extend array
 Array(ext_result, ty_node, item) :-
   (op = "writeArray#" ; op = "writeSmallArray#"),
+  REACHABLE(r)
   Call(r, op, _),
   // item to write
   CallArgument(r, 2, item),
@@ -148,6 +132,7 @@ TypeVarPointsTo(r, ty_node, arr) :- // bypass argument
   ; op = "unsafeThawArray#"
   ; op = "unsafeThawSmallArray#"
   ),
+  REACHABLE(r)
   Call(r, op, _),
   // lookup array items
   CallArgument(r, 0, arr),
@@ -165,6 +150,7 @@ Array(dst_ext_result, dst_arr_node, src_item) :-
   ; op = "copyMutableArray#"
   ; op = "copySmallMutableArray#"
   ),
+  REACHABLE(r)
   Call(r, op, _),
   // lookup src array items
   CallArgument(r, 0, src_arr),
@@ -182,6 +168,7 @@ Array(r, arr_node, src_item) :-
   ( op = "cloneArray#"
   ; op = "cloneSmallArray#"
   ),
+  REACHABLE(r)
   Call(r, op, _),
   // lookup src array items
   CallArgument(r, 0, src_arr),
@@ -205,6 +192,7 @@ Array(r, arr_node, src_item) :-
   ; op = "thawArray#"
   ; op = "thawSmallArray#"
   ),
+  REACHABLE(r)
   Call(r, op, _),
   // lookup src array items
   CallArgument(r, 0, src_arr),
@@ -220,6 +208,7 @@ TypeVarPointsTo(r, ty_node, new_item),
 TypeVarPointsTo(r, ty_node, old_item),
 Array(ext_result, arr_node, new_item) :-
   (op = "casArray#" ; op = "casSmallArray#"),
+  REACHABLE(r)
   Call(r, op, _),
   // old item
   CallArgument(r, 2, old_item),

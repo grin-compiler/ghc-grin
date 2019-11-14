@@ -20,6 +20,7 @@
 // new array
 StablePtr(r, ty_node, item) :-
   op = "makeStablePtr#",
+  REACHABLE(r)
   Call(r, op, _),
   // initial item
   CallArgument(r, 0, item),
@@ -29,6 +30,7 @@ StablePtr(r, ty_node, item) :-
 // "deRefStablePtr#" :: {"StablePtr#" %a} -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 TypeVarPointsTo(r, ty_node, item) :-
   op = "deRefStablePtr#",
+  REACHABLE(r)
   Call(r, op, _),
   // lookup array items
   CallArgument(r, 0, arr),

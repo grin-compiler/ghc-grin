@@ -27,6 +27,7 @@
 // new array
 MVarDef(r, ty_node) :-
   op = "newMVar#",
+  REACHABLE(r)
   Call(r, op, _),
   // extract result node
   RetTup1Node0(op, ty_node).
@@ -35,6 +36,7 @@ MVarDef(r, ty_node) :-
 // "readMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
 TypeVarPointsTo(r, ty_node, item) :-
   (op = "takeMVar#" ; op = "readMVar#"),
+  REACHABLE(r)
   Call(r, op, _),
   // lookup array items
   CallArgument(r, 0, arr),
@@ -48,6 +50,7 @@ TypeVarPointsTo(r, ty_node, item) :-
 // "tryReadMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 TypeVarPointsTo(r, ty_node, item) :-
   (op = "tryTakeMVar#" ; op = "tryReadMVar#"),
+  REACHABLE(r)
   Call(r, op, _),
   // lookup array items
   CallArgument(r, 0, arr),
@@ -62,6 +65,7 @@ TypeVarPointsTo(r, ty_node, item) :-
 // extend array
 MVar(ext_result, ty_node, item) :-
   (op = "putMVar#" ; op = "tryPutMVar#"),
+  REACHABLE(r)
   Call(r, op, _),
   // item to write
   CallArgument(r, 1, item),

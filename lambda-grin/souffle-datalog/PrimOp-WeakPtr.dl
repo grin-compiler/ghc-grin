@@ -18,32 +18,26 @@
 
 // "mkWeak#" :: %o -> %b -> ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %c}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"Weak#" %b}}
 // new array
+CallPNode1(r, finalizer, v3_state),
 WeakFinalizer(r, finalizer),
 WeakPtr(r, ty_node, item) :-
   op = "mkWeak#",
+  REACHABLE(r)
   Call(r, op, _),
   // value
   CallArgument(r, 1, item),
   // finalizer
   CallArgument(r, 2, finalizer),
+  // state
+  CallArgument(r, 3, v3_state),
   // extract result node
   RetTup1Node0(op, ty_node).
-
-// finalizer is always called
-Called(r, fun),
-PointsTo(fun_arg_0, v3_state) :-  // pass realworld
-  Call(r, "mkWeak#", _),
-  // pass argument to the wrapped function
-  CallArgument(r, 2, v2),
-  PNode(v2, fun, fun_arity, 1),
-  CodeParameter(fun, fun_arity-1, fun_arg_0),
-  // state
-  CallArgument(r, 3, v3_state).
 
 // "mkWeakNoFinalizer#" :: %o -> %b -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"Weak#" %b}}
 // new array
 WeakPtr(r, ty_node, item) :-
   op = "mkWeakNoFinalizer#",
+  REACHABLE(r)
   Call(r, op, _),
   // value
   CallArgument(r, 1, item),
@@ -53,6 +47,7 @@ WeakPtr(r, ty_node, item) :-
 // "deRefWeak#" :: {"Weak#" %a} -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 TypeVarPointsTo(r, ty_node, item) :-
   op = "deRefWeak#",
+  REACHABLE(r)
   Call(r, op, _),
   // lookup array items
   CallArgument(r, 0, arr),
@@ -66,6 +61,7 @@ TypeVarPointsTo(r, ty_node, item) :-
 //                  -> {"GHC.Prim.(#,#)" T_Int64 ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %b})}
 TypeVarPointsTo(r, ty_node, finalizer) :-
   op = "finalizeWeak#",
+  REACHABLE(r)
   Call(r, op, _),
   // lookup array items
   CallArgument(r, 0, arr),

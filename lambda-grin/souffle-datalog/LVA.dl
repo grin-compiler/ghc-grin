@@ -1,30 +1,59 @@
 // reachibility
 .decl InitialReachable(n:CodeName)
+.input InitialReachable
 
 // hardcoded edb
-InitialReachable("::Main.main").
-InitialReachable(":Main.main").
-InitialReachable("Main.main").
+//InitialReachable("::Main.main").
+//InitialReachable(":Main.main").
+//InitialReachable("Main.main").
 
 // SECTION: reachability
 
-.decl ReachableCode(n:CodeName)
+.decl ReachableCode(n:CodeName, msg:symbol)
 .output ReachableCode
 
-ReachableCode(n) :-
+ReachableCode(n, "INITIAL") :-
   InitialReachable(n).
 
 // call
-ReachableCode(callee) :-
-  ReachableCode(f),
+ReachableCode(callee, cat("CALL,", r)) :-
+  ReachableCode(f, _),
   HasInst(f, r),
   Called(r, callee).
 
-// alt ; tag insensitive
-ReachableCode(alt) :-
-  ReachableCode(f),
+// alt ; tag sensitive
+ReachableCode(alt, "ALT:DEFAULT") :-
+  ReachableCode(f, _),
   HasInst(f, r),
-  Alt(r, alt, _).
+  // default case is always reachable
+  Alt(r, alt, "default:").
+
+ReachableCode(alt, "ALT") :-
+  ReachableCode(f,_),
+  HasInst(f, r),
+  Alt(r, alt, t),
+  // is the tag created somewhere?
+  TagValue(alt, t).
+
+
+.decl Reachable(inst:Variable)
+.output Reachable
+
+Reachable(inst) :-
+  HasInst(f, inst),
+  ReachableCode(f,_).
+
+
+.decl TagValue(v:Variable, t:Tag)
+.output TagValue
+
+TagValue(v, tag) :-
+  NodeOrigin(v, node),
+  Node(node, tag).
+
+TagValue(v, tag) :-
+  ExternalOrigin(v, _, ty_var),
+  TypeNode(ty_var, tag).
 
 // SECTION: dead code
 
@@ -33,7 +62,7 @@ ReachableCode(alt) :-
 
 DeadCode(n) :-
   ReturnValue(n, _),
-  !ReachableCode(n).
+  !ReachableCode(n, _).
 
 .decl DeadExternal(n:External)
 .output DeadExternal
@@ -45,7 +74,7 @@ ReachableExternal(n) :-
   ExternalFunction(n, _, _),
   Call(r, n, _),
   HasInst(f, r),
-  ReachableCode(f).
+  ReachableCode(f, _).
 
 DeadExternal(n) :-
   ExternalFunction(n, _, _),

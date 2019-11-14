@@ -24,4 +24,4 @@ Error(r, "Unsupported (reachable) bytecode related primop") :-
   ),
   Call(r, op, _),
   HasInst(f, r),
-  ReachableCode(f).
+  ReachableCode(f, _).

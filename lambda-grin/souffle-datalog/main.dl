@@ -1,20 +1,28 @@
-#include "lambda-datalog2-AST.dl"
-#include "lambda-datalog2-CBy.dl"
-#include "lambda-datalog2-CFA.dl"
-#include "lambda-datalog2-Check.dl"
-#include "lambda-datalog2-LVA.dl"
-#include "lambda-datalog2-PointsTo.dl"
-#include "lambda-datalog2-PrimOp-Addr.dl"
-#include "lambda-datalog2-PrimOp-Arrays.dl"
-#include "lambda-datalog2-PrimOp-ByteArray.dl"
-#include "lambda-datalog2-PrimOp-Bytecode.dl"
-#include "lambda-datalog2-PrimOp-CCS.dl"
-#include "lambda-datalog2-PrimOp-Compact.dl"
-#include "lambda-datalog2-PrimOp-Concurrency.dl"
-#include "lambda-datalog2-PrimOp-Exception.dl"
-#include "lambda-datalog2-PrimOp-MutVar.dl"
-#include "lambda-datalog2-PrimOp-MVar.dl"
-#include "lambda-datalog2-PrimOp-Parallelism.dl"
-#include "lambda-datalog2-PrimOp-STM.dl"
-#include "lambda-datalog2-PrimOp-StablePtr.dl"
-#include "lambda-datalog2-PrimOp-WeakPtr.dl"
+#define REACHABLE_ONLY
+
+#ifdef REACHABLE_ONLY
+# define REACHABLE(x) Reachable(x),
+#else
+# define REACHABLE(x)
+#endif
+
+#include "AST.dl"
+#include "CBy.dl"
+#include "CFA.dl"
+#include "Check.dl"
+#include "LVA.dl"
+#include "PointsTo.dl"
+#include "PrimOp-Addr.dl"
+#include "PrimOp-Arrays.dl"
+#include "PrimOp-ByteArray.dl"
+#include "PrimOp-Bytecode.dl"
+#include "PrimOp-CCS.dl"
+#include "PrimOp-Compact.dl"
+#include "PrimOp-Concurrency.dl"
+#include "PrimOp-Exception.dl"
+#include "PrimOp-MutVar.dl"
+#include "PrimOp-MVar.dl"
+#include "PrimOp-Parallelism.dl"
+#include "PrimOp-STM.dl"
+#include "PrimOp-StablePtr.dl"
+#include "PrimOp-WeakPtr.dl"

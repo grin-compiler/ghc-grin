@@ -71,6 +71,7 @@
 
 // "readStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
 TypeVarPointsTo(r, ty_node, ext_result) :-
+  REACHABLE(r)
   op = "readStablePtrOffAddr#",
   Call(r, op, _),
   // lookup all stable pointers from the whole program
@@ -80,6 +81,7 @@ TypeVarPointsTo(r, ty_node, ext_result) :-
 
 // "indexStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"StablePtr#" %a}
 TypeVarPointsTo(r, ty_node, ext_result) :-
+  REACHABLE(r)
   op = "indexStablePtrOffAddr#",
   Call(r, op, _),
   // lookup all stable pointers from the whole program

@@ -105,3 +105,22 @@ HasInst(n, v) :-
 .decl CodeParameter(f:CodeName, i:number, parameter:Variable)
 
 CodeParameter(f, i, p) :- (FunctionParameter(f, i, p) ; ClosureParameter(f, i, p)).
+
+// utility for return type extraction
+.decl RetTup1Node0(ext:External, ty_node:Variable)
+.decl RetTup(ext:External, tag:Tag, i:number, ty_node:Variable)
+
+.output RetTup1Node0
+.output RetTup
+
+// i.e. {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
+RetTup1Node0(ext, ty_node) :-
+  ExternalReturnType(ext, ty_res),
+  TypeNode(ty_res, "GHC.Prim.Unit#"),
+  TypeNodeArgument(ty_res, 0, ty_node).
+
+// i.e. {"GHC.Prim.(#,#)" T_Int64 %a}
+RetTup(ext, tag, i, ty_node) :-
+  ExternalReturnType(ext, ty_res),
+  TypeNode(ty_res, tag),
+  TypeNodeArgument(ty_res, i, ty_node).
