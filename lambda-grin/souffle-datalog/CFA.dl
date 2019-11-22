@@ -61,10 +61,16 @@
     - function parameters are applied by the rule that creates the ApplyChain value
 */
 
-// create PNodes for referred functions in call or node argument
+// create PNodes for referred functions in call or node argument or in move
 PNode(f, f, arity, arity) :-
-  (IsFunction(f) ; IsClosure(f)),
-  (CallArgument(_, _, f) ; NodeArgument(_, _, f)),
+  ( IsFunction(f)
+  ; IsClosure(f)
+  ),
+  ( CallArgument(_, _, f)
+  ; NodeArgument(_, _, f)
+  ; Move(_, f)
+  ; ReturnValue(_, f)
+  ),
   CodeArity(f, arity).
 
 /*
