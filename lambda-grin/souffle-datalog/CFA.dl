@@ -31,7 +31,7 @@
 */
 .decl ApplyChain(v:Variable, f:CodeName, step:number, consumed:number, arg_count:number)
 
-.decl PNode(v:Variable, fun:CodeName, arity:number, remained:number)
+.decl PNode(v:Variable, fun:CodeName, arity:number, missing:number)
 .decl PNodeArgument(v:Variable, fun:CodeName, i:number, value:CodeName)
 
 .decl Called(instruction:Variable, f:CodeName)
@@ -81,272 +81,363 @@ PNode(f, f, arity, arity) :-
     separate PNode and PNodeArgument: PNodeArguments are optionalm, so they can block PNode handling
 */
 
+//////////////////////////////////
+
 // strict, saturated, known function/closure call: execute function call
-Called(r, f),
+Called(r, fun),
 PointsTo(r, ret_var) :- // return value
   REACHABLE(r)
-  Call(r, f, arg_count),
+  Call(r, fun, arg_count),
   EvalMode(r, "strict"),
-  CodeArity(f, arity),  // arity is only for known callables
+  CodeArity(fun, arity),  // arity is only for known callables
   arg_count = arity,
-  ReturnValue(f, ret_var).
+  // set return value as result
+  ReturnValue(fun, ret_var).
+  // CHECKED
+
 PointsTo(param, arg) :- // pass arguments to function parameters
   REACHABLE(r)
-  Call(r, f, arg_count),
+  Call(r, fun, arg_count),
   EvalMode(r, "strict"),
-  CodeArity(f, arity),  // arity is only for known callables
+  CodeArity(fun, arity),  // arity is only for known callables
   arg_count = arity,
-  CallArgument(r, call_arg_i, arg),
-  CodeParameter(f, call_arg_i, param).
-
-// strict, undersaturated known call: create PNode
-PNode(r, f, arity, arity - arg_count) :-
-  REACHABLE(r)
-  Call(r, f, arg_count),
-  EvalMode(r, "strict"),
-  CodeArity(f, arity),  // arity is only for known callables
-  arg_count < arity.
-PNodeArgument(r, f, arg_i, arg_value) :-
-  REACHABLE(r)
-  Call(r, f, arg_count),
-  EvalMode(r, "strict"),
-  CodeArity(f, arity),  // arity is only for known callables
-  arg_count < arity,
-  CallArgument(r, arg_i, arg_value).
-
-// strict, saturated PNode call: execute function call
-Called(r, f),
-PointsTo(r, ret_var) :- // return value
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
-  PNode(pnode, f, _, missing),
-  arg_count = missing,
-  // return value
-  ReturnValue(f, ret_var).
-PointsTo(param, arg) :-
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
-  PNode(pnode, fun, arity, missing),
-  arg_count = missing,
   // call parameters
-  CallArgument(r, call_arg_i, arg),
-  CodeParameter(fun, call_arg_i + arity - missing, param).
-PointsTo(bound_param, pnode_arg) :-
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
-  PNode(pnode, fun, _, missing),
-  arg_count = missing,
-  // pnode parameters
-  PNodeArgument(pnode, fun, pnode_i, pnode_arg),
-  CodeParameter(fun, pnode_i, bound_param).
-
-// strict, undersaturated PNode call: create PNode
-PNode(r, f, arity, missing - arg_count) :-
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
-  PNode(pnode, f, arity, missing),
-  arg_count < missing.
-PNodeArgument(r, f, arity - missing + arg_i, arg_value) :-
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
-  PNode(pnode, f, arity, missing),
-  arg_count < missing,
-  // new pnode aruments
-  CallArgument(r, arg_i, arg_value).
-PNodeArgument(r, f, bound_i, bound_value) :-
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
-  PNode(pnode, f, _, missing),
-  arg_count < missing,
-  // copy old pnode arguments
-  PNodeArgument(pnode, f, bound_i, bound_value).
-
-// strict, oversaturated, known function/closure call: execute function call + create ApplyChain
-Called(r, f),
-ApplyChain(r, f, 0, arity, arg_count) :-
-  REACHABLE(r)
-  Call(r, f, arg_count),
-  EvalMode(r, "strict"),
-  CodeArity(f, arity),  // arity is only for known callables
-  arg_count > arity.
-PointsTo(param, arg) :- // pass arguments to function parameters
-  REACHABLE(r)
-  Call(r, f, arg_count),
-  EvalMode(r, "strict"),
-  CodeArity(f, arity),  // arity is only for known callables
-  arg_count > arity,
-  // call parameters
+  call_arg_i >= 0,
   call_arg_i < arity,
   CallArgument(r, call_arg_i, arg),
-  CodeParameter(f, call_arg_i, param).
+  CodeParameter(fun, call_arg_i, param).
+  // CHECKED
 
-// strict, oversaturated PNode call: execute function call + create ApplyChain
-// BUGFIX: does not pass arguments
+//////////////////////////////////
+
+// strict, undersaturated known call: create PNode
+PNode(r, fun, arity, arity - arg_count) :-
+  REACHABLE(r)
+  Call(r, fun, arg_count),
+  EvalMode(r, "strict"),
+  CodeArity(fun, arity),  // arity is only for known callables
+  arg_count < arity.
+  // CHECKED
+
+PNodeArgument(r, fun, call_arg_i, arg_value) :-
+  REACHABLE(r)
+  Call(r, fun, arg_count),
+  EvalMode(r, "strict"),
+  CodeArity(fun, arity),  // arity is only for known callables
+  arg_count < arity,
+  // pnode arguments
+  call_arg_i >= 0,
+  call_arg_i < arg_count,
+  CallArgument(r, call_arg_i, arg_value).
+  // CHECKED
+
+//////////////////////////////////
+
+// strict, saturated PNode call: execute function call
 Called(r, fun),
-ApplyChain(r, fun, 0, arity - missing, arg_count) :-
+PointsTo(r, ret_var) :- // return value
+  REACHABLE(r)
+  Call(r, pnode, arg_count),
+  EvalMode(r, "strict"),
+  PNode(pnode, fun, _, missing),
+  arg_count = missing,
+  // return value
+  ReturnValue(fun, ret_var).
+  // CHECKED
+
+PointsTo(param, arg) :- // pass call arguments to saturate function call
   REACHABLE(r)
   Call(r, pnode, arg_count),
   EvalMode(r, "strict"),
   PNode(pnode, fun, arity, missing),
-  arg_count > missing.
-PointsTo(bound_param, pnode_arg) :-
+  arg_count = missing,
+  // call parameters
+  call_arg_i >= 0,
+  call_arg_i < missing,
+  CallArgument(r, call_arg_i, arg),
+  CodeParameter(fun, call_arg_i + arity - missing, param).
+  // CHECKED
+
+PointsTo(bound_param, pnode_arg) :- // pass PNode arguments for the function call
+  REACHABLE(r)
+  Call(r, pnode, arg_count),
+  EvalMode(r, "strict"),
+  PNode(pnode, fun, arity, missing),
+  arg_count = missing,
+  0 <= missing,
+  // pnode parameters
+  pnode_i >= 0,
+  pnode_i < arity - missing,
+  PNodeArgument(pnode, fun, pnode_i, pnode_arg),
+  CodeParameter(fun, pnode_i, bound_param).
+  // CHECKED
+
+//////////////////////////////////
+
+// strict, undersaturated PNode call: create new PNode
+PNode(r, fun, arity, missing - arg_count) :-
+  REACHABLE(r)
+  Call(r, pnode, arg_count),
+  EvalMode(r, "strict"),
+  PNode(pnode, fun, arity, missing),
+  arg_count < missing.
+  // CHECKED
+
+PNodeArgument(r, fun, call_arg_i + arity - missing, arg) :-
+  REACHABLE(r)
+  Call(r, pnode, arg_count),
+  EvalMode(r, "strict"),
+  PNode(pnode, fun, arity, missing),
+  arg_count < missing,
+  // new pnode aruments
+  call_arg_i >= 0,
+  call_arg_i < arg_count,
+  CallArgument(r, call_arg_i, arg).
+  // CHECKED
+
+PNodeArgument(r, fun, bound_i, bound_value) :-
+  REACHABLE(r)
+  Call(r, pnode, arg_count),
+  EvalMode(r, "strict"),
+  PNode(pnode, fun, arity, missing),
+  arg_count < missing,
+  // copy old pnode arguments
+  bound_i >= 0,
+  bound_i < arity - missing,
+  PNodeArgument(pnode, fun, bound_i, bound_value).
+  // CHECKED
+
+//////////////////////////////////
+
+// strict, oversaturated, known function/closure call: execute function call + create ApplyChain
+Called(r, fun),
+ApplyChain(r, fun, 0, arity, arg_count) :-
+  REACHABLE(r)
+  Call(r, fun, arg_count),
+  EvalMode(r, "strict"),
+  CodeArity(fun, arity),  // arity is only for known callables
+  arg_count > arity.
+  // CHECKED
+
+PointsTo(param, arg) :- // pass arguments to function parameters
+  REACHABLE(r)
+  Call(r, fun, arg_count),
+  EvalMode(r, "strict"),
+  CodeArity(fun, arity),  // arity is only for known callables
+  arg_count > arity,
+  // call parameters
+  call_arg_i >= 0,
+  call_arg_i < arity,
+  CallArgument(r, call_arg_i, arg),
+  CodeParameter(fun, call_arg_i, param).
+  // CHECKED
+
+//////////////////////////////////
+
+// strict, oversaturated PNode call: execute the first function call + create ApplyChain
+Called(r, fun), // initiate call
+ApplyChain(r, fun, 0, missing, arg_count) :-
   REACHABLE(r)
   Call(r, pnode, arg_count),
   EvalMode(r, "strict"),
   PNode(pnode, fun, _, missing),
   arg_count > missing,
-  // pnode parameters
-  PNodeArgument(pnode, fun, pnode_i, pnode_arg),
-  CodeParameter(fun, pnode_i, bound_param).
-PointsTo(param, arg) :-
+  0 <= missing.
+  // CHECKED
+
+PointsTo(bound_param, pnode_arg) :- // pass PNode arguments for the initial function call
   REACHABLE(r)
   Call(r, pnode, arg_count),
   EvalMode(r, "strict"),
   PNode(pnode, fun, arity, missing),
   arg_count > missing,
+  0 <= missing,
+  // pnode parameters
+  pnode_i >= 0,
+  pnode_i < arity - missing,
+  PNodeArgument(pnode, fun, pnode_i, pnode_arg),
+  CodeParameter(fun, pnode_i, bound_param).
+  // CHECKED
+
+PointsTo(param, arg) :- // pass call arguments to saturate the initial function call
+  REACHABLE(r)
+  Call(r, pnode, arg_count),
+  EvalMode(r, "strict"),
+  PNode(pnode, fun, arity, missing),
+  arg_count > missing,
+  0 < missing,          // consume call arguments only if the PNode is not already saturated
   // call parameters
-  call_arg_i < missing, // BUG
+  call_arg_i >= 0,
+  call_arg_i < missing,
   CallArgument(r, call_arg_i, arg),
   CodeParameter(fun, call_arg_i + arity - missing, param).
+  // CHECKED
 
-// SECTION: apply chain elaboration: apply remained call arguments to 'f' result PNodes
+//////////////////////////////////
+
+// SECTION: apply chain elaboration: apply remained call arguments to 'fun' result PNodes
 
 // saturated apply chain link: execute function call + create result
-Called(r, f), Called(r, p_f),
-PointsTo(r, p_ret_var) :-             // return value
+Called(r, p_fun),
+PointsTo(r, p_ret_var) :- // return value
   REACHABLE(r)
-  ApplyChain(r, f, _, consumed, arg_count),
-  ReturnValue(f, ret_var),
-  PNode(ret_var, p_f, _, p_remained),
-  consumed + p_remained = arg_count,
+  ApplyChain(r, fun, _, consumed, arg_count),
+  ReturnValue(fun, pnode),
+  PNode(pnode, p_fun, _, p_missing),
+  consumed + p_missing = arg_count, // only saturated PNode calls
   // return value
-  ReturnValue(p_f, p_ret_var).
-PointsTo(p_old_param, p_old_value) :- // pass arguments to function parameters
-  REACHABLE(r)
-  ApplyChain(r, f, _, consumed, arg_count),
-  ReturnValue(f, ret_var),
-  PNode(ret_var, p_f, p_arity, p_remained),
-  consumed + p_remained = arg_count,
-  // pass old pnode arguments
-  bound_i < p_arity - p_remained,
-  CodeParameter(p_f, bound_i, p_old_param),
-  PNodeArgument(ret_var, p_f, bound_i, p_old_value).
-PointsTo(p_new_param, arg) :-       // pass arguments to function parameters
-  REACHABLE(r)
-  ApplyChain(r, f, _, consumed, arg_count),
-  ReturnValue(f, ret_var),
-  PNode(ret_var, p_f, p_arity, p_remained),
-  consumed + p_remained = arg_count,
-  // pass new call arguments
-  call_arg_i >= consumed,
-  call_arg_i < arg_count,
-  CallArgument(r, call_arg_i, arg),
-  CodeParameter(p_f, (p_arity - p_remained) + (call_arg_i - consumed), p_new_param).
+  ReturnValue(p_fun, p_ret_var).
+  // CHECKED
 
-// undersaturated apply chain link: create PNode result
-PNode(r, p_f, p_arity, p_remained - (arg_count - consumed)) :-
+PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
   REACHABLE(r)
-  ApplyChain(r, f, _, consumed, arg_count),
-  ReturnValue(f, ret_var),
-  PNode(ret_var, p_f, p_arity, p_remained),
-  p_remained > arg_count - consumed.
-PNodeArgument(r, p_f, (p_arity - p_remained) + (call_arg_i - consumed), arg_value) :- // new arguments
+  ApplyChain(r, fun, _, consumed, arg_count),
+  ReturnValue(fun, pnode),
+  PNode(pnode, p_fun, p_arity, p_missing),
+  consumed + p_missing = arg_count, // only saturated PNode calls
+  // pass pnode arguments
+  bound_i >= 0,
+  bound_i < p_arity - p_missing,
+  CodeParameter(p_fun, bound_i, bound_param),
+  PNodeArgument(pnode, p_fun, bound_i, pnode_arg).
+  // CHECKED
+
+PointsTo(param, arg) :- // pass PNode arguments to function to saturate the call
   REACHABLE(r)
-  ApplyChain(r, f, _, consumed, arg_count),
-  ReturnValue(f, ret_var),
-  PNode(ret_var, p_f, p_arity, p_remained),
-  p_remained > arg_count - consumed,
+  ApplyChain(r, fun, _, consumed, arg_count),
+  ReturnValue(fun, pnode),
+  PNode(pnode, p_fun, p_arity, p_missing),
+  consumed + p_missing = arg_count, // only saturated PNode calls
+  // pass call arguments
+  call_arg_i >= consumed, // NOTE: call_arg_i has to be grounded so this is the simplest indexing solution
+  call_arg_i < consumed + p_missing,
+  CallArgument(r, call_arg_i, arg),
+  CodeParameter(p_fun, call_arg_i - consumed + p_arity - p_missing, param).
+  // CHECKED
+
+//////////////////////////////////
+
+// undersaturated apply chain link: create PNode as the result
+PNode(r, p_fun, p_arity, p_missing - (arg_count - consumed)) :-
+  REACHABLE(r)
+  ApplyChain(r, fun, _, consumed, arg_count),
+  ReturnValue(fun, pnode),
+  PNode(pnode, p_fun, p_arity, p_missing),
+  p_missing > arg_count - consumed.
+  // CHECKED
+
+PNodeArgument(r, p_fun, (p_arity - p_missing) + (call_arg_i - consumed), arg) :- // save call arguments
+  REACHABLE(r)
+  ApplyChain(r, fun, _, consumed, arg_count),
+  ReturnValue(fun, pnode),
+  PNode(pnode, p_fun, p_arity, p_missing),
+  p_missing > arg_count - consumed,
   // copy call arguments
   call_arg_i >= consumed,
   call_arg_i < arg_count,
-  CallArgument(r, call_arg_i, arg_value).
-PNodeArgument(r, p_f, bound_i, bound_value) :-                                       // old arguments
+  CallArgument(r, call_arg_i, arg).
+  // CHECKED
+
+PNodeArgument(r, p_fun, bound_i, pnode_arg) :- // copy PNode arguments
   REACHABLE(r)
-  ApplyChain(r, f, _, consumed, arg_count),
-  ReturnValue(f, ret_var),
-  PNode(ret_var, p_f, _, p_remained),
-  p_remained > arg_count - consumed,
+  ApplyChain(r, fun, _, consumed, arg_count),
+  ReturnValue(fun, pnode),
+  PNode(pnode, p_fun, p_arity, p_missing),
+  p_missing > arg_count - consumed,
   // copy old pnode arguments
-  PNodeArgument(ret_var, p_f, bound_i, bound_value).
+  bound_i >= 0,
+  bound_i < p_arity - p_missing,
+  PNodeArgument(pnode, p_fun, bound_i, pnode_arg).
+  // CHECKED
+
+//////////////////////////////////
 
 // oversaturated apply chain link: execute function + create the next ApplyChain link
-Called(r, f), Called(r, p_f),
-ApplyChain(r, p_f, step + 1, consumed + p_remained, arg_count) :-
+Called(r, p_fun),
+ApplyChain(r, p_fun, step + 1, consumed + p_missing, arg_count) :-
   REACHABLE(r)
-  ApplyChain(r, f, step, consumed, arg_count),
-  ReturnValue(f, ret_var),
-  PNode(ret_var, p_f, _, p_remained),
-  p_remained < arg_count - consumed.
-PointsTo(p_old_param, p_old_value) :- // pass arguments to function parameters
+  ApplyChain(r, fun, step, consumed, arg_count),
+  ReturnValue(fun, pnode),
+  PNode(pnode, p_fun, _, p_missing),
+  consumed + p_missing < arg_count.
+  // CHECKED
+
+PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
   REACHABLE(r)
-  ApplyChain(r, f, _, consumed, arg_count),
-  ReturnValue(f, ret_var),
-  PNode(ret_var, p_f, p_arity, p_remained),
-  p_remained < arg_count - consumed,
-  // pass old pnode arguments
-  bound_i < p_arity - p_remained,
-  CodeParameter(p_f, bound_i, p_old_param),
-  PNodeArgument(ret_var, p_f, bound_i, p_old_value).
-PointsTo(p_new_param, arg) :-         // pass arguments to function parameters
+  ApplyChain(r, fun, _, consumed, arg_count),
+  ReturnValue(fun, pnode),
+  PNode(pnode, p_fun, p_arity, p_missing),
+  consumed + p_missing < arg_count,
+  // pass pnode arguments
+  bound_i >= 0,
+  bound_i < p_arity - p_missing,
+  CodeParameter(p_fun, bound_i, bound_param),
+  PNodeArgument(pnode, p_fun, bound_i, pnode_arg).
+  // CHECKED
+
+PointsTo(param, arg) :- // pass call arguments to saturate function call
   REACHABLE(r)
-  ApplyChain(r, f, _, consumed, arg_count),
-  ReturnValue(f, ret_var),
-  PNode(ret_var, p_f, p_arity, p_remained),
-  p_remained < arg_count - consumed,
-  // pass new call arguments
-  call_arg_i >= consumed,
-  call_arg_i < consumed + p_remained,
+  ApplyChain(r, fun, _, consumed, arg_count),
+  ReturnValue(fun, pnode),
+  PNode(pnode, p_fun, p_arity, p_missing),
+  consumed + p_missing < arg_count,
+  // pass call arguments
+  call_arg_i >= consumed, // NOTE: call_arg_i has to be grounded so this is the simplest indexing solution
+  call_arg_i < consumed + p_missing,
   CallArgument(r, call_arg_i, arg),
-  CodeParameter(p_f, (p_arity - p_remained) + (call_arg_i - consumed), p_new_param).
+  CodeParameter(p_fun, call_arg_i - consumed + p_arity - p_missing, param).
+  // CHECKED
 
 ///////////////////////
 // utility
 ///////////////////////
 
+// NOTE: does not handle return value ; only pass parameters
 .decl CallPNode1(inst:Variable, pnode:Variable, last_arg:Variable)
 .output CallPNode1
 
 Called(inst, fun),
-PointsTo(fun_last_param, last_arg) :-
+PointsTo(fun_last_param, last_arg) :- // pass last argument to function
   REACHABLE(inst)
   CallPNode1(inst, pnode, last_arg),
   PNode(pnode, fun, fun_arity, 1),
   // last argument
   CodeParameter(fun, fun_arity-1, fun_last_param).
+  // CHECKED
 
-PointsTo(bound_param, pnode_arg) :-
+PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
   REACHABLE(inst)
   CallPNode1(inst, pnode, _),
   PNode(pnode, fun, fun_arity, 1),
   // pnode bounded arguments
-  pnode_i < fun_arity-1,
-  PNodeArgument(pnode, fun, pnode_i, pnode_arg),
-  CodeParameter(fun, pnode_i, bound_param).
+  bound_i >= 0,
+  bound_i < fun_arity-1,
+  PNodeArgument(pnode, fun, bound_i, pnode_arg),
+  CodeParameter(fun, bound_i, bound_param).
+  // CHECKED
 
+// NOTE: does not handle return value ; only pass parameters
 .decl CallPNode2(inst:Variable, pnode:Variable, before_last_arg:Variable, last_arg:Variable)
 .output CallPNode2
 
 Called(inst, fun),
 PointsTo(fun_last_param, last_arg),
-PointsTo(fun_before_last_param, before_last_arg) :-
+PointsTo(fun_before_last_param, before_last_arg) :- // pass last two arguments to function
   REACHABLE(inst)
   CallPNode2(inst, pnode, before_last_arg, last_arg),
   PNode(pnode, fun, fun_arity, 2),
   // last 2 argument
   CodeParameter(fun, fun_arity-2, fun_before_last_param),
   CodeParameter(fun, fun_arity-1, fun_last_param).
+  // CHECKED
 
-PointsTo(bound_param, pnode_arg) :-
+PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
   REACHABLE(inst)
   CallPNode2(inst, pnode, _, _),
   PNode(pnode, fun, fun_arity, 2),
   // pnode bounded arguments
-  pnode_i < fun_arity-2,
-  PNodeArgument(pnode, fun, pnode_i, pnode_arg),
-  CodeParameter(fun, pnode_i, bound_param).
+  bound_i >= 0,
+  bound_i < fun_arity-2,
+  PNodeArgument(pnode, fun, bound_i, pnode_arg),
+  CodeParameter(fun, bound_i, bound_param).
+  // CHECKED
