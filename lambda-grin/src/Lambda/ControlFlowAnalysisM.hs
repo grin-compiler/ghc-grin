@@ -19,23 +19,30 @@ import Lambda.Syntax2
 import Lambda.ToDatalog
 
 controlFlowAnalysisM :: [String] -> Program -> IO (Map String [[Text]])
-controlFlowAnalysisM initialReachable prg = do
+controlFlowAnalysisM = controlFlowAnalysisImplM False
 
-  putStrLn "controlFlowAnalysisM:"
-  putStrLn "export facts"
+controlFlowAnalysisLogM :: [String] -> Program -> IO (Map String [[Text]])
+controlFlowAnalysisLogM = controlFlowAnalysisImplM True
+
+controlFlowAnalysisImplM :: Bool -> [String] -> Program -> IO (Map String [[Text]])
+controlFlowAnalysisImplM log initialReachable prg = do
+
+  when log $ do
+    putStrLn "controlFlowAnalysisM:"
+    putStrLn "export facts"
   tmpSys <- getCanonicalTemporaryDirectory
   tmpCfa <- createTempDirectory tmpSys "lambda-cfa"
 
-  programToFactsM tmpCfa prg
+  programToFactsM log tmpCfa prg
 
   let srcFile = tmpCfa </> "InitialReachable.facts"
-  putStrLn srcFile
+  when log $ putStrLn srcFile
   writeFile srcFile $ unlines initialReachable
 
-  putStrLn "run: lambda-cfa"
+  when log $ putStrLn "run: lambda-cfa"
   callProcess "lambda-cfa" ["--output=" ++ tmpCfa, "--facts=" ++ tmpCfa, "--jobs=4"]
 
-  putStrLn "read back result"
+  when log $ putStrLn "read back result"
   let result =
         -- CFA
         [ "ApplyChain", "PNode", "PNodeArgument", "Called"

@@ -43,8 +43,8 @@ programToDatalogM fname prg = do
   hFlush h
   hClose h
 
-programToFactsM :: FilePath -> Program -> IO ()
-programToFactsM outDir prg = do
+programToFactsM :: Bool -> FilePath -> Program -> IO ()
+programToFactsM log outDir prg = do
   let factNames = [ "EvalMode", "Move", "Node", "NodeArgument", "Call", "CallArgument", "IsFunction", "FunctionParameter"
                   , "Case", "Alt", "AltParameter", "IsClosure", "ClosureVariable", "ClosureParameter", "ReturnValue", "FirstInst"
                   , "NextInst", "RecGroup", "ExternalFunction", "ExternalParameterType", "ExternalReturnType", "CodeArity"
@@ -52,7 +52,7 @@ programToFactsM outDir prg = do
                   ]
   files <- forM factNames $ \fname -> do
     let filename = outDir </> fname ++ ".facts"
-    putStrLn $ "\t" ++ filename
+    when log $ putStrLn $ "\t" ++ filename
     h <- openFile filename WriteMode
     pure (fname ++ ".facts", h)
 
