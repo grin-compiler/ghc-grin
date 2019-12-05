@@ -10,6 +10,7 @@ import qualified Data.Text.IO as Text
 import Data.Map (Map)
 import qualified Data.Map as Map
 
+import System.Directory
 import System.FilePath
 import System.Process
 import System.IO
@@ -27,11 +28,13 @@ controlFlowAnalysisLogM = controlFlowAnalysisImplM True
 controlFlowAnalysisImplM :: Bool -> [String] -> Program -> IO (Map String [[Text]])
 controlFlowAnalysisImplM log initialReachable prg = do
 
-  when log $ do
-    putStrLn "controlFlowAnalysisM:"
-    putStrLn "export facts"
   tmpSys <- getCanonicalTemporaryDirectory
   tmpCfa <- createTempDirectory tmpSys "lambda-cfa"
+
+  when log $ do
+    putStrLn "controlFlowAnalysisM:"
+    putStrLn $ "export facts to:"
+    putStrLn tmpCfa
 
   programToFactsM log tmpCfa prg
 
@@ -43,30 +46,8 @@ controlFlowAnalysisImplM log initialReachable prg = do
   callProcess "lambda-cfa" ["--output=" ++ tmpCfa, "--facts=" ++ tmpCfa, "--jobs=4"]
 
   when log $ putStrLn "read back result"
-  let result =
-        -- CFA
-        [ "ApplyChain", "PNode", "PNodeArgument", "Called"
-        -- MISC
-        , "CallPNode1", "CallPNode2", "PointsTo", "TypeVarPointsTo"
-        -- LVA
-        , "ReachableCode", "Reachable", "DeadCode", "DeadExternal", "ReachableExternal"
-        -- CBy
-        , "ExternalOrigin", "NodeOrigin", "TagValue"
-        -- AST
-        , "HasInst", "RetTup1Node0", "RetTup"
-        -- Check
-        , "Error", "MissingValue"
-        -- PrimOp
-        , "Array"
-        , "MVar", "MVarDef"
-        , "RaisedEx"
-        , "TVar"
-        , "Spark"
-        , "WeakPtr" , "WeakFinalizer"
-        , "MutVar"
-        , "StablePtr"
-        ]
-  Map.fromList <$> forM result (\name -> do
-    row <- map Text.words . Text.lines <$> Text.readFile (tmpCfa </> name ++ ".csv")
-    pure (name, row)
+  result <- filter (\n -> takeExtension n == ".csv") <$> listDirectory tmpCfa
+  Map.fromList <$> forM result (\fname -> do
+    row <- map Text.words . Text.lines <$> Text.readFile (tmpCfa </> fname)
+    pure (takeBaseName fname, row)
     )

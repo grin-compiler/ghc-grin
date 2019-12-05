@@ -55,6 +55,7 @@ library
     , process
     , temporary
     , filepath
+    , directory
     , store
 
   default-language:    Haskell2010
