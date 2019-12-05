@@ -18,40 +18,8 @@ import Grin.Pretty (PP(..))
 runTests :: IO ()
 runTests = hspec spec
 
-{-
-  TODO:
-    test each datalog rule
--}
-
 spec :: Spec
 spec = do
-{-
-  describe "simple" $ do
-    it "case" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
-        main =
-          letS
-            p0 = #T_Int64 0
-            v0 = fun $ p0
-          v0
-
-        fun p =
-          letS
-            x = case p of
-              _ @ alt.1 ->
-                letS
-                  r = #T_Int64 1
-                r
-          x
-        |]
-
-      cfa Map.! "Called" `shouldBe` [["v0","fun"]]
-      cfa Map.! "ReachableCode" `shouldBe`
-        [ ["alt.1","ALT:DEFAULT"]
-        , ["fun","CALL,v0"]
-        , ["main","INITIAL"]
-        ]
--}
   ----------------------------
 
   let filterAndSort keys m = fmap sort $ Map.restrictKeys m (Set.fromList keys)
@@ -60,6 +28,7 @@ spec = do
       sameAs a b = (PP (ppShow a)) `shouldBe` (PP (ppShow b))
 
       toCBy = filterAndSort ["NodeOrigin", "ExternalOrigin", "TagValue"]
+      printUsed = pPrint . filterAndSort ["Used"]
 
   ----------------------------
 
@@ -74,6 +43,7 @@ spec = do
               v1 = v0
             v1
         |]
+      printUsed cfa
 
       toCBy cfa `shouldBe` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -101,6 +71,7 @@ spec = do
                   v10
             v01
         |]
+      printUsed cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -133,6 +104,7 @@ spec = do
                   v10
             v01
         |]
+      printUsed cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -217,6 +189,7 @@ spec = do
               v10 = p10
             v10
         |]
+      printUsed cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -250,6 +223,7 @@ spec = do
               v10 = p10
             v10
         |]
+      printUsed cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -294,6 +268,7 @@ spec = do
               v01 = clo $ v00
             v01
         |]
+      printUsed cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -333,6 +308,7 @@ spec = do
               v10 = p10
             v10
         |]
+      printUsed cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -373,6 +349,7 @@ spec = do
               v10 = p10
             v10
         |]
+      printUsed cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -409,6 +386,7 @@ spec = do
               v10 = p10
             v10
         |]
+      printUsed cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -444,6 +422,7 @@ spec = do
                 v20
             c20
         |]
+      printUsed cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -477,6 +456,7 @@ spec = do
                 p20
             c20
         |]
+      printUsed cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -516,6 +496,8 @@ spec = do
           fun2_id p20 =
             p20
         |]
+      printUsed cfa
+
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
         , ( "TagValue",
@@ -539,7 +521,6 @@ spec = do
               ]
           )
         ]
-      pure ()
 
     it "closure param & result ; context insenisitve return value mix" $ do
       cfa <- controlFlowAnalysisM ["main"] [prog2|
@@ -560,6 +541,8 @@ spec = do
               v05 = v04 $ v00
             v05
         |]
+      printUsed cfa
+
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
         , ( "TagValue",
@@ -583,7 +566,6 @@ spec = do
               ]
           )
         ]
-      pure ()
 
   ----------------------------
 
@@ -600,6 +582,7 @@ spec = do
           fun1_id p10 =
             p10
         |]
+      printUsed cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -633,6 +616,7 @@ spec = do
           fun2_id p20 =
             p20
         |]
+      printUsed cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -673,6 +657,8 @@ spec = do
           fun3_id p30 =
             p30
         |]
+      printUsed cfa
+
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
         , ( "TagValue",
@@ -692,7 +678,7 @@ spec = do
               ]
           )
         ]
-      -- BUG: v04 must not have PNode
+      -- BUG: v04 must not have PNode [fixed]
       -- CFA ApplyChain BUGFIX test
       filterAndSort ["PNode", "ApplyChain"] cfa `sameAs` Map.fromList
         [ ( "ApplyChain" , [ [ "v04" , "fun1_ap" , "0" , "2" , "3" ] ] )
@@ -708,7 +694,7 @@ spec = do
           )
         ]
 
-    xit "fun param & result ; ap ap id lit" $ do
+    it "fun param & result ; ap ap id lit" $ do
       cfa <- controlFlowAnalysisM ["main"] [prog2|
           main =
             letS
@@ -719,19 +705,19 @@ spec = do
             v03
           fun1_ap p10 p11 =
             letS
-              v10 = p10 $ p11
+              v10 = p10 $ p11 -- NOTE: ap ap results PointsTo("p10", "p11")
             v10
           fun2_id p20 =
             p20
         |]
+      printUsed cfa
 
-      -- BUG: PointsTo("p10", "p11") ???
-
-      pPrint $ cfa
+      -- NOTE: ap ap results PointsTo("p10", "p11")
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
         , ( "TagValue",
-              [ ["p11", "lit:T_Int64"]
+              [ ["p10", "lit:T_Int64"]  -- due to PointsTo("p10", "p11")
+              , ["p11", "lit:T_Int64"]
               , ["p20", "lit:T_Int64"]
               , ["v00", "lit:T_Int64"]
               , ["v03", "lit:T_Int64"]
@@ -739,11 +725,329 @@ spec = do
               ]
           )
         , ( "NodeOrigin",
-              [ ["p11", "v00"]
+              [ ["p10", "v00"]  -- due to PointsTo("p10", "p11")
+              , ["p11", "v00"]
               , ["p20", "v00"]
               , ["v00", "v00"]
               , ["v03", "v00"]
               , ["v10", "v00"]
+              ]
+          )
+        ]
+
+    it "clo param & result ; ap ap' id lit + BUGFIX" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          main =
+            letS
+              v00 = #T_Int64 0
+              v01 = clo_fun1_ap $
+              v02 = clo_fun2_ap $
+              v03 = clo_fun3_id $
+              v04 = v01 $ v02 v03 v00 -- ap ap' id lit
+            v04
+          clo_fun1_ap =
+            let
+              fun1_ap = \[] p10 p11 ->
+                letS
+                  v10 = p10 $ p11
+                v10
+            fun1_ap
+          clo_fun2_ap =
+            let
+              fun2_ap = \[] p20 p21 ->
+                letS
+                  v20 = p20 $ p21
+                v20
+            fun2_ap
+          clo_fun3_id =
+            let
+              fun3_id = \[] p30 ->
+                p30
+            fun3_id
+        |]
+      printUsed cfa
+
+      toCBy cfa `sameAs` Map.fromList
+        [ ( "ExternalOrigin", [] )
+        , ( "TagValue",
+              [ ["p21", "lit:T_Int64"]
+              , ["p30", "lit:T_Int64"]
+              , ["v00", "lit:T_Int64"]
+              , ["v04", "lit:T_Int64"]
+              , ["v20", "lit:T_Int64"]
+              ]
+          )
+        , ( "NodeOrigin",
+              [ ["p21", "v00"]
+              , ["p30", "v00"]
+              , ["v00", "v00"]
+              , ["v04", "v00"]
+              , ["v20", "v00"]
+              ]
+          )
+        ]
+      -- BUG: v04 must not have PNode [fixed]
+      -- CFA ApplyChain BUGFIX test
+      filterAndSort ["PNode", "ApplyChain"] cfa `sameAs` Map.fromList
+        [ ( "ApplyChain" , [ [ "v04" , "fun1_ap" , "0" , "2" , "3" ] ] )
+        , ( "PNode",
+              [ [ "fun1_ap" , "fun1_ap" , "2" , "2" ]
+              , [ "fun2_ap" , "fun2_ap" , "2" , "2" ]
+              , [ "fun3_id" , "fun3_id" , "1" , "1" ]
+              , [ "p10" , "fun2_ap" , "2" , "2" ]
+              , [ "p11" , "fun3_id" , "1" , "1" ]
+              , [ "p20" , "fun3_id" , "1" , "1" ]
+              , [ "v01" , "fun1_ap" , "2" , "2" ]
+              , [ "v02" , "fun2_ap" , "2" , "2" ]
+              , [ "v03" , "fun3_id" , "1" , "1" ]
+              , [ "v10" , "fun2_ap" , "2" , "1" ]
+              ]
+          )
+        ]
+
+  ----------------------------
+
+  describe "CBy - lit - known - oversaturated" $ do
+
+    it "fun param & result ; simple" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          main =
+            letS
+              v00 = #T_Int64 0
+              v02 = fun1_id $ fun1_id fun1_id v00
+            v02
+          fun1_id p10 =
+            p10
+        |]
+      printUsed cfa
+
+      toCBy cfa `sameAs` Map.fromList
+        [ ( "ExternalOrigin", [] )
+        , ( "TagValue",
+              [ ["p10", "lit:T_Int64"]
+              , ["v00", "lit:T_Int64"]
+              , ["v02", "lit:T_Int64"]
+              ]
+          )
+        , ( "NodeOrigin",
+              [ ["p10", "v00"]
+              , ["v00", "v00"]
+              , ["v02", "v00"]
+              ]
+          )
+        ]
+
+    it "fun param & result ; ap ap' id lit + BUGFIX" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          main =
+            letS
+              v00 = #T_Int64 0
+              v04 = fun1_ap $ fun2_ap fun3_id v00 -- ap ap' id lit
+            v04
+          fun1_ap p10 p11 =
+            letS
+              v10 = p10 $ p11
+            v10
+          fun2_ap p20 p21 =
+            letS
+              v20 = p20 $ p21
+            v20
+          fun3_id p30 =
+            p30
+        |]
+      printUsed cfa
+
+      toCBy cfa `sameAs` Map.fromList
+        [ ( "ExternalOrigin", [] )
+        , ( "TagValue",
+              [ ["p21", "lit:T_Int64"]
+              , ["p30", "lit:T_Int64"]
+              , ["v00", "lit:T_Int64"]
+              , ["v04", "lit:T_Int64"]
+              , ["v20", "lit:T_Int64"]
+              ]
+          )
+        , ( "NodeOrigin",
+              [ ["p21", "v00"]
+              , ["p30", "v00"]
+              , ["v00", "v00"]
+              , ["v04", "v00"]
+              , ["v20", "v00"]
+              ]
+          )
+        ]
+      -- BUG: v04 must not have PNode [fixed]
+      -- CFA ApplyChain BUGFIX test
+      filterAndSort ["PNode", "ApplyChain"] cfa `sameAs` Map.fromList
+        [ ( "ApplyChain" , [ [ "v04" , "fun1_ap" , "0" , "2" , "3" ] ] )
+        , ( "PNode",
+              [ [ "fun2_ap" , "fun2_ap" , "2" , "2" ]
+              , [ "fun3_id" , "fun3_id" , "1" , "1" ]
+              , [ "p10" , "fun2_ap" , "2" , "2" ]
+              , [ "p11" , "fun3_id" , "1" , "1" ]
+              , [ "p20" , "fun3_id" , "1" , "1" ]
+              , [ "v10" , "fun2_ap" , "2" , "1" ]
+              ]
+          )
+        ]
+
+  describe "CBy - coverage" $ do
+
+    {-
+    "CFA-05"  undersaturated known call: create PNode ; pass arguments
+    "CFA-11"  undersaturated PNode call: create new PNode ; copy PNode arguments
+    -}
+    it "node - known - fun param & result ; gradually saturated call " $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          main =
+            letS
+              v00 = #T_Int64 0
+              v01 = #T_Int64 0
+              v02 = #T_Int64 0
+              v03 = fun1_tup3 $ v00
+              v04 = v03 $ v01
+              v05 = v04 $ v02
+            v05
+          fun1_tup3 p10 p11 p12 =
+            letS
+              v10 = [Tup3 p10 p11 p12]
+            v10
+        |]
+      printUsed cfa
+
+      toCBy cfa `sameAs` Map.fromList
+        [ ( "ExternalOrigin", [] )
+        , ( "TagValue",
+              [ ["p10", "lit:T_Int64"]
+              , ["p11", "lit:T_Int64"]
+              , ["p12", "lit:T_Int64"]
+              , ["v00", "lit:T_Int64"]
+              , ["v01", "lit:T_Int64"]
+              , ["v02", "lit:T_Int64"]
+              , ["v05", "Tup3"]
+              , ["v10", "Tup3"]
+              ]
+          )
+        , ( "NodeOrigin",
+              [ ["p10", "v00"]
+              , ["p11", "v01"]
+              , ["p12", "v02"]
+              , ["v00", "v00"]
+              , ["v01", "v01"]
+              , ["v02", "v02"]
+              , ["v05", "v10"]
+              , ["v10", "v10"]
+              ]
+          )
+        ]
+
+    {-
+    "CFA-15"  oversaturated PNode call
+    "CFA-24"  oversaturated apply chain link
+    -}
+    it "node - known - fun param & result ; oversaturated non-empty PNode" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          main =
+            letS
+              v00 = #T_Int64 0
+              v01 = #T_Int64 0
+              v02 = #T_Int64 0
+              v03 = fun1_tup2 $ v00
+              v04 = v03 $ v01 fun3_id v02
+            v04
+          fun1_tup2 p10 p11 =
+            letS
+              v10 = [Tup2 p10 p11]
+            let
+              v11 = \[] p20 p21 ->
+                p21
+            letS
+              v12 = v11 $ v10
+            v12
+          fun3_id p30 =
+            p30
+        |]
+      printUsed cfa
+
+      toCBy cfa `sameAs` Map.fromList
+        [ ( "ExternalOrigin", [] )
+        , ( "TagValue",
+              [ ["p10", "lit:T_Int64"]
+              , ["p11", "lit:T_Int64"]
+              , ["p20", "Tup2"]
+              , ["p30", "lit:T_Int64"]
+              , ["v00", "lit:T_Int64"]
+              , ["v01", "lit:T_Int64"]
+              , ["v02", "lit:T_Int64"]
+              , ["v04", "lit:T_Int64"]
+              , ["v10", "Tup2"]
+              ]
+          )
+        , ( "NodeOrigin",
+              [ ["p10", "v00"]
+              , ["p11", "v01"]
+              , ["p20", "v10"]
+              , ["p30", "v02"]
+              , ["v00", "v00"]
+              , ["v01", "v01"]
+              , ["v02", "v02"]
+              , ["v04", "v02"]
+              , ["v10", "v10"]
+              ]
+          )
+        ]
+
+    {-
+    "CFA-20"  undersaturated apply chain link
+    "CFA-21"  undersaturated apply chain link
+    "CFA-22"  undersaturated apply chain link
+    -}
+    it "node - known - fun param & result ; undersaturated gradually built non-empty PNode & apply chain" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          main =
+            letS
+              v00 = #T_Int64 0
+              v01 = #T_Int64 0
+              v02 = #T_Int64 0
+              v03 = fun1_tup5 $ v00
+              v04 = fun2_id $ v03 v01 v02
+              v05 = v04 $ v00 v01
+            v05
+          fun1_tup5 p10 p11 p12 p13 p14 =
+            letS
+              v10 = [Tup5 p10 p11 p12 p13 p14]
+            v10
+          fun2_id p30 =
+            p30
+        |]
+      printUsed cfa
+
+      toCBy cfa `sameAs` Map.fromList
+        [ ( "ExternalOrigin", [] )
+        , ( "TagValue",
+              [ ["p10", "lit:T_Int64"]
+              , ["p11", "lit:T_Int64"]
+              , ["p12", "lit:T_Int64"]
+              , ["p13", "lit:T_Int64"]
+              , ["p14", "lit:T_Int64"]
+              , ["v00", "lit:T_Int64"]
+              , ["v01", "lit:T_Int64"]
+              , ["v02", "lit:T_Int64"]
+              , ["v05", "Tup5"]
+              , ["v10", "Tup5"]
+              ]
+          )
+        , ( "NodeOrigin",
+              [ ["p10", "v00"]
+              , ["p11", "v01"]
+              , ["p12", "v02"]
+              , ["p13", "v00"]
+              , ["p14", "v01"]
+              , ["v00", "v00"]
+              , ["v01", "v01"]
+              , ["v02", "v02"]
+              , ["v05", "v10"]
+              , ["v10", "v10"]
               ]
           )
         ]
@@ -760,6 +1064,7 @@ spec = do
     apply chain
     partially applied result
   -}
+
 
 {-
 CFA
