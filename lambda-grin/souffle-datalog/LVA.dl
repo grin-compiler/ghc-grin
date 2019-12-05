@@ -7,29 +7,41 @@
 //InitialReachable(":Main.main").
 //InitialReachable("Main.main").
 
+// Call tree
+.decl CalledCode(caller:CodeName, callee:CodeName)
+.output CalledCode
+
+Used("LVA-01"),
+CalledCode(caller, callee) :-
+  HasInst(caller, r), // NOTE: alts can be callers ; needs fix to include the function or closure?
+  Called(r, callee).
+
 // SECTION: reachability
 
-.decl ReachableCode(n:CodeName, msg:symbol)
+.decl ReachableCode(n:CodeName)
 .output ReachableCode
 
-ReachableCode(n, "INITIAL") :-
+Used("LVA-02"),
+ReachableCode(n) :-
   InitialReachable(n).
 
 // call
-ReachableCode(callee, cat("CALL,", r)) :-
-  ReachableCode(f, _),
-  HasInst(f, r),
-  Called(r, callee).
+Used("LVA-03"),
+ReachableCode(callee) :-
+  ReachableCode(caller),
+  CalledCode(caller, callee).
 
 // alt ; tag sensitive
-ReachableCode(alt, "ALT:DEFAULT") :-
-  ReachableCode(f, _),
+Used("LVA-04"),
+ReachableCode(alt) :-
+  ReachableCode(f),
   HasInst(f, r),
   // default case is always reachable
   Alt(r, alt, "default:").
 
-ReachableCode(alt, "ALT") :-
-  ReachableCode(f,_),
+Used("LVA-05"),
+ReachableCode(alt) :-
+  ReachableCode(f),
   HasInst(f, r),
   Alt(r, alt, t),
   // is the tag created somewhere?
@@ -39,18 +51,21 @@ ReachableCode(alt, "ALT") :-
 .decl Reachable(inst:Variable)
 .output Reachable
 
+Used("LVA-06"),
 Reachable(inst) :-
   HasInst(f, inst),
-  ReachableCode(f,_).
+  ReachableCode(f).
 
 
 .decl TagValue(v:Variable, t:Tag)
 .output TagValue
 
+Used("LVA-07"),
 TagValue(v, tag) :-
   NodeOrigin(v, node),
   Node(node, tag).
 
+Used("LVA-08"),
 TagValue(v, tag) :-
   ExternalOrigin(v, _, ty_var),
   TypeNode(ty_var, tag).
@@ -60,9 +75,10 @@ TagValue(v, tag) :-
 .decl DeadCode(n:CodeName)
 .output DeadCode
 
+Used("LVA-09"),
 DeadCode(n) :-
   ReturnValue(n, _),
-  !ReachableCode(n, _).
+  !ReachableCode(n).
 
 .decl DeadExternal(n:External)
 .output DeadExternal
@@ -70,12 +86,39 @@ DeadCode(n) :-
 .decl ReachableExternal(n:External)
 .output ReachableExternal
 
-ReachableExternal(n) :-
-  ExternalFunction(n, _, _),
-  Call(r, n, _),
-  HasInst(f, r),
-  ReachableCode(f, _).
+Used("LVA-10"),
+ReachableExternal(callee) :-
+  ReachableCode(caller),
+  ExternalFunction(callee, _, _),
+  CalledCode(caller, callee).
 
+Used("LVA-11"),
 DeadExternal(n) :-
   ExternalFunction(n, _, _),
   !ReachableExternal(n).
+
+//////
+
+.decl HasCallOp(code:CodeName)
+.output HasCallOp
+
+Used("LVA-12"),
+HasCallOp(code) :-
+  ReturnValue(code, _),
+  HasInst(code, r),
+  Call(r, _, _).
+
+Used("LVA-13"),
+HasCallOp(code) :- // flatten alts
+  HasInst(code, r),
+  Alt(r, alt, _),
+  HasCallOp(alt).
+
+.decl LeafCode(code:CodeName)
+.output LeafCode
+
+Used("LVA-14"),
+LeafCode(caller) :-
+  HasCallOp(caller),
+  !Alt(_, caller, _),
+  !CalledCode(caller, _).

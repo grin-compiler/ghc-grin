@@ -141,6 +141,7 @@
 
 // "readStablePtrArray#"        :: {"MutableByteArray#" %s} -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
 // "readWord8ArrayAsStablePtr#" :: {"MutableByteArray#" %s} -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
+Called(r, op),
 TypeVarPointsTo(r, ty_node, ext_result) :-
   (op = "readStablePtrArray#" ; op = "readWord8ArrayAsStablePtr#"),
   REACHABLE(r)
@@ -152,6 +153,7 @@ TypeVarPointsTo(r, ty_node, ext_result) :-
 
 // "indexStablePtrArray#"         :: {"ByteArray#"} -> T_Int64 -> {"StablePtr#" %a}
 // "indexWord8ArrayAsStablePtr#"  :: {"ByteArray#"} -> T_Int64 -> {"StablePtr#" %a}
+Called(r, op),
 TypeVarPointsTo(r, ty_node, ext_result) :-
   (op = "indexStablePtrArray#" ; op = "indexWord8ArrayAsStablePtr#"),
   REACHABLE(r)

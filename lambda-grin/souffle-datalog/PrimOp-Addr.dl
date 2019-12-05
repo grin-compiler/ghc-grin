@@ -70,6 +70,7 @@
 */
 
 // "readStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
+Called(r, op),
 TypeVarPointsTo(r, ty_node, ext_result) :-
   REACHABLE(r)
   op = "readStablePtrOffAddr#",
@@ -80,6 +81,7 @@ TypeVarPointsTo(r, ty_node, ext_result) :-
   RetTup1Node0(op, ty_node).
 
 // "indexStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"StablePtr#" %a}
+Called(r, op),
 TypeVarPointsTo(r, ty_node, ext_result) :-
   REACHABLE(r)
   op = "indexStablePtrOffAddr#",

@@ -31,3 +31,7 @@ MissingValue(v) :-
   (FunctionParameter(f, _, v) ; AltParameter(f, _, v) ; ClosureParameter(f, _, v)),
   !DeadCode(f),
   !(NodeOrigin(v, _) ; ExternalOrigin(v, _, _); PNode(v, _, _, _)).
+
+// rule coverage
+.decl Used(rule_name:symbol)
+.output Used

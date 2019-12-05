@@ -8,6 +8,7 @@
 */
 
 // "clearCCS#" :: ({"State#" %s} -> {"GHC.Prim.Unit#" %a}) -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+Called(r, op),
 TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
 CallPNode1(r, v0, v1_state) :-
   op = "clearCCS#",

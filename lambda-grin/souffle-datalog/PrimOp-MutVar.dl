@@ -19,6 +19,7 @@
 
 // "newMutVar#" :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutVar#" %s %a}}
 // new array
+Called(r, op),
 MutVar(r, ty_node, item) :-
   op = "newMutVar#",
   REACHABLE(r)
@@ -29,6 +30,7 @@ MutVar(r, ty_node, item) :-
   RetTup1Node0(op, ty_node).
 
 // "readMutVar#" :: {"MutVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+Called(r, op),
 TypeVarPointsTo(r, ty_node, item) :-
   op = "readMutVar#",
   REACHABLE(r)
@@ -42,6 +44,7 @@ TypeVarPointsTo(r, ty_node, item) :-
 
 // "writeMutVar#" :: {"MutVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
 // extend array
+Called(r, op),
 MutVar(ext_result, ty_node, item) :-
   op = "writeMutVar#",
   REACHABLE(r)
@@ -59,10 +62,11 @@ MutVar(ext_result, ty_node, item) :-
 Error(r, "Unsupported (reachable) primop: atomicModifyMutVar# (TBD)") :-
   Call(r, "atomicModifyMutVar#", _),
   HasInst(f, r),
-  ReachableCode(f, _).
+  ReachableCode(f).
 
 // "casMutVar#" :: {"MutVar#" %s %a} -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 // extend array
+Called(r, op),
 TypeVarPointsTo(r, ty_node, new_item),
 TypeVarPointsTo(r, ty_node, old_item),
 MutVar(ext_result, arr_node, new_item) :-

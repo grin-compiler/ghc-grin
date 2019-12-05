@@ -21,6 +21,7 @@
 
 // "compactAdd#"            :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 // "compactAddWithSharing#" :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+Called(r, op),
 TypeVarPointsTo(r, ty_node, item) :-
   (op = "compactAdd#" ; op = "compactAddWithSharing#"),
   REACHABLE(r)

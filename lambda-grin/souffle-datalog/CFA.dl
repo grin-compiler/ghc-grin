@@ -62,6 +62,7 @@
 */
 
 // create PNodes for referred functions in call or node argument or in move
+Used("CFA-01"),
 PNode(f, f, arity, arity) :-
   ( IsFunction(f)
   ; IsClosure(f)
@@ -84,6 +85,7 @@ PNode(f, f, arity, arity) :-
 //////////////////////////////////
 
 // strict, saturated, known function/closure call: execute function call
+Used("CFA-02"),
 Called(r, fun),
 PointsTo(r, ret_var) :- // return value
   REACHABLE(r)
@@ -95,6 +97,7 @@ PointsTo(r, ret_var) :- // return value
   ReturnValue(fun, ret_var).
   // CHECKED
 
+Used("CFA-03"),
 PointsTo(param, arg) :- // pass arguments to function parameters
   REACHABLE(r)
   Call(r, fun, arg_count),
@@ -111,6 +114,7 @@ PointsTo(param, arg) :- // pass arguments to function parameters
 //////////////////////////////////
 
 // strict, undersaturated known call: create PNode
+Used("CFA-04"),
 PNode(r, fun, arity, arity - arg_count) :-
   REACHABLE(r)
   Call(r, fun, arg_count),
@@ -119,6 +123,7 @@ PNode(r, fun, arity, arity - arg_count) :-
   arg_count < arity.
   // CHECKED
 
+Used("CFA-05"),
 PNodeArgument(r, fun, call_arg_i, arg_value) :-
   REACHABLE(r)
   Call(r, fun, arg_count),
@@ -134,6 +139,7 @@ PNodeArgument(r, fun, call_arg_i, arg_value) :-
 //////////////////////////////////
 
 // strict, saturated PNode call: execute function call
+Used("CFA-06"),
 Called(r, fun),
 PointsTo(r, ret_var) :- // return value
   REACHABLE(r)
@@ -145,6 +151,7 @@ PointsTo(r, ret_var) :- // return value
   ReturnValue(fun, ret_var).
   // CHECKED
 
+Used("CFA-07"),
 PointsTo(param, arg) :- // pass call arguments to saturate function call
   REACHABLE(r)
   Call(r, pnode, arg_count),
@@ -158,6 +165,7 @@ PointsTo(param, arg) :- // pass call arguments to saturate function call
   CodeParameter(fun, call_arg_i + arity - missing, param).
   // CHECKED
 
+Used("CFA-08"),
 PointsTo(bound_param, pnode_arg) :- // pass PNode arguments for the function call
   REACHABLE(r)
   Call(r, pnode, arg_count),
@@ -175,6 +183,7 @@ PointsTo(bound_param, pnode_arg) :- // pass PNode arguments for the function cal
 //////////////////////////////////
 
 // strict, undersaturated PNode call: create new PNode
+Used("CFA-09"),
 PNode(r, fun, arity, missing - arg_count) :-
   REACHABLE(r)
   Call(r, pnode, arg_count),
@@ -183,6 +192,7 @@ PNode(r, fun, arity, missing - arg_count) :-
   arg_count < missing.
   // CHECKED
 
+Used("CFA-10"),
 PNodeArgument(r, fun, call_arg_i + arity - missing, arg) :-
   REACHABLE(r)
   Call(r, pnode, arg_count),
@@ -195,6 +205,7 @@ PNodeArgument(r, fun, call_arg_i + arity - missing, arg) :-
   CallArgument(r, call_arg_i, arg).
   // CHECKED
 
+Used("CFA-11"),
 PNodeArgument(r, fun, bound_i, bound_value) :-
   REACHABLE(r)
   Call(r, pnode, arg_count),
@@ -210,6 +221,7 @@ PNodeArgument(r, fun, bound_i, bound_value) :-
 //////////////////////////////////
 
 // strict, oversaturated, known function/closure call: execute function call + create ApplyChain
+Used("CFA-12"),
 Called(r, fun),
 ApplyChain(r, fun, 0, arity, arg_count) :-
   REACHABLE(r)
@@ -219,6 +231,7 @@ ApplyChain(r, fun, 0, arity, arg_count) :-
   arg_count > arity.
   // CHECKED
 
+Used("CFA-13"),
 PointsTo(param, arg) :- // pass arguments to function parameters
   REACHABLE(r)
   Call(r, fun, arg_count),
@@ -235,6 +248,7 @@ PointsTo(param, arg) :- // pass arguments to function parameters
 //////////////////////////////////
 
 // strict, oversaturated PNode call: execute the first function call + create ApplyChain
+Used("CFA-14"),
 Called(r, fun), // initiate call
 ApplyChain(r, fun, 0, missing, arg_count) :-
   REACHABLE(r)
@@ -245,6 +259,7 @@ ApplyChain(r, fun, 0, missing, arg_count) :-
   0 <= missing.
   // CHECKED
 
+Used("CFA-15"),
 PointsTo(bound_param, pnode_arg) :- // pass PNode arguments for the initial function call
   REACHABLE(r)
   Call(r, pnode, arg_count),
@@ -259,6 +274,7 @@ PointsTo(bound_param, pnode_arg) :- // pass PNode arguments for the initial func
   CodeParameter(fun, pnode_i, bound_param).
   // CHECKED
 
+Used("CFA-16"),
 PointsTo(param, arg) :- // pass call arguments to saturate the initial function call
   REACHABLE(r)
   Call(r, pnode, arg_count),
@@ -278,6 +294,7 @@ PointsTo(param, arg) :- // pass call arguments to saturate the initial function 
 // SECTION: apply chain elaboration: apply remained call arguments to 'fun' result PNodes
 
 // saturated apply chain link: execute function call + create result
+Used("CFA-17"),
 Called(r, p_fun),
 PointsTo(r, p_ret_var) :- // return value
   REACHABLE(r)
@@ -289,6 +306,7 @@ PointsTo(r, p_ret_var) :- // return value
   ReturnValue(p_fun, p_ret_var).
   // CHECKED
 
+Used("CFA-18"),
 PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
   REACHABLE(r)
   ApplyChain(r, fun, _, consumed, arg_count),
@@ -302,6 +320,7 @@ PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
   PNodeArgument(pnode, p_fun, bound_i, pnode_arg).
   // CHECKED
 
+Used("CFA-19"),
 PointsTo(param, arg) :- // pass PNode arguments to function to saturate the call
   REACHABLE(r)
   ApplyChain(r, fun, _, consumed, arg_count),
@@ -318,6 +337,7 @@ PointsTo(param, arg) :- // pass PNode arguments to function to saturate the call
 //////////////////////////////////
 
 // undersaturated apply chain link: create PNode as the result
+Used("CFA-20"),
 PNode(r, p_fun, p_arity, p_missing - (arg_count - consumed)) :-
   REACHABLE(r)
   ApplyChain(r, fun, _, consumed, arg_count),
@@ -326,6 +346,7 @@ PNode(r, p_fun, p_arity, p_missing - (arg_count - consumed)) :-
   p_missing > arg_count - consumed.
   // CHECKED
 
+Used("CFA-21"),
 PNodeArgument(r, p_fun, (p_arity - p_missing) + (call_arg_i - consumed), arg) :- // save call arguments
   REACHABLE(r)
   ApplyChain(r, fun, _, consumed, arg_count),
@@ -338,6 +359,7 @@ PNodeArgument(r, p_fun, (p_arity - p_missing) + (call_arg_i - consumed), arg) :-
   CallArgument(r, call_arg_i, arg).
   // CHECKED
 
+Used("CFA-22"),
 PNodeArgument(r, p_fun, bound_i, pnode_arg) :- // copy PNode arguments
   REACHABLE(r)
   ApplyChain(r, fun, _, consumed, arg_count),
@@ -353,6 +375,7 @@ PNodeArgument(r, p_fun, bound_i, pnode_arg) :- // copy PNode arguments
 //////////////////////////////////
 
 // oversaturated apply chain link: execute function + create the next ApplyChain link
+Used("CFA-23"),
 Called(r, p_fun),
 ApplyChain(r, p_fun, step + 1, consumed + p_missing, arg_count) :-
   REACHABLE(r)
@@ -362,6 +385,7 @@ ApplyChain(r, p_fun, step + 1, consumed + p_missing, arg_count) :-
   consumed + p_missing < arg_count.
   // CHECKED
 
+Used("CFA-24"),
 PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
   REACHABLE(r)
   ApplyChain(r, fun, _, consumed, arg_count),
@@ -375,6 +399,7 @@ PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
   PNodeArgument(pnode, p_fun, bound_i, pnode_arg).
   // CHECKED
 
+Used("CFA-25"),
 PointsTo(param, arg) :- // pass call arguments to saturate function call
   REACHABLE(r)
   ApplyChain(r, fun, _, consumed, arg_count),
@@ -396,6 +421,7 @@ PointsTo(param, arg) :- // pass call arguments to saturate function call
 .decl CallPNode1(inst:Variable, pnode:Variable, last_arg:Variable)
 .output CallPNode1
 
+Used("CFA-26"),
 Called(inst, fun),
 PointsTo(fun_last_param, last_arg) :- // pass last argument to function
   REACHABLE(inst)
@@ -405,6 +431,7 @@ PointsTo(fun_last_param, last_arg) :- // pass last argument to function
   CodeParameter(fun, fun_arity-1, fun_last_param).
   // CHECKED
 
+Used("CFA-27"),
 PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
   REACHABLE(inst)
   CallPNode1(inst, pnode, _),
@@ -420,6 +447,7 @@ PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
 .decl CallPNode2(inst:Variable, pnode:Variable, before_last_arg:Variable, last_arg:Variable)
 .output CallPNode2
 
+Used("CFA-28"),
 Called(inst, fun),
 PointsTo(fun_last_param, last_arg),
 PointsTo(fun_before_last_param, before_last_arg) :- // pass last two arguments to function
@@ -431,6 +459,7 @@ PointsTo(fun_before_last_param, before_last_arg) :- // pass last two arguments t
   CodeParameter(fun, fun_arity-1, fun_last_param).
   // CHECKED
 
+Used("CFA-29"),
 PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
   REACHABLE(inst)
   CallPNode2(inst, pnode, _, _),

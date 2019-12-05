@@ -19,6 +19,7 @@
 .output TVar
 
 // "atomically#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+Called(r, op),
 TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
 CallPNode1(r, v0, v1_state) :-
   op = "atomically#",
@@ -37,6 +38,7 @@ CallPNode1(r, v0, v1_state) :-
 //                -> ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a})
 //                -> {"State#" {RealWorld}}
 //                -> {"GHC.Prim.Unit#" %a}
+Called(r, op),
 TypeVarPointsTo(r, ty_res_value, fun0_ret),  // handle return value
 TypeVarPointsTo(r, ty_res_value, fun1_ret),  // handle return value
 CallPNode1(r, v0, v2_state),
@@ -64,6 +66,7 @@ CallPNode1(r, v1, v2_state) :-
 //              -> {"State#" {RealWorld}}
 //              -> {"GHC.Prim.Unit#" %a}
 // handle the wrapped function
+Called(r, "catchSTM#"),
 TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
 CallPNode1(r, v0, v2_state) :-
   REACHABLE(r)
@@ -79,6 +82,7 @@ CallPNode1(r, v0, v2_state) :-
 
 // NOTE: the handler has its own rule, because it fires only when there are exceptions, while the wrapped function is always called
 // handle ex-handler
+Called(r, "catchSTM#"),
 TypeVarPointsTo(r, ty_res_value, handler_ret),     // handle return value
 CallPNode2(r, v1, ex, v2_state) :-
   REACHABLE(r)
@@ -95,6 +99,7 @@ CallPNode2(r, v1, ex, v2_state) :-
 
 // "newTVar#" :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"TVar#" %s %a}}
 // new array
+Called(r, op),
 TVar(r, ty_node, item) :-
   op = "newTVar#",
   REACHABLE(r)
@@ -106,6 +111,7 @@ TVar(r, ty_node, item) :-
 
 // "readTVar#"   :: {"TVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
 // "readTVarIO#" :: {"TVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+Called(r, op),
 TypeVarPointsTo(r, ty_node, item) :-
   (op = "readTVar#" ; op = "readTVarIO#"),
   REACHABLE(r)
@@ -119,6 +125,7 @@ TypeVarPointsTo(r, ty_node, item) :-
 
 // "writeTVar#"  :: {"TVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
 // extend array
+Called(r, op),
 TVar(ext_result, ty_node, item) :-
   op = "writeTVar#",
   REACHABLE(r)
