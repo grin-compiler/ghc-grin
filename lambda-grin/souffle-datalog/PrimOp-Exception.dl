@@ -26,6 +26,7 @@
 // "raise#"   :: %b -> %o
 // "raiseIO#" :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %b}
 // collect raised exceptions
+Used("PrimOp-Exception-01"),
 Called(r, op),
 RaisedEx(ex) :-
   REACHABLE(r)
@@ -40,8 +41,9 @@ RaisedEx(ex) :-
 //          -> {"State#" {RealWorld}}
 //          -> {"GHC.Prim.Unit#" %a}
 // handle the wrapped function
+Used("PrimOp-Exception-02"),
 Called(r, "catch#"),
-TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
+PointsTo(r, fun_ret),
 CallPNode1(r, v0, v2_state) :-
   REACHABLE(r)
   Call(r, "catch#", _),
@@ -51,14 +53,13 @@ CallPNode1(r, v0, v2_state) :-
   // state
   CallArgument(r, 2, v2_state),
   // return value
-  RetTup1Node0("catch#", ty_res_value),
-  IsTypeVariable(ty_res_value), // extra validation
   ReturnValue(fun, fun_ret).
 
 // NOTE: the handler has its own rule, because it fires only when there are exceptions, while the wrapped function is always called
 // handle ex-handler
+Used("PrimOp-Exception-03"),
 Called(r, "catch#"),
-TypeVarPointsTo(r, ty_res_value, handler_ret),     // handle return value
+PointsTo(r, handler_ret),
 CallPNode2(r, v1, ex, v2_state) :-
   REACHABLE(r)
   Call(r, "catch#", _),
@@ -70,15 +71,14 @@ CallPNode2(r, v1, ex, v2_state) :-
   // exceptions
   RaisedEx(ex),
   // return value
-  RetTup1Node0("catch#", ty_res_value),
-  IsTypeVariable(ty_res_value), // extra validation
   ReturnValue(handler, handler_ret).
 
 // "maskAsyncExceptions#"   :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 // "maskUninterruptible#"   :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 // "unmaskAsyncExceptions#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+Used("PrimOp-Exception-04"),
 Called(r, op),
-TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
+PointsTo(r, fun_ret),
 CallPNode1(r, v0, v1_state) :-
   REACHABLE(r)
   ( op = "maskAsyncExceptions#"
@@ -91,6 +91,4 @@ CallPNode1(r, v0, v1_state) :-
   PNode(v0, fun, _, 1),
   CallArgument(r, 1, v1_state),
   // return value
-  RetTup1Node0(op, ty_res_value),
-  IsTypeVariable(ty_res_value), // extra validation
   ReturnValue(fun, fun_ret).
