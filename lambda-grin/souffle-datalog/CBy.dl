@@ -19,10 +19,29 @@
 */
 Used("CBy-1"),
 NodeOrigin(r, val) :-
+  REACHABLE(r)
   Call(r, f, 0),
   EvalMode(r, "strict"),
-  NodeOrigin(f, val),
-  Node(val, _).
+  NodeOrigin(f, val).
+
+// TODO: better model forcing ; what about externals?
+/*
+Error(ext, "forced external name"),
+Error(r, "forced external") :-
+  Call(r, f, 0),
+  EvalMode(r, "strict"),
+  !NodeOrigin(f,_),
+  !PNode(f, _, _, _),
+  ExternalOrigin(f, ext_result, _),
+  Call(ext_result, ext, _).
+*/
+Used("CBy-1-external"),
+ExternalOrigin(r, ext_result, ty_var) :-
+  REACHABLE(r)
+  Call(r, f, 0),
+  EvalMode(r, "strict"),
+  ExternalOrigin(f, ext_result, ty_var).
+
 
 // SECTION: Origin
 
@@ -44,8 +63,11 @@ PointsTo(result, value) :-
 
 // SECTION: Case + Alt
 
+.decl MatchedAlt(case_result:symbol, alt_name:symbol)
+
 // scrutinee projection to alt value ; NodeOrigin
 Used("CBy-5"),
+MatchedAlt(case_result, alt_val),
 PointsTo(alt_val, scrut_val) :-
   REACHABLE(case_result)
   Case(case_result, scrut),
@@ -55,6 +77,7 @@ PointsTo(alt_val, scrut_val) :-
 
 // scrutinee projection to alt value ; ExternalOrigin
 Used("CBy-6"),
+MatchedAlt(case_result, alt_val),
 ExternalOrigin(alt_val, ext_result, ty_var) :-
   REACHABLE(case_result)
   Case(case_result, scrut),
@@ -93,8 +116,15 @@ PointsTo(case_result, val) :-
 
 /*
   TODO:
-    - handle default alternatives
+    - handle default alternatives properly ; restrict alt_value to unhandled values only
 */
+// default alternatives
+Used("CBy-10"),
+MatchedAlt(case_result, alt_val),
+PointsTo(alt_val, scrut) :-
+  REACHABLE(case_result)
+  Case(case_result, scrut),
+  Alt(case_result, alt_val, "default:").
 
 /*
   Question:

@@ -1,5 +1,5 @@
 ///// VALIDATION
-.decl Error(v:Variable, msg:symbol)
+.decl Error(v:symbol, msg:symbol)
 .output Error
 
 // there is no lazy operation beside con and closure
@@ -15,6 +15,44 @@ Error(v, "strict closure") :-
 Error(v, "lazy app") :-
   EvalMode(v, "lazy"),
   Call(v,_,_).
+
+// SECTION: check for unknown names
+
+.decl DefName(n:symbol)
+
+DefName(n) :- // parameters
+  ( AltParameter(_, _, n)
+  ; FunctionParameter(_, _, n)
+  ; ClosureParameter(_, _, n)
+  ).
+
+DefName(n) :- // instructions
+  ( EvalMode(n, _)
+  ; Alt(_, n, _)
+  ).
+
+DefName(n) :- // top level functions
+  ( IsFunction(n)
+  ; ExternalFunction(n, _, _)
+  ).
+
+.decl UseName(n:symbol)
+
+UseName(n) :- // instructions
+  ( Move(_,n)
+  ; Call(_, n, _)
+  ; Case(_, n)
+  ; ReturnValue(_, n)
+  ).
+
+UseName(n) :- // arguments
+  ( (NodeArgument(r, _, n), NodeRole(r, "node")) // exclude literals
+  ; CallArgument(_, _, n)
+  ; ClosureVariable(_, _, n)
+  ).
+
+
+Error(n, "unknown name") :- UseName(n), !DefName(n).
 
 // SECTION: debug
 
@@ -35,3 +73,17 @@ MissingValue(v) :-
 // rule coverage
 .decl Used(rule_name:symbol)
 .output Used
+
+// SECTION: unmatching but reachable case expressions
+
+Error(case_result, "unmatching live case expression") :-
+  REACHABLE(case_result)
+  Case(case_result, scrut),
+  !MatchedAlt(case_result, _),
+  !MissingValue(scrut).
+
+Error(case_result, "live case expression with dead scrutinee") :-
+  REACHABLE(case_result)
+  Case(case_result, scrut),
+  !MatchedAlt(case_result, _),
+  MissingValue(scrut).
