@@ -45,7 +45,7 @@ programToDatalogM fname prg = do
 
 programToFactsM :: Bool -> FilePath -> Program -> IO ()
 programToFactsM log outDir prg = do
-  let factNames = [ "EvalMode", "Move", "Node", "NodeArgument", "Call", "CallArgument", "IsFunction", "FunctionParameter"
+  let factNames = [ "EvalMode", "Move", "NodeRole", "Node", "NodeArgument", "Call", "CallArgument", "IsFunction", "FunctionParameter"
                   , "Case", "Alt", "AltParameter", "IsClosure", "ClosureVariable", "ClosureParameter", "ReturnValue", "FirstInst"
                   , "NextInst", "RecGroup", "ExternalFunction", "ExternalParameterType", "ExternalReturnType", "CodeArity"
                   , "TypeNode", "TypeNodeArgument", "IsTypeVariable", "FunctionType", "FunctionTypeReturnType", "FunctionTypeParameterType"
@@ -181,10 +181,12 @@ convertSimpleExp result = \case
     emit [("CallArgument", [N result, I i, N p]) | (i,p) <- zip [0..] a]
 
   Con n a -> do
+    emit [("NodeRole", [N result, S "node"])]
     emit [("Node", [N result, N n])]
     emit [("NodeArgument", [N result, I i, N p]) | (i,p) <- zip [0..] a]
 
   Lit l -> do
+    emit [("NodeRole", [N result, S "lit"])]
     emit [("Node", [N result, S $ litTag l])]
     emit [("NodeArgument", [N result, I 0, S $ show l])]
 
