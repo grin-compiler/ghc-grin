@@ -5,6 +5,7 @@ import qualified Data.Text as Text
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Data.List (sort)
+import Data.IORef
 import Test.Hspec
 import Test.QuickCheck
 import System.IO
@@ -21,6 +22,7 @@ runTests = hspec spec
 spec :: Spec
 spec = do
   ----------------------------
+  usedRules <- runIO $ newIORef (Set.empty :: Set.Set [Text.Text])
 
   let filterAndSort keys m = fmap sort $ Map.restrictKeys m (Set.fromList keys)
 
@@ -28,7 +30,8 @@ spec = do
       sameAs a b = (PP (ppShow a)) `shouldBe` (PP (ppShow b))
 
       toCBy = filterAndSort ["NodeOrigin", "ExternalOrigin", "TagValue"]
-      printUsed = pPrint . filterAndSort ["Used"]
+      addUsedM a = modifyIORef usedRules (\x -> mappend x . Set.fromList . head . Map.elems . filterAndSort ["Used"] $ a)
+      printUsedM = readIORef usedRules >>= pPrint
 
   ----------------------------
 
@@ -43,7 +46,7 @@ spec = do
               v1 = v0
             v1
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `shouldBe` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -71,7 +74,7 @@ spec = do
                   v10
             v01
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -104,7 +107,7 @@ spec = do
                   v10
             v01
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -189,7 +192,7 @@ spec = do
               v10 = p10
             v10
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -223,7 +226,7 @@ spec = do
               v10 = p10
             v10
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -268,7 +271,7 @@ spec = do
               v01 = clo $ v00
             v01
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -308,7 +311,7 @@ spec = do
               v10 = p10
             v10
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -349,7 +352,7 @@ spec = do
               v10 = p10
             v10
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -386,7 +389,7 @@ spec = do
               v10 = p10
             v10
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -422,7 +425,7 @@ spec = do
                 v20
             c20
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -456,7 +459,7 @@ spec = do
                 p20
             c20
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -496,7 +499,7 @@ spec = do
           fun2_id p20 =
             p20
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -541,7 +544,7 @@ spec = do
               v05 = v04 $ v00
             v05
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -582,7 +585,7 @@ spec = do
           fun1_id p10 =
             p10
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -616,7 +619,7 @@ spec = do
           fun2_id p20 =
             p20
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -657,7 +660,7 @@ spec = do
           fun3_id p30 =
             p30
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -694,6 +697,109 @@ spec = do
           )
         ]
 
+    it "PNode propagation ; direct" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          main =
+            let
+              c00 = \[] p00 p01 ->
+                letS
+                  v10 = [Tup2 p00 p01]
+                v10
+            letS
+              v00 = #T_Int64 0
+              v01 = [Tup0]
+              v02 = c00 $ -- NOTE: no PNode for c00 because it is not used as a value anywhere but the call target
+              v03 = v02 $ v00
+              v04 = v03 $
+              v05 = v04 $ v01
+            v05
+        |]
+      addUsedM cfa
+
+      toCBy cfa `sameAs` Map.fromList
+        [ ( "ExternalOrigin", [] )
+        , ( "TagValue",
+              [ ["p00", "lit:T_Int64"]
+              , ["p01", "Tup0"]
+              , ["v00", "lit:T_Int64"]
+              , ["v01", "Tup0"]
+              , ["v05", "Tup2"]
+              , ["v10", "Tup2"]
+              ]
+          )
+        , ( "NodeOrigin",
+              [ ["p00", "v00"]
+              , ["p01", "v01"]
+              , ["v00", "v00"]
+              , ["v01", "v01"]
+              , ["v05", "v10"]
+              , ["v10", "v10"]
+              ]
+          )
+        ]
+      filterAndSort ["PNode", "ApplyChain"] cfa `sameAs` Map.fromList
+        [ ( "ApplyChain" , [] )
+        , ( "PNode",
+              [ [ "v02" , "c00" , "2" , "2" ]
+              , [ "v03" , "c00" , "2" , "1" ]
+              , [ "v04" , "c00" , "2" , "1" ]
+              ]
+          )
+        ]
+
+    it "PNode propagation ; indirect" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          main =
+            let
+              c00 = \[] p00 p01 ->
+                letS
+                  v10 = [Tup2 p00 p01]
+                v10
+            letS
+              v00 = #T_Int64 0
+              v01 = [Tup0]
+              c01 = c00 -- NOTE: creates PNode for c00 because it is used as a value
+              v02 = c01 $
+              v03 = v02 $ v00
+              v04 = v03 $
+              v05 = v04 $ v01
+            v05
+        |]
+      addUsedM cfa
+
+      toCBy cfa `sameAs` Map.fromList
+        [ ( "ExternalOrigin", [] )
+        , ( "TagValue",
+              [ ["p00", "lit:T_Int64"]
+              , ["p01", "Tup0"]
+              , ["v00", "lit:T_Int64"]
+              , ["v01", "Tup0"]
+              , ["v05", "Tup2"]
+              , ["v10", "Tup2"]
+              ]
+          )
+        , ( "NodeOrigin",
+              [ ["p00", "v00"]
+              , ["p01", "v01"]
+              , ["v00", "v00"]
+              , ["v01", "v01"]
+              , ["v05", "v10"]
+              , ["v10", "v10"]
+              ]
+          )
+        ]
+      filterAndSort ["PNode", "ApplyChain"] cfa `sameAs` Map.fromList
+        [ ( "ApplyChain" , [] )
+        , ( "PNode",
+              [ [ "c00" , "c00" , "2" , "2" ]
+              , [ "c01" , "c00" , "2" , "2" ]
+              , [ "v02" , "c00" , "2" , "2" ]
+              , [ "v03" , "c00" , "2" , "1" ]
+              , [ "v04" , "c00" , "2" , "1" ]
+              ]
+          )
+        ]
+
     it "fun param & result ; ap ap id lit" $ do
       cfa <- controlFlowAnalysisM ["main"] [prog2|
           main =
@@ -710,7 +816,7 @@ spec = do
           fun2_id p20 =
             p20
         |]
-      printUsed cfa
+      addUsedM cfa
 
       -- NOTE: ap ap results PointsTo("p10", "p11")
       toCBy cfa `sameAs` Map.fromList
@@ -765,7 +871,7 @@ spec = do
                 p30
             fun3_id
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -819,7 +925,7 @@ spec = do
           fun1_id p10 =
             p10
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -855,7 +961,7 @@ spec = do
           fun3_id p30 =
             p30
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -891,7 +997,7 @@ spec = do
           )
         ]
 
-  describe "CBy - coverage" $ do
+  describe "CFA - coverage" $ do
 
     {-
     "CFA-05"  undersaturated known call: create PNode ; pass arguments
@@ -913,7 +1019,7 @@ spec = do
               v10 = [Tup3 p10 p11 p12]
             v10
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -967,7 +1073,7 @@ spec = do
           fun3_id p30 =
             p30
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -1020,7 +1126,7 @@ spec = do
           fun2_id p30 =
             p30
         |]
-      printUsed cfa
+      addUsedM cfa
 
       toCBy cfa `sameAs` Map.fromList
         [ ( "ExternalOrigin", [] )
@@ -1064,6 +1170,22 @@ spec = do
     apply chain
     partially applied result
   -}
+
+{-
+  Missing:
+  "CBy-1"   calling a constructor / forcing
+  "CBy-3"   external
+  "CBy-6"   external alt value
+  "CBy-7"   node pattern match
+  "CBy-8"   external pattern match
+
+-}
+  describe "CFA - coverage" $ do
+    pure ()
+
+  describe "Print" $ do
+    it "Print" $ do
+      printUsedM
 
 
 {-
