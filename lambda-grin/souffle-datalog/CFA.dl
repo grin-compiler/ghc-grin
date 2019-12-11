@@ -29,7 +29,7 @@
   Idea: use points-to relation for simple way value passing
 
 */
-.decl ApplyChain(v:Variable, f:CodeName, step:number, consumed:number, arg_count:number)
+.decl ApplyChain(namespace:symbol, v:Variable, f:CodeName, step:number, consumed:number, arg_count:number)
 
 .decl PNode(v:Variable, fun:CodeName, arity:number, missing:number)
 .decl PNodeArgument(v:Variable, fun:CodeName, i:number, value:CodeName)
@@ -73,6 +73,7 @@ PNode(f, f, arity, arity) :-
   ; ReturnValue(_, f)
   ),
   CodeArity(f, arity).
+  // CHECKED
 
 /*
   NOTE:
@@ -84,13 +85,39 @@ PNode(f, f, arity, arity) :-
 
 //////////////////////////////////
 
+/*
+  NOTES:
+    - copy Call and CallArgument
+    - add namespace or result target
+    - nampespace might be unnecessary
+*/
+
+.decl ExecCall(namespace:symbol, call_result:Variable, fun:CodeName, arg_count:number)
+.decl ExecCallArgument(namespace:symbol, call_result:Variable, fun:CodeName, i:number, value:Variable)
+.output ExecCall
+.output ExecCallArgument
+
+ExecCall("normal-call", r, fun, arg_count) :-
+  REACHABLE(r)
+  Call(r, fun, arg_count),
+  EvalMode(r, "strict").
+
+ExecCallArgument("normal-call", r, fun, call_arg_i, arg) :-
+  REACHABLE(r)
+  Call(r, fun, arg_count),
+  EvalMode(r, "strict"),
+  // call arguments
+  call_arg_i >= 0,
+  call_arg_i < arg_count,
+  CallArgument(r, call_arg_i, arg).
+
+//////////////////////////////////
+
 // strict, saturated, known function/closure call: execute function call
 Used("CFA-02"),
 Called(r, fun),
 PointsTo(r, ret_var) :- // return value
-  REACHABLE(r)
-  Call(r, fun, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(_, r, fun, arg_count),
   CodeArity(fun, arity),  // arity is only for known callables
   arg_count = arity,
   // set return value as result
@@ -99,15 +126,13 @@ PointsTo(r, ret_var) :- // return value
 
 Used("CFA-03"),
 PointsTo(param, arg) :- // pass arguments to function parameters
-  REACHABLE(r)
-  Call(r, fun, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(ns, r, fun, arg_count),
   CodeArity(fun, arity),  // arity is only for known callables
   arg_count = arity,
   // call parameters
   call_arg_i >= 0,
   call_arg_i < arity,
-  CallArgument(r, call_arg_i, arg),
+  ExecCallArgument(ns, r, fun, call_arg_i, arg),
   CodeParameter(fun, call_arg_i, param).
   // CHECKED
 
@@ -116,24 +141,20 @@ PointsTo(param, arg) :- // pass arguments to function parameters
 // strict, undersaturated known call: create PNode
 Used("CFA-04"),
 PNode(r, fun, arity, arity - arg_count) :-
-  REACHABLE(r)
-  Call(r, fun, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(_, r, fun, arg_count),
   CodeArity(fun, arity),  // arity is only for known callables
   arg_count < arity.
   // CHECKED
 
 Used("CFA-05"),
 PNodeArgument(r, fun, call_arg_i, arg_value) :-
-  REACHABLE(r)
-  Call(r, fun, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(ns, r, fun, arg_count),
   CodeArity(fun, arity),  // arity is only for known callables
   arg_count < arity,
   // pnode arguments
   call_arg_i >= 0,
   call_arg_i < arg_count,
-  CallArgument(r, call_arg_i, arg_value).
+  ExecCallArgument(ns, r, fun, call_arg_i, arg_value).
   // CHECKED
 
 //////////////////////////////////
@@ -142,9 +163,7 @@ PNodeArgument(r, fun, call_arg_i, arg_value) :-
 Used("CFA-06"),
 Called(r, fun),
 PointsTo(r, ret_var) :- // return value
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(_, r, pnode, arg_count),
   PNode(pnode, fun, _, missing),
   arg_count = missing,
   // return value
@@ -153,23 +172,19 @@ PointsTo(r, ret_var) :- // return value
 
 Used("CFA-07"),
 PointsTo(param, arg) :- // pass call arguments to saturate function call
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(ns, r, pnode, arg_count),
   PNode(pnode, fun, arity, missing),
   arg_count = missing,
   // call parameters
   call_arg_i >= 0,
   call_arg_i < missing,
-  CallArgument(r, call_arg_i, arg),
+  ExecCallArgument(ns, r, pnode, call_arg_i, arg),
   CodeParameter(fun, call_arg_i + arity - missing, param).
   // CHECKED
 
 Used("CFA-08"),
 PointsTo(bound_param, pnode_arg) :- // pass PNode arguments for the function call
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(_, r, pnode, arg_count),
   PNode(pnode, fun, arity, missing),
   arg_count = missing,
   0 <= missing,
@@ -185,31 +200,25 @@ PointsTo(bound_param, pnode_arg) :- // pass PNode arguments for the function cal
 // strict, undersaturated PNode call: create new PNode
 Used("CFA-09"),
 PNode(r, fun, arity, missing - arg_count) :-
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(_, r, pnode, arg_count),
   PNode(pnode, fun, arity, missing),
   arg_count < missing.
   // CHECKED
 
 Used("CFA-10"),
 PNodeArgument(r, fun, call_arg_i + arity - missing, arg) :-
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(ns, r, pnode, arg_count),
   PNode(pnode, fun, arity, missing),
   arg_count < missing,
   // new pnode aruments
   call_arg_i >= 0,
   call_arg_i < arg_count,
-  CallArgument(r, call_arg_i, arg).
+  ExecCallArgument(ns, r, pnode, call_arg_i, arg).
   // CHECKED
 
 Used("CFA-11"),
 PNodeArgument(r, fun, bound_i, bound_value) :-
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(_, r, pnode, arg_count),
   PNode(pnode, fun, arity, missing),
   arg_count < missing,
   // copy old pnode arguments
@@ -223,25 +232,21 @@ PNodeArgument(r, fun, bound_i, bound_value) :-
 // strict, oversaturated, known function/closure call: execute function call + create ApplyChain
 Used("CFA-12"),
 Called(r, fun),
-ApplyChain(r, fun, 0, arity, arg_count) :-
-  REACHABLE(r)
-  Call(r, fun, arg_count),
-  EvalMode(r, "strict"),
+ApplyChain(ns, r, fun, 0, arity, arg_count) :-
+  ExecCall(ns, r, fun, arg_count),
   CodeArity(fun, arity),  // arity is only for known callables
   arg_count > arity.
   // CHECKED
 
 Used("CFA-13"),
 PointsTo(param, arg) :- // pass arguments to function parameters
-  REACHABLE(r)
-  Call(r, fun, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(ns, r, fun, arg_count),
   CodeArity(fun, arity),  // arity is only for known callables
   arg_count > arity,
   // call parameters
   call_arg_i >= 0,
   call_arg_i < arity,
-  CallArgument(r, call_arg_i, arg),
+  ExecCallArgument(ns, r, fun, call_arg_i, arg),
   CodeParameter(fun, call_arg_i, param).
   // CHECKED
 
@@ -250,10 +255,8 @@ PointsTo(param, arg) :- // pass arguments to function parameters
 // strict, oversaturated PNode call: execute the first function call + create ApplyChain
 Used("CFA-14"),
 Called(r, fun), // initiate call
-ApplyChain(r, fun, 0, missing, arg_count) :-
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
+ApplyChain(ns, r, fun, 0, missing, arg_count) :-
+  ExecCall(ns, r, pnode, arg_count),
   PNode(pnode, fun, _, missing),
   arg_count > missing,
   0 <= missing.
@@ -261,9 +264,7 @@ ApplyChain(r, fun, 0, missing, arg_count) :-
 
 Used("CFA-15"),
 PointsTo(bound_param, pnode_arg) :- // pass PNode arguments for the initial function call
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(_, r, pnode, arg_count),
   PNode(pnode, fun, arity, missing),
   arg_count > missing,
   0 <= missing,
@@ -276,16 +277,14 @@ PointsTo(bound_param, pnode_arg) :- // pass PNode arguments for the initial func
 
 Used("CFA-16"),
 PointsTo(param, arg) :- // pass call arguments to saturate the initial function call
-  REACHABLE(r)
-  Call(r, pnode, arg_count),
-  EvalMode(r, "strict"),
+  ExecCall(ns, r, pnode, arg_count),
   PNode(pnode, fun, arity, missing),
   arg_count > missing,
   0 < missing,          // consume call arguments only if the PNode is not already saturated
   // call parameters
   call_arg_i >= 0,
   call_arg_i < missing,
-  CallArgument(r, call_arg_i, arg),
+  ExecCallArgument(ns, r, pnode, call_arg_i, arg),
   CodeParameter(fun, call_arg_i + arity - missing, param).
   // CHECKED
 
@@ -297,8 +296,7 @@ PointsTo(param, arg) :- // pass call arguments to saturate the initial function 
 Used("CFA-17"),
 Called(r, p_fun),
 PointsTo(r, p_ret_var) :- // return value
-  REACHABLE(r)
-  ApplyChain(r, fun, _, consumed, arg_count),
+  ApplyChain(_, r, fun, _, consumed, arg_count),
   ReturnValue(fun, pnode),
   PNode(pnode, p_fun, _, p_missing),
   consumed + p_missing = arg_count, // only saturated PNode calls
@@ -308,8 +306,7 @@ PointsTo(r, p_ret_var) :- // return value
 
 Used("CFA-18"),
 PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
-  REACHABLE(r)
-  ApplyChain(r, fun, _, consumed, arg_count),
+  ApplyChain(_, r, fun, _, consumed, arg_count),
   ReturnValue(fun, pnode),
   PNode(pnode, p_fun, p_arity, p_missing),
   consumed + p_missing = arg_count, // only saturated PNode calls
@@ -322,15 +319,14 @@ PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
 
 Used("CFA-19"),
 PointsTo(param, arg) :- // pass PNode arguments to function to saturate the call
-  REACHABLE(r)
-  ApplyChain(r, fun, _, consumed, arg_count),
+  ApplyChain(ns, r, fun, _, consumed, arg_count),
   ReturnValue(fun, pnode),
   PNode(pnode, p_fun, p_arity, p_missing),
   consumed + p_missing = arg_count, // only saturated PNode calls
   // pass call arguments
   call_arg_i >= consumed, // NOTE: call_arg_i has to be grounded so this is the simplest indexing solution
   call_arg_i < consumed + p_missing,
-  CallArgument(r, call_arg_i, arg),
+  ExecCallArgument(ns, r, _, call_arg_i, arg),
   CodeParameter(p_fun, call_arg_i - consumed + p_arity - p_missing, param).
   // CHECKED
 
@@ -339,8 +335,7 @@ PointsTo(param, arg) :- // pass PNode arguments to function to saturate the call
 // undersaturated apply chain link: create PNode as the result
 Used("CFA-20"),
 PNode(r, p_fun, p_arity, p_missing - (arg_count - consumed)) :-
-  REACHABLE(r)
-  ApplyChain(r, fun, _, consumed, arg_count),
+  ApplyChain(_, r, fun, _, consumed, arg_count),
   ReturnValue(fun, pnode),
   PNode(pnode, p_fun, p_arity, p_missing),
   p_missing > arg_count - consumed.
@@ -348,21 +343,19 @@ PNode(r, p_fun, p_arity, p_missing - (arg_count - consumed)) :-
 
 Used("CFA-21"),
 PNodeArgument(r, p_fun, (p_arity - p_missing) + (call_arg_i - consumed), arg) :- // save call arguments
-  REACHABLE(r)
-  ApplyChain(r, fun, _, consumed, arg_count),
+  ApplyChain(ns, r, fun, _, consumed, arg_count),
   ReturnValue(fun, pnode),
   PNode(pnode, p_fun, p_arity, p_missing),
   p_missing > arg_count - consumed,
   // copy call arguments
   call_arg_i >= consumed,
   call_arg_i < arg_count,
-  CallArgument(r, call_arg_i, arg).
+  ExecCallArgument(ns, r, _, call_arg_i, arg).
   // CHECKED
 
 Used("CFA-22"),
 PNodeArgument(r, p_fun, bound_i, pnode_arg) :- // copy PNode arguments
-  REACHABLE(r)
-  ApplyChain(r, fun, _, consumed, arg_count),
+  ApplyChain(ns, r, fun, _, consumed, arg_count),
   ReturnValue(fun, pnode),
   PNode(pnode, p_fun, p_arity, p_missing),
   p_missing > arg_count - consumed,
@@ -377,9 +370,8 @@ PNodeArgument(r, p_fun, bound_i, pnode_arg) :- // copy PNode arguments
 // oversaturated apply chain link: execute function + create the next ApplyChain link
 Used("CFA-23"),
 Called(r, p_fun),
-ApplyChain(r, p_fun, step + 1, consumed + p_missing, arg_count) :-
-  REACHABLE(r)
-  ApplyChain(r, fun, step, consumed, arg_count),
+ApplyChain(ns, r, p_fun, step + 1, consumed + p_missing, arg_count) :-
+  ApplyChain(ns, r, fun, step, consumed, arg_count),
   ReturnValue(fun, pnode),
   PNode(pnode, p_fun, _, p_missing),
   consumed + p_missing < arg_count.
@@ -387,8 +379,7 @@ ApplyChain(r, p_fun, step + 1, consumed + p_missing, arg_count) :-
 
 Used("CFA-24"),
 PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
-  REACHABLE(r)
-  ApplyChain(r, fun, _, consumed, arg_count),
+  ApplyChain(_, r, fun, _, consumed, arg_count),
   ReturnValue(fun, pnode),
   PNode(pnode, p_fun, p_arity, p_missing),
   consumed + p_missing < arg_count,
@@ -401,15 +392,14 @@ PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
 
 Used("CFA-25"),
 PointsTo(param, arg) :- // pass call arguments to saturate function call
-  REACHABLE(r)
-  ApplyChain(r, fun, _, consumed, arg_count),
+  ApplyChain(ns, r, fun, _, consumed, arg_count),
   ReturnValue(fun, pnode),
   PNode(pnode, p_fun, p_arity, p_missing),
   consumed + p_missing < arg_count,
   // pass call arguments
   call_arg_i >= consumed, // NOTE: call_arg_i has to be grounded so this is the simplest indexing solution
   call_arg_i < consumed + p_missing,
-  CallArgument(r, call_arg_i, arg),
+  ExecCallArgument(ns, r, _, call_arg_i, arg),
   CodeParameter(p_fun, call_arg_i - consumed + p_arity - p_missing, param).
   // CHECKED
 
@@ -421,52 +411,19 @@ PointsTo(param, arg) :- // pass call arguments to saturate function call
 .decl CallPNode1(inst:Variable, pnode:Variable, last_arg:Variable)
 .output CallPNode1
 
-Used("CFA-26"),
-Called(inst, fun),
-PointsTo(fun_last_param, last_arg) :- // pass last argument to function
-  REACHABLE(inst)
-  CallPNode1(inst, pnode, last_arg),
-  PNode(pnode, fun, fun_arity, 1),
-  // last argument
-  CodeParameter(fun, fun_arity-1, fun_last_param).
-  // CHECKED
-
-Used("CFA-27"),
-PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
-  REACHABLE(inst)
-  CallPNode1(inst, pnode, _),
-  PNode(pnode, fun, fun_arity, 1),
-  // pnode bounded arguments
-  bound_i >= 0,
-  bound_i < fun_arity-1,
-  PNodeArgument(pnode, fun, bound_i, pnode_arg),
-  CodeParameter(fun, bound_i, bound_param).
-  // CHECKED
+Used("CFA-26-CallPNode1"),
+ExecCallArgument(ns, inst, pnode, 0, last_arg),
+ExecCall(ns, inst, pnode, 1) :-
+  ns = "primop-initiated-call",
+  CallPNode1(inst, pnode, last_arg).
 
 // NOTE: does not handle return value ; only pass parameters
 .decl CallPNode2(inst:Variable, pnode:Variable, before_last_arg:Variable, last_arg:Variable)
 .output CallPNode2
 
-Used("CFA-28"),
-Called(inst, fun),
-PointsTo(fun_last_param, last_arg),
-PointsTo(fun_before_last_param, before_last_arg) :- // pass last two arguments to function
-  REACHABLE(inst)
-  CallPNode2(inst, pnode, before_last_arg, last_arg),
-  PNode(pnode, fun, fun_arity, 2),
-  // last 2 argument
-  CodeParameter(fun, fun_arity-2, fun_before_last_param),
-  CodeParameter(fun, fun_arity-1, fun_last_param).
-  // CHECKED
-
-Used("CFA-29"),
-PointsTo(bound_param, pnode_arg) :- // pass PNode arguments to function
-  REACHABLE(inst)
-  CallPNode2(inst, pnode, _, _),
-  PNode(pnode, fun, fun_arity, 2),
-  // pnode bounded arguments
-  bound_i >= 0,
-  bound_i < fun_arity-2,
-  PNodeArgument(pnode, fun, bound_i, pnode_arg),
-  CodeParameter(fun, bound_i, bound_param).
-  // CHECKED
+Used("CFA-27-CallPNode2"),
+ExecCallArgument(ns, inst, pnode, 0, before_last_arg),
+ExecCallArgument(ns, inst, pnode, 1, last_arg),
+ExecCall(ns, inst, pnode, 2) :-
+  ns = "primop-initiated-call",
+  CallPNode2(inst, pnode, before_last_arg, last_arg).
