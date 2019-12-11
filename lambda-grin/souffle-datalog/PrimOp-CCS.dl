@@ -8,17 +8,12 @@
 */
 
 // "clearCCS#" :: ({"State#" %s} -> {"GHC.Prim.Unit#" %a}) -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+Used("PrimOp-CCS-01"),
 Called(r, op),
-TypeVarPointsTo(r, ty_res_value, fun_ret),  // handle return value
 CallPNode1(r, v0, v1_state) :-
   op = "clearCCS#",
   REACHABLE(r)
   Call(r, op, _),
   // pass argument to the wrapped function
   CallArgument(r, 0, v0),
-  PNode(v0, fun, _, 1),
-  CallArgument(r, 1, v1_state),
-  // return value
-  RetTup1Node0(op, ty_res_value),
-  IsTypeVariable(ty_res_value), // extra validation
-  ReturnValue(fun, fun_ret).
+  CallArgument(r, 1, v1_state).

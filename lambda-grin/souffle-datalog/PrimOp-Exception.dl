@@ -35,6 +35,7 @@ RaisedEx(ex) :-
   ),
   Call(r, op, _),
   CallArgument(r, 0, ex).
+  // CHECKED
 
 // "catch#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a})
 //          -> (%b -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a})
@@ -42,43 +43,38 @@ RaisedEx(ex) :-
 //          -> {"GHC.Prim.Unit#" %a}
 // handle the wrapped function
 Used("PrimOp-Exception-02"),
-Called(r, "catch#"),
-PointsTo(r, fun_ret),
+Called(r, op),
 CallPNode1(r, v0, v2_state) :-
+  op = "catch#",
   REACHABLE(r)
-  Call(r, "catch#", _),
+  Call(r, op, _),
   // wrapped fun
   CallArgument(r, 0, v0),
-  PNode(v0, fun, _, 1),
   // state
-  CallArgument(r, 2, v2_state),
-  // return value
-  ReturnValue(fun, fun_ret).
+  CallArgument(r, 2, v2_state).
+  // CHECKED
 
 // NOTE: the handler has its own rule, because it fires only when there are exceptions, while the wrapped function is always called
 // handle ex-handler
 Used("PrimOp-Exception-03"),
-Called(r, "catch#"),
-PointsTo(r, handler_ret),
+Called(r, op),
 CallPNode2(r, v1, ex, v2_state) :-
+  op = "catch#",
   REACHABLE(r)
-  Call(r, "catch#", _),
+  Call(r, op, _),
   // handler
   CallArgument(r, 1, v1),
   // state
   CallArgument(r, 2, v2_state),
-  PNode(v1, handler, _, 2),
   // exceptions
-  RaisedEx(ex),
-  // return value
-  ReturnValue(handler, handler_ret).
+  RaisedEx(ex).
+  // CHECKED
 
 // "maskAsyncExceptions#"   :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 // "maskUninterruptible#"   :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 // "unmaskAsyncExceptions#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 Used("PrimOp-Exception-04"),
 Called(r, op),
-PointsTo(r, fun_ret),
 CallPNode1(r, v0, v1_state) :-
   REACHABLE(r)
   ( op = "maskAsyncExceptions#"
@@ -88,7 +84,5 @@ CallPNode1(r, v0, v1_state) :-
   Call(r, op, _),
   // pass argument to the wrapped function
   CallArgument(r, 0, v0),
-  PNode(v0, fun, _, 1),
-  CallArgument(r, 1, v1_state),
-  // return value
-  ReturnValue(fun, fun_ret).
+  CallArgument(r, 1, v1_state).
+  // CHECKED
