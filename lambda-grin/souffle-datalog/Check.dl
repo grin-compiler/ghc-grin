@@ -87,3 +87,12 @@ Error(case_result, "live case expression with dead scrutinee") :-
   Case(case_result, scrut),
   !MatchedAlt(case_result, _),
   MissingValue(scrut).
+
+// tagToEnum#
+Error(alt, "reachable but unhandled alt due to tagToEnum#") :-
+  REACHABLE(case_result)
+  Case(case_result, scrut),
+  ExternalOrigin(scrut, ext_result, _),
+  Call(ext_result, "tagToEnum#", _),
+  Alt(case_result, alt, _),
+  !MatchedAlt(_, alt).
