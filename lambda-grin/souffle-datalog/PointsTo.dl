@@ -3,27 +3,35 @@
 .decl PointsTo(src:Variable, dst:Variable)
 .output PointsTo
 
+Used("PointsTo-01"),
 NodeOrigin(src, value) :-
   PointsTo(src, dst),
   NodeOrigin(dst, value).
+  // CHECKED
 
+Used("PointsTo-02"),
 ExternalOrigin(src, value, tn) :-
   PointsTo(src, dst),
   ExternalOrigin(dst, value, tn).
 
+Used("PointsTo-03"),
 PNode(src, pap_f, pap_ar, pap_rem) :-
   PointsTo(src, dst),
   PNode(dst, pap_f, pap_ar, pap_rem).
+  // CHECKED
 
+Used("PointsTo-04"),
 PNodeArgument(src, pap_f, pap_i, pap_value) :-
   PointsTo(src, dst),
   PNodeArgument(dst, pap_f, pap_i, pap_value).
+  // CHECKED
 
 // handling of external sub structure result & external sub structure pattern match
 
 .decl TypeVarPointsTo(result:Variable, ty_var:Variable, dst:Variable)
 .output TypeVarPointsTo
 
+Used("PointsTo-05"),
 PointsTo(src, dst) :-
   ExternalOrigin(src, r, t),
   TypeVarPointsTo(r, t, dst).

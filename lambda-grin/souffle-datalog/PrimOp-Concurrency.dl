@@ -15,6 +15,7 @@
 
 // "killThread#" :: {"ThreadId#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.(##)"}
 // collect raised exceptions
+Used("PrimOp-Concurrency-01"),
 Called(r, "killThread#"),
 RaisedEx(ex) :-
   REACHABLE(r)
@@ -22,6 +23,7 @@ RaisedEx(ex) :-
   CallArgument(r, 1, ex).
 
 // "fork#" :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"ThreadId#"}}
+Used("PrimOp-Concurrency-02"),
 Called(r, "fork#"),
 Called(r, fun) :-
   REACHABLE(r)
@@ -30,6 +32,7 @@ Called(r, fun) :-
   PNode(v0, fun, _, 0).
 
 // "forkOn#" :: T_Int64 -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"ThreadId#"}}
+Used("PrimOp-Concurrency-03"),
 Called(r, "forkOn#"),
 Called(r, fun) :-
   REACHABLE(r)

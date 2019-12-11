@@ -25,6 +25,7 @@
 
 // "newMVar#" :: {"State#" %s} -> {"GHC.Prim.Unit#" {"MVar#" %s %a}}
 // new array
+Used("PrimOp-MVar-01"),
 Called(r, op),
 MVarDef(r, ty_node) :-
   op = "newMVar#",
@@ -35,9 +36,12 @@ MVarDef(r, ty_node) :-
 
 // "takeMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
 // "readMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
+Used("PrimOp-MVar-02"),
 Called(r, op),
 TypeVarPointsTo(r, ty_node, item) :-
-  (op = "takeMVar#" ; op = "readMVar#"),
+  ( op = "takeMVar#"
+  ; op = "readMVar#"
+  ),
   REACHABLE(r)
   Call(r, op, _),
   // lookup array items
@@ -50,9 +54,12 @@ TypeVarPointsTo(r, ty_node, item) :-
 
 // "tryTakeMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 // "tryReadMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
+Used("PrimOp-MVar-03"),
 Called(r, op),
 TypeVarPointsTo(r, ty_node, item) :-
-  (op = "tryTakeMVar#" ; op = "tryReadMVar#"),
+  ( op = "tryTakeMVar#"
+  ; op = "tryReadMVar#"
+  ),
   REACHABLE(r)
   Call(r, op, _),
   // lookup array items
@@ -66,9 +73,12 @@ TypeVarPointsTo(r, ty_node, item) :-
 // "putMVar#"     :: {"MVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
 // "tryPutMVar#"  :: {"MVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
 // extend array
+Used("PrimOp-MVar-04"),
 Called(r, op),
 MVar(ext_result, ty_node, item) :-
-  (op = "putMVar#" ; op = "tryPutMVar#"),
+  ( op = "putMVar#"
+  ; op = "tryPutMVar#"
+  ),
   REACHABLE(r)
   Call(r, op, _),
   // item to write

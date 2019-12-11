@@ -141,9 +141,12 @@
 
 // "readStablePtrArray#"        :: {"MutableByteArray#" %s} -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
 // "readWord8ArrayAsStablePtr#" :: {"MutableByteArray#" %s} -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
+Used("PrimOp-ByteArray-01"),
 Called(r, op),
 TypeVarPointsTo(r, ty_node, ext_result) :-
-  (op = "readStablePtrArray#" ; op = "readWord8ArrayAsStablePtr#"),
+  ( op = "readStablePtrArray#"
+  ; op = "readWord8ArrayAsStablePtr#"
+  ),
   REACHABLE(r)
   Call(r, op, _),
   // lookup all stable pointers from the whole program
@@ -153,9 +156,12 @@ TypeVarPointsTo(r, ty_node, ext_result) :-
 
 // "indexStablePtrArray#"         :: {"ByteArray#"} -> T_Int64 -> {"StablePtr#" %a}
 // "indexWord8ArrayAsStablePtr#"  :: {"ByteArray#"} -> T_Int64 -> {"StablePtr#" %a}
+Used("PrimOp-ByteArray-02"),
 Called(r, op),
 TypeVarPointsTo(r, ty_node, ext_result) :-
-  (op = "indexStablePtrArray#" ; op = "indexWord8ArrayAsStablePtr#"),
+  ( op = "indexStablePtrArray#"
+  ; op = "indexWord8ArrayAsStablePtr#"
+  ),
   REACHABLE(r)
   Call(r, op, _),
   // lookup all stable pointers from the whole program
