@@ -110,4 +110,5 @@ test-suite lambda-test
                      ParserSpec
                      CFASpec
                      PrimOpExceptionSpec
+                     PrimOpArraySpec
   default-language:    Haskell2010
