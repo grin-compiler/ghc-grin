@@ -122,3 +122,13 @@ LeafCode(caller) :-
   HasCallOp(caller),
   !Alt(_, caller, _),
   !CalledCode(caller, _).
+
+/////////////////////////////////
+
+/*
+  check:
+    - reachable case
+    - no matching alternative
+    - without default pattern
+*/
+
