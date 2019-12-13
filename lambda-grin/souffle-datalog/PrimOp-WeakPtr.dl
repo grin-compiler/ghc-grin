@@ -18,9 +18,9 @@
 
 // "mkWeak#" :: %o -> %b -> ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %c}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"Weak#" %b}}
 // new array
-Used("PrimOp-WeakPtr-01"),
+USED("PrimOp-WeakPtr-01")
 Called(r, op),
-CallPNode1(r, finalizer, v3_state),
+CallPNode1("mkWeak#-finalizer", r, finalizer, v3_state),
 WeakFinalizer(r, finalizer),
 WeakPtr(r, ty_node, item) :-
   op = "mkWeak#",
@@ -38,7 +38,7 @@ WeakPtr(r, ty_node, item) :-
 
 // "mkWeakNoFinalizer#" :: %o -> %b -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"Weak#" %b}}
 // new array
-Used("PrimOp-WeakPtr-02"),
+USED("PrimOp-WeakPtr-02")
 Called(r, op),
 WeakPtr(r, ty_node, item) :-
   op = "mkWeakNoFinalizer#",
@@ -50,7 +50,7 @@ WeakPtr(r, ty_node, item) :-
   RetTup1Node0(op, ty_node).
 
 // "deRefWeak#" :: {"Weak#" %a} -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,#)" T_Int64 %a}
-Used("PrimOp-WeakPtr-03"),
+USED("PrimOp-WeakPtr-03")
 Called(r, op),
 TypeVarPointsTo(r, ty_node, item) :-
   op = "deRefWeak#",
@@ -66,7 +66,7 @@ TypeVarPointsTo(r, ty_node, item) :-
 // "finalizeWeak#"  :: {"Weak#" %a}
 //                  -> {"State#" {RealWorld}}
 //                  -> {"GHC.Prim.(#,#)" T_Int64 ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %b})}
-Used("PrimOp-WeakPtr-04"),
+USED("PrimOp-WeakPtr-04")
 Called(r, op),
 TypeVarPointsTo(r, ty_node, finalizer) :-
   op = "finalizeWeak#",

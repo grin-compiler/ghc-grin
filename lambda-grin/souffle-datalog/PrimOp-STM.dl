@@ -19,9 +19,9 @@
 .output TVar
 
 // "atomically#" :: ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
-Used("PrimOp-STM-01"),
+USED("PrimOp-STM-01")
 Called(r, op),
-CallPNode1(r, v0, v1_state) :-
+CallPNode1("atomically#", r, v0, v1_state) :-
   op = "atomically#",
   REACHABLE(r)
   Call(r, op, _),
@@ -33,10 +33,10 @@ CallPNode1(r, v0, v1_state) :-
 //                -> ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a})
 //                -> {"State#" {RealWorld}}
 //                -> {"GHC.Prim.Unit#" %a}
-Used("PrimOp-STM-02"),
+USED("PrimOp-STM-02")
 Called(r, op),
-CallPNode1(r, v0, v2_state),
-CallPNode1(r, v1, v2_state) :-
+CallPNode1("catchRetry#-wrapped", r, v0, v2_state),
+CallPNode1("catchRetry#-handler", r, v1, v2_state) :-
   op = "catchRetry#",
   REACHABLE(r)
   Call(r, op, _),
@@ -53,9 +53,9 @@ CallPNode1(r, v1, v2_state) :-
 //              -> {"State#" {RealWorld}}
 //              -> {"GHC.Prim.Unit#" %a}
 // handle the wrapped function
-Used("PrimOp-STM-03"),
+USED("PrimOp-STM-03")
 Called(r, op),
-CallPNode1(r, v0, v2_state) :-
+CallPNode1("catchSTM#-wrapped", r, v0, v2_state) :-
   op = "catchSTM#",
   REACHABLE(r)
   Call(r, op, _),
@@ -65,9 +65,9 @@ CallPNode1(r, v0, v2_state) :-
 
 // NOTE: the handler has its own rule, because it fires only when there are exceptions, while the wrapped function is always called
 // handle ex-handler
-Used("PrimOp-STM-04"),
+USED("PrimOp-STM-04")
 Called(r, op),
-CallPNode2(r, v1, ex, v2_state) :-
+CallPNode2("catchSTM#-handler", r, v1, ex, v2_state) :-
   op = "catchSTM#",
   REACHABLE(r)
   Call(r, op, _),
@@ -78,7 +78,7 @@ CallPNode2(r, v1, ex, v2_state) :-
 
 // "newTVar#" :: %a -> {"State#" %s} -> {"GHC.Prim.Unit#" {"TVar#" %s %a}}
 // new array
-Used("PrimOp-STM-05"),
+USED("PrimOp-STM-05")
 Called(r, op),
 TVar(r, ty_node, item) :-
   op = "newTVar#",
@@ -91,7 +91,7 @@ TVar(r, ty_node, item) :-
 
 // "readTVar#"   :: {"TVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
 // "readTVarIO#" :: {"TVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
-Used("PrimOp-STM-06"),
+USED("PrimOp-STM-06")
 Called(r, op),
 TypeVarPointsTo(r, ty_node, item) :-
   ( op = "readTVar#"
@@ -108,7 +108,7 @@ TypeVarPointsTo(r, ty_node, item) :-
 
 // "writeTVar#"  :: {"TVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
 // extend array
-Used("PrimOp-STM-07"),
+USED("PrimOp-STM-07")
 Called(r, op),
 TVar(ext_result, ty_node, item) :-
   op = "writeTVar#",

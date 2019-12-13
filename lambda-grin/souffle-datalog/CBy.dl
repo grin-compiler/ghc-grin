@@ -17,7 +17,7 @@
       let   con = [tag a b c]
       letS  val = con $
 */
-Used("CBy-1"),
+USED("CBy-1")
 NodeOrigin(r, val) :-
   REACHABLE(r)
   Call(r, f, 0),
@@ -36,7 +36,7 @@ Error(r, "forced external") :-
   ExternalOrigin(f, ext_result, _),
   Call(ext_result, ext, _).
 */
-Used("CBy-1-external"),
+USED("CBy-1-external")
 ExternalOrigin(r, ext_result, ty_var) :-
   REACHABLE(r)
   Call(r, f, 0),
@@ -47,11 +47,11 @@ ExternalOrigin(r, ext_result, ty_var) :-
 
 // SECTION: Origin
 
-Used("CBy-2"),
+USED("CBy-2")
 NodeOrigin(n, n) :- Node(n, _).
   // CHECKED
 
-Used("CBy-3"),
+USED("CBy-3")
 ExternalOrigin(r, r, ty_node) :-
   Call(r, f, _),
   EvalMode(r, "strict"),
@@ -60,7 +60,7 @@ ExternalOrigin(r, r, ty_node) :-
   // CHECKED
 
 // Move
-Used("CBy-4"),
+USED("CBy-4")
 PointsTo(result, value) :-
   REACHABLE(result)
   Move(result, value).
@@ -71,7 +71,7 @@ PointsTo(result, value) :-
 .decl MatchedAlt(case_result:symbol, alt_name:symbol)
 
 // scrutinee projection to alt value ; NodeOrigin
-Used("CBy-5"),
+USED("CBy-5")
 MatchedAlt(case_result, alt_val),
 PointsTo(alt_val, scrut_val) :-
   REACHABLE(case_result)
@@ -82,7 +82,7 @@ PointsTo(alt_val, scrut_val) :-
   // CHECKED
 
 // scrutinee projection to alt value ; ExternalOrigin
-Used("CBy-6"),
+USED("CBy-6")
 MatchedAlt(case_result, alt_val),
 ExternalOrigin(alt_val, ext_result, ty_var) :-
   REACHABLE(case_result)
@@ -93,7 +93,7 @@ ExternalOrigin(alt_val, ext_result, ty_var) :-
   // CHECKED
 
 // alt params from Node
-Used("CBy-7"),
+USED("CBy-7")
 PointsTo(p, val) :-
   ReachableCode(alt),
   Alt(_, alt, tag),
@@ -104,7 +104,7 @@ PointsTo(p, val) :-
   // CHECKED
 
 // alt params from External (i.e. ... -> {"GHC.Prim.Unit#" %a} or ... -> {"GHC.Prim.Unit#" T_Int})
-Used("CBy-8"),
+USED("CBy-8")
 ExternalOrigin(p, ext_result, ty_var) :-
   ReachableCode(alt),
   Alt(_, alt, tag),
@@ -116,7 +116,7 @@ ExternalOrigin(p, ext_result, ty_var) :-
 
 //////////////////////////
 // workaround for tagToEnum#
-Used("CBy-8-tagToEnum#-workaround"),
+USED("CBy-8-tagToEnum#-workaround")
 MatchedAlt(case_result, alt),
 ReachableCode(alt) :-
   REACHABLE(case_result)
@@ -128,7 +128,7 @@ ReachableCode(alt) :-
 //////////////////////////
 
 // alt result
-Used("CBy-9"),
+USED("CBy-9")
 PointsTo(case_result, val) :-
   REACHABLE(case_result)
   Case(case_result, _),
@@ -142,7 +142,7 @@ PointsTo(case_result, val) :-
     - handle default alternatives properly ; restrict alt_value to unhandled values only
 */
 // default alternatives
-Used("CBy-10"),
+USED("CBy-10")
 MatchedAlt(case_result, alt_val),
 PointsTo(alt_val, scrut) :-
   REACHABLE(case_result)

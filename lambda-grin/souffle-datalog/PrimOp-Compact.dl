@@ -21,7 +21,7 @@
 
 // "compactAdd#"            :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 // "compactAddWithSharing#" :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
-Used("PrimOp-Compact-01"),
+USED("PrimOp-Compact-01")
 Called(r, op),
 TypeVarPointsTo(r, ty_node, item) :-
   ( op = "compactAdd#"

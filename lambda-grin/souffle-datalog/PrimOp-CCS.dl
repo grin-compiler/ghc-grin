@@ -8,9 +8,9 @@
 */
 
 // "clearCCS#" :: ({"State#" %s} -> {"GHC.Prim.Unit#" %a}) -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
-Used("PrimOp-CCS-01"),
+USED("PrimOp-CCS-01")
 Called(r, op),
-CallPNode1(r, v0, v1_state) :-
+CallPNode1("clearCCS#-wrapped", r, v0, v1_state) :-
   op = "clearCCS#",
   REACHABLE(r)
   Call(r, op, _),

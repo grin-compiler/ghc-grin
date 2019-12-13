@@ -11,7 +11,7 @@
 .decl CalledCode(caller:CodeName, callee:CodeName)
 .output CalledCode
 
-Used("LVA-01"),
+USED("LVA-01")
 CalledCode(caller, callee) :-
   HasInst(caller, r), // NOTE: alts can be callers ; needs fix to include the function or closure?
   Called(r, callee).
@@ -21,25 +21,25 @@ CalledCode(caller, callee) :-
 .decl ReachableCode(n:CodeName)
 .output ReachableCode
 
-Used("LVA-02"),
+USED("LVA-02")
 ReachableCode(n) :-
   InitialReachable(n).
 
 // call
-Used("LVA-03"),
+USED("LVA-03")
 ReachableCode(callee) :-
   ReachableCode(caller),
   CalledCode(caller, callee).
 
 // alt ; tag sensitive
-Used("LVA-04"),
+USED("LVA-04")
 ReachableCode(alt) :-
   ReachableCode(f),
   HasInst(f, r),
   // default case is always reachable
   Alt(r, alt, "default:").
 
-Used("LVA-05"),
+USED("LVA-05")
 ReachableCode(alt) :-
   ReachableCode(f),
   HasInst(f, r),
@@ -51,7 +51,7 @@ ReachableCode(alt) :-
 .decl Reachable(inst:Variable)
 .output Reachable
 
-Used("LVA-06"),
+USED("LVA-06")
 Reachable(inst) :-
   HasInst(f, inst),
   ReachableCode(f).
@@ -60,12 +60,12 @@ Reachable(inst) :-
 .decl TagValue(v:Variable, t:Tag)
 .output TagValue
 
-Used("LVA-07"),
+USED("LVA-07")
 TagValue(v, tag) :-
   NodeOrigin(v, node),
   Node(node, tag).
 
-Used("LVA-08"),
+USED("LVA-08")
 TagValue(v, tag) :-
   ExternalOrigin(v, _, ty_var),
   TypeNode(ty_var, tag).
@@ -75,7 +75,7 @@ TagValue(v, tag) :-
 .decl DeadCode(n:CodeName)
 .output DeadCode
 
-Used("LVA-09"),
+USED("LVA-09")
 DeadCode(n) :-
   ReturnValue(n, _),
   !ReachableCode(n).
@@ -86,13 +86,13 @@ DeadCode(n) :-
 .decl ReachableExternal(n:External)
 .output ReachableExternal
 
-Used("LVA-10"),
+USED("LVA-10")
 ReachableExternal(callee) :-
   ReachableCode(caller),
   ExternalFunction(callee, _, _),
   CalledCode(caller, callee).
 
-Used("LVA-11"),
+USED("LVA-11")
 DeadExternal(n) :-
   ExternalFunction(n, _, _),
   !ReachableExternal(n).
@@ -102,13 +102,13 @@ DeadExternal(n) :-
 .decl HasCallOp(code:CodeName)
 .output HasCallOp
 
-Used("LVA-12"),
+USED("LVA-12")
 HasCallOp(code) :-
   ReturnValue(code, _),
   HasInst(code, r),
   Call(r, _, _).
 
-Used("LVA-13"),
+USED("LVA-13")
 HasCallOp(code) :- // flatten alts
   HasInst(code, r),
   Alt(r, alt, _),
@@ -117,7 +117,7 @@ HasCallOp(code) :- // flatten alts
 .decl LeafCode(code:CodeName)
 .output LeafCode
 
-Used("LVA-14"),
+USED("LVA-14")
 LeafCode(caller) :-
   HasCallOp(caller),
   !Alt(_, caller, _),

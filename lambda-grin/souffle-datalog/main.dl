@@ -1,9 +1,16 @@
+#define LOG_USED
 #define REACHABLE_ONLY
 
 #ifdef REACHABLE_ONLY
 # define REACHABLE(x) Reachable(x),
 #else
 # define REACHABLE(x)
+#endif
+
+#ifdef LOG_USED
+# define USED(x) Used(x),
+#else
+# define USED(x)
 #endif
 
 #include "AST.dl"
