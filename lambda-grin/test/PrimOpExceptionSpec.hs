@@ -186,6 +186,181 @@ spec = do
           )
         ]
 
+    it "catch - raiseIO - thunk" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          primop effectful
+            "catch#"    :: (tf.0 : {"State#" {RealWorld} @ t.1} @ t.0 -> {"GHC.Prim.Unit#" %a.0} @ t.2) -> (tf.1 : %b.0 -> {"State#" {RealWorld} @ t.4} @ t.3 -> {"GHC.Prim.Unit#" %a.0} @ t.5) -> {"State#" {RealWorld} @ t.7} @ t.6 -> {"GHC.Prim.Unit#" %a.0} @ t.8
+            "raiseIO#"  :: %a.3 -> {"State#" {RealWorld} @ t.28} @ t.27 -> {"GHC.Prim.Unit#" %b.2} @ t.29
+          main =
+            letS
+              v00 = #T_Token "RealWorld"
+              v01 = "catch#" $ fun3_normal_thunk2 fun4_handler_thunk2 v00
+              v02 = case v01 of
+                ("GHC.Prim.Unit#" v03) @ a00 ->
+                  v03
+            v02
+          fun1_normal p10 =
+            letS
+              v10 = #T_Int64 0
+              v11 = #T_Token "RealWorld"
+              v12 = "raiseIO#" $ v10 v11
+            v12
+          fun2_handler p20 p21 =
+            letS
+              v20 = #T_Int64 0
+              v21 = ["GHC.Prim.Unit#" v20]
+            v21
+          -- nested thunks
+          fun3_normal_thunk =
+            fun1_normal
+          fun4_handler_thunk =
+            fun2_handler
+
+          fun3_normal_thunk1 =
+            fun3_normal_thunk
+          fun4_handler_thunk1 =
+            fun4_handler_thunk
+
+          fun3_normal_thunk2 =
+            fun3_normal_thunk1
+          fun4_handler_thunk2 =
+            fun4_handler_thunk1
+        |]
+      addUsedM cfa
+      toExOp cfa `sameAs` Map.fromList
+        [ ( "ExternalOrigin"
+          , [ [ "a00" , "v01" , "t.8" ]
+            , [ "a00" , "v12" , "t.29" ]
+            , [ "v01" , "v01" , "t.8" ]
+            , [ "v01" , "v12" , "t.29" ]
+            , [ "v02" , "v01" , "a.0" ]
+            , [ "v02" , "v12" , "b.2" ]
+            , [ "v03" , "v01" , "a.0" ]
+            , [ "v03" , "v12" , "b.2" ]
+            , [ "v12" , "v12" , "t.29" ]
+            ]
+          )
+        , ( "NodeOrigin"
+          , [ [ "a00" , "v21" ]
+            , [ "p10" , "v00" ]
+            , [ "p20" , "v10" ]
+            , [ "p21" , "v00" ]
+            , [ "v00" , "v00" ]
+            , [ "v01" , "v21" ]
+            , [ "v02" , "v20" ]
+            , [ "v03" , "v20" ]
+            , [ "v10" , "v10" ]
+            , [ "v11" , "v11" ]
+            , [ "v20" , "v20" ]
+            , [ "v21" , "v21" ]
+            ]
+          )
+        , ( "RaisedEx" , [ [ "v10" ] ] )
+        , ( "TagValue"
+          , [ [ "a00" , "GHC.Prim.Unit#" ]
+            , [ "p10" , "lit:T_Token \"RealWorld\"" ]
+            , [ "p20" , "lit:T_Int64" ]
+            , [ "p21" , "lit:T_Token \"RealWorld\"" ]
+            , [ "v00" , "lit:T_Token \"RealWorld\"" ]
+            , [ "v01" , "GHC.Prim.Unit#" ]
+            , [ "v02" , "lit:T_Int64" ]
+            , [ "v03" , "lit:T_Int64" ]
+            , [ "v10" , "lit:T_Int64" ]
+            , [ "v11" , "lit:T_Token \"RealWorld\"" ]
+            , [ "v12" , "GHC.Prim.Unit#" ]
+            , [ "v20" , "lit:T_Int64" ]
+            , [ "v21" , "GHC.Prim.Unit#" ]
+            ]
+          )
+        ]
+
+    it "catch - raiseIO - closure" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          primop effectful
+            "catch#"    :: (tf.0 : {"State#" {RealWorld} @ t.1} @ t.0 -> {"GHC.Prim.Unit#" %a.0} @ t.2) -> (tf.1 : %b.0 -> {"State#" {RealWorld} @ t.4} @ t.3 -> {"GHC.Prim.Unit#" %a.0} @ t.5) -> {"State#" {RealWorld} @ t.7} @ t.6 -> {"GHC.Prim.Unit#" %a.0} @ t.8
+            "raiseIO#"  :: %a.3 -> {"State#" {RealWorld} @ t.28} @ t.27 -> {"GHC.Prim.Unit#" %b.2} @ t.29
+          main =
+            letS
+              v00 = #T_Token "RealWorld"
+              v01 = "catch#" $ fun3_normal_thunk fun4_handler_thunk v00
+              v02 = case v01 of
+                ("GHC.Prim.Unit#" v03) @ a00 ->
+                  v03
+            v02
+          fun1_normal p10 =
+            letS
+              v10 = #T_Int64 0
+              v11 = #T_Token "RealWorld"
+              v12 = "raiseIO#" $ v10 v11
+            v12
+          fun2_handler p20 p21 =
+            letS
+              v20 = #T_Int64 0
+              v21 = ["GHC.Prim.Unit#" v20]
+            v21
+          fun3_normal_thunk =
+            fun1_normal
+          fun4_handler_thunk =
+            let
+              clo40 = \[] p40 ->
+                let
+                  clo41 = \[] ->
+                    letS
+                      v40 = fun2_handler $ p40
+                    v40
+                clo41
+            clo40
+        |]
+      addUsedM cfa
+      toExOp cfa `sameAs` Map.fromList
+        [ ( "ExternalOrigin"
+          , [ [ "a00" , "v01" , "t.8" ]
+            , [ "a00" , "v12" , "t.29" ]
+            , [ "v01" , "v01" , "t.8" ]
+            , [ "v01" , "v12" , "t.29" ]
+            , [ "v02" , "v01" , "a.0" ]
+            , [ "v02" , "v12" , "b.2" ]
+            , [ "v03" , "v01" , "a.0" ]
+            , [ "v03" , "v12" , "b.2" ]
+            , [ "v12" , "v12" , "t.29" ]
+            ]
+          )
+        , ( "NodeOrigin"
+          , [ [ "a00" , "v21" ]
+            , [ "p10" , "v00" ]
+            , [ "p20" , "v10" ]
+            , [ "p21" , "v00" ]
+            , [ "p40" , "v10" ]
+            , [ "v00" , "v00" ]
+            , [ "v01" , "v21" ]
+            , [ "v02" , "v20" ]
+            , [ "v03" , "v20" ]
+            , [ "v10" , "v10" ]
+            , [ "v11" , "v11" ]
+            , [ "v20" , "v20" ]
+            , [ "v21" , "v21" ]
+            ]
+          )
+        , ( "RaisedEx" , [ [ "v10" ] ] )
+        , ( "TagValue"
+          , [ [ "a00" , "GHC.Prim.Unit#" ]
+            , [ "p10" , "lit:T_Token \"RealWorld\"" ]
+            , [ "p20" , "lit:T_Int64" ]
+            , [ "p21" , "lit:T_Token \"RealWorld\"" ]
+            , [ "p40" , "lit:T_Int64" ]
+            , [ "v00" , "lit:T_Token \"RealWorld\"" ]
+            , [ "v01" , "GHC.Prim.Unit#" ]
+            , [ "v02" , "lit:T_Int64" ]
+            , [ "v03" , "lit:T_Int64" ]
+            , [ "v10" , "lit:T_Int64" ]
+            , [ "v11" , "lit:T_Token \"RealWorld\"" ]
+            , [ "v12" , "GHC.Prim.Unit#" ]
+            , [ "v20" , "lit:T_Int64" ]
+            , [ "v21" , "GHC.Prim.Unit#" ]
+            ]
+          )
+        ]
+
     it "maskAsyncExceptions#" $ do
       cfa <- controlFlowAnalysisM ["main"] [prog2|
           primop effectful
