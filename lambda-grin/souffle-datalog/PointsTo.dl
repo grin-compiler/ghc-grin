@@ -36,3 +36,4 @@ USED("PointsTo-05")
 PointsTo(src, dst) :-
   ExternalOrigin(src, r, t),
   TypeVarPointsTo(r, t, dst).
+  // CHECKED
