@@ -102,6 +102,7 @@ ExecCall("normal-call", r, fun, arg_count) :-
   REACHABLE(r)
   Call(r, fun, arg_count),
   EvalMode(r, "strict").
+  // CHECKED
 
 USED("CFA-01-B")
 ExecCallArgument("normal-call", r, fun, call_arg_i, arg) :-
@@ -112,6 +113,7 @@ ExecCallArgument("normal-call", r, fun, call_arg_i, arg) :-
   call_arg_i >= 0,
   call_arg_i < arg_count,
   CallArgument(r, call_arg_i, arg).
+  // CHECKED
 
 //////////////////////////////////
 
@@ -417,6 +419,7 @@ USED("CFA-26-CallPNode1")
 ExecCallArgument(ns, inst, pnode, 0, last_arg),
 ExecCall(ns, inst, pnode, 1) :-
   CallPNode1(ns, inst, pnode, last_arg).
+  // CHECKED
 
 // NOTE: does not handle return value ; only pass parameters
 .decl CallPNode2(namespace:symbol, inst:Variable, pnode:Variable, before_last_arg:Variable, last_arg:Variable)
@@ -427,3 +430,4 @@ ExecCallArgument(ns, inst, pnode, 0, before_last_arg),
 ExecCallArgument(ns, inst, pnode, 1, last_arg),
 ExecCall(ns, inst, pnode, 2) :-
   CallPNode2(ns, inst, pnode, before_last_arg, last_arg).
+  // CHECKED

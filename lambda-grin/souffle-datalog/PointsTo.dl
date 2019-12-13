@@ -13,6 +13,7 @@ USED("PointsTo-02")
 ExternalOrigin(src, value, tn) :-
   PointsTo(src, dst),
   ExternalOrigin(dst, value, tn).
+  // CHECKED
 
 USED("PointsTo-03")
 PNode(src, pap_f, pap_ar, pap_rem) :-

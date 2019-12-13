@@ -23,7 +23,7 @@ NodeOrigin(r, val) :-
   Call(r, f, 0),
   EvalMode(r, "strict"),
   NodeOrigin(f, val).
-  // TO CHECK
+  // CHECKED
 
 // TODO: better model forcing ; what about externals?
 /*
@@ -42,8 +42,7 @@ ExternalOrigin(r, ext_result, ty_var) :-
   Call(r, f, 0),
   EvalMode(r, "strict"),
   ExternalOrigin(f, ext_result, ty_var).
-  // TO CHECK
-
+  // CHECKED
 
 // SECTION: Origin
 
@@ -69,6 +68,7 @@ PointsTo(result, value) :-
 // SECTION: Case + Alt
 
 .decl MatchedAlt(case_result:symbol, alt_name:symbol)
+.output MatchedAlt
 
 // scrutinee projection to alt value ; NodeOrigin
 USED("CBy-5")
@@ -117,13 +117,15 @@ ExternalOrigin(p, ext_result, ty_var) :-
 //////////////////////////
 // workaround for tagToEnum#
 USED("CBy-8-tagToEnum#-workaround")
+TagValue(alt, tag),
 MatchedAlt(case_result, alt),
 ReachableCode(alt) :-
   REACHABLE(case_result)
   Case(case_result, scrut),
   ExternalOrigin(scrut, ext_result, _),
   Call(ext_result, "tagToEnum#", _),
-  Alt(case_result, alt, _).
+  Alt(case_result, alt, tag).
+  // CHECKED
 
 //////////////////////////
 
@@ -148,7 +150,7 @@ PointsTo(alt_val, scrut) :-
   REACHABLE(case_result)
   Case(case_result, scrut),
   Alt(case_result, alt_val, "default:").
-  // TO CHECK
+  // CHECKED
 
 /*
   Question:
