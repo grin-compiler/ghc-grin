@@ -684,7 +684,7 @@ spec = do
       -- BUG: v04 must not have PNode [fixed]
       -- CFA ApplyChain BUGFIX test
       filterAndSort ["PNode", "ApplyChain"] cfa `sameAs` Map.fromList
-        [ ( "ApplyChain" , [ [ "v04" , "fun1_ap" , "0" , "2" , "3" ] ] )
+        [ ( "ApplyChain" , [ [ "normal-call" , "v04" , "fun1_ap" , "0" , "2" , "3" ] ] )
         , ( "PNode",
               [ [ "p10" , "fun2_ap" , "2" , "2" ]
               , [ "p11" , "fun3_id" , "1" , "1" ]
@@ -895,7 +895,7 @@ spec = do
       -- BUG: v04 must not have PNode [fixed]
       -- CFA ApplyChain BUGFIX test
       filterAndSort ["PNode", "ApplyChain"] cfa `sameAs` Map.fromList
-        [ ( "ApplyChain" , [ [ "v04" , "fun1_ap" , "0" , "2" , "3" ] ] )
+        [ ( "ApplyChain" , [ [ "normal-call" , "v04" , "fun1_ap" , "0" , "2" , "3" ] ] )
         , ( "PNode",
               [ [ "fun1_ap" , "fun1_ap" , "2" , "2" ]
               , [ "fun2_ap" , "fun2_ap" , "2" , "2" ]
@@ -985,7 +985,7 @@ spec = do
       -- BUG: v04 must not have PNode [fixed]
       -- CFA ApplyChain BUGFIX test
       filterAndSort ["PNode", "ApplyChain"] cfa `sameAs` Map.fromList
-        [ ( "ApplyChain" , [ [ "v04" , "fun1_ap" , "0" , "2" , "3" ] ] )
+        [ ( "ApplyChain" , [ [ "normal-call" , "v04" , "fun1_ap" , "0" , "2" , "3" ] ] )
         , ( "PNode",
               [ [ "fun2_ap" , "fun2_ap" , "2" , "2" ]
               , [ "fun3_id" , "fun3_id" , "1" , "1" ]
