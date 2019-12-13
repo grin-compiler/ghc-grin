@@ -108,6 +108,7 @@ test-suite lambda-test
 
   other-modules:
                      ParserSpec
+                     CBySpec
                      CFASpec
                      PrimOpExceptionSpec
                      PrimOpArraySpec
