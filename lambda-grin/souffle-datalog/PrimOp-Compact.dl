@@ -21,6 +21,9 @@
 
 // "compactAdd#"            :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
 // "compactAddWithSharing#" :: {"Compact#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
+// FIXME: should transitively evaluate the thunks
+// probably we should disable this primop (future work)
+/*
 USED("PrimOp-Compact-01")
 Called(r, op),
 TypeVarPointsTo(r, ty_node, item) :-
@@ -33,3 +36,11 @@ TypeVarPointsTo(r, ty_node, item) :-
   CallArgument(r, 1, item),
   // lookup result node
   RetTup1Node0(op, ty_node).
+*/
+// ISSUE: should transitively evaluate the thunks
+Error(r, "Unsupported (reachable) primop: compactAdd#, compactAddWithSharing# (TBD)") :-
+  ( op = "compactAdd#"
+  ; op = "compactAddWithSharing#"
+  ),
+  REACHABLE(r)
+  Call(r, op, _).

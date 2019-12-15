@@ -29,6 +29,7 @@ MutVar(r, ty_node, item) :-
   CallArgument(r, 0, item),
   // extract result node
   RetTup1Node0(op, ty_node).
+  // CHECKED
 
 // "readMutVar#" :: {"MutVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
 USED("PrimOp-MutVar-02")
@@ -43,6 +44,7 @@ TypeVarPointsTo(r, ty_node, item) :-
   MutVar(ext_result, arr_node, item),
   // lookup result node
   RetTup1Node0(op, ty_node).
+  // CHECKED
 
 // "writeMutVar#" :: {"MutVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
 // extend array
@@ -59,6 +61,7 @@ MutVar(ext_result, ty_node, item) :-
   ExternalOrigin(arr, ext_result, ty_node),
   // validation
   MutVar(ext_result, ty_node, _).
+  // CHECKED
 
 // "atomicModifyMutVar#" :: {"MutVar#" %s %a} -> (%a -> %b) -> {"State#" %s} -> {"GHC.Prim.Unit#" %c}
 // TODO: check how atomicModifyMutVar# works, this type signature does not reflect its semantics
@@ -72,19 +75,18 @@ Error(r, "Unsupported (reachable) primop: atomicModifyMutVar# (TBD)") :-
 USED("PrimOp-MutVar-04")
 Called(r, op),
 TypeVarPointsTo(r, ty_node, new_item),
-TypeVarPointsTo(r, ty_node, old_item),
+TypeVarPointsTo(r, ty_node, item),
 MutVar(ext_result, arr_node, new_item) :-
   op = "casMutVar#",
   REACHABLE(r)
   Call(r, op, _),
-  // old item
-  CallArgument(r, 1, old_item),
   // new item
   CallArgument(r, 2, new_item),
   // lookup array
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
-  // validation
-  MutVar(ext_result, arr_node, _),
+  // mut var items
+  MutVar(ext_result, arr_node, item),
   // extract result node
   RetTup(op, "GHC.Prim.(#,#)", 1, ty_node).
+  // CHECKED

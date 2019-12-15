@@ -17,3 +17,4 @@ CallPNode1("clearCCS#-wrapped", r, v0, v1_state) :-
   // pass argument to the wrapped function
   CallArgument(r, 0, v0),
   CallArgument(r, 1, v1_state).
+  // CHECKED

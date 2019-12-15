@@ -107,9 +107,12 @@ test-suite lambda-test
                      , grin
 
   other-modules:
-                     ParserSpec
                      CBySpec
                      CFASpec
-                     PrimOpExceptionSpec
+                     ParserSpec
                      PrimOpArraySpec
+                     PrimOpCCSSpec
+                     PrimOpExceptionSpec
+                     PrimOpMutVarSpec
+                     PrimOpMVarSpec
   default-language:    Haskell2010

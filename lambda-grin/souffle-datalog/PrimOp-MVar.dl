@@ -33,6 +33,7 @@ MVarDef(r, ty_node) :-
   Call(r, op, _),
   // extract result node
   RetTup1Node0(op, ty_node).
+  // CHECKED
 
 // "takeMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
 // "readMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.Unit#" %a}
@@ -51,6 +52,7 @@ TypeVarPointsTo(r, ty_node, item) :-
   MVar(ext_result, arr_node, item),
   // lookup result node
   RetTup1Node0(op, ty_node).
+  // CHECKED
 
 // "tryTakeMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 // "tryReadMVar#" :: {"MVar#" %s %a} -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
@@ -69,6 +71,7 @@ TypeVarPointsTo(r, ty_node, item) :-
   MVar(ext_result, arr_node, item),
   // lookup result node
   RetTup(op, "GHC.Prim.(#,#)", 1, ty_node).
+  // CHECKED
 
 // "putMVar#"     :: {"MVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
 // "tryPutMVar#"  :: {"MVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
@@ -88,3 +91,4 @@ MVar(ext_result, ty_node, item) :-
   ExternalOrigin(arr, ext_result, ty_node),
   // validation
   MVarDef(ext_result, ty_node).
+  // CHECKED
