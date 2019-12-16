@@ -219,7 +219,6 @@ spec = do
             v09
         |]
       addUsedM cfa
-      pPrint $ toArrOp cfa
       toArrOp cfa `sameAs` Map.fromList
         [ ( "Array"
           , [ [ "v03" , "t.109" , "v01" ]
@@ -255,6 +254,351 @@ spec = do
             , [ "v07" , "C1" ]
             , [ "v08" , "GHC.Prim.(##)" ]
             , [ "v09" , "GHC.Prim.(##)" ]
+            ]
+          )
+        ]
+
+    it "unsafeFreezeArray#" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          primop effectful
+            "newArray#"           :: (T_Int64) @ t.00 -> %a.01 -> {"State#" %s.02} @ t.03 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.02 %a.01} @ t.04} @ t.05
+            "unsafeFreezeArray#"  :: {"MutableArray#" %s.10 %a.11} @ t.12 -> {"State#" %s.10} @ t.13 -> {"GHC.Prim.Unit#" {"Array#" %a.11} @ t.14} @ t.15
+          main =
+            letS
+              v00 = #T_Int64 10
+              v01 = [Tup0]
+              v02 = #T_Token "RealWorld"
+              v03 = "newArray#" $ v00 v01 v02
+              v08 = case v03 of
+                ("GHC.Prim.Unit#" v04) @ a00 ->
+                  letS
+                    v05 = "unsafeFreezeArray#" $ v04 v02
+                    v07 = case v05 of
+                      ("GHC.Prim.Unit#" v06) @ a01 ->
+                        v06
+                  v07
+            v08
+        |]
+      addUsedM cfa
+      toArrOp cfa `sameAs` Map.fromList
+        [ ( "Array"
+          , [ [ "v03" , "t.04" , "v01" ]
+            ]
+          )
+        , ( "ExternalOrigin"
+          , [ [ "a00" , "v03" , "t.05" ]
+            , [ "a01" , "v05" , "t.15" ]
+            , [ "v03" , "v03" , "t.05" ]
+            , [ "v04" , "v03" , "t.04" ]
+            , [ "v05" , "v05" , "t.15" ]
+            , [ "v06" , "v03" , "t.04" ]
+            , [ "v06" , "v05" , "t.14" ]
+            , [ "v07" , "v03" , "t.04" ]
+            , [ "v07" , "v05" , "t.14" ]
+            , [ "v08" , "v03" , "t.04" ]
+            , [ "v08" , "v05" , "t.14" ]
+            ]
+          )
+        , ( "NodeOrigin"
+          , [ [ "v00" , "v00" ]
+            , [ "v01" , "v01" ]
+            , [ "v02" , "v02" ]
+            ]
+          )
+        , ( "TagValue"
+          , [ [ "a00" , "GHC.Prim.Unit#" ]
+            , [ "a01" , "GHC.Prim.Unit#" ]
+            , [ "v00" , "lit:T_Int64" ]
+            , [ "v01" , "Tup0" ]
+            , [ "v02" , "lit:T_Token \"RealWorld\"" ]
+            , [ "v03" , "GHC.Prim.Unit#" ]
+            , [ "v04" , "MutableArray#" ]
+            , [ "v05" , "GHC.Prim.Unit#" ]
+            , [ "v06" , "Array#" ]
+            , [ "v06" , "MutableArray#" ]
+            , [ "v07" , "Array#" ]
+            , [ "v07" , "MutableArray#" ]
+            , [ "v08" , "Array#" ]
+            , [ "v08" , "MutableArray#" ]
+            ]
+          )
+        ]
+
+    it "copyMutableArray#" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          primop effectful
+            "newArray#"         :: (T_Int64) @ t.00 -> %a.01 -> {"State#" %s.02} @ t.03 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.02 %a.01} @ t.04} @ t.05
+            "copyMutableArray#" :: {"MutableArray#" %s.10 %a.11} @ t.12 -> (T_Int64) @ t.13 -> {"MutableArray#" %s.10 %a.11} @ t.14 -> (T_Int64) @ t.15 -> (T_Int64) @ t.16 -> {"State#" %s.10} @ t.17 -> {"GHC.Prim.(##)"} @ t.18
+          main =
+            letS
+              v00 = #T_Int64 10
+              v01 = [Tup0]
+              v02 = #T_Token "RealWorld"
+              v03 = "newArray#" $ v00 v01 v02
+              v11 = case v03 of
+                ("GHC.Prim.Unit#" v04) @ a00 ->
+                  letS
+                    v05 = [C1]
+                    v06 = "newArray#" $ v00 v05 v02
+                    v10 = case v06 of
+                      ("GHC.Prim.Unit#" v07) @ a01 ->
+                        letS
+                          v08 = #T_Int64 0
+                          v09 = "copyMutableArray#" $ v04 v08 v07 v08 v00 v02
+                        v09
+                  v10
+            v11
+        |]
+      addUsedM cfa
+      toArrOp cfa `sameAs` Map.fromList
+        [ ( "Array"
+          , [ [ "v03" , "t.04" , "v01" ]
+            , [ "v06" , "t.04" , "v01" ]
+            , [ "v06" , "t.04" , "v05" ]
+            ]
+          )
+        , ( "ExternalOrigin"
+          , [ [ "a00" , "v03" , "t.05" ]
+            , [ "a01" , "v06" , "t.05" ]
+            , [ "v03" , "v03" , "t.05" ]
+            , [ "v04" , "v03" , "t.04" ]
+            , [ "v06" , "v06" , "t.05" ]
+            , [ "v07" , "v06" , "t.04" ]
+            , [ "v09" , "v09" , "t.18" ]
+            , [ "v10" , "v09" , "t.18" ]
+            , [ "v11" , "v09" , "t.18" ]
+            ]
+          )
+        , ( "NodeOrigin"
+          , [ [ "v00" , "v00" ]
+            , [ "v01" , "v01" ]
+            , [ "v02" , "v02" ]
+            , [ "v05" , "v05" ]
+            , [ "v08" , "v08" ]
+            ]
+          )
+        , ( "TagValue"
+          , [ [ "a00" , "GHC.Prim.Unit#" ]
+            , [ "a01" , "GHC.Prim.Unit#" ]
+            , [ "v00" , "lit:T_Int64" ]
+            , [ "v01" , "Tup0" ]
+            , [ "v02" , "lit:T_Token \"RealWorld\"" ]
+            , [ "v03" , "GHC.Prim.Unit#" ]
+            , [ "v04" , "MutableArray#" ]
+            , [ "v05" , "C1" ]
+            , [ "v06" , "GHC.Prim.Unit#" ]
+            , [ "v07" , "MutableArray#" ]
+            , [ "v08" , "lit:T_Int64" ]
+            , [ "v09" , "GHC.Prim.(##)" ]
+            , [ "v10" , "GHC.Prim.(##)" ]
+            , [ "v11" , "GHC.Prim.(##)" ]
+            ]
+          )
+        ]
+
+    it "cloneArray#" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          primop effectful
+            "newArray#"           :: (T_Int64) @ t.00 -> %a.01 -> {"State#" %s.02} @ t.03 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.02 %a.01} @ t.04} @ t.05
+            "unsafeFreezeArray#"  :: {"MutableArray#" %s.10 %a.11} @ t.12 -> {"State#" %s.10} @ t.13 -> {"GHC.Prim.Unit#" {"Array#" %a.11} @ t.14} @ t.15
+            "cloneArray#"         :: {"Array#" %a.20} @ t.21 -> (T_Int64) @ t.22 -> (T_Int64) @ t.23 -> {"Array#" %a.20} @ t.24
+          main =
+            letS
+              v00 = #T_Int64 10
+              v01 = [Tup0]
+              v02 = #T_Token "RealWorld"
+              v03 = "newArray#" $ v00 v01 v02
+              v10 = case v03 of
+                ("GHC.Prim.Unit#" v04) @ a00 ->
+                  letS
+                    v05 = "unsafeFreezeArray#" $ v04 v02
+                    v09 = case v05 of
+                      ("GHC.Prim.Unit#" v06) @ a01 ->
+                        letS
+                          v07 = #T_Int64 0
+                          v08 = "cloneArray#" $ v06 v07 v00
+                        v08
+                  v09
+            v10
+        |]
+      addUsedM cfa
+      toArrOp cfa `sameAs` Map.fromList
+        [ ( "Array"
+          , [ [ "v03" , "t.04" , "v01" ]
+            , [ "v08" , "t.24" , "v01" ]
+            ]
+          )
+        , ( "ExternalOrigin"
+          , [ [ "a00" , "v03" , "t.05" ]
+            , [ "a01" , "v05" , "t.15" ]
+            , [ "v03" , "v03" , "t.05" ]
+            , [ "v04" , "v03" , "t.04" ]
+            , [ "v05" , "v05" , "t.15" ]
+            , [ "v06" , "v03" , "t.04" ]
+            , [ "v06" , "v05" , "t.14" ]
+            , [ "v08" , "v08" , "t.24" ]
+            , [ "v09" , "v08" , "t.24" ]
+            , [ "v10" , "v08" , "t.24" ]
+            ]
+          )
+        , ( "NodeOrigin"
+          , [ [ "v00" , "v00" ]
+            , [ "v01" , "v01" ]
+            , [ "v02" , "v02" ]
+            , [ "v07" , "v07" ]
+            ]
+          )
+        , ( "TagValue"
+          , [ [ "a00" , "GHC.Prim.Unit#" ]
+            , [ "a01" , "GHC.Prim.Unit#" ]
+            , [ "v00" , "lit:T_Int64" ]
+            , [ "v01" , "Tup0" ]
+            , [ "v02" , "lit:T_Token \"RealWorld\"" ]
+            , [ "v03" , "GHC.Prim.Unit#" ]
+            , [ "v04" , "MutableArray#" ]
+            , [ "v05" , "GHC.Prim.Unit#" ]
+            , [ "v06" , "Array#" ]
+            , [ "v06" , "MutableArray#" ]
+            , [ "v07" , "lit:T_Int64" ]
+            , [ "v08" , "Array#" ]
+            , [ "v09" , "Array#" ]
+            , [ "v10" , "Array#" ]
+            ]
+          )
+        ]
+
+    it "cloneMutableArray#" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          primop effectful
+            "newArray#"          :: (T_Int64) @ t.00 -> %a.01 -> {"State#" %s.02} @ t.03 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.02 %a.01} @ t.04} @ t.05
+            "cloneMutableArray#" :: {"MutableArray#" %s.10 %a.11} @ t.12 -> (T_Int64) @ t.13 -> (T_Int64) @ t.14 -> {"State#" %s.10} @ t.15 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.10 %a.11} @ t.16} @ t.17
+          main =
+            letS
+              v00 = #T_Int64 10
+              v01 = [Tup0]
+              v02 = #T_Token "RealWorld"
+              v03 = "newArray#" $ v00 v01 v02
+              v09 = case v03 of
+                ("GHC.Prim.Unit#" v04) @ a00 ->
+                  letS
+                    v05 = #T_Int64 0
+                    v06 = "cloneMutableArray#" $ v04 v05 v00 v02
+                    v08 = case v06 of
+                      ("GHC.Prim.Unit#" v07) @ a01 ->
+                        v07
+                  v08
+            v09
+        |]
+      addUsedM cfa
+      toArrOp cfa `sameAs` Map.fromList
+        [ ( "Array"
+          , [ [ "v03" , "t.04" , "v01" ]
+            , [ "v06" , "t.16" , "v01" ]
+            ]
+          )
+        , ( "ExternalOrigin"
+          , [ [ "a00" , "v03" , "t.05" ]
+            , [ "a01" , "v06" , "t.17" ]
+            , [ "v03" , "v03" , "t.05" ]
+            , [ "v04" , "v03" , "t.04" ]
+            , [ "v06" , "v06" , "t.17" ]
+            , [ "v07" , "v06" , "t.16" ]
+            , [ "v08" , "v06" , "t.16" ]
+            , [ "v09" , "v06" , "t.16" ]
+            ]
+          )
+        , ( "NodeOrigin"
+          , [ [ "v00" , "v00" ]
+            , [ "v01" , "v01" ]
+            , [ "v02" , "v02" ]
+            , [ "v05" , "v05" ]
+            ]
+          )
+        , ( "TagValue"
+          , [ [ "a00" , "GHC.Prim.Unit#" ]
+            , [ "a01" , "GHC.Prim.Unit#" ]
+            , [ "v00" , "lit:T_Int64" ]
+            , [ "v01" , "Tup0" ]
+            , [ "v02" , "lit:T_Token \"RealWorld\"" ]
+            , [ "v03" , "GHC.Prim.Unit#" ]
+            , [ "v04" , "MutableArray#" ]
+            , [ "v05" , "lit:T_Int64" ]
+            , [ "v06" , "GHC.Prim.Unit#" ]
+            , [ "v07" , "MutableArray#" ]
+            , [ "v08" , "MutableArray#" ]
+            , [ "v09" , "MutableArray#" ]
+            ]
+          )
+        ]
+
+    it "casArray#" $ do
+      cfa <- controlFlowAnalysisM ["main"] [prog2|
+          primop effectful
+            "newArray#" :: (T_Int64) @ t.00 -> %a.01 -> {"State#" %s.02} @ t.03 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.02 %a.01} @ t.04} @ t.05
+            "casArray#" :: {"MutableArray#" %s.10 %a.11} @ t.12 -> (T_Int64) @ t.13 -> %a.11 -> %a.11 -> {"State#" %s.10} @ t.14 -> {"GHC.Prim.(#,#)" (T_Int64) @ t.15 %a.11} @ t.16
+          main =
+            letS
+              v00 = #T_Int64 10
+              v01 = [Tup0]
+              v02 = #T_Token "RealWorld"
+              v03 = "newArray#" $ v00 v01 v02
+              v11 = case v03 of
+                ("GHC.Prim.Unit#" v04) @ a00 ->
+                  letS
+                    v05 = #T_Int64 0
+                    v06 = [C1]
+                    v07 = "casArray#" $ v04 v05 v01 v06 v02
+                    v10 = case v07 of
+                      ("GHC.Prim.(#,#)" v08 v09) @ a01 ->
+                        v08
+                  v10
+            v11
+        |]
+      addUsedM cfa
+      toArrOp cfa `sameAs` Map.fromList
+        [ ( "Array"
+          , [ [ "v03" , "t.04" , "v01" ]
+            , [ "v03" , "t.04" , "v06" ]
+            ]
+          )
+        , ( "ExternalOrigin"
+          , [ [ "a00" , "v03" , "t.05" ]
+            , [ "a01" , "v07" , "t.16" ]
+            , [ "v03" , "v03" , "t.05" ]
+            , [ "v04" , "v03" , "t.04" ]
+            , [ "v07" , "v07" , "t.16" ]
+            , [ "v08" , "v07" , "t.15" ]
+            , [ "v09" , "v07" , "a.11" ]
+            , [ "v10" , "v07" , "t.15" ]
+            , [ "v11" , "v07" , "t.15" ]
+            ]
+          )
+        , ( "NodeOrigin"
+          , [ [ "v00" , "v00" ]
+            , [ "v01" , "v01" ]
+            , [ "v02" , "v02" ]
+            , [ "v05" , "v05" ]
+            , [ "v06" , "v06" ]
+            , [ "v09" , "v01" ]
+            , [ "v09" , "v06" ]
+            ]
+          )
+        , ( "TagValue"
+          , [ [ "a00" , "GHC.Prim.Unit#" ]
+            , [ "a01" , "GHC.Prim.(#,#)" ]
+            , [ "v00" , "lit:T_Int64" ]
+            , [ "v01" , "Tup0" ]
+            , [ "v02" , "lit:T_Token \"RealWorld\"" ]
+            , [ "v03" , "GHC.Prim.Unit#" ]
+            , [ "v04" , "MutableArray#" ]
+            , [ "v05" , "lit:T_Int64" ]
+            , [ "v06" , "C1" ]
+            , [ "v07" , "GHC.Prim.(#,#)" ]
+            , [ "v08" , "lit:T_Int64" ]
+            , [ "v09" , "C1" ]
+            , [ "v09" , "Tup0" ]
+            , [ "v10" , "lit:T_Int64" ]
+            , [ "v11" , "lit:T_Int64" ]
             ]
           )
         ]

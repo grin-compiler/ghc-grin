@@ -151,6 +151,7 @@ TypeVarPointsTo(r, ty_node, arr) :- // bypass argument
   CallArgument(r, 0, arr),
   // lookup result node
   RetTup1Node0(op, ty_node).
+  // CHECKED
 
 // "copyArray#"             :: {"Array#" %a}                -> T_Int64 -> {"MutableArray#" %s %a}      -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
 // "copySmallArray#"        :: {"SmallArray#" %a}           -> T_Int64 -> {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.(##)"}
@@ -175,6 +176,7 @@ Array(dst_ext_result, dst_arr_node, src_item) :-
   CallArgument(r, 2, dst_arr),
   ExternalOrigin(dst_arr, dst_ext_result, dst_arr_node),
   Array(dst_ext_result, dst_arr_node, _).
+  // CHECKED
 
 // "cloneArray#"      :: {"Array#" %a}      -> T_Int64 -> T_Int64 -> {"Array#" %a}
 // "cloneSmallArray#" :: {"SmallArray#" %a} -> T_Int64 -> T_Int64 -> {"SmallArray#" %a}
@@ -193,6 +195,7 @@ Array(r, arr_node, src_item) :-
   Array(src_ext_result, src_arr_node, src_item),
   // extract result node
   ExternalReturnType(op, arr_node).
+  // CHECKED
 
 // "cloneMutableArray#"       :: {"MutableArray#" %s %a}      -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"MutableArray#" %s %a}}
 // "cloneSmallMutableArray#"  :: {"SmallMutableArray#" %s %a} -> T_Int64 -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"SmallMutableArray#" %s %a}}
@@ -219,28 +222,28 @@ Array(r, arr_node, src_item) :-
   Array(src_ext_result, src_arr_node, src_item),
   // extract result node
   RetTup1Node0(op, arr_node).
+  // CHECKED
 
 // "casArray#"      :: {"MutableArray#" %s %a}      -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 // "casSmallArray#" :: {"SmallMutableArray#" %s %a} -> T_Int64 -> %a -> %a -> {"State#" %s} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 // extend array
 USED("PrimOp-Arrays-08")
 Called(r, op),
+TypeVarPointsTo(r, ty_node, item), // can return any array item
 TypeVarPointsTo(r, ty_node, new_item),
-TypeVarPointsTo(r, ty_node, old_item),
 Array(ext_result, arr_node, new_item) :-
   ( op = "casArray#"
   ; op = "casSmallArray#"
   ),
   REACHABLE(r)
   Call(r, op, _),
-  // old item
-  CallArgument(r, 2, old_item),
   // new item
   CallArgument(r, 3, new_item),
   // lookup array
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
-  // validation
-  Array(ext_result, arr_node, _),
+  // array items
+  Array(ext_result, arr_node, item),
   // extract result node
   RetTup(op, "GHC.Prim.(#,#)", 1, ty_node).
+  // CHECKED
