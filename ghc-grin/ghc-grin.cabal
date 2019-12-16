@@ -18,6 +18,7 @@ library
   exposed-modules:
     Lambda.FromStg
     Lambda.GHCPrimOps
+    Lambda.GHCSymbols
     StgLoopback
     StgSample
 

@@ -13,6 +13,7 @@ import System.IO
 import GhcDump_StgAst (ModuleName(..), moduleName)
 import GhcDump.StgUtil
 
+import Lambda.GHCSymbols as GHCSymbols
 import Lambda.FromStg
 import Lambda.Syntax
 import qualified Lambda.Syntax2 as L2
@@ -163,7 +164,7 @@ cg_main opts = do
   putStrLn "finished toLambda"
 
   let wholeProgramBloat = addMain $ concatPrograms progList
-  wholeProgram <- sortDefs . singleStaticAssignment <$> deadFunctionEliminationM ["::Main.main", ":Main.main", "Main.main"] wholeProgramBloat
+  wholeProgram <- sortDefs . singleStaticAssignment <$> deadFunctionEliminationM (["::Main.main", ":Main.main", "Main.main"] ++ GHCSymbols.liveSymbols) wholeProgramBloat
   let wholeProgram2     = toSyntax2 wholeProgram :: L2.Program
       output_fn         = output opts
   writeFile (output_fn ++ ".lambda") . showWidth 800 . plain $ pretty wholeProgram
