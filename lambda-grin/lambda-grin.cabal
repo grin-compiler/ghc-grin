@@ -115,4 +115,5 @@ test-suite lambda-test
                      PrimOpExceptionSpec
                      PrimOpMutVarSpec
                      PrimOpMVarSpec
+                     PrimOpSTMSpec
   default-language:    Haskell2010
