@@ -17,10 +17,10 @@
 .output WeakFinalizer
 
 // "mkWeak#" :: %o -> %b -> ({"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %c}) -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"Weak#" %b}}
-// new array
+// new weak ptr
 USED("PrimOp-WeakPtr-01")
 Called(r, op),
-CallPNode1("mkWeak#-finalizer", r, finalizer, v3_state),
+CallPNode1(r, "mkWeak#-finalizer-ignored-result", finalizer, v3_state), // TRICK: swap name space and result var in order to ignore the result value
 WeakFinalizer(r, finalizer),
 WeakPtr(r, ty_node, item) :-
   op = "mkWeak#",
@@ -34,10 +34,10 @@ WeakPtr(r, ty_node, item) :-
   CallArgument(r, 3, v3_state),
   // extract result node
   RetTup1Node0(op, ty_node).
-  // TODO: ignore finalizer's result. i.e. allocate to type node
+  // CHECKED
 
 // "mkWeakNoFinalizer#" :: %o -> %b -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"Weak#" %b}}
-// new array
+// new weak ptr
 USED("PrimOp-WeakPtr-02")
 Called(r, op),
 WeakPtr(r, ty_node, item) :-
@@ -48,6 +48,7 @@ WeakPtr(r, ty_node, item) :-
   CallArgument(r, 1, item),
   // extract result node
   RetTup1Node0(op, ty_node).
+  // CHECKED
 
 // "deRefWeak#" :: {"Weak#" %a} -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,#)" T_Int64 %a}
 USED("PrimOp-WeakPtr-03")
@@ -56,12 +57,13 @@ TypeVarPointsTo(r, ty_node, item) :-
   op = "deRefWeak#",
   REACHABLE(r)
   Call(r, op, _),
-  // lookup array items
+  // lookup weak ptr items
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
   WeakPtr(ext_result, arr_node, item),
   // lookup result node
   RetTup(op, "GHC.Prim.(#,#)", 1, ty_node).
+  // CHECKED
 
 // "finalizeWeak#"  :: {"Weak#" %a}
 //                  -> {"State#" {RealWorld}}
@@ -72,9 +74,10 @@ TypeVarPointsTo(r, ty_node, finalizer) :-
   op = "finalizeWeak#",
   REACHABLE(r)
   Call(r, op, _),
-  // lookup array items
+  // lookup weak ptr items
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, _),
   WeakFinalizer(ext_result, finalizer),
   // lookup result node
   RetTup(op, "GHC.Prim.(#,#)", 1, ty_node).
+  // CHECKED
