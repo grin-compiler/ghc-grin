@@ -13,6 +13,7 @@
     - "threadStatus#"         :: {"ThreadId#"} -> {"State#" {RealWorld}} -> {"GHC.Prim.(#,,#)" T_Int64 T_Int64 T_Int64}
 */
 
+
 // "killThread#" :: {"ThreadId#"} -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.(##)"}
 // collect raised exceptions
 USED("PrimOp-Concurrency-01")
@@ -22,20 +23,30 @@ RaisedEx(ex) :-
   Call(r, "killThread#", _),
   CallArgument(r, 1, ex).
 
+/*
 // "fork#" :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"ThreadId#"}}
+// TODO: ignore the result
 USED("PrimOp-Concurrency-02")
 Called(r, "fork#"),
-Called(r, fun) :-
+ExecCall("fork#-thunk", r, v0, 0) :-
   REACHABLE(r)
   Call(r, "fork#", _),
-  CallArgument(r, 0, v0),
-  PNode(v0, fun, _, 0).
+  CallArgument(r, 0, v0).
 
 // "forkOn#" :: T_Int64 -> %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"ThreadId#"}}
+// TODO: ignore the result
 USED("PrimOp-Concurrency-03")
 Called(r, "forkOn#"),
-Called(r, fun) :-
+ExecCall("forkOn#-thunk", r, v0, 0) :-
   REACHABLE(r)
   Call(r, "forkOn#", _),
-  CallArgument(r, 1, v0),
-  PNode(v0, fun, _, 0).
+  CallArgument(r, 1, v0).
+*/
+
+// TODO: future work
+Error(r, cat("Unsupported (reachable) primop: ", op)) :-
+  ( op = "fork#"
+  ; op = "forkOn#"
+  ),
+  REACHABLE(r)
+  Call(r, op, _).
