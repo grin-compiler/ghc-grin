@@ -13,21 +13,19 @@
 
 */
 
-.decl StablePtr(ext_result:Variable, ty_node:Variable, item:Variable)
+.decl StablePtr(item:Variable)
 .output StablePtr
 
 // "makeStablePtr#" :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
 // new array
 USED("PrimOp-StablePtr-01")
 Called(r, op),
-StablePtr(r, ty_node, item) :-
+StablePtr(item) :-
   op = "makeStablePtr#",
   REACHABLE(r)
   Call(r, op, _),
   // initial item
-  CallArgument(r, 0, item),
-  // extract result node
-  RetTup1Node0(op, ty_node).
+  CallArgument(r, 0, item).
   // CHECKED
 
 // "deRefStablePtr#" :: {"StablePtr#" %a} -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" %a}
@@ -38,9 +36,7 @@ TypeVarPointsTo(r, ty_node, item) :-
   REACHABLE(r)
   Call(r, op, _),
   // lookup array items
-  CallArgument(r, 0, arr),
-  ExternalOrigin(arr, ext_result, arr_node),
-  StablePtr(ext_result, arr_node, item),
+  StablePtr(item),
   // lookup result node
   RetTup1Node0(op, ty_node).
   // CHECKED

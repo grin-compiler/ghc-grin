@@ -53,7 +53,7 @@ spec = do
         |]
       addUsedM cfa
       toMVOp cfa `sameAs` Map.fromList
-        [ ( "StablePtr" , [ [ "v03" , "t.109" , "v01" ] ] )
+        [ ( "StablePtr" , [ [ "v01" ] ] )
         , ( "ExternalOrigin"
           , [ [ "a00" , "v03" , "t.108" ]
             , [ "v03" , "v03" , "t.108" ]
@@ -99,7 +99,7 @@ spec = do
         |]
       addUsedM cfa
       toMVOp cfa `sameAs` Map.fromList
-        [ ( "StablePtr" , [ [ "v03" , "t.109" , "v01" ] ] )
+        [ ( "StablePtr" , [ [ "v01" ] ] )
         , ( "ExternalOrigin"
           , [ [ "a00" , "v03" , "t.108" ]
             , [ "a01" , "v06" , "t.246" ]

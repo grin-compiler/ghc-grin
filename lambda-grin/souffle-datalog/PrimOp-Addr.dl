@@ -20,7 +20,7 @@
     - "indexAddrOffAddr#"      :: T_Addr -> T_Int64 -> T_Addr
     - "indexFloatOffAddr#"     :: T_Addr -> T_Int64 -> T_Float
     - "indexDoubleOffAddr#"    :: T_Addr -> T_Int64 -> T_Double
-    + "indexStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"StablePtr#" %a}
+    - "indexStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"StablePtr#" %a}
     - "indexInt8OffAddr#"      :: T_Addr -> T_Int64 -> T_Int64
     - "indexInt16OffAddr#"     :: T_Addr -> T_Int64 -> T_Int64
     - "indexInt32OffAddr#"     :: T_Addr -> T_Int64 -> T_Int64
@@ -38,7 +38,7 @@
     - "readAddrOffAddr#"       :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Addr}
     - "readFloatOffAddr#"      :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Float}
     - "readDoubleOffAddr#"     :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Double}
-    + "readStablePtrOffAddr#"  :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
+    - "readStablePtrOffAddr#"  :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
     - "readInt8OffAddr#"       :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
     - "readInt16OffAddr#"      :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
     - "readInt32OffAddr#"      :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
@@ -66,29 +66,6 @@
 */
 
 /*
-  NOTE: all StablePtr is accessible via T_Addr and ByteArray#
+  NOTE: StablePtr is a global container.
+        Addr operations can not return unlifted values, thust they are not interpreted.
 */
-
-// "readStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"State#" %s} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
-USED("PrimOp-Addr-01")
-Called(r, op),
-TypeVarPointsTo(r, ty_node, ext_result) :-
-  REACHABLE(r)
-  op = "readStablePtrOffAddr#",
-  Call(r, op, _),
-  // lookup all stable pointers from the whole program
-  StablePtr(ext_result, _, _),
-  // lookup result node
-  RetTup1Node0(op, ty_node).
-
-// "indexStablePtrOffAddr#" :: T_Addr -> T_Int64 -> {"StablePtr#" %a}
-USED("PrimOp-Addr-02")
-Called(r, op),
-TypeVarPointsTo(r, ty_node, ext_result) :-
-  REACHABLE(r)
-  op = "indexStablePtrOffAddr#",
-  Call(r, op, _),
-  // lookup all stable pointers from the whole program
-  StablePtr(ext_result, _, _),
-  // lookup result node
-  ExternalReturnType(op, ty_node).
