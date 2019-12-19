@@ -17,7 +17,7 @@
 .output StablePtr
 
 // "makeStablePtr#" :: %a -> {"State#" {RealWorld}} -> {"GHC.Prim.Unit#" {"StablePtr#" %a}}
-// new array
+// new stable ptr
 USED("PrimOp-StablePtr-01")
 Called(r, op),
 StablePtr(item) :-
@@ -35,7 +35,7 @@ TypeVarPointsTo(r, ty_node, item) :-
   op = "deRefStablePtr#",
   REACHABLE(r)
   Call(r, op, _),
-  // lookup array items
+  // lookup stable ptr items
   StablePtr(item),
   // lookup result node
   RetTup1Node0(op, ty_node).

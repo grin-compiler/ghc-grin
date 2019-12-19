@@ -24,7 +24,7 @@
 .output MVarDef
 
 // "newMVar#" :: {"State#" %s} -> {"GHC.Prim.Unit#" {"MVar#" %s %a}}
-// new array
+// new mvar
 USED("PrimOp-MVar-01")
 Called(r, op),
 MVarDef(r, ty_node) :-
@@ -45,7 +45,7 @@ TypeVarPointsTo(r, ty_node, item) :-
   ),
   REACHABLE(r)
   Call(r, op, _),
-  // lookup array items
+  // lookup mvar items
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
   MVarDef(ext_result, arr_node),
@@ -64,7 +64,7 @@ TypeVarPointsTo(r, ty_node, item) :-
   ),
   REACHABLE(r)
   Call(r, op, _),
-  // lookup array items
+  // lookup mvar items
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, arr_node),
   MVarDef(ext_result, arr_node),
@@ -75,7 +75,7 @@ TypeVarPointsTo(r, ty_node, item) :-
 
 // "putMVar#"     :: {"MVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.(##)"}
 // "tryPutMVar#"  :: {"MVar#" %s %a} -> %a -> {"State#" %s} -> {"GHC.Prim.Unit#" T_Int64}
-// extend array
+// extend mvar
 USED("PrimOp-MVar-04")
 Called(r, op),
 MVar(ext_result, ty_node, item) :-
@@ -86,7 +86,7 @@ MVar(ext_result, ty_node, item) :-
   Call(r, op, _),
   // item to write
   CallArgument(r, 1, item),
-  // lookup array
+  // lookup mvar
   CallArgument(r, 0, arr),
   ExternalOrigin(arr, ext_result, ty_node),
   // validation
