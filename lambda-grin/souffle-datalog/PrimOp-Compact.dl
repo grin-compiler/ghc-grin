@@ -38,7 +38,7 @@ TypeVarPointsTo(r, ty_node, item) :-
   RetTup1Node0(op, ty_node).
 */
 // ISSUE: should transitively evaluate the thunks
-Error(r, "Unsupported (reachable) primop: compactAdd#, compactAddWithSharing# (TBD)") :-
+Error(r, cat("Unsupported (reachable) primop: ", op)) :-
   ( op = "compactAdd#"
   ; op = "compactAddWithSharing#"
   ),
