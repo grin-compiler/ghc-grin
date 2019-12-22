@@ -101,155 +101,237 @@ dependencies:
   Text.ParserCombinators.ReadPrec
   Text.Read.Lex
 
+pruned length: 99
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Control/Exception/Base.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Data/Bits.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Data/Maybe.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Data/OldList.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Data/Proxy.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Data/Semigroup/Internal.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Data/Tuple.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Data/Type/Equality.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Data/Typeable/Internal.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Foreign/C/Error.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Foreign/C/String.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Foreign/C/Types.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Foreign/Marshal/Alloc.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Foreign/Marshal/Array.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Foreign/Storable.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Arr.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Base.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/ghc-prim/dist-install/build/GHC/CString.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Char.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/ghc-prim/dist-install/build/GHC/Classes.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Conc/Signal.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Conc/Sync.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Enum.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Err.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Event/Arr.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Event/Array.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Event/Control.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Event/EPoll.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Event/IntTable.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Event/Internal.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Event/Manager.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Event/PSQ.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Event/Poll.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Event/Thread.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Event/TimerManager.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Event/Unique.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Exception.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Exception/Type.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Fingerprint.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Fingerprint/Type.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Float.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Float/ConversionUtils.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Float/RealFracMethods.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Foreign.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/ForeignPtr.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Generics.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Buffer.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/BufferedIO.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Device.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Encoding.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Encoding/Failure.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Encoding/Iconv.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Encoding/Latin1.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Encoding/Types.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Encoding/UTF16.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Encoding/UTF32.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Encoding/UTF8.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Exception.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/FD.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Handle.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Handle/FD.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Handle/Internals.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Handle/Text.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Handle/Types.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/IOMode.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IO/Unsafe.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/IORef.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Int.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/integer-gmp/dist-install/build/GHC/Integer/Logarithms.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/integer-gmp/dist-install/build/GHC/Integer/Logarithms/Internals.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/integer-gmp/dist-install/build/GHC/Integer/Type.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/List.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/MVar.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Maybe.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Natural.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Num.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Ptr.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Read.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Real.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/STRef.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Show.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Stack/CCS.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Stack/Types.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Storable.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/TopHandler.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/ghc-prim/dist-install/build/GHC/Tuple.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/TypeLits.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/ghc-prim/dist-install/build/GHC/Types.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Unicode.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/GHC/Word.stgbin
+toLambda: .stack-work/dist/x86_64-linux/Cabal-2.4.0.1/build/tsumupto/tsumupto-tmp/Main.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Numeric.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/System/IO.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/System/Posix/Internals.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/System/Posix/Types.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Text/ParserCombinators/ReadP.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Text/ParserCombinators/ReadPrec.stgbin
+[cached] toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Text/Read/Lex.stgbin
+finished toLambda
+export facts
+/tmp/lambda-dfe-69e6a674ac16eff1/DefReference.facts
+/tmp/lambda-dfe-69e6a674ac16eff1/LiveSource.facts
+run: deadFunctionEliminationM
+read back result
 unknown:
 errors:
 duplicates:
 all: 251 pruned: 99
-bloat    lambda def count: 54431
-stripped lambda def count: 1831
+bloat    lambda def count: 44952
+stripped lambda def count: 971
 stripped lambda con def count: 276
-program ast size: 38265
+program ast size: 35047
 def size histogram (size: count, sample def name)
         2:     243     Control.Exception.Base.lvl
-        3:     378     :Main.main
-        4:     116     Data.OldList.prependToAll.closure.0
-        5:      29     Data.Typeable.Internal.$dIP3
-        6:      40     Foreign.C.Error.$wlvl.closure.0
-        7:      70     Data.OldList.intercalate_$spoly_go
-        8:      76     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable.closure.17
-        9:      35     Data.Typeable.Internal.$dIP
-       10:      78     Control.Exception.Base.absentError
-       11:      14     Data.Typeable.Internal.$mApp3
-       12:      22     Foreign.C.String.$wpeekCAString
-       13:      21     Foreign.C.Error.throwErrno1
-       14:      20     Data.OldList.poly_go2
-       15:      18     Data.Typeable.Internal.$mApp3.closure.0
-       16:      23     Data.Typeable.Internal.tyConTYPE
-       17:     118     Data.Typeable.Internal.$wmkTrCon.closure.1
-       18:       7     Data.OldList.prependToAll
-       19:      57     Data.Typeable.Internal.$dTypeable
-       20:      12     Data.Typeable.Internal.splitApps_pkg
-       21:      32     Foreign.C.String.withCAString1
-       22:      14     Data.Typeable.Internal.$mApp6
-       23:      71     Data.Typeable.Internal.$sshowArgs
-       24:      15     Data.Typeable.Internal.someTypeRepFingerprint
-       25:       5     Data.Typeable.Internal.$wmkTrCon.closure.7
-       26:      10     Data.Typeable.Internal.go
-       27:       1     GHC.IO.FD.$wsetSize
-       28:       2     GHC.Foreign.$wpeekCString.closure.1
-       29:      11     Data.Typeable.Internal.$wmkTrCon.closure.4
-       30:       7     GHC.Event.Thread.threadWaitRead1.closure.6
-       31:      17     Data.Typeable.Internal.$wshowTyCon
-       32:       6     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable.closure.28
-       33:       5     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable.closure.31
-       34:       3     Foreign.Storable.$fStorableFingerprint_$s$wpokeW64
-       35:       6     Data.Typeable.Internal.$wmkTrCon.closure.8
-       36:       5     Foreign.C.Error.throwErrnoIfMinus1Retry2
-       37:       5     Foreign.Storable.$fStorableFingerprint_$s$wpeekW64
-       38:       3     Data.Typeable.Internal.$wmkTrCon.closure.2
-       39:       2     Data.Typeable.Internal.mkTypeLitFromString
-       40:       3     GHC.Fingerprint.fingerprintString.closure.2
-       41:       6     GHC.Event.Manager.$wcloseFd_.closure.0
-       42:       2     GHC.Foreign.charIsRepresentable3.closure.16
-       43:       4     GHC.IO.FD.$fBufferedIOFD5
-       44:       5     Data.Typeable.Internal.$wmkTrCon
-       45:       9     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable
-       46:       4     GHC.Event.IntTable.$wgrow.closure.2
-       47:       5     Foreign.C.Error.$werrnoToIOError
-       48:       2     GHC.IO.Handle.Text.$wwriteBlocks.closure.10
-       49:       2     GHC.Foreign.$wpeekCString.closure.15
-       50:       3     Data.Typeable.Internal.showTypeable
-       51:       1     GHC.IO.Encoding.Iconv.iconvEncoding6
-       52:       2     GHC.Foreign.charIsRepresentable1.closure.0
-       53:       5     Foreign.Storable.$fStorableFingerprint2
-       54:       2     Data.Typeable.Internal.$wmkTrCon.closure.3
-       55:       5     Foreign.C.String.$wpeekCAString.closure.0
-       56:       3     GHC.Conc.Signal.setHandler1.closure.0
-       57:       2     GHC.Foreign.$wpeekCString.closure.20
-       58:      16     GHC.Event.Manager.unregisterFd2.closure.5
-       59:       5     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable.closure.36
-       60:       2     GHC.Event.Manager.unregisterFd2.closure.1
-       61:       2     GHC.IO.FD.$wreadRawBufferPtr
-       62:       3     GHC.IO.Encoding.UTF32.mkUTF3.closure.7
-       63:       4     GHC.Event.Manager.unregisterFd2.closure.3
-       64:       3     GHC.Event.IntTable.$wgrow
-       65:       1     Data.Typeable.Internal.runtimeRepTypeRep.closure.10
-       66:       4     GHC.IO.Encoding.Iconv.iconvEncoding6.closure.1
-       67:       2     GHC.Event.Thread.closeFdWith1.closure.14
-       68:       2     GHC.IO.Handle.Internals.mkDuplexHandle9
-       70:       1     GHC.IO.Encoding.Latin1.latin5.closure.4
-       71:       6     GHC.IO.Encoding.Latin1.ascii3
-       72:       3     GHC.Event.Thread.closeFdWith1.closure.1
-       73:       1     Data.Typeable.Internal.runtimeRepTypeRep
-       74:       3     GHC.Event.Thread.closeFdWith1.closure.37
-       75:       4     Data.Typeable.Internal.mkTrApp.closure.2
-       76:       3     GHC.IO.Encoding.UTF32.mkUTF1.closure.8
-       77:       2     GHC.Event.Thread.getSystemEventManager1
-       78:       2     GHC.IO.Encoding.UTF8.mkUTF4.closure.11
-       79:       2     GHC.Event.Thread.threadWaitRead1.closure.20
-       80:       3     GHC.Conc.Signal.lvl2
-       81:       1     GHC.IO.Exception.$w$cshowsPrec4
-       82:       3     GHC.Event.Thread.closeFdWith1.closure.12
-       84:       2     GHC.IO.Encoding.UTF16.mkUTF1
-       86:       2     GHC.IO.Encoding.Latin1.ascii3.closure.6
-       89:       1     GHC.Event.Thread.closeFdWith1
-       90:       3     Data.Typeable.Internal.sameTypeRep.closure.0
-       91:       1     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable.closure.23
-       92:       1     GHC.Conc.Signal.setHandler1
-       93:       2     GHC.Event.Manager.$wcloseFd_
-       94:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.53
-      100:       1     GHC.Event.Manager.unregisterFd2.closure.6
-      102:       1     GHC.IO.Encoding.UTF8.mkUTF1
-      103:       1     GHC.IO.Handle.Internals.$wwriteCharBuffer
-      106:       2     Data.Typeable.Internal.showTypeable.closure.23
-      107:       1     GHC.IO.Handle.Text.hPutStr2
-      110:       2     GHC.IO.Encoding.UTF16.$wutf16_encode
-      112:       1     GHC.Stack.CCS.$wgo
-      114:       2     GHC.Foreign.$wpeekCString.closure.18
-      116:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.21
-      117:       1     GHC.Event.Thread.closeFdWith1.closure.0
-      118:       1     GHC.IO.Handle.FD.$wstdHandleFinalizer.closure.5
-      122:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.30
-      124:       1     GHC.IO.Encoding.UTF32.$wutf32_decode.closure.0
-      132:       1     GHC.IO.Handle.Text.$wwriteBlocks.closure.24
-      133:       1     GHC.IO.Encoding.Iconv.iconvEncoding6.closure.7
-      134:       1     GHC.IO.Encoding.UTF16.$wutf16_decode
-      136:       6     GHC.IO.Encoding.UTF16.mkUTF1.closure.9
-      138:       2     GHC.IO.Handle.Internals.mkDuplexHandle9.closure.7
-      140:       3     GHC.IO.Handle.Text.$wwriteBlocks.closure.12
-      141:       4     GHC.IO.FD.$w$cwriteNonBlocking
-      142:       1     GHC.IO.Encoding.getFileSystemEncoding5
-      143:       2     GHC.IO.Encoding.UTF8.mkUTF4.closure.65
-      144:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.67
-      146:       2     GHC.IO.Handle.Text.$wwriteBlocks.closure.19
-      147:       2     GHC.IO.Handle.Text.$whPutChar.closure.1
-      149:       2     GHC.IO.Handle.Text.$wwriteBlocks.closure.22
-      150:       2     GHC.IO.Encoding.UTF32.$wutf32_encode
-      152:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.61
-      155:       1     GHC.Event.Manager.unregisterFd2
-      156:       1     GHC.IO.Handle.Text.$wwriteBlocks.closure.28
-      157:       1     GHC.IO.Handle.Text.$wwriteBlocks.closure.54
-      161:       1     GHC.IO.Handle.Text.$wwriteBlocks.closure.43
-      162:       1     GHC.IO.Handle.Text.$wwriteBlocks.closure.63
-      163:       1     GHC.IO.Handle.Text.$wwriteBlocks.closure.50
-      166:       1     GHC.IO.Encoding.Failure.recoverEncode1
-      168:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.64
-      169:       1     GHC.Foreign.$wpeekCString.closure.23
-      175:       2     GHC.IO.Encoding.UTF32.mkUTF3.closure.8
-      177:       1     Foreign.C.Error.$werrnoToIOError.closure.0
-      180:       1     GHC.IO.Encoding.UTF8.mkUTF4
-      186:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.54
-      188:       1     GHC.IO.Encoding.UTF32.$wutf32_decode
-      202:       1     GHC.CString.unpackCStringUtf8#.closure.4
-      209:       1     Data.Typeable.Internal.$wmkTrCon.closure.12
-      210:       1     GHC.IO.Encoding.UTF8.mkUTF4.closure.52
-      211:       1     GHC.IO.Handle.Internals.$wwantWritableHandle'.closure.4
-      223:       2     GHC.IO.Encoding.UTF16.mkUTF1.closure.10
-      226:       1     GHC.IO.Encoding.Failure.recoverDecode1
-      244:       2     GHC.IO.Encoding.UTF32.mkUTF1.closure.7
-      245:       1     System.Posix.Internals.$wfdStat.closure.1
-      264:       1     GHC.Event.Thread.closeFdWith1.closure.25
-      274:       1     GHC.Event.Thread.threadWaitRead1.closure.19
-      286:       1     GHC.Event.Thread.threadWaitRead1.closure.3
-      313:       2     GHC.IO.Encoding.UTF16.mkUTF3.closure.16
-      906:       1     GHC.IO.Encoding.UTF8.mkUTF1.closure.13
+        3:     285     :Main.main
+        4:      72     Data.Typeable.Internal.$mApp7
+        5:      13     Data.Typeable.Internal.$dIP3
+        6:      11     Foreign.Marshal.Alloc.allocaBytesAligned
+        7:      26     Data.Tuple.snd
+        8:      39     Data.OldList.intercalate_$spoly_go
+        9:      10     Data.Typeable.Internal.$dIP
+       10:      15     Data.Typeable.Internal.$fShowSomeTypeRep_$cshow
+       11:       5     Control.Exception.Base.absentError
+       12:       2     GHC.IO.Exception.$fExceptionSomeAsyncException_$cshow
+       13:       6     Foreign.C.Error.throwErrno1
+       14:      10     Data.Typeable.Internal.tcSymbol
+       15:       3     Data.OldList.poly_go2
+       16:       7     Data.Typeable.Internal.tyConTYPE
+       17:       2     GHC.Event.IntTable.poly_<>
+       18:       3     GHC.Event.Thread.go
+       19:      40     Data.Typeable.Internal.$dTypeable
+       20:      12     Data.OldList.prependToAll
+       21:       7     GHC.Classes.eqChar
+       22:       7     Data.Typeable.Internal.$mApp6
+       23:       1     GHC.Exception.$w$cshowsPrec
+       24:       3     Data.Typeable.Internal.$mApp3
+       25:       3     Data.Typeable.Internal.splitApps_$s$wgo
+       26:       4     GHC.Event.Manager.$wlvl
+       27:       1     Data.Typeable.Internal.mkTyConFingerprint
+       28:       3     GHC.CString.unpackAppendCString#
+       29:       1     GHC.IO.FD.$w$cdup2
+       30:       1     GHC.IO.FD.$fBufferedIOFD15
+       31:       4     Data.Typeable.Internal.go
+       32:       2     GHC.Exception.errorCallWithCallStackException1
+       33:       3     GHC.IO.Encoding.getForeignEncoding2
+       36:       3     Data.Typeable.Internal.$sshowArgs
+       37:       3     Foreign.Storable.$fStorableFingerprint_$s$wpokeW64
+       39:       4     Data.Typeable.Internal.mkTypeLitFromString
+       40:       2     Foreign.Storable.$fStorableFingerprint_$s$wpeekW64
+       41:       7     GHC.IO.Encoding.Latin1.mkAscii
+       42:       3     GHC.IO.Handle.Internals.$wwithHandle'
+       43:       3     GHC.IO.FD.$fBufferedIOFD5
+       44:       2     GHC.Base.eqString
+       45:       3     Foreign.Marshal.Alloc.allocaBytesAligned1
+       46:       1     GHC.Show.$witos'
+       47:       1     GHC.Show.showList__
+       50:       2     Foreign.C.Error.throwErrnoIfMinus1RetryMayBlock2
+       54:       1     GHC.IO.FD.$w$cfillReadBuffer
+       55:       1     GHC.List.$wspan
+       57:       2     Foreign.Storable.$fStorableFingerprint2
+       58:       1     GHC.IO.FD.$w$cclose
+       62:       1     GHC.List.splitAt_$s$wsplitAt'
+       64:       2     GHC.Arr.$windexError
+       66:       1     GHC.IO.FD.$w$cready
+       67:       1     GHC.Exception.$wprettySrcLoc
+       68:       1     Data.Typeable.Internal.$wshowTyCon
+       69:       1     GHC.IO.FD.$w$cseek
+       72:       1     GHC.Foreign.charIsRepresentable1
+       73:       1     GHC.IO.Handle.Internals.$wstreamEncode
+       74:       1     System.Posix.Internals.$wfdFileSize
+       76:       1     GHC.Show.$witos
+       81:       3     GHC.IO.Exception.$w$cshowsPrec4
+       82:       1     GHC.IO.FD.$w$cfillReadBuffer0
+       88:       1     System.Posix.Internals.$wsetEcho
+       90:       2     GHC.Event.Thread.getSystemEventManager1
+       95:       1     GHC.Fingerprint.fingerprintString
+      101:       1     GHC.IO.FD.$wreadRawBufferPtrNoBlock
+      105:       1     GHC.Fingerprint.fingerprintString_go
+      106:       1     Data.Typeable.Internal.mkTrApp
+      109:       1     GHC.Conc.Signal.lvl2
+      110:       1     GHC.IO.Exception.$w$cshowsPrec3
+      112:       2     Foreign.C.String.withCAString1
+      114:       1     Foreign.C.String.$wpeekCAString
+      115:       2     GHC.IO.Encoding.UTF16.$wutf16_encode
+      116:       1     GHC.IO.Handle.Text.hPutStr1
+      117:       3     Data.Typeable.Internal.sameTypeRep
+      127:       2     GHC.IO.Encoding.Iconv.iconvEncoding8
+      137:       1     GHC.IO.bracket1
+      139:       1     System.Posix.Internals.$wsetCooked
+      144:       1     GHC.Event.Thread.lvl8
+      147:       1     GHC.Stack.CCS.$wgo
+      152:       1     GHC.IO.Encoding.getFileSystemEncoding5
+      159:       1     GHC.IO.Encoding.UTF32.$wutf32_encode
+      166:       1     GHC.Event.IntTable.$wgrow
+      168:       1     GHC.IO.Encoding.Latin1.latin5
+      171:       1     GHC.IO.Encoding.Latin1.latin3
+      173:       1     GHC.IO.Encoding.Failure.recoverEncode1
+      180:       1     GHC.IO.FD.$w$cwriteNonBlocking
+      184:       1     GHC.Event.Manager.$wcloseFd_
+      192:       1     GHC.Event.IntTable.$sinsertWith
+      194:       1     GHC.IO.Handle.FD.$wstdHandleFinalizer
+      196:       1     GHC.Fingerprint.fingerprintFingerprints
+      200:       1     Data.Typeable.Internal.runtimeRepTypeRep
+      202:       2     GHC.IO.Encoding.UTF16.$wutf16_decode
+      212:       1     GHC.Conc.Signal.setHandler1
+      215:       1     GHC.IO.Encoding.Latin1.ascii5
+      221:       2     GHC.IO.Encoding.Latin1.ascii3
+      224:       1     GHC.IO.Handle.Text.$whPutChar
+      225:       2     Foreign.C.Error.$werrnoToIOError
+      238:       1     GHC.IO.Encoding.Failure.recoverDecode1
+      262:       1     GHC.CString.unpackCStringUtf8#
+      277:       1     System.Posix.Internals.$wfdStat
+      289:       1     System.Posix.Internals.$wtcSetAttr
+      292:       1     GHC.IO.Handle.Internals.$wwriteCharBuffer
+      307:       1     GHC.IO.Handle.Internals.$wwantWritableHandle'
+      308:       1     GHC.IO.Encoding.UTF32.$wutf32_decode
+      322:       1     GHC.IO.Handle.Internals.mkDuplexHandle9
+      377:       2     GHC.IO.Encoding.UTF32.mkUTF3
+      432:       1     Data.Typeable.Internal.$fShowSomeTypeRep_$sshowTypeable
+      452:       1     Data.Typeable.Internal.showTypeable
+      482:       3     GHC.IO.Encoding.Iconv.iconvEncoding6
+      497:       1     Data.Typeable.Internal.$wmkTrCon
+      556:       1     GHC.Event.Manager.unregisterFd2
+      561:       2     GHC.IO.Encoding.UTF16.mkUTF1
+      573:       1     GHC.Foreign.charIsRepresentable3
+      648:       2     GHC.IO.Encoding.UTF16.mkUTF3
+      899:       1     GHC.Event.Thread.threadWaitRead1
+      924:       1     GHC.Foreign.$wpeekCString
+     1032:       1     GHC.Event.Thread.closeFdWith1
+     1263:       1     GHC.IO.Encoding.UTF8.mkUTF1
+     2632:       1     GHC.IO.Encoding.UTF8.mkUTF4
+     4200:       1     GHC.IO.Handle.Text.$wwriteBlocks
