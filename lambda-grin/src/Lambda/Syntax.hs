@@ -56,13 +56,24 @@ data External
   }
   deriving (Generic, Data, Eq, Ord, Show)
 
+data StaticData
+  = StaticData
+  { sName   :: Name
+  , sValue  :: StaticValue
+  }
+  deriving (Generic, Data, Eq, Ord, Show)
+
+data StaticValue
+  = StaticString ByteString
+  deriving (Generic, Data, Eq, Ord, Show)
+
 type Atom = Exp
 type Alt = Exp
 type Def = Exp
 type Program = Exp
 
 data Exp
-  = Program     [External] [Def]
+  = Program     [External] [StaticData] [Def]
   -- Binding
   | Def         Name [Name] Exp
   -- Exp
@@ -112,6 +123,8 @@ makeStore ''SimpleType
 makeStore ''Ty
 makeStore ''ExternalKind
 makeStore ''External
+makeStore ''StaticValue
+makeStore ''StaticData
 makeStore ''Lit
 makeStore ''Pat
 makeStore ''Exp

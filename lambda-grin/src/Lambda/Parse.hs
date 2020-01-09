@@ -22,7 +22,7 @@ allowedSpecial = "._':!@-"
 allowedInitial :: String
 allowedInitial = "._" ++ ['a'..'z'] ++ ['A'..'Z']
 
-keywords = Set.fromList ["case","of","let","letrec","letS", "#True", "#False", "_"]
+keywords = Set.fromList ["case","of","let","letrec","letS", "#True", "#False", "_", "static", "data"]
 
 type Parser = Parsec Void Text
 
@@ -137,6 +137,7 @@ tag = con
 bstrLiteral :: Parser BS8.ByteString
 bstrLiteral = BS8.pack <$> (char '"' >> manyTill L.charLiteral (char '"'))
 
+-- FIXME: lit parser is not complatible with the Lit pretty printer
 literal :: Parser Lit
 literal = (try $ LFloat . realToFrac <$> signedFloat) <|>
           (try $ LWord64 . fromIntegral <$> lexeme (L.decimal <* C.char 'u')) <|>
@@ -145,11 +146,30 @@ literal = (try $ LFloat . realToFrac <$> signedFloat) <|>
           LChar <$ char '#' <* char '\'' <* L.charLiteral <*> char '\'' <|>
           LString <$ char '#' <*> bstrLiteral
 
+-- static data
+
+staticData :: Parser StaticData
+staticData = do
+  name <- var
+  op "="
+  char '#'
+  kw "T_String"
+  bs <- bstrLiteral
+  sc
+  pure $ StaticData name $ StaticString bs
+
+staticDataBlock :: Parser [StaticData]
+staticDataBlock = do
+  L.indentGuard sc EQ pos1
+  L.indentBlock sc $ do
+    kw "static"
+    kw "data"
+    pure $ L.IndentSome Nothing pure staticData
+
 -- externals
 
 externalBlock = do
   L.indentGuard sc EQ pos1
-  -- TODO: support eKind
   kind <-
     PrimOp <$ kw "primop" <|>
     FFI <$ kw "ffi"
@@ -200,7 +220,7 @@ simpleType =
 -- top-level API
 
 lambdaModule :: Parser Program
-lambdaModule = Program <$> (concat <$> many (try externalBlock)) <*> many def <* sc <* eof
+lambdaModule = Program <$> (concat <$> many (try externalBlock)) <*> option [] staticDataBlock <*> many def <* sc <* eof
 
 parseLambda :: String -> Text -> Either (ParseError Char Void) Program
 parseLambda filename content = runParser lambdaModule filename content

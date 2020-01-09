@@ -236,6 +236,26 @@ literal = do
     , LError                  <$ char '!'       <*> bstrLiteral
     ]
 
+-- static data
+
+staticData :: Parser StaticData
+staticData = do
+  name <- var
+  op "="
+  char '#'
+  kw "T_String"
+  bs <- bstrLiteral
+  sc
+  pure $ StaticData name $ StaticString bs
+
+staticDataBlock :: Parser [StaticData]
+staticDataBlock = do
+  L.indentGuard sc EQ pos1
+  L.indentBlock sc $ do
+    kw "static"
+    kw "data"
+    pure $ L.IndentSome Nothing pure staticData
+
 -- externals
 
 externalBlock = do
@@ -305,7 +325,7 @@ simpleType =
 -- top-level API
 
 lambdaModule :: Parser Program
-lambdaModule = Program <$> (concat <$> many externalBlock) <*> many def <* sc <* eof
+lambdaModule = Program <$> (concat <$> many externalBlock) <*> option [] staticDataBlock <*> many def <* sc <* eof
 
 parseLambda :: String -> Text -> Either (ParseError Char Void) Program
 parseLambda filename content = runParser lambdaModule filename content

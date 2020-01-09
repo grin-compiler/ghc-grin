@@ -30,12 +30,12 @@ comment d = text "{-" <+> d <+> text "-}"
 instance Pretty Exp where
   pretty prg = cata folder prg where
     extNames      = case prg of
-                      Program exts _  -> Set.fromList $ map eName exts
-                      _               -> Set.empty
+                      Program exts _ _  -> Set.fromList $ map eName exts
+                      _                 -> Set.empty
     isPrimName n  = Set.member n extNames
 
     folder = \case
-      ProgramF exts defs  -> vcat (prettyExternals exts : map pretty defs)
+      ProgramF exts sdata defs -> vcat (prettyExternals exts : prettyStaticData sdata : map pretty defs)
       DefF name args exp  -> hsep (pretty name : map pretty args) <+> text "=" <$$> indent 2 (pretty exp) <> line
       -- Exp
       AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : text "$" : map pretty args)
@@ -55,12 +55,12 @@ instance Pretty Exp where
 instance Pretty L2.Exp where
   pretty prg = cata folder prg where
     extNames      = case prg of
-                      L2.Program exts _  -> Set.fromList $ map L2.eName exts
-                      _               -> Set.empty
+                      L2.Program exts _ _ -> Set.fromList $ map L2.eName exts
+                      _                   -> Set.empty
     isPrimName n  = Set.member n extNames
 
     folder = \case
-      L2.ProgramF exts defs  -> vcat (prettyExternals2 exts : map pretty defs)
+      L2.ProgramF exts sdata defs -> vcat (prettyExternals2 exts : prettyStaticData sdata : map pretty defs)
       L2.DefF name args exp  -> nest 2 (hsep (pretty name : map pretty args) <+> text "=" <$$> pretty exp) <> line
       -- Exp
       L2.AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : text "$" : map pretty args)
@@ -97,6 +97,17 @@ instance Pretty Pat where
     NodePat tag vars  -> parens $ hsep (pretty tag : map pretty vars)
     LitPat  lit       -> pretty lit
     DefaultPat        -> keyword "_"
+
+prettyStaticData :: [StaticData] -> Doc
+prettyStaticData [] = mempty
+prettyStaticData sdata = keyword "static" <+> keyword "data" <$$> indent 2 (vsep $ map (prettyStaticDataItem width) sdata) <> line where
+  maxWidth  = 80
+  maxLen    = maximum [length . show . pretty $ sName s | s <- sdata]
+  width     = min maxLen maxWidth
+
+prettyStaticDataItem :: Int -> StaticData -> Doc
+prettyStaticDataItem width (StaticData name sv) = case sv of
+  StaticString bs -> fill width (pretty name) <+> text "=" <+> text "#T_String" <+> text (show bs)
 
 prettyExternals :: [External] -> Doc
 prettyExternals exts = vcat (map prettyExtGroup $ groupBy (\a b -> (eKind a, eEffectful a) == (eKind b, eEffectful b)) exts) where

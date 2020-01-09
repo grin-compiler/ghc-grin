@@ -12,6 +12,8 @@ module Lambda.Syntax2
   , External(..)
   , Lit(..)
   , Pat(..)
+  , StaticData(..)
+  , StaticValue(..)
   ) where
 
 import GHC.Generics
@@ -30,6 +32,8 @@ import Lambda.Syntax
   , ExternalKind(..)
   , Lit(..)
   , Pat(..)
+  , StaticData(..)
+  , StaticValue(..)
   )
 
 type Name = Grin.Name
@@ -59,7 +63,7 @@ type Bind       = Exp
 type SimpleExp  = Exp
 
 data Exp
-  = Program     [External] [Def]
+  = Program     [External] [StaticData] [Def]
   -- Binding
   | Def         Name [Name] Bind
   -- Exp
