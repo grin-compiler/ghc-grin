@@ -23,7 +23,7 @@ import Lambda.Syntax
 import Transformations.Util
 
 deadFunctionEliminationM :: [String] -> Program -> IO Program
-deadFunctionEliminationM liveSources prg@(Program exts defs) = do
+deadFunctionEliminationM liveSources prg@(Program exts sdata defs) = do
 
   putStrLn "export facts"
   tmpSys <- getCanonicalTemporaryDirectory
@@ -45,23 +45,27 @@ deadFunctionEliminationM liveSources prg@(Program exts defs) = do
   putStrLn "read back result"
   liveSet <- Set.fromList . map (packName . Text.unpack) . Text.lines <$> Text.readFile (tmpDfe </> "LiveName.csv")
 
-  let liveExts = [e | e <- exts, Set.member (eName e) liveSet]
-      liveDefs = [d | d@(Def name _ _) <- defs, Set.member name liveSet]
+  let liveExts  = [e | e <- exts, Set.member (eName e) liveSet]
+      liveDefs  = [d | d@(Def name _ _) <- defs, Set.member name liveSet]
+      liveSData = [d | d <- sdata, Set.member (sName d) liveSet]
 
-  pure (Program liveExts liveDefs)
+  pure (Program liveExts liveSData liveDefs)
 
 type SM = StateT (Set Name) IO
 
 collectNamesM :: Handle -> Program -> IO ()
-collectNamesM h (Program exts defs) = do
+collectNamesM h (Program exts sdata defs) = do
   let defSet :: Set Name
       defSet = Set.fromList [name | (Def name _ _) <- defs]
 
       extSet :: Set Name
       extSet = Set.fromList [eName e | e <- exts]
 
+      sdataSet :: Set Name
+      sdataSet = Set.fromList [sName s | s <- sdata]
+
       nameSet :: Set Name
-      nameSet = mappend defSet extSet
+      nameSet = mconcat [defSet, extSet, sdataSet]
 
       folder :: String -> ExpF () -> SM ()
       folder defName = \case

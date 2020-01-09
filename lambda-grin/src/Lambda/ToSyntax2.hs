@@ -121,7 +121,7 @@ toSyntax2M = hyloM folder builder where
 
   builder :: L.Exp -> NameM (ExpF L.Exp)
   builder = \case
-    L.Program e d -> ProgramF <$> mapM convertExternal e <*> pure d
+    L.Program e s d -> ProgramF <$> mapM convertExternal e <*> pure s <*> pure d
 
     -- bind sequences
     L.Def n a e -> DefF n a <$> simplifyExp Strict e

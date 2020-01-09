@@ -19,10 +19,12 @@ foldLocalNameDefExp f = foldLocalNameDefExpF f . project
 foldLocalNameDefExpF :: (Monoid m) => (Name -> m) -> ExpF a -> m
 foldLocalNameDefExpF f = \case
   DefF _ args _ -> mconcat $ map f args
+  ProgramF{}    -> mempty
   e             -> foldNameDefExpF f e
 
 foldNameDefExpF :: (Monoid m) => (Name -> m) -> ExpF a -> m
 foldNameDefExpF f = \case
+  ProgramF _ sdata _    -> mconcat $ map (f . sName) sdata
   DefF n args _         -> mconcat $ map f $ n : args
   LetF bs _             -> mconcat $ map (f . fst) bs
   LetRecF bs _          -> mconcat $ map (f . fst) bs
@@ -33,6 +35,7 @@ foldNameDefExpF f = \case
 
 mapNameExp :: (Name -> Name) -> Exp -> Exp
 mapNameExp f = \case
+  Program e s d -> Program e [sd {sName = f $ sName sd} | sd <- s] d
   Def n args e  -> Def (f n) (map f args) e
   exp           -> mapLocalNameExp f exp
 

@@ -28,7 +28,7 @@ spec = do
                 r
           x
         |]
-      let after = Program []
+      let after = Program [] []
             [ Def "test" ["p"]
               ( LetS
                 [ ("x", Case "p"

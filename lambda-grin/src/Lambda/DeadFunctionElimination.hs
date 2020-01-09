@@ -13,12 +13,13 @@ import qualified Data.Foldable
 import Lambda.Syntax
 
 deadFunctionElimination :: Program -> Program
-deadFunctionElimination (Program exts defs) = Program liveExts liveDefs where
+deadFunctionElimination (Program exts sdata defs) = Program liveExts liveSData liveDefs where
 
-  liveExts = [ext | ext <- exts, Set.member (eName ext) liveNames]
-  liveDefs = [def | def@(Def name _ _) <- defs, Set.member name liveSet]
+  liveSData = [sd  | sd <- sdata, Set.member (sName sd) liveNames]
+  liveExts  = [ext | ext <- exts, Set.member (eName ext) liveNames]
+  liveDefs  = [def | def@(Def name _ _) <- defs, Set.member name liveSet]
 
-  liveNames = cata collectAll $ Program [] liveDefs -- collect all live names
+  liveNames = cata collectAll $ Program [] [] liveDefs -- collect all live names
 
   defMap :: Map Name Def
   defMap = Map.fromList [(name, def) | def@(Def name _ _) <- defs]
