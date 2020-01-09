@@ -31,11 +31,13 @@ data Env
   , dataCons    :: !(Set Name)
   , tyCons      :: !(Map C.TyConId C.TyCon)
   , externals   :: !(Map Name External)
+  , defs        :: [Def]
+  , staticData  :: [StaticData]
   }
 
 primMap :: Map Name External
 primMap = Map.fromList [(eName, e) | e@External{..} <- prims] where
-  Program prims _ = GHCPrim.primPrelude
+  Program prims _ _  = GHCPrim.primPrelude
 
 convertUnique :: C.Unique -> Name
 convertUnique (C.Unique c i) = packName $  c : show i
@@ -54,6 +56,12 @@ genConName b = do
 
 addExternal :: External -> CG ()
 addExternal ext = modify $ \env@Env{..} -> env {externals = Map.insert (eName ext) ext externals}
+
+addDef :: Def -> CG ()
+addDef d = modify' $ \env -> env {defs = d : defs env}
+
+addStaticData :: StaticData -> CG ()
+addStaticData sd = modify' $ \env -> env {staticData = sd : staticData env}
 
 genName :: C.Binder -> CG Name
 genName = pure . packName . BS8.unpack . C.binderUniqueName
@@ -202,7 +210,7 @@ visitExpr :: C.Expr -> CG Exp
 visitExpr = \case
   C.StgLit lit            -> pure . Lit $ convertLit lit
   C.StgApp var []
-    | not (isPointer var) -> Var False <$> genName var
+    | not (isPointer var) -> Var False <$> genName var -- BUG? should this be unconditional?
   C.StgApp fun args       -> App <$> genName fun <*> mapM visitArg args
   C.StgConApp con args t  -> Con <$> genConName con <*> mapM visitArg args
   C.StgOpApp op args ty   -> visitOpApp op args ty
@@ -239,25 +247,25 @@ visitTopRhs b = \case
   C.StgRhsClosure [] _ bs e -> Def <$> genName b <*> mapM genName bs <*> visitExpr e
   rhs                       -> Def <$> genName b <*> pure [] <*> visitRhs rhs
 
-visitTopBinder :: C.TopBinding -> CG [Def]
+visitTopBinder :: C.TopBinding -> CG ()
 visitTopBinder = \case
-  C.StgTopStringLit b s             -> sequence [Def <$> genName b <*> pure [] <*> pure (Lit $ LString s)]
-  C.StgTopLifted (C.StgNonRec b r)  -> sequence [visitTopRhs b r]
-  C.StgTopLifted (C.StgRec bs)      -> mapM (uncurry visitTopRhs) bs
+  C.StgTopStringLit b s             -> StaticData <$> genName b <*> pure (StaticString s) >>= addStaticData
+  C.StgTopLifted (C.StgNonRec b r)  -> visitTopRhs b r >>= addDef
+  C.StgTopLifted (C.StgRec bs)      -> mapM_ (uncurry visitTopRhs >=> addDef) bs
 
-visitModule :: C.Module -> CG [Def]
-visitModule C.Module{..} = concat <$> mapM visitTopBinder moduleTopBindings
+visitModule :: C.Module -> CG ()
+visitModule C.Module{..} = mapM_ visitTopBinder moduleTopBindings
 
 codegenLambda :: C.Module -> IO Program
 codegenLambda mod = do
   let modName   = packName . BS8.unpack . C.getModuleName $ C.moduleName mod
       tyCons    = Map.fromList [(C.tcId tc, tc) | tc <- concatMap snd $ C.moduleTyCons mod]
-  (defs, Env{..}) <- runStateT (visitModule mod) (Env modName mempty tyCons mempty)
+  Env{..} <- execStateT (visitModule mod) (Env modName mempty tyCons mempty mempty mempty)
   {-
   unless (Set.null dataCons) $ do
     printf "%s data constructors:\n%s" modName  (unlines . map (("  "++).unpackName) . Set.toList $ dataCons)
   -}
-  pure . Program (Map.elems externals) $ defs
+  pure $ Program (Map.elems externals) staticData defs
 
 ------------------------------------------------------------
 -- Workaround for higher order and other problematic primops
