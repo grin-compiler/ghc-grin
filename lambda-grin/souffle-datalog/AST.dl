@@ -63,6 +63,9 @@
 .decl ExternalParameterType(f:External, i:number, ty_node:Variable)
 .decl ExternalReturnType(f:External, ty_node:Variable)
 
+// static data, the value is encoded as lit node
+.decl IsStaticData(v:Variable)
+
 // arity
 .decl CodeArity(n:CodeName, arity:number)
 
@@ -95,6 +98,7 @@
 .input FunctionType
 .input FunctionTypeParameterType
 .input FunctionTypeReturnType
+.input IsStaticData
 
 // utility
 .decl HasInst(n:CodeName, v:Variable)

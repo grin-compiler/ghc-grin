@@ -49,6 +49,7 @@ programToFactsM log outDir prg = do
                   , "Case", "Alt", "AltParameter", "IsClosure", "ClosureVariable", "ClosureParameter", "ReturnValue", "FirstInst"
                   , "NextInst", "RecGroup", "ExternalFunction", "ExternalParameterType", "ExternalReturnType", "CodeArity"
                   , "TypeNode", "TypeNodeArgument", "IsTypeVariable", "FunctionType", "FunctionTypeReturnType", "FunctionTypeParameterType"
+                  , "IsStaticData"
                   ]
   files <- forM factNames $ \fname -> do
     let filename = outDir </> fname ++ ".facts"
@@ -120,10 +121,21 @@ convertTy = \case
     emit [("FunctionTypeParameterType", [N n, I i, N p]) | (i,p) <- zip [0..] argsN]
     pure n
 
+convertStaticData :: StaticData -> DL ()
+convertStaticData StaticData{..} = do
+  emit [("IsStaticData", [N sName])]
+  case sValue of
+    StaticString bs -> do
+      emit [("NodeRole", [N sName, S "lit"])]
+      emit [("Node", [N sName, S "T_Addr"])]
+      emit [("NodeArgument", [N sName, I 0, S $ show bs])]
+  pure ()
+
 convertProgram :: Exp -> DL ()
 convertProgram = \case
-  Program e d -> do
+  Program e s d -> do
     mapM_ convertExternal e
+    mapM_ convertStaticData s
     mapM_ convertDef d
 
 convertDef :: Exp -> DL ()
