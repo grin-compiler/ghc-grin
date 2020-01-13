@@ -80,6 +80,14 @@ do
     "main" := 
 -}
 
+{-
+  unique name spaces in GHC
+    0123456789BCDEHLPRSXcdgikmstvz
+
+  used by the stg builder
+    fu
+-}
+
 main = do
   let dflags    = unsafeGlobalDynFlags
       --idl0      = mkLocalId xn t0
