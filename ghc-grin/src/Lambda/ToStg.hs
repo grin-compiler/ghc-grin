@@ -26,6 +26,7 @@ import MkId
 import TyCon
 
 import Control.Monad.State
+import Data.List (partition)
 
 import qualified Data.ByteString.Char8 as BS8
 import Data.Map (Map)
@@ -130,7 +131,7 @@ convertExp = \case
       name2 <- convertName name
       let nameId  = mkVanillaGlobal name2 noType
           altKind = PrimAlt IntRep -- TODO: use proper type rep
-      sexp2 <- convertStrictExp sexp
+      sexp2 <- convertStrictExp nameId sexp
       pure (nameId, sexp2, altKind)
 
     let mkCase (nameId, exp, altKind) tailExp = StgCase exp nameId altKind [(DEFAULT, [], tailExp)]
@@ -149,8 +150,8 @@ convertLiteral = \case
   L2.LNullAddr    -> MachNullAddr
   l               -> error $ "unsupported literal: " ++ show l
 
-convertStrictExp :: L2.SimpleExp -> StgM StgExpr
-convertStrictExp = \case
+convertStrictExp :: Id -> L2.SimpleExp -> StgM StgExpr
+convertStrictExp resultId = \case
   L2.App name args -> do
     name2 <- convertName name
     args2 <- mapM convertName args
@@ -166,8 +167,24 @@ convertStrictExp = \case
   L2.Lit L2.LToken{} -> pure $ StgApp voidPrimId []
   L2.Lit l -> pure . StgLit $ convertLiteral l
 
-  -- Simple Exp / let RHS
---  | Case        Name [Alt]
+  L2.Case name alts -> do
+    name2 <- convertName name
+    let altType = error "TODO: alt type"
+        (defaultAlts, normalAlts) = partition (\(L2.Alt _ pat _) -> pat == L2.DefaultPat) alts
+    alts2 <- mapM convertAlt $ defaultAlts ++ normalAlts
+    pure $ StgCase (StgApp (mkVanillaGlobal name2 noType) []) resultId altType alts2
+
+convertAlt :: L2.Alt -> StgM StgAlt
+convertAlt (L2.Alt name pat bind) = do
+  bind2 <- convertExp bind
+  (altCon, params) <- case pat of
+        L2.NodePat conName args -> do
+          let dataCon = error "DataAlt TODO: create DataCon properly"
+          args2 <- mapM convertName args
+          pure (DataAlt dataCon, [mkVanillaGlobal a noType | a <- args2])
+        L2.LitPat l -> pure (LitAlt $ convertLiteral l, [])
+        L2.DefaultPat -> pure (DEFAULT, [])
+  pure $ (altCon, params, bind2)
 
 {-
       topBinds  =
