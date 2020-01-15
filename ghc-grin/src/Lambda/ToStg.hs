@@ -43,18 +43,29 @@ modl = mkModule mainUnitId (mkModuleName ":Main")
 noType :: Type
 noType = error "[noType] missing Type value"
 
+primOpMap :: Map L2.Name PrimOp
+primOpMap = Map.fromList [(L2.packName . occNameString . primOpOcc $ op, op) | op <- allThePrimOps]
+
 ---------------
 
 data Env
   = Env
-  { topBindings :: [StgTopBinding]
-  , nameMap     :: Map L2.Name Unique
+  { topBindings     :: [StgTopBinding]
+  , nameMap         :: Map L2.Name Unique
+  , externalMap     :: Map L2.Name L2.External
+  , ffiUniqueCount  :: Int
   }
 
 type StgM = State Env
 
+freshFFIUnique :: StgM Unique
+freshFFIUnique = state $ \env@Env{..} -> (mkUnique 'f' ffiUniqueCount, env {ffiUniqueCount = succ ffiUniqueCount})
+
 addTopBinding :: StgTopBinding -> StgM ()
 addTopBinding b = modify' $ \env@Env{..} -> env {topBindings = b : topBindings}
+
+setExternals :: [L2.External] -> StgM ()
+setExternals exts = modify' $ \env@Env{..} -> env {externalMap = Map.fromList [(L2.eName e, e) | e <- exts]}
 
 getNameUnique :: L2.Name -> StgM Unique
 getNameUnique n = state $ \env@Env{..} -> case Map.lookup n nameMap of
@@ -68,6 +79,7 @@ convertName n = do
 
 convertProgram :: L2.Program -> StgM ()
 convertProgram (L2.Program exts sdata defs) = do
+  setExternals exts
   mapM_ convertStaticData sdata
   mapM_ convertDef defs
 
@@ -155,7 +167,18 @@ convertStrictExp resultId = \case
   L2.App name args -> do
     name2 <- convertName name
     args2 <- mapM convertName args
-    pure $ StgApp (mkVanillaGlobal name2 noType) [StgVarArg $ mkVanillaGlobal a noType | a <- args2]
+    extMap <- gets externalMap
+    let stgArgs = [StgVarArg $ mkVanillaGlobal a noType | a <- args2]
+    case Map.lookup name extMap of
+      Nothing -> pure $ StgApp (mkVanillaGlobal name2 noType) stgArgs
+      Just L2.External{..} -> case eKind of
+        L2.PrimOp -> case Map.lookup name primOpMap of
+          Nothing -> error $ "unknown primop: " ++ show (L2.unpackName name)
+          Just op -> pure $ StgOpApp (StgPrimOp op) stgArgs noType -- TODO: result type
+        L2.FFI -> do
+          let callSpec = CCallSpec (StaticTarget NoSourceText (mkFastString $ L2.unpackName name) Nothing True) CCallConv PlayRisky
+          u <- freshFFIUnique
+          pure $ StgOpApp (StgFCallOp (CCall callSpec) u) stgArgs noType -- TODO: result type
 
   L2.Con name args -> do
     let dataCon = error "TODO: construct GHC DataCon value"
@@ -185,32 +208,3 @@ convertAlt (L2.Alt name pat bind) = do
         L2.LitPat l -> pure (LitAlt $ convertLiteral l, [])
         L2.DefaultPat -> pure (DEFAULT, [])
   pure $ (altCon, params, bind2)
-
-{-
-      topBinds  =
-        [ StgTopStringLit idStr0 (BS8.pack "Hello!\n1 + 2 = %d\n")
-        , StgTopLifted $ StgNonRec (mkIdN 1 "main") $
-            StgRhsClosure dontCareCCS  stgUnsatOcc [] Updatable [voidArgId] $
-              StgCase (
-                StgOpApp (StgPrimOp IntAddOp)
-                  [ StgLitArg $ mkMachInt dflags 1
-                  , StgLitArg $ mkMachInt dflags 2
-                  ] intTy
-              ) idInt0 (PrimAlt IntRep)
-              [ (DEFAULT, [],
-                  StgOpApp
-                    (StgFCallOp
-                      (CCall $ CCallSpec
-                        (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
-                        CCallConv
-                        PlayRisky
-                      )
-                      (mkUnique 'f' 0)
-                    )
-                    [ StgVarArg idStr0
-                    , StgVarArg idInt0
-                    ] intTy
-                )
-              ]
-        ]
--}
