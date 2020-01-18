@@ -33,9 +33,11 @@ library
     , ghc-dump-stg
     , ghc-dump-util
     , ansi-wl-pprint
+    , recursion-schemes
     , ghc
     , ghc-paths
     , time
+    , store
 
   default-language:    Haskell2010
 
