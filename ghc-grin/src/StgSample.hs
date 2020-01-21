@@ -26,6 +26,7 @@ import MkId
 import Type
 import TyCon
 import TysPrim
+import DataCon
 
 import UnariseStg
 import UniqSupply (mkSplitUniqSupply)
@@ -128,7 +129,7 @@ main = do
                 )
               ]
         ]
-  compileProgram NCG topBinds
+  compileProgram NCG [] topBinds
 
 {-
 -- | As 'tyConDataCons_maybe', but returns the empty list of constructors if no
@@ -186,7 +187,7 @@ main2 = do
                 )
               ]
         ]
-  compileProgram NCG topBinds
+  compileProgram NCG [] topBinds
 
 -- CASE: unboxed tuple stored in a single variable for later decomposition
 main3 = do
@@ -238,7 +239,7 @@ main3 = do
 
   us <- mkSplitUniqSupply 'g'
 
-  compileProgram NCG $ unarise us topBinds
+  compileProgram NCG [] $ unarise us topBinds
 
 repTy :: PrimRep -> Type
 repTy = anyTypeOfKind . tYPE . primRepToRuntimeRep
@@ -297,7 +298,7 @@ main4 = do
 
   us <- mkSplitUniqSupply 'g'
 
-  compileProgram NCG $ {-unarise us-} topBinds
+  compileProgram NCG [] $ {-unarise us-} topBinds
 
 -- CASE: pattern match on Unlifted Boxed Tuple
 main5 = do
@@ -353,7 +354,7 @@ main5 = do
 
   us <- mkSplitUniqSupply 'g'
 
-  compileProgram NCG $ unarise us topBinds
+  compileProgram NCG [] $ unarise us topBinds
 
 -- CASE: user ADT Lifted
 {-
@@ -426,8 +427,145 @@ mkDataCon :: Name
     tyConFamilySize
 -}
 
+simpleDataCon :: TyCon -> Name -> [PrimRep] -> ConTag -> DataCon
+simpleDataCon tc name args tag = mkDataCon
+  name False (error "TyConRepName") [] [] [] [] [] [] []
+  (map repTy args) (error "Original result type") (error "RuntimeRepInfo")
+  tc tag [] fakeWorkerId NoDataConRep
+  where
+    fakeWorkerId = mkIdNT 666 "fakeWokerId" (error "repTy LiftedRep")
+
+simpleTyCon :: Name -> [DataCon] -> TyCon
+simpleTyCon name dataCons = mkAlgTyCon name [] (error "Kind") [] Nothing [] (mkDataTyConRhs dataCons) (VanillaAlgTyCon (error "TyConRepName")) False
+
+mkIdNT i n t  = mkVanillaGlobal (mkName i n) t
+
+main6 = do
+  putStrLn "CASE: user ADT Lifted"
+  let dflags      = unsafeGlobalDynFlags
+      mkIdT i t   = mkVanillaGlobal (mkName i $ 'x' : show i) t
+      idStr0      = mkIdT 0 (repTy AddrRep)
+      idStr1      = mkIdT 1 (repTy AddrRep)
+      idLifted0   = mkIdT 100 (repTy LiftedRep)
+      idLifted01  = mkIdT 101 (repTy LiftedRep)
+      dcMyFalse   = simpleDataCon tcMyBool (mkName 9001 "MyFalse") [] 2
+      dcMyTrue    = simpleDataCon tcMyBool (mkName 9002 "MyTrue")  [] 1
+      tcMyBool    = simpleTyCon (mkName 8001 "MyBool") [dcMyFalse, dcMyTrue]
+      tyMyBool    = mkTyConApp tcMyBool []
+      topBinds    =
+        [ StgTopStringLit idStr0 (BS8.pack "Value: MyFalse\n")
+        , StgTopStringLit idStr1 (BS8.pack "Value: MyTrue\n")
+        , StgTopLifted $ StgNonRec (mkVanillaGlobal (dataConName dcMyFalse) (repTy LiftedRep)) $ StgRhsCon dontCareCCS dcMyFalse []
+        , StgTopLifted $ StgNonRec (mkVanillaGlobal (dataConName dcMyTrue)  (repTy LiftedRep)) $ StgRhsCon dontCareCCS dcMyTrue []
+        , StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
+            StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
+              StgCase (
+                StgConApp dcMyFalse [] []
+              ) idLifted0 PolyAlt
+              [ (DEFAULT, [],
+
+                  StgCase (StgApp idLifted0 []) idLifted01 (AlgAlt tcMyBool)
+
+                    [ (DataAlt (dcMyTrue), [],
+                        StgOpApp
+                          (StgFCallOp
+                            (CCall $ CCallSpec
+                              (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                              CCallConv
+                              PlayRisky
+                            )
+                            (mkUnique 'f' 0)
+                          )
+                          [ StgVarArg idStr1
+                          ] intTy
+                      )
+                    , (DataAlt (dcMyFalse), [],
+                        StgOpApp
+                          (StgFCallOp
+                            (CCall $ CCallSpec
+                              (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                              CCallConv
+                              PlayRisky
+                            )
+                            (mkUnique 'f' 0)
+                          )
+                          [ StgVarArg idStr0
+                          ] intTy
+                      )
+                    ]
+
+                )
+              ]
+        ]
+
+  us <- mkSplitUniqSupply 'g'
+
+  compileProgram NCG [tcMyBool] $ {-unarise us-} topBinds
+
 
 -- CASE: user ADT Unlifted
+main7 = do
+  putStrLn "CASE: user ADT Unlifted"
+  let dflags      = unsafeGlobalDynFlags
+      mkIdT i t   = mkVanillaGlobal (mkName i $ 'x' : show i) t
+      idStr0      = mkIdT 0 (repTy AddrRep)
+      idStr1      = mkIdT 1 (repTy AddrRep)
+      idUnlifted0   = mkIdT 100 (repTy UnliftedRep)
+      idUnlifted01  = mkIdT 101 (repTy UnliftedRep)
+      dcMyFalse   = simpleDataCon tcMyBool (mkName 9001 "MyFalse") [] 2
+      dcMyTrue    = simpleDataCon tcMyBool (mkName 9002 "MyTrue")  [] 1
+      tcMyBool    = simpleTyCon (mkName 8001 "MyBool") [dcMyFalse, dcMyTrue]
+      tyMyBool    = mkTyConApp tcMyBool []
+      topBinds    =
+        [ StgTopStringLit idStr0 (BS8.pack "Value: MyFalse\n")
+        , StgTopStringLit idStr1 (BS8.pack "Value: MyTrue\n")
+        , StgTopLifted $ StgNonRec (mkVanillaGlobal (dataConName dcMyFalse) (repTy LiftedRep)) $ StgRhsCon dontCareCCS dcMyFalse []
+        , StgTopLifted $ StgNonRec (mkVanillaGlobal (dataConName dcMyTrue)  (repTy LiftedRep)) $ StgRhsCon dontCareCCS dcMyTrue []
+        , StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
+            StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
+              StgCase (
+                StgConApp dcMyTrue [] []
+              ) idUnlifted0 PolyAlt
+              [ (DEFAULT, [],
+
+                  StgCase (StgApp idUnlifted0 []) idUnlifted01 (AlgAlt tcMyBool)
+
+                    [ (DataAlt (dcMyTrue), [],
+                        StgOpApp
+                          (StgFCallOp
+                            (CCall $ CCallSpec
+                              (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                              CCallConv
+                              PlayRisky
+                            )
+                            (mkUnique 'f' 0)
+                          )
+                          [ StgVarArg idStr1
+                          ] intTy
+                      )
+                    , (DataAlt (dcMyFalse), [],
+                        StgOpApp
+                          (StgFCallOp
+                            (CCall $ CCallSpec
+                              (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                              CCallConv
+                              PlayRisky
+                            )
+                            (mkUnique 'f' 0)
+                          )
+                          [ StgVarArg idStr0
+                          ] intTy
+                      )
+                    ]
+
+                )
+              ]
+        ]
+
+  us <- mkSplitUniqSupply 'g'
+
+  compileProgram LLVM [tcMyBool] $ {-unarise us-} topBinds
+
 -- CASE: user ADT with arguments Lifted
 -- CASE: user ADT with arguments Unlifted
 
@@ -437,5 +575,6 @@ mkDataCon :: Name
       A: yes, but requires 'unarise' STG pass before codegen
 
     - which one matter for the codegen, the DataCon tag value or the TyCon's AlgTyConRhs [DataCon] order?
+      A: only Tag value matters (starting from 1), no order matters (i.e. Case Alt, AlgTyConRhs [DataCon])
 
 -}

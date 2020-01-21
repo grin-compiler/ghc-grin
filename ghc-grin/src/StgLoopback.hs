@@ -50,13 +50,12 @@ modloc = ModLocation
 
 data Backend = NCG | LLVM
 
-compileProgram :: Backend -> [StgTopBinding] -> IO ()
-compileProgram backend topBinds = runGhc (Just libdir) $ do
+compileProgram :: Backend -> [TyCon] -> [StgTopBinding] -> IO ()
+compileProgram backend tyCons topBinds = runGhc (Just libdir) $ do
   dflags <- getSessionDynFlags
   -- construct STG program manually
   let ccs       = ([], [])
       hpc       = emptyHpcInfo False
-      tyCons    = []
 
   -- backend
   let
