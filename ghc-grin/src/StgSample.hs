@@ -512,8 +512,8 @@ main7 = do
       idStr1      = mkIdT 1 (repTy AddrRep)
       idUnlifted0   = mkIdT 100 (repTy UnliftedRep)
       idUnlifted01  = mkIdT 101 (repTy UnliftedRep)
-      dcMyFalse   = simpleDataCon tcMyBool (mkName 9001 "MyFalse") [] 2
-      dcMyTrue    = simpleDataCon tcMyBool (mkName 9002 "MyTrue")  [] 1
+      dcMyFalse   = simpleDataCon tcMyBool (mkName 9001 "MyFalse") [] 1
+      dcMyTrue    = simpleDataCon tcMyBool (mkName 9002 "MyTrue")  [] 2
       tcMyBool    = simpleTyCon (mkName 8001 "MyBool") [dcMyFalse, dcMyTrue]
       tyMyBool    = mkTyConApp tcMyBool []
       topBinds    =
@@ -567,6 +567,146 @@ main7 = do
   compileProgram LLVM [tcMyBool] $ {-unarise us-} topBinds
 
 -- CASE: user ADT with arguments Lifted
+sampleADTArgFloat = do
+  putStrLn "CASE: user ADT with arguments Lifted"
+  let dflags    = unsafeGlobalDynFlags
+      mkIdT i t = mkVanillaGlobal (mkName i $ 'x' : show i) t
+      idStr0    = mkIdT 0 (repTy AddrRep)
+      idStr1    = mkIdT 1 (repTy AddrRep)
+      id0       = mkIdT 100 (repTy LiftedRep)
+      id01      = mkIdT 101 (repTy LiftedRep)
+      dcMyConA  = simpleDataCon tcMyADT (mkName 9001 "MyConA") [IntRep, IntRep] 1
+      dcMyConB  = simpleDataCon tcMyADT (mkName 9002 "MyConB") [FloatRep] 2
+      tcMyADT   = simpleTyCon (mkName 8001 "MyADT") [dcMyConA, dcMyConB]
+      tyMyADT   = mkTyConApp tcMyADT []
+      idInt1    = mkIdT 200 (repTy IntRep)
+      idInt2    = mkIdT 202 (repTy IntRep)
+      id3_f32  = mkIdT 203 (repTy FloatRep)
+      topBinds  =
+        [ StgTopStringLit idStr0 (BS8.pack "Value: MyConA %d %d\n")
+        , StgTopStringLit idStr1 (BS8.pack "Value: MyConB %f\n")
+        , StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
+            StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
+              StgCase (
+
+                StgConApp dcMyConB
+                  [ StgLitArg $ mkMachFloat 3.14
+                  ] []
+
+              ) id0 PolyAlt
+              [ (DEFAULT, [],
+
+                  StgCase (StgApp id0 []) id01 (AlgAlt tcMyADT)
+
+                    [ (DataAlt (dcMyConA), [idInt1, idInt2],
+                        StgOpApp
+                          (StgFCallOp
+                            (CCall $ CCallSpec
+                              (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                              CCallConv
+                              PlayRisky
+                            )
+                            (mkUnique 'f' 0)
+                          )
+                          [ StgVarArg idStr0
+                          , StgVarArg idInt1
+                          , StgVarArg idInt2
+                          ] intTy
+                      )
+                    , (DataAlt (dcMyConB), [id3_f32],
+                        StgOpApp
+                          (StgFCallOp
+                            (CCall $ CCallSpec
+                              (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                              CCallConv
+                              PlayRisky
+                            )
+                            (mkUnique 'f' 0)
+                          )
+                          [ StgVarArg idStr1
+                          , StgVarArg id3_f32
+                          ] intTy
+                      )
+                    ]
+
+                )
+              ]
+        ]
+
+  us <- mkSplitUniqSupply 'g'
+
+  compileProgram LLVM [tcMyADT] $ {-unarise us-} topBinds
+
+sampleADTArgDouble = do
+  putStrLn "CASE: user ADT with arguments Lifted"
+  let dflags    = unsafeGlobalDynFlags
+      mkIdT i t = mkVanillaGlobal (mkName i $ 'x' : show i) t
+      idStr0    = mkIdT 0 (repTy AddrRep)
+      idStr1    = mkIdT 1 (repTy AddrRep)
+      id0       = mkIdT 100 (repTy LiftedRep)
+      id01      = mkIdT 101 (repTy LiftedRep)
+      dcMyConA  = simpleDataCon tcMyADT (mkName 9001 "MyConA") [IntRep, IntRep] 1
+      dcMyConB  = simpleDataCon tcMyADT (mkName 9002 "MyConB") [DoubleRep] 2
+      tcMyADT   = simpleTyCon (mkName 8001 "MyADT") [dcMyConA, dcMyConB]
+      tyMyADT   = mkTyConApp tcMyADT []
+      idInt1    = mkIdT 200 (repTy IntRep)
+      idInt2    = mkIdT 202 (repTy IntRep)
+      id3_f64  = mkIdT 203 (repTy DoubleRep)
+      topBinds  =
+        [ StgTopStringLit idStr0 (BS8.pack "Value: MyConA %d %d\n")
+        , StgTopStringLit idStr1 (BS8.pack "Value: MyConB %lf\n")
+        , StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
+            StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
+              StgCase (
+
+                StgConApp dcMyConB
+                  [ StgLitArg $ mkMachDouble 3.14
+                  ] []
+
+              ) id0 PolyAlt
+              [ (DEFAULT, [],
+
+                  StgCase (StgApp id0 []) id01 (AlgAlt tcMyADT)
+
+                    [ (DataAlt (dcMyConA), [idInt1, idInt2],
+                        StgOpApp
+                          (StgFCallOp
+                            (CCall $ CCallSpec
+                              (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                              CCallConv
+                              PlayRisky
+                            )
+                            (mkUnique 'f' 0)
+                          )
+                          [ StgVarArg idStr0
+                          , StgVarArg idInt1
+                          , StgVarArg idInt2
+                          ] intTy
+                      )
+                    , (DataAlt (dcMyConB), [id3_f64],
+                        StgOpApp
+                          (StgFCallOp
+                            (CCall $ CCallSpec
+                              (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                              CCallConv
+                              PlayRisky
+                            )
+                            (mkUnique 'f' 0)
+                          )
+                          [ StgVarArg idStr1
+                          , StgVarArg id3_f64
+                          ] intTy
+                      )
+                    ]
+
+                )
+              ]
+        ]
+
+  us <- mkSplitUniqSupply 'g'
+
+  compileProgram LLVM [tcMyADT] $ {-unarise us-} topBinds
+
 -- CASE: user ADT with arguments Unlifted
 
 {-
