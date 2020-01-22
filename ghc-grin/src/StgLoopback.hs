@@ -18,6 +18,7 @@ import qualified Stream
 import StgSyn
 import CostCentre
 import CodeOutput
+import StgLint
 
 -- Core Passes
 import StgCmm (codeGen)
@@ -53,6 +54,13 @@ data Backend = NCG | LLVM
 compileProgram :: Backend -> [TyCon] -> [StgTopBinding] -> IO ()
 compileProgram backend tyCons topBinds = runGhc (Just libdir) $ do
   dflags <- getSessionDynFlags
+
+  liftIO $ do
+    putStrLn "==== STG ===="
+    putStrLn $ showSDoc dflags $ pprStgTopBindings topBinds
+    putStrLn "==== Lint STG ===="
+    lintStgTopBindings dflags True "Manual" topBinds
+
   -- construct STG program manually
   let ccs       = ([], [])
       hpc       = emptyHpcInfo False
@@ -74,6 +82,9 @@ compileProgram backend tyCons topBinds = runGhc (Just libdir) $ do
 --    `dopt_set`  Opt_D_dump_cmm
     `dopt_set`  Opt_D_dump_cmm_raw
 --    `dopt_set`  Opt_D_dump_cmm_from_stg
+    `dopt_set`  Opt_D_dump_timings
+    `gopt_set`  Opt_DoStgLinting
+    `gopt_set`  Opt_DoCmmLinting
 
   dflags <- getSessionDynFlags
 
