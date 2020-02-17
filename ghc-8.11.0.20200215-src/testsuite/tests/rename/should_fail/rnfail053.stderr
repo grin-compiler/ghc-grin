@@ -1,0 +1,7 @@
+
+rnfail053.hs:5:10: error:
+    • Data constructor ‘MkT’ has existential type variables, a context, or a specialised result type
+        MkT :: forall a. a -> T
+        (Enable ExistentialQuantification or GADTs to allow this)
+    • In the definition of data constructor ‘MkT’
+      In the data type declaration for ‘T’

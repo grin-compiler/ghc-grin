@@ -1,0 +1,6 @@
+# cabal v2-sdist
+a/Main.hs
+a/Test.hs
+a/a.cabal
+b/Main.hs
+b/b.cabal

@@ -1,0 +1,4 @@
+x :: () = ()
+y :: () = ()
+type Foo :: * -> Constraint
+class Foo a

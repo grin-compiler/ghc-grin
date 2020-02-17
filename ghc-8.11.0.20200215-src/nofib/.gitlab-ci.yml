@@ -1,0 +1,28 @@
+variables:
+  DOCKER_REV: 2b69e99de97bd5bf1fbdbf45852231c3dcb602b6
+
+validate:
+  image: "registry.gitlab.haskell.org/ghc/ci-images/x86_64-linux-deb9:$DOCKER_REV"
+  tags:
+    - x86_64-linux
+  before_script:
+    - git clean -xdf
+    - sudo apt install -y time
+    - ghc --version
+    - cabal --version
+  script:
+    - make clean
+    - cabal update
+    - make boot mode=fast
+    - "make mode=fast NoFibRuns=1 2>&1 | tee log"
+    - "nofib-analyse/nofib-analyse log"
+    - |
+      # The following checks that `make distclean` removes any files reported
+      # by `git clean -fxd`
+      make distclean
+      files=$(git clean -nxd | cut -d" " -f3 | sed "/log/d")
+      if ! [ -z $files ]
+      then
+        echo "The following files weren't cleaned:\n$files"
+        exit 1
+      fi

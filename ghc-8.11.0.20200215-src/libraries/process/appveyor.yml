@@ -1,0 +1,35 @@
+cache:
+- "c:\\sr" # stack root, short paths == less problems
+
+build: off
+
+before_test:
+# http://help.appveyor.com/discussions/problems/6312-curl-command-not-found
+- set PATH=C:\Program Files\Git\mingw64\bin;%PATH%
+
+- curl -ostack.zip -L --insecure http://www.stackage.org/stack/windows-x86_64
+- 7z x stack.zip stack.exe
+
+clone_folder: "c:\\process"
+environment:
+  global:
+    STACK_ROOT: "c:\\sr"
+
+  matrix:
+  - ARGS: "--resolver lts-6"
+  - ARGS: "--resolver lts-7"
+  - ARGS: "--resolver lts-9"
+  - ARGS: "--resolver lts-11"
+  - ARGS: "--resolver lts-12"
+  - ARGS: "--resolver lts-13"
+  - ARGS: "--resolver nightly"
+  - ARGS: "--stack-yaml stack-new-win32.yaml"
+
+test_script:
+# Generate the configure script. This took way too long to figure out
+# correctly.
+- c:\msys64\usr\bin\bash -lc "cd /c/process && autoreconf -i"
+
+# The ugly echo "" hack is to avoid complaints about 0 being an invalid file
+# descriptor
+- echo "" | stack %ARGS% --no-terminal test --pedantic

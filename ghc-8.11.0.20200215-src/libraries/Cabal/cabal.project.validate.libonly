@@ -1,0 +1,9 @@
+packages: Cabal/ cabal-testsuite/
+tests: True
+
+write-ghc-environment-files: never
+
+package Cabal
+  ghc-options: -Werror -fno-ignore-asserts
+package cabal-testsuite
+  ghc-options: -Werror -fno-ignore-asserts

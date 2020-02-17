@@ -1,0 +1,8 @@
+TYPE CONSTRUCTORS
+  class C{2} :: forall {k}. k -> Constraint
+  associated type family T{4} ::
+    forall k (f :: k -> *) (a :: k). f a -> *
+    roles nominal nominal nominal nominal
+Dependent modules: []
+Dependent packages: [base-4.14.0.0, ghc-prim-0.6.1,
+                     integer-gmp-1.0.2.0]

@@ -1,0 +1,4 @@
+ghc-head:      True
+tests:         >=7.4
+benchmarks:    >=7.4
+installed:     +all -process

@@ -1,0 +1,6 @@
+cabal-version: 3.0
+name:          big-version
+version:       123456789
+
+library
+    default-language: Haskell2010

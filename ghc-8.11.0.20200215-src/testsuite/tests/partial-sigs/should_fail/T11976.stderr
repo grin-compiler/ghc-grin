@@ -1,0 +1,6 @@
+
+T11976.hs:7:20: error:
+    • Expected kind ‘k0 -> *’, but ‘Lens _ _’ has kind ‘*’
+    • In the type ‘Lens _ _ _’
+      In an expression type signature: Lens _ _ _
+      In the expression: undefined :: Lens _ _ _

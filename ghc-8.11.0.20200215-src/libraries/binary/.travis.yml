@@ -1,0 +1,63 @@
+# See https://github.com/hvr/multi-ghc-travis for more information
+
+language: c
+
+sudo: false
+
+matrix:
+  include:
+    - env: CABALVER=2.4 GHCVER=7.8.4
+      addons: {apt: {packages: [cabal-install-2.4,ghc-7.8.4], sources: [hvr-ghc]}}
+    - env: CABALVER=2.4 GHCVER=7.10.3
+      addons: {apt: {packages: [cabal-install-2.4,ghc-7.10.3], sources: [hvr-ghc]}}
+    - env: CABALVER=2.4 GHCVER=8.0.2
+      addons: {apt: {packages: [cabal-install-2.4,ghc-8.0.2], sources: [hvr-ghc]}}
+    - env: CABALVER=2.4 GHCVER=8.2.2
+      addons: {apt: {packages: [cabal-install-2.4,ghc-8.2.2], sources: [hvr-ghc]}}
+    - env: CABALVER=2.4 GHCVER=8.4.4
+      addons: {apt: {packages: [cabal-install-2.4,ghc-8.4.4], sources: [hvr-ghc]}}
+    - env: CABALVER=2.4 GHCVER=8.6.5
+      addons: {apt: {packages: [cabal-install-2.4,ghc-8.6.5], sources: [hvr-ghc]}}
+    - env: CABALVER=head GHCVER=head
+      addons: {apt: {packages: [cabal-install-head,ghc-head],  sources: [hvr-ghc]}}
+
+  allow_failures:
+    - env: CABALVER=head GHCVER=head
+
+before_install:
+ - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
+
+install:
+ - cabal --version
+ - travis_retry cabal new-update
+
+ # workaround for https://ghc.haskell.org/trac/ghc/ticket/9221
+ - sed -i 's/^jobs:/-- jobs:/' ${HOME}/.cabal/config
+
+ # workaround for that cabal cannot make a build plan for binary's
+ # tests and benchmarks.
+ - >
+   cp binary.cabal binary.cabal.orig \
+     && sed -i 's/\(name:\s*binary\)/\1-cabal-is-broken/' binary.cabal \
+     && sed -i 's/\(binary\),/\1-cabal-is-broken,/' binary.cabal
+ - diff binary.cabal.orig binary.cabal || true
+
+script:
+ - cabal new-build --enable-benchmarks --enable-tests
+# "cabal check" disabled due to -O2 warning
+# - cabal check
+ - cabal new-sdist
+# TODO(kolmodin): reenable testing that the library installs
+# check that the generated source-distribution can be built & installed
+# - export SRC_TGZ=$(cabal info . | awk '{print $2 ".tar.gz";exit}') ;
+#   cd dist-newstyle/sdist/;
+#   if [ -f "$SRC_TGZ" ]; then
+#      cabal new-install --force-reinstalls "$SRC_TGZ";
+#   else
+#      echo "expected '$SRC_TGZ' not found";
+#      exit 1;
+#   fi
+
+notifications:
+  email:
+    - kolmodin@gmail.com

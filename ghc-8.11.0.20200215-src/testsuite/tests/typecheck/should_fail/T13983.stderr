@@ -1,0 +1,2 @@
+
+T13983.hs:7:25: error: Not in scope: type variable ‘k’

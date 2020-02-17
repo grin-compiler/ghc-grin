@@ -1,0 +1,5 @@
+
+RenamingStar.hs:5:13: error:
+    Operator applied to too few arguments: *
+    With NoStarIsType, ‘*’ is treated as a regular type operator. 
+    Did you mean to use ‘Type’ from Data.Kind instead?

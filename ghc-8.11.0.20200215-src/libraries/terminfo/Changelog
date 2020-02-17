@@ -1,0 +1,9 @@
+Changed in version 0.4.1.4:
+
+- Bump the upper bound to allow `base-4.13` (`ghc-8.8`).
+
+Changed in version 0.4.1.3:
+
+- Switch the `LICENSE` file to BSD3 (#6).
+- Increase the lower bound to `base>=4.9` (`ghc>=8.0.1`).
+- Remove the obsolete `--with-cc` configure flag (#12).

@@ -1,0 +1,10 @@
+
+T3468.hs-boot:3:1: error:
+    Type constructor ‘Tool’ has conflicting definitions in the module
+    and its hs-boot file
+    Main module: type role Tool phantom
+                 type Tool :: * -> *
+                 data Tool d = forall a r. F a
+    Boot file:   type Tool :: *
+                 data Tool
+    The types have different kinds

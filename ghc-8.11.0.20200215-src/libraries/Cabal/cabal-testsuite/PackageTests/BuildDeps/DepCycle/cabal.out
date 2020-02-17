@@ -1,0 +1,7 @@
+# cabal v2-build
+Resolving dependencies...
+Error:
+    Dependency cycle between the following components:
+        library bar
+        library foo
+    In the inplace package 'DepCycle-1.0'

@@ -1,0 +1,20 @@
+test('readRun001', normal, compile_and_run, [''])
+test('readRun002', normal, compile_and_run, [''])
+test('readRun003', normal, compile_and_run, [''])
+test('readRun004', normal, compile_and_run, ['-fobject-code'])
+test('T1344', normal, compile_and_run, [''])
+test('operator', normal, compile_and_run, [''])
+test('operator2', normal, compile_and_run, [''])
+test('ParserMultiWayIf', [], compile_and_run, [''])
+test('BinaryLiterals0', normal, compile_and_run, [''])
+test('BinaryLiterals1', [], compile_and_run, [''])
+test('BinaryLiterals2', [], compile_and_run, [''])
+test('T10807', normal, compile_and_run, [''])
+test('NegativeZero', normal, compile_and_run, [''])
+test('HexFloatLiterals', normal, compile_and_run, [''])
+test('NumericUnderscores0', normal, compile_and_run, [''])
+test('NumericUnderscores1', normal, compile_and_run, [''])
+test('CountParserDeps',
+     [ only_ways(['normal']), extra_run_opts('"' + config.libdir + '"') ],
+     compile_and_run,
+     ['-package ghc'])

@@ -1,0 +1,82 @@
+cabal-version: 2.2
+name:          cabal-dev-scripts
+version:       0
+synopsis:      Dev scripts for cabal development
+description:   This package provides a tools for Cabal development
+homepage:      http://www.haskell.org/cabal/
+license:       BSD-3-Clause
+license-file:  LICENSE
+author:        Cabal Development Team <cabal-devel@haskell.org>
+category:      Distribution
+build-type:    Simple
+
+executable gen-extra-source-files
+  default-language: Haskell2010
+  main-is:          GenExtraSourceFiles.hs
+  hs-source-dirs:   src
+  build-depends:
+    , base        >=4.10 && <4.13
+    , bytestring
+    , Cabal       >=2.2  && <2.6
+    , directory
+    , filepath
+    , process
+
+executable gen-spdx
+  default-language: Haskell2010
+  main-is:          GenSPDX.hs
+  other-modules:    GenUtils
+  hs-source-dirs:   src
+  ghc-options:      -Wall
+  build-depends:
+    , aeson                 ^>=1.4.1.0
+    , base                  >=4.10     && <4.13
+    , bytestring
+    , containers
+    , Diff                  ^>=0.4
+    , lens                  ^>=4.18.1
+    , optparse-applicative  ^>=0.15.1.0
+    , text
+    , zinza                 ^>=0.2
+
+executable gen-spdx-exc
+  default-language: Haskell2010
+  main-is:          GenSPDXExc.hs
+  other-modules:    GenUtils
+  hs-source-dirs:   src
+  ghc-options:      -Wall
+  build-depends:
+    , aeson                 ^>=1.4.1.0
+    , base                  >=4.10     && <4.13
+    , bytestring
+    , containers
+    , Diff                  ^>=0.4
+    , lens                  ^>=4.18.1
+    , optparse-applicative  ^>=0.15.1.0
+    , text
+    , zinza                 ^>=0.2
+
+executable gen-validate
+  default-language: Haskell2010
+  main-is:          GenValidate.hs
+  hs-source-dirs:   src
+  ghc-options:      -Wall
+  build-depends:
+    , base
+    , bytestring
+    , HsYAML      ^>=0.2.1.0
+    , zinza       ^>=0.2
+
+executable gen-cabal-macros
+  default-language: Haskell2010
+  main-is:          GenCabalMacros.hs
+  other-modules:    Capture
+  hs-source-dirs:   src
+  ghc-options:      -Wall
+  build-depends:
+    , base
+    , bytestring
+    , Cabal
+    , syb               ^>=0.7.1
+    , template-haskell
+    , zinza             ^>=0.2

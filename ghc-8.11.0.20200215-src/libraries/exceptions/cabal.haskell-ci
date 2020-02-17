@@ -1,0 +1,5 @@
+ghc-head:               True
+no-tests-no-benchmarks: False
+unconstrained:          False
+allow-failures:         <7.3
+irc-channels:           irc.freenode.org#haskell-lens

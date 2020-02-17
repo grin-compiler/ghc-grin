@@ -1,0 +1,38 @@
+clone_folder: "c:\\WORK"
+
+# Do not build feature branch with open Pull Requests
+skip_branch_with_pr: true
+
+environment:
+  global:
+    CABOPTS:  "--store-dir=C:\\SR --http-transport=plain-http"
+  matrix:
+    - GHCVER: "8.8.1"
+    - GHCVER: "8.6.5"
+    - GHCVER: "8.4.4"
+    - GHCVER: "8.2.2"
+    - GHCVER: "8.0.2.2"
+    - GHCVER: "7.10.3.2"
+
+matrix:
+  # set this flag to immediately finish build once one of the jobs fails.
+  fast_finish: true
+
+cache:
+ - "C:\\SR"
+
+install:
+ - choco install -y cabal
+ - choco install -y ghc --version %GHCVER%
+ - refreshenv
+ - cabal --version
+ - ghc --version
+ - cabal %CABOPTS% update -v
+
+build: off
+
+test_script:
+ - IF EXIST configure.ac bash -c "autoreconf -i"
+ - echo packages:. > cabal.project
+ - cabal %CABOPTS% new-build --enable-tests -j1 all
+ - cabal %CABOPTS% new-test  --enable-tests -j1 all

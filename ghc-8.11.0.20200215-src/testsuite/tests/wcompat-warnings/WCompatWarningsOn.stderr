@@ -1,0 +1,20 @@
+
+Template.hs:7:1: warning: [-Wsemigroup (in -Wcompat)]
+    Local definition of ‘<>’ clashes with a future Prelude name.
+    This will become an error in a future release.
+
+Template.hs:13:3: warning: [-Wnoncanonical-monoid-instances (in -Wcompat)]
+    Noncanonical ‘(<>) = mappend’ definition detected
+    in the instance declaration for ‘Semigroup S’.
+    Move definition from ‘mappend’ to ‘(<>)’
+
+Template.hs:16:3: warning: [-Wnoncanonical-monoid-instances (in -Wcompat)]
+    Noncanonical ‘mappend’ definition detected
+    in the instance declaration for ‘Monoid S’.
+    Define as ‘mappend = (<>)’
+
+Template.hs:20:15: warning: [-Wstar-is-type (in -Wcompat)]
+    Using ‘*’ (or its Unicode variant) to mean ‘Data.Kind.Type’
+    relies on the StarIsType extension, which will become
+    deprecated in the future.
+    Suggested fix: use ‘Type’ from ‘Data.Kind’ instead.

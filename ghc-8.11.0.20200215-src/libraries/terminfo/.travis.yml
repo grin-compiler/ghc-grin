@@ -1,0 +1,28 @@
+# simplified haskell-ci Travis setup
+# see also https://github.com/haskell-CI/haskell-ci
+
+language: haskell
+sudo: enabled
+
+cache:
+  directories:
+   - $HOME/.cabal/store
+
+cabal: 2.4
+ghc:
+  - "8.6.3"
+  - "8.4.4"
+  - "8.2.2"
+  - "8.0.2"
+
+install:
+ - cabal --version
+ - ghc --version
+
+script:
+ - autoreconf -i
+ - cabal v2-update
+ - cabal v2-build all
+ - cabal check 
+ - cabal v2-sdist
+ - cd dist-newstyle/sdist/ && cabal v1-install terminfo-*.tar.gz

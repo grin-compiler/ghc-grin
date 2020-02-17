@@ -1,0 +1,5 @@
+--command sh ./hadrian/ghci.sh
+--reload compiler
+--reload ghc
+--reload includes
+--restart hadrian/

@@ -1,0 +1,8 @@
+TYPE CONSTRUCTORS
+  type family F{1} :: * -> *
+    roles nominal
+COERCION AXIOMS
+  axiom NamedWildcardInTypeFamilyInstanceLHS.D:R:F :: F _t = Int
+Dependent modules: []
+Dependent packages: [base-4.13.0.0, ghc-prim-0.6.1,
+                     integer-gmp-1.0.2.0]
