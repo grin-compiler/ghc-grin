@@ -16,20 +16,10 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:
-    --Lambda.GrinCodeGen
-    --Lambda.GrinCodeGenUnboxed
-    --Lambda.GrinCodeGenBoxed
-    --Lambda.GrinCodeGenTyped
     Lambda.TH
-    Lambda.Parse
     Lambda.Parse2
     Lambda.Pretty
-    Lambda.PrimOps
-    Lambda.GhcPrimOps
-    --Lambda.GhcPrimOpsBoxed
-    Lambda.Syntax
     Lambda.Syntax2
-    Lambda.ToSyntax2
     Lambda.ToDatalog
     Lambda.Util
     Lambda.Lint
@@ -63,7 +53,7 @@ library
 
 source-repository head
   type:     git
-  location: https://github.com/grin-tech/grin
+  location: https://github.com/grin-compiler/ghc-grin
 
 executable lambda-grin
   hs-source-dirs:      app
