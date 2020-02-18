@@ -13,7 +13,7 @@ import qualified Data.ByteString.Char8 as BS8
 import Data.Functor.Foldable
 import qualified Data.Foldable
 
-import Lambda.Syntax2
+import Lambda.Syntax
 import Transformations.Util
 import Lambda.Util
 

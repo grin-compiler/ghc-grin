@@ -1,7 +1,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Lambda.TH
-  ( progConst2
-  , prog2
+  ( progConst
+  , prog
   ) where
 
 import Data.List (sort)
@@ -11,18 +11,18 @@ import Data.Maybe
 import Text.Megaparsec
 import NeatInterpolation
 
-import qualified Lambda.Parse2 as P2
+import qualified Lambda.Parse as P
 import qualified Data.Text as T
 
 import Language.Haskell.TH
 import Language.Haskell.TH.Syntax
 import Language.Haskell.TH.Quote
 
-prog2 :: QuasiQuoter
-prog2 = text { quoteExp = applyParseProg2 . quoteExp text }
+prog :: QuasiQuoter
+prog = text { quoteExp = applyParseProg . quoteExp text }
 
-applyParseProg2 :: Q Exp -> Q Exp
-applyParseProg2 q = appE [|P2.parseProg|] q
+applyParseProg :: Q Exp -> Q Exp
+applyParseProg q = appE [|P.parseProg|] q
 
 liftText :: T.Text -> Q Exp
 liftText txt = AppE (VarE 'T.pack) <$> lift (T.unpack txt)
@@ -32,11 +32,11 @@ liftDataWithText = dataToExpQ (\a -> liftText <$> cast a)
 
 -- NOTE: does not support metavariables
 
-progConst2 :: QuasiQuoter
-progConst2 = QuasiQuoter
+progConst :: QuasiQuoter
+progConst = QuasiQuoter
   { quoteExp = \input -> do
       let src = T.pack $ normalizeQQInput input
-      case P2.parseLambda "" src of
+      case P.parseLambda "" src of
         Left  e -> fail $ parseErrorPretty' src e
         Right p -> liftDataWithText p
   , quotePat  = undefined

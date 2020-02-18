@@ -7,7 +7,7 @@ import qualified Data.Foldable
 
 import Transformations.Names hiding (mkNameEnv)
 import Transformations.Util hiding (foldNameDefExpF)
-import Lambda.Syntax2
+import Lambda.Syntax
 
 mkNameEnv :: Exp -> NameEnv
 mkNameEnv exp = NameEnv mempty (cata folder exp) where

@@ -38,7 +38,7 @@ spec = do
   describe "GHC CCS PrimOps" $ do
 
     it "clearCCS#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "clearCCS#" :: (tf.4 : {"State#" {RealWorld} @ t.14} @ t.13 -> {"GHC.Prim.Unit#" %a.1} @ t.15) -> {"State#" {RealWorld} @ t.17} @ t.16 -> {"GHC.Prim.Unit#" %a.1} @ t.18
 

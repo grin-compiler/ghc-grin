@@ -13,7 +13,7 @@ import Control.Monad
 import Control.Monad.Reader
 import Data.List (intercalate, groupBy)
 
-import Lambda.Syntax2
+import Lambda.Syntax
 
 import Transformations.Util
 import Lambda.Util

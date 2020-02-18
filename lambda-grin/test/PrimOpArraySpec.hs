@@ -92,7 +92,7 @@ spec = do
   describe "GHC Array PrimOps" $ do
 
     it "newArray#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newArray#" :: (T_Int64) @ t.106 -> %a.6 -> {"State#" %s.2} @ t.107 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.2 %a.6} @ t.109} @ t.108
           main =
@@ -135,7 +135,7 @@ spec = do
         ]
 
     it "readArray#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newArray#" :: (T_Int64) @ t.106 -> %a.6 -> {"State#" %s.2} @ t.107 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.2 %a.6} @ t.109} @ t.108
             "readArray#" :: {"MutableArray#" %s.21 %a.11} @ t.243 -> (T_Int64) @ t.244 -> {"State#" %s.21} @ t.245 -> {"GHC.Prim.Unit#" %a.11} @ t.246
@@ -198,7 +198,7 @@ spec = do
         ]
 
     it "writeArray#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newArray#"   :: (T_Int64) @ t.106 -> %a.6 -> {"State#" %s.2} @ t.107 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.2 %a.6} @ t.109} @ t.108
             "writeArray#" :: {"MutableArray#" %s.4 %a.9} @ t.115 -> (T_Int64) @ t.116 -> %a.9 -> {"State#" %s.4} @ t.117 -> {"GHC.Prim.(##)"} @ t.118
@@ -259,7 +259,7 @@ spec = do
         ]
 
     it "unsafeFreezeArray#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newArray#"           :: (T_Int64) @ t.00 -> %a.01 -> {"State#" %s.02} @ t.03 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.02 %a.01} @ t.04} @ t.05
             "unsafeFreezeArray#"  :: {"MutableArray#" %s.10 %a.11} @ t.12 -> {"State#" %s.10} @ t.13 -> {"GHC.Prim.Unit#" {"Array#" %a.11} @ t.14} @ t.15
@@ -325,7 +325,7 @@ spec = do
         ]
 
     it "copyMutableArray#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newArray#"         :: (T_Int64) @ t.00 -> %a.01 -> {"State#" %s.02} @ t.03 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.02 %a.01} @ t.04} @ t.05
             "copyMutableArray#" :: {"MutableArray#" %s.10 %a.11} @ t.12 -> (T_Int64) @ t.13 -> {"MutableArray#" %s.10 %a.11} @ t.14 -> (T_Int64) @ t.15 -> (T_Int64) @ t.16 -> {"State#" %s.10} @ t.17 -> {"GHC.Prim.(##)"} @ t.18
@@ -397,7 +397,7 @@ spec = do
         ]
 
     it "cloneArray#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newArray#"           :: (T_Int64) @ t.00 -> %a.01 -> {"State#" %s.02} @ t.03 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.02 %a.01} @ t.04} @ t.05
             "unsafeFreezeArray#"  :: {"MutableArray#" %s.10 %a.11} @ t.12 -> {"State#" %s.10} @ t.13 -> {"GHC.Prim.Unit#" {"Array#" %a.11} @ t.14} @ t.15
@@ -468,7 +468,7 @@ spec = do
         ]
 
     it "cloneMutableArray#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newArray#"          :: (T_Int64) @ t.00 -> %a.01 -> {"State#" %s.02} @ t.03 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.02 %a.01} @ t.04} @ t.05
             "cloneMutableArray#" :: {"MutableArray#" %s.10 %a.11} @ t.12 -> (T_Int64) @ t.13 -> (T_Int64) @ t.14 -> {"State#" %s.10} @ t.15 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.10 %a.11} @ t.16} @ t.17
@@ -532,7 +532,7 @@ spec = do
         ]
 
     it "casArray#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newArray#" :: (T_Int64) @ t.00 -> %a.01 -> {"State#" %s.02} @ t.03 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.02 %a.01} @ t.04} @ t.05
             "casArray#" :: {"MutableArray#" %s.10 %a.11} @ t.12 -> (T_Int64) @ t.13 -> %a.11 -> %a.11 -> {"State#" %s.10} @ t.14 -> {"GHC.Prim.(#,#)" (T_Int64) @ t.15 %a.11} @ t.16

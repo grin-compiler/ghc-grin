@@ -1,8 +1,8 @@
 {-# LANGUAGE LambdaCase, TupleSections #-}
 {-# LANGUAGE TemplateHaskell, KindSignatures, TypeFamilies #-}
 {-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveGeneric, DeriveDataTypeable #-}
-module Lambda.Syntax2
-  ( module Lambda.Syntax2
+module Lambda.Syntax
+  ( module Lambda.Syntax
   , Grin.packName
   , Grin.unpackName
   , Grin.showTS

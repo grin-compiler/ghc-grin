@@ -2,11 +2,11 @@
 module Lambda.GHCPrimOps where
 
 import qualified Data.Set as Set
-import Lambda.Syntax2
+import Lambda.Syntax
 import Lambda.TH
 
 primPrelude :: Program
-primPrelude = [progConst2|
+primPrelude = [progConst|
   {-
     Char#
   -}

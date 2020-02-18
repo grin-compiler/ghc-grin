@@ -48,7 +48,7 @@ spec = do
     -}
 
     it "catch - raise" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "catch#" :: (tf.0 : {"State#" {RealWorld} @ t.1} @ t.0 -> {"GHC.Prim.Unit#" %a.0} @ t.2) -> (tf.1 : %b.0 -> {"State#" {RealWorld} @ t.4} @ t.3 -> {"GHC.Prim.Unit#" %a.0} @ t.5) -> {"State#" {RealWorld} @ t.7} @ t.6 -> {"GHC.Prim.Unit#" %a.0} @ t.8
             "raise#" :: %b.1 -> %o.0
@@ -114,7 +114,7 @@ spec = do
         ]
 
     it "catch - raiseIO" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "catch#"    :: (tf.0 : {"State#" {RealWorld} @ t.1} @ t.0 -> {"GHC.Prim.Unit#" %a.0} @ t.2) -> (tf.1 : %b.0 -> {"State#" {RealWorld} @ t.4} @ t.3 -> {"GHC.Prim.Unit#" %a.0} @ t.5) -> {"State#" {RealWorld} @ t.7} @ t.6 -> {"GHC.Prim.Unit#" %a.0} @ t.8
             "raiseIO#"  :: %a.3 -> {"State#" {RealWorld} @ t.28} @ t.27 -> {"GHC.Prim.Unit#" %b.2} @ t.29
@@ -187,7 +187,7 @@ spec = do
         ]
 
     it "catch - raiseIO - thunk" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "catch#"    :: (tf.0 : {"State#" {RealWorld} @ t.1} @ t.0 -> {"GHC.Prim.Unit#" %a.0} @ t.2) -> (tf.1 : %b.0 -> {"State#" {RealWorld} @ t.4} @ t.3 -> {"GHC.Prim.Unit#" %a.0} @ t.5) -> {"State#" {RealWorld} @ t.7} @ t.6 -> {"GHC.Prim.Unit#" %a.0} @ t.8
             "raiseIO#"  :: %a.3 -> {"State#" {RealWorld} @ t.28} @ t.27 -> {"GHC.Prim.Unit#" %b.2} @ t.29
@@ -275,7 +275,7 @@ spec = do
         ]
 
     it "catch - raiseIO - closure" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "catch#"    :: (tf.0 : {"State#" {RealWorld} @ t.1} @ t.0 -> {"GHC.Prim.Unit#" %a.0} @ t.2) -> (tf.1 : %b.0 -> {"State#" {RealWorld} @ t.4} @ t.3 -> {"GHC.Prim.Unit#" %a.0} @ t.5) -> {"State#" {RealWorld} @ t.7} @ t.6 -> {"GHC.Prim.Unit#" %a.0} @ t.8
             "raiseIO#"  :: %a.3 -> {"State#" {RealWorld} @ t.28} @ t.27 -> {"GHC.Prim.Unit#" %b.2} @ t.29
@@ -362,7 +362,7 @@ spec = do
         ]
 
     it "maskAsyncExceptions#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "maskAsyncExceptions#" :: (tf.4 : {"State#" {RealWorld} @ t.14} @ t.13 -> {"GHC.Prim.Unit#" %a.1} @ t.15) -> {"State#" {RealWorld} @ t.17} @ t.16 -> {"GHC.Prim.Unit#" %a.1} @ t.18
           main =

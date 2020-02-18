@@ -7,8 +7,8 @@ import Data.Maybe
 import Text.Printf
 import Parser
 import Syntax
-import Lambda.Syntax2 (External(..), SimpleType(..), packName, Name)
-import qualified Lambda.Syntax2 as L
+import Lambda.Syntax (External(..), SimpleType(..), packName, Name)
+import qualified Lambda.Syntax as L
 import qualified Lambda.Pretty as L
 import Text.PrettyPrint.ANSI.Leijen hiding ((<$>), cat)
 --import Numeric
@@ -230,7 +230,7 @@ genGHCPrimOps = do
         , "module Lambda.GHCPrimOps where"
         , ""
         , "import qualified Data.Set as Set"
-        , "import Lambda.Syntax2"
+        , "import Lambda.Syntax"
         , "import Lambda.TH"
         , ""
         ]
@@ -247,7 +247,7 @@ genGHCPrimOps = do
 
       primPrelude =
         [ "primPrelude :: Program"
-        , "primPrelude = [progConst2|"
+        , "primPrelude = [progConst|"
         ] ++ map tab (concat [comment title ++ (lines $ showWidth 800 $ plain $ L.prettyExternals2 exts) ++ [""] | (title, exts, _) <- envSections]) ++
         ["  |]\n"]
 

@@ -17,9 +17,9 @@ library
   hs-source-dirs:      src
   exposed-modules:
     Lambda.TH
-    Lambda.Parse2
+    Lambda.Parse
     Lambda.Pretty
-    Lambda.Syntax2
+    Lambda.Syntax
     Lambda.ToDatalog
     Lambda.Util
     Lambda.Lint

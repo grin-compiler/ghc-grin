@@ -19,7 +19,7 @@ import System.Process
 import System.IO
 import System.IO.Temp
 
-import Lambda.Syntax2
+import Lambda.Syntax
 import Transformations.Util
 
 deadFunctionEliminationM :: [String] -> Program -> IO Program

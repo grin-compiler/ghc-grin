@@ -38,7 +38,7 @@ spec = do
   describe "GHC WeakPtr PrimOps" $ do
 
     it "mkWeak#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "mkWeak#" :: %o.1 -> %b.2 -> (tf.3 : {"State#" {RealWorld} @ t.4} @ t.5 -> {"GHC.Prim.Unit#" %c.6} @ t.7) -> {"State#" {RealWorld} @ t.8} @ t.9 -> {"GHC.Prim.Unit#" {"Weak#" %b.12} @ t.10} @ t.11
 
@@ -97,7 +97,7 @@ spec = do
         ]
 
     it "mkWeakNoFinalizer#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "mkWeakNoFinalizer#" :: %o.1 -> %b.2 -> {"State#" {RealWorld} @ t.8} @ t.9 -> {"GHC.Prim.Unit#" {"Weak#" %b.12} @ t.10} @ t.11
 
@@ -142,7 +142,7 @@ spec = do
         ]
 
     it "deRefWeak#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "mkWeakNoFinalizer#" :: %o.1 -> %b.2 -> {"State#" {RealWorld} @ t.8} @ t.9 -> {"GHC.Prim.Unit#" {"Weak#" %b.12} @ t.10} @ t.11
             "deRefWeak#"         :: {"Weak#" %a.24} @ t.20 -> {"State#" {RealWorld} @ t.21} @ t.22 -> {"GHC.Prim.(#,#)" (T_Int64) @ t.23 %a.24} @ t.25
@@ -204,7 +204,7 @@ spec = do
         ]
 
     it "finalizeWeak#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "mkWeak#" :: %o.1 -> %b.2 -> (tf.3 : {"State#" {RealWorld} @ t.4} @ t.5 -> {"GHC.Prim.Unit#" %c.6} @ t.7) -> {"State#" {RealWorld} @ t.8} @ t.9 -> {"GHC.Prim.Unit#" {"Weak#" %b.12} @ t.10} @ t.11
             "finalizeWeak#"  :: {"Weak#" %a.20} @ t.21 -> {"State#" {RealWorld} @ t.22} @ t.23 -> {"GHC.Prim.(#,#)" (T_Int64) @ t.24 (tf.25 : {"State#" {RealWorld} @ t.26} @ t.27 -> {"GHC.Prim.Unit#" %b} @ t.28)} @ t.29

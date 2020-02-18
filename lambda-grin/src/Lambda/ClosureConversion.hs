@@ -11,7 +11,7 @@ import qualified Data.Set as Set
 import Transformations.Util
 import Transformations.Names hiding (mkNameEnv)
 
-import Lambda.Syntax2
+import Lambda.Syntax
 import Lambda.Util
 
 {-

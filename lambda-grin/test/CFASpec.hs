@@ -39,7 +39,7 @@ spec = do
 
 
     it "var ; move" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v0 = #T_Int64 0
@@ -63,7 +63,7 @@ spec = do
         ]
 
     it "alt value ; pattern match" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -96,7 +96,7 @@ spec = do
 
     it "alt value ; pattern non-match" $ do
       -- NOTE: CreatedBy analysis does not track literal values
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -128,7 +128,7 @@ spec = do
         ]
 
     xit "alt value ; default" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -159,7 +159,7 @@ spec = do
         ]
 
     xit "alt value ; all in one" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -181,7 +181,7 @@ spec = do
       pure ()
 
     it "fun param & result" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -213,7 +213,7 @@ spec = do
         ]
 
     it "fun param & result ; flow & context insensitive imprecision" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -259,7 +259,7 @@ spec = do
         ]
 
     it "closure param & result" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             let
               clo = \[] p10 ->
@@ -296,7 +296,7 @@ spec = do
   describe "CBy - lit - unknown - saturated" $ do
 
     it "fun param" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -336,7 +336,7 @@ spec = do
         ]
 
     it "fun param & result ; fun as closure, MOVE" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -373,7 +373,7 @@ spec = do
         ]
 
     it "fun param & result ; fun as closure, saturated + undersaturated, CALL" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -410,7 +410,7 @@ spec = do
         ]
 
     it "closure param & result " $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -446,7 +446,7 @@ spec = do
         ]
 
     it "closure param & result ; var result" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -482,7 +482,7 @@ spec = do
   describe "CBy - lit - unknown - undersaturated" $ do
 
     it "fun param & result ; context insenisitve return value mix" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -526,7 +526,7 @@ spec = do
         ]
 
     it "closure param & result ; context insenisitve return value mix" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             let
               clo1_ap = \[] p10 p11 ->
@@ -575,7 +575,7 @@ spec = do
   describe "CBy - lit - unknown - oversaturated" $ do
 
     it "fun param & result ; simple" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -604,7 +604,7 @@ spec = do
         ]
 
     it "fun param & result ; ap id id lit" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -640,7 +640,7 @@ spec = do
         ]
 
     it "fun param & result ; ap ap' id lit + BUGFIX" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -698,7 +698,7 @@ spec = do
         ]
 
     it "PNode propagation ; direct" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             let
               c00 = \[] p00 p01 ->
@@ -748,7 +748,7 @@ spec = do
         ]
 
     it "PNode propagation ; indirect" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             let
               c00 = \[] p00 p01 ->
@@ -801,7 +801,7 @@ spec = do
         ]
 
     it "fun param & result ; ap ap id lit" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -842,7 +842,7 @@ spec = do
         ]
 
     it "clo param & result ; ap ap' id lit + BUGFIX" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -916,7 +916,7 @@ spec = do
   describe "CBy - lit - known - oversaturated" $ do
 
     it "fun param & result ; simple" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -944,7 +944,7 @@ spec = do
         ]
 
     it "fun param & result ; ap ap' id lit + BUGFIX" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -1004,7 +1004,7 @@ spec = do
     "CFA-11"  undersaturated PNode call: create new PNode ; copy PNode arguments
     -}
     it "node - known - fun param & result ; gradually saturated call " $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -1052,7 +1052,7 @@ spec = do
     "CFA-24"  oversaturated apply chain link
     -}
     it "node - known - fun param & result ; oversaturated non-empty PNode" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0
@@ -1109,7 +1109,7 @@ spec = do
     "CFA-22"  undersaturated apply chain link
     -}
     it "node - known - fun param & result ; undersaturated gradually built non-empty PNode & apply chain" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = #T_Int64 0

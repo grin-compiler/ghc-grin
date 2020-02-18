@@ -38,7 +38,7 @@ spec = do
   describe "GHC MVar PrimOps" $ do
 
     it "newMVar#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newMVar#" :: {"State#" %s.2} @ t.107 -> {"GHC.Prim.Unit#" {"MVar#" %s.2 %a.6} @ t.109} @ t.108
 
@@ -77,7 +77,7 @@ spec = do
         ]
 
     it "putMVar# - readMVar#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newMVar#"  :: {"State#" %s.2} @ t.107 -> {"GHC.Prim.Unit#" {"MVar#" %s.2 %a.6} @ t.109} @ t.108
             "readMVar#" :: {"MVar#" %s.21 %a.11} @ t.243 -> {"State#" %s.21} @ t.245 -> {"GHC.Prim.Unit#" %a.11} @ t.246
@@ -140,7 +140,7 @@ spec = do
         ]
 
     it "putMVar# - tryReadMVar#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newMVar#"      :: {"State#" %s.2} @ t.107 -> {"GHC.Prim.Unit#" {"MVar#" %s.2 %a.6} @ t.109} @ t.108
             "tryReadMVar#"  :: {"MVar#" %s.21 %a.11} @ t.243 -> {"State#" %s.21} @ t.245 -> {"GHC.Prim.(#,#)" (T_Int64) @ t.242 %a.11} @ t.246

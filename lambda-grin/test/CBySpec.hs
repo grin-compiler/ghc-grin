@@ -37,7 +37,7 @@ spec = do
   describe "Created By Analysis" $ do
 
     it "force constructor" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = [Tup0]
@@ -63,7 +63,7 @@ spec = do
         ]
 
     it "force external result" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newArray#" :: (T_Int64) @ t.106 -> %a.6 -> {"State#" %s.2} @ t.107 -> {"GHC.Prim.Unit#" {"MutableArray#" %s.2 %a.6} @ t.109} @ t.108
           main =
@@ -112,7 +112,7 @@ spec = do
 
 
     it "default pattern" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           main =
             letS
               v00 = [Tup0]
@@ -158,7 +158,7 @@ spec = do
         ]
 
     it "tagToEnum# workaround" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop pure
             "tagToEnum#" :: (T_Int64) @ t.110 -> %a.7
           main =

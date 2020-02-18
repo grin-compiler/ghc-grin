@@ -38,7 +38,7 @@ spec = do
   describe "GHC MutVar PrimOps" $ do
 
     it "newMutVar#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newMutVar#" :: %a.6 -> {"State#" %s.2} @ t.107 -> {"GHC.Prim.Unit#" {"MutVar#" %s.2 %a.6} @ t.109} @ t.108
           main =
@@ -78,7 +78,7 @@ spec = do
         ]
 
     it "readMutVar#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newMutVar#" :: %a.6 -> {"State#" %s.2} @ t.107 -> {"GHC.Prim.Unit#" {"MutVar#" %s.2 %a.6} @ t.109} @ t.108
             "readMutVar#" :: {"MutVar#" %s.21 %a.11} @ t.243 -> {"State#" %s.21} @ t.245 -> {"GHC.Prim.Unit#" %a.11} @ t.246
@@ -135,7 +135,7 @@ spec = do
         ]
 
     it "writeMutVar#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newMutVar#" :: %a.6 -> {"State#" %s.2} @ t.107 -> {"GHC.Prim.Unit#" {"MutVar#" %s.2 %a.6} @ t.109} @ t.108
             "writeMutVar#" :: {"MutVar#" %s.4 %a.9} @ t.115 -> %a.9 -> {"State#" %s.4} @ t.117 -> {"GHC.Prim.(##)"} @ t.118
@@ -187,7 +187,7 @@ spec = do
         ]
 
     it "casMutVar#" $ do
-      cfa <- controlFlowAnalysisM ["main"] [prog2|
+      cfa <- controlFlowAnalysisM ["main"] [prog|
           primop effectful
             "newMutVar#" :: %a.6 -> {"State#" %s.2} @ t.107 -> {"GHC.Prim.Unit#" {"MutVar#" %s.2 %a.6} @ t.109} @ t.108
             "casMutVar#" :: {"MutVar#" %s.10 %a.11} @ t.12 -> %a.11 -> %a.11 -> {"State#" %s.10} @ t.14 -> {"GHC.Prim.(#,#)" (T_Int64) @ t.15 %a.11} @ t.16

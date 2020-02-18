@@ -1,6 +1,6 @@
 {-# LANGUAGE TupleSections, LambdaCase, OverloadedStrings #-}
 
-module Lambda.Parse2
+module Lambda.Parse
   ( parseLambda
   , parseProg
   ) where
@@ -17,7 +17,7 @@ import Text.Megaparsec
 import qualified Text.Megaparsec.Char.Lexer as L
 import Text.Megaparsec.Char as C
 import qualified Data.Set as Set
-import Lambda.Syntax2
+import Lambda.Syntax
 
 import qualified Data.Text.IO as T
 import qualified Text.Megaparsec as M

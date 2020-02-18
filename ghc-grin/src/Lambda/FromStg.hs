@@ -19,7 +19,7 @@ import qualified Stg.Pretty as P
 import qualified Text.PrettyPrint.ANSI.Leijen as P
 
 -- Lambda
-import Lambda.Syntax2
+import Lambda.Syntax
 import Lambda.Util
 
 import qualified Lambda.GHCPrimOps as GHCPrim

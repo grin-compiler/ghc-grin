@@ -12,7 +12,7 @@ import Data.Functor.Foldable as Foldable
 import Text.PrettyPrint.ANSI.Leijen as Leijen
 
 --import Lambda.Syntax
-import Lambda.Syntax2 as L2
+import Lambda.Syntax as L
 import Grin.Pretty ()
 
 printLambda :: Exp -> IO ()
@@ -56,30 +56,30 @@ instance Pretty Exp where
       -- Extra
       ClosureF vars args exp -> nest 2 (keyword "\\" <> brackets (hsep (map pretty vars)) <+> hsep (map prettyBinderArg args) <+> text "->" Leijen.<$> pretty exp)
 -}
-instance Pretty L2.Exp where
+instance Pretty L.Exp where
   pretty prg = cata folder prg where
     extNames      = case prg of
-                      L2.Program exts _ _ _ -> Set.fromList $ map L2.eName exts
+                      L.Program exts _ _ _ -> Set.fromList $ map L.eName exts
                       _                     -> Set.empty
     isPrimName n  = Set.member n extNames
 
     folder = \case
-      L2.ProgramF exts cons sdata defs -> vcat (prettyExternals2 exts : prettyConGroups cons : prettyStaticData sdata : map pretty defs)
-      L2.DefF name args exp  -> nest 2 (hsep (pretty name : map prettyBinderArg args) <+> text "=" <$$> pretty exp) <> line
+      L.ProgramF exts cons sdata defs -> vcat (prettyExternals2 exts : prettyConGroups cons : prettyStaticData sdata : map pretty defs)
+      L.DefF name args exp  -> nest 2 (hsep (pretty name : map prettyBinderArg args) <+> text "=" <$$> pretty exp) <> line
       -- Exp
-      L2.AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : text "$" : map pretty args)
-      L2.CaseF atom alts     -> nest 2 (keyword "case" <+> pretty atom <+> keyword "of" <$$> vsep (map pretty alts))
-      L2.LetF binds exp      -> nest 2 (keyword "let"    <$$> vsep (map prettyBind binds)) <$$> pretty exp
-      L2.LetRecF binds exp   -> nest 2 (keyword "letrec" <$$> vsep (map prettyBind binds)) <$$> pretty exp
-      L2.LetSF binds exp     -> nest 2 (keyword "letS"   <$$> vsep (map prettyBind binds)) <$$> pretty exp
-      L2.ConF tag args       -> brackets $ hsep (pretty tag : map pretty args)
+      L.AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : text "$" : map pretty args)
+      L.CaseF atom alts     -> nest 2 (keyword "case" <+> pretty atom <+> keyword "of" <$$> vsep (map pretty alts))
+      L.LetF binds exp      -> nest 2 (keyword "let"    <$$> vsep (map prettyBind binds)) <$$> pretty exp
+      L.LetRecF binds exp   -> nest 2 (keyword "letrec" <$$> vsep (map prettyBind binds)) <$$> pretty exp
+      L.LetSF binds exp     -> nest 2 (keyword "letS"   <$$> vsep (map prettyBind binds)) <$$> pretty exp
+      L.ConF tag args       -> brackets $ hsep (pretty tag : map pretty args)
       -- Atom
-      L2.VarF name           -> pretty name
-      L2.LitF lit            -> pretty lit
+      L.VarF name           -> pretty name
+      L.LitF lit            -> pretty lit
       -- Alt
-      L2.AltF name cpat exp  -> nest 2 (pretty cpat <+> text "@" <+> pretty name <+> text "->" <$$> pretty exp)
+      L.AltF name cpat exp  -> nest 2 (pretty cpat <+> text "@" <+> pretty name <+> text "->" <$$> pretty exp)
       -- Extra
-      L2.ClosureF vars args exp -> nest 2 (keyword "\\" <> brackets (hsep (map pretty vars)) <+> hsep (map prettyBinderArg args) <+> text "->" Leijen.<$> pretty exp)
+      L.ClosureF vars args exp -> nest 2 (keyword "\\" <> brackets (hsep (map pretty vars)) <+> hsep (map prettyBinderArg args) <+> text "->" Leijen.<$> pretty exp)
 
 instance Pretty Lit where
   pretty = \case
@@ -141,15 +141,15 @@ prettyExternals exts = vcat (map prettyExtGroup $ groupBy (\a b -> (eKind a, eEf
     PrimOp  -> "primop"
     FFI     -> "ffi"
 -}
-prettyExternals2 :: [L2.External] -> Doc
-prettyExternals2 exts = vcat (map prettyExtGroup $ groupBy (\a b -> (L2.eKind a, L2.eEffectful a) == (L2.eKind b, L2.eEffectful b)) exts) where
+prettyExternals2 :: [L.External] -> Doc
+prettyExternals2 exts = vcat (map prettyExtGroup $ groupBy (\a b -> (L.eKind a, L.eEffectful a) == (L.eKind b, L.eEffectful b)) exts) where
   maxWidth = 80
   prettyExtGroup [] = mempty
   prettyExtGroup l@(a : _)
-    | maxLen <- maximum [length . show . pretty $ L2.eName e | e <- l]
+    | maxLen <- maximum [length . show . pretty $ L.eName e | e <- l]
     , width  <- min maxLen maxWidth
-    = (prettyEKind (L2.eKind a) <+> (if L2.eEffectful a then keyword "effectful" else keyword "pure") <$$> indent 2
-        (vsep [prettyFunction width eName eRetType eArgsType | L2.External{..} <- l])
+    = (prettyEKind (L.eKind a) <+> (if L.eEffectful a then keyword "effectful" else keyword "pure") <$$> indent 2
+        (vsep [prettyFunction width eName eRetType eArgsType | L.External{..} <- l])
       ) <> line
   prettyEKind = keyword . \case
     PrimOp  -> "primop"
@@ -179,12 +179,12 @@ isTyArr = \case
   _       -> False
 -}
 
-instance Pretty L2.Ty where
+instance Pretty L.Ty where
   pretty = \case
-    L2.TyCon varName name tys       -> braces (hsep ((green $ pretty name) : map pretty tys)) <+> text "@" <+> pretty varName
-    L2.TyVar name                   -> text "%" <> cyan (pretty name)
-    L2.TySimple varName simpleType  -> parens (pretty simpleType) <+> text "@" <+> pretty varName
-    L2.TyFun name retTy argsTy      -> parens (pretty name <> (myEncloseSep (text " : ") empty (text " -> ") (map pretty $ argsTy ++ [retTy])))
+    L.TyCon varName name tys       -> braces (hsep ((green $ pretty name) : map pretty tys)) <+> text "@" <+> pretty varName
+    L.TyVar name                   -> text "%" <> cyan (pretty name)
+    L.TySimple varName simpleType  -> parens (pretty simpleType) <+> text "@" <+> pretty varName
+    L.TyFun name retTy argsTy      -> parens (pretty name <> (myEncloseSep (text " : ") empty (text " -> ") (map pretty $ argsTy ++ [retTy])))
 
 instance Pretty SimpleType where
   pretty = \case

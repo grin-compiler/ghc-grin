@@ -11,7 +11,7 @@ import qualified Data.Foldable
 
 import Transformations.Names hiding (mkNameEnv)
 import Transformations.Util hiding (foldNameDefExpF)
-import Lambda.Syntax2
+import Lambda.Syntax
 import Lambda.Util
 
 type Env = Map Name Name

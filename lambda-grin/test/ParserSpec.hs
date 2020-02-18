@@ -7,8 +7,8 @@ import Test.QuickCheck
 
 import Lambda.TH
 import Lambda.Pretty
-import Lambda.Parse2
-import Lambda.Syntax2
+import Lambda.Parse
+import Lambda.Syntax
 import Grin.Pretty (PP(..))
 
 runTests :: IO ()
@@ -18,7 +18,7 @@ spec :: Spec
 spec = do
   describe "simple" $ do
     it "case" $ do
-      let before = [prog2|
+      let before = [prog|
         test p =
           letS
             x = case p of

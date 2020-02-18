@@ -15,8 +15,8 @@ import Stg.Util
 
 import Lambda.GHCSymbols as GHCSymbols
 import Lambda.FromStg
-import Lambda.Syntax2
---import qualified Lambda.Syntax2 as L2
+import Lambda.Syntax
+--import qualified Lambda.Syntax as L
 import Lambda.Pretty
 --import Lambda.ToSyntax2
 --import Lambda.GrinCodeGen

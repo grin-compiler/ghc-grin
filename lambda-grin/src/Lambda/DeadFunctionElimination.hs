@@ -10,7 +10,7 @@ import qualified Data.Set as Set
 import Data.Functor.Foldable as Foldable
 import qualified Data.Foldable
 
-import Lambda.Syntax2
+import Lambda.Syntax
 
 deadFunctionElimination :: Program -> Program
 deadFunctionElimination (Program exts cons sdata defs) = Program liveExts liveCons liveSData liveDefs where

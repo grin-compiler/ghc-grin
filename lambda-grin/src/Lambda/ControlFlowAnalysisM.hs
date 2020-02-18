@@ -16,7 +16,7 @@ import System.Process
 import System.IO
 import System.IO.Temp
 
-import Lambda.Syntax2
+import Lambda.Syntax
 import Lambda.ToDatalog
 
 controlFlowAnalysisM :: [String] -> Program -> IO (Map String [[Text]])
