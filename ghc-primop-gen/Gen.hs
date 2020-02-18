@@ -248,7 +248,7 @@ genGHCPrimOps = do
       primPrelude =
         [ "primPrelude :: Program"
         , "primPrelude = [progConst|"
-        ] ++ map tab (concat [comment title ++ (lines $ showWidth 800 $ plain $ L.prettyExternals2 exts) ++ [""] | (title, exts, _) <- envSections]) ++
+        ] ++ map tab (concat [comment title ++ (lines $ showWidth 800 $ plain $ L.prettyExternals exts) ++ [""] | (title, exts, _) <- envSections]) ++
         ["  |]\n"]
 
       unsupported =
