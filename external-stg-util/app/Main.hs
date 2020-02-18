@@ -9,16 +9,15 @@ import Data.Ord
 import Options.Applicative
 import Text.PrettyPrint.ANSI.Leijen hiding ((<$>), (<>))
 import qualified Text.PrettyPrint.ANSI.Leijen as PP
+import qualified Data.ByteString.Char8 as BS8
 
 import Text.Regex.TDFA
 import Text.Regex.TDFA.Common (Regex)
 import Text.Regex.TDFA.Text
 
---import GhcDump_Ast (Binder(..), binderUniqueName)
---import GhcDump.Pretty (PrettyOpts(..))
-import GhcDump.StgPretty
-import GhcDump.StgUtil
-import GhcDump_StgAst
+import Stg.Syntax
+import Stg.Pretty
+import Stg.Util
 
 
 filterBindings :: Regex -> Module -> Module
@@ -37,8 +36,12 @@ filterBindings re m =
 
 modes :: Parser (IO ())
 modes = subparser
-     $ mode "show" showMode (progDesc "print Stg")
+    (  mode "show" showMode (progDesc "print Stg")
+    <> mode "show-prep-core" showPCoreMode (progDesc "print prep Core")
+    <> mode "show-core" showCoreMode (progDesc "print Core")
+    )
   where
+    mode :: String -> Parser a -> InfoMod a -> Mod CommandFields a
     mode name f opts = command name (info (helper <*> f) opts)
 
     dumpFile :: Parser FilePath
@@ -52,12 +55,29 @@ modes = subparser
       where
         makeRegexM' = makeRegexM :: String -> ReadM Regex
 
+    showMode :: Parser (IO ())
     showMode =
         run <$> filterCond <*> dumpFile
       where
         run filterFn fname = do
             dump <- filterFn <$> GhcDump.StgUtil.readDump fname
             print $ pprModule dump
+
+    showPCoreMode :: Parser (IO ())
+    showPCoreMode =
+        run <$> dumpFile
+      where
+        run fname = do
+          dump <- GhcDump.StgUtil.readDump fname
+          putStrLn . BS8.unpack . modulePrepCoreSrc $ dump
+
+    showCoreMode :: Parser (IO ())
+    showCoreMode =
+        run <$> dumpFile
+      where
+        run fname = do
+          dump <- GhcDump.StgUtil.readDump fname
+          putStrLn . BS8.unpack . moduleCoreSrc $ dump
 
 main :: IO ()
 main = join $ execParser $ info (helper <*> modes) mempty

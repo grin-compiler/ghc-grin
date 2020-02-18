@@ -1,4 +1,4 @@
-name:                ghc-dump-stg
+name:                external-stg
 version:             0.1.0.0
 synopsis:            A library to dump GHC's STG representation.
 
@@ -14,8 +14,9 @@ cabal-version:       >=1.10
 
 library
   other-modules:       GhcPrelude
-  exposed-modules:     GhcDump_StgConvert
-                       GhcDump_StgAst
+  exposed-modules:
+--    Stg.Convert
+    Stg.Syntax
   ghc-options:         -Wall
   other-extensions:    GeneralizedNewtypeDeriving
   build-depends:       base,

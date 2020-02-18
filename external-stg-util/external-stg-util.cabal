@@ -1,33 +1,23 @@
-name:                ghc-dump-util
+name:                external-stg-util
 version:             0.1.0.0
-synopsis:            Handy tools for working with @ghc-dump@ dumps.
-description:
-  @ghc-dump@ is a library, GHC plugin, and set of tools for recording and
-  analysing GHC's Core representation. The plugin is compatible with GHC 7.10
-  through 8.3, exporting a consistent (albeit somewhat lossy) representation
-  across these versions. The AST is encoded as CBOR, which is small and easy to
-  deserialise.
-  .
-  This package provides the AST and compiler plugin. See the @ghc-dump-util@
-  package for a useful command-line tool for working with dumps produced by this
-  plugin.
+synopsis:            Handy tools for working with @external-stg@ dumps.
+--description:
 license:             BSD3
 license-file:        LICENSE
-author:              Ben Gamari
-maintainer:          ben@well-typed.com
-copyright:           (c) 2017 Ben Gamari
+author:              Csaba Hruska
+maintainer:          csaba.hruska@gmail.com
+copyright:           (c) 2020 Csaba Hruska
 category:            Development
 build-type:          Simple
-tested-with:         GHC==7.10.3, GHC==8.0.2, GHC==8.2.2
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     GhcDump.StgUtil
-                       GhcDump.StgPretty
-                       GhcDump.StgReconstruct
+  exposed-modules:     Stg.Util
+                       Stg.Pretty
+                       Stg.Reconstruct
   hs-source-dirs:      src
   build-depends:       base < 5.0,
-                       ghc-dump-stg,
+                       external-stg,
                        bytestring,
                        unordered-containers,
                        hashable,
@@ -35,13 +25,15 @@ library
                        binary
   default-language:    Haskell2010
 
-executable stg-dump
-  main-is:             StgMain.hs
+executable ext-stg
+  hs-source-dirs:      app
+  main-is:             Main.hs
   build-depends:       base < 5.0,
-                       ghc-dump-stg,
-                       ghc-dump-util,
+                       external-stg,
+                       external-stg-util,
                        ansi-wl-pprint,
                        regex-tdfa,
                        regex-tdfa-text,
+                       bytestring,
                        optparse-applicative
   default-language:    Haskell2010
