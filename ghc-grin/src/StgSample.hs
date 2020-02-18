@@ -55,7 +55,6 @@ showGhc = showPpr unsafeGlobalDynFlags
 -------------------------------------------------------------------------------
 
 {-
-  TODO:
     - data constructor creation
     pattern match
       - without parameters
@@ -93,7 +92,22 @@ do
   used by the stg builder
     fu
 -}
+{-
+data PrimRep
+  = VoidRep
+  | LiftedRep
+  | UnliftedRep   -- ^ Unlifted pointer
+  | Int64Rep      -- ^ Signed, 64 bit value (with 32-bit words only)
+  | Word64Rep     -- ^ Unsigned, 64 bit value (with 32-bit words only)
+  | AddrRep       -- ^ A pointer, but /not/ to a Haskell value (use '(Un)liftedRep')
+  | FloatRep
+  | DoubleRep
+  deriving (Generic, Data, Eq, Show, Ord)
 
+data RepType
+  = SingleValue   PrimRep
+  | UnboxedTuple  [PrimRep]
+-}
 main = do
   let dflags    = unsafeGlobalDynFlags
       --idl0      = mkLocalId xn t0
@@ -460,7 +474,7 @@ main6 = do
         , StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
             StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
               StgCase (
-                StgConApp dcMyFalse [] []
+                StgConApp dcMyFalse [] (error "StgConApp type list")
               ) idLifted0 PolyAlt
               [ (DEFAULT, [],
 
@@ -718,3 +732,308 @@ sampleADTArgDouble = do
       A: only Tag value matters (starting from 1), no order matters (i.e. Case Alt, AlgTyConRhs [DataCon])
 
 -}
+
+-- CASE: FFI float argument
+sampleFFIArgFloat = do
+  putStrLn "CASE: FFI with float argument"
+  let dflags    = unsafeGlobalDynFlags
+      mkIdT i t = mkVanillaGlobal (mkName i $ 'x' : show i) t
+      topBinds  =
+        [ StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
+            StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
+              StgOpApp
+                (StgFCallOp
+                  (CCall $ CCallSpec
+                    (StaticTarget NoSourceText (mkFastString "print_float") Nothing True)
+                    CCallConv
+                    PlayRisky
+                  )
+                  (mkUnique 'f' 0)
+                )
+                [ StgLitArg $ mkMachFloat 3.14
+                ] intTy
+        ]
+
+  us <- mkSplitUniqSupply 'g'
+
+  compileProgram NCG [] $ {-unarise us-} topBinds
+
+-- CASE: FFI double argument
+sampleFFIArgDouble = do
+  putStrLn "CASE: FFI with double argument"
+  let dflags    = unsafeGlobalDynFlags
+      mkIdT i t = mkVanillaGlobal (mkName i $ 'x' : show i) t
+      topBinds  =
+        [ StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
+            StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
+              StgOpApp
+                (StgFCallOp
+                  (CCall $ CCallSpec
+                    (StaticTarget NoSourceText (mkFastString "print_double") Nothing True)
+                    CCallConv
+                    PlayRisky
+                  )
+                  (mkUnique 'f' 0)
+                )
+                [ StgLitArg $ mkMachDouble 3.14
+                ] intTy
+        ]
+
+  us <- mkSplitUniqSupply 'g'
+
+  compileProgram NCG [] $ {-unarise us-} topBinds
+
+-- single value vs unboxed unit ; are they interchangable?
+-- CASE: construct Unit# int, unpack prim int
+unboxedUnit1 = do
+  let dflags    = unsafeGlobalDynFlags
+      mkIdT i t = mkVanillaGlobal (mkName i $ 'x' : show i) t
+      idStr0    = mkIdT 0 (repTy AddrRep)
+      u1IntTy   = mkTupleTy Unboxed [repTy IntRep]
+      idInt0    = mkIdT 100 (repTy IntRep)
+      topBinds  =
+        [ StgTopStringLit idStr0 (BS8.pack "Hello!\n1 + 2 = %d\n")
+        , StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
+            StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
+              StgCase (
+                StgConApp (getDataCon u1IntTy)
+                  [ StgLitArg $ mkMachInt dflags 3
+                  ] []
+              ) idInt0 (PrimAlt IntRep)
+              [ (DEFAULT, [],
+                  StgOpApp
+                    (StgFCallOp
+                      (CCall $ CCallSpec
+                        (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                        CCallConv
+                        PlayRisky
+                      )
+                      (mkUnique 'f' 0)
+                    )
+                    [ StgVarArg idStr0
+                    , StgVarArg idInt0
+                    ] (repTy VoidRep)
+                )
+              ]
+        ]
+  compileProgram NCG [] topBinds
+
+-- IMPORTANT: binders can not be unboxed tuples
+-- CASE: construct prim int, unpack Unit# int into IntRep binder
+unboxedUnit2 = do
+  let dflags    = unsafeGlobalDynFlags
+      mkIdT i t = mkVanillaGlobal (mkName i $ 'x' : show i) t
+      idStr0    = mkIdT 0 (repTy AddrRep)
+      utupTy l  = mkTupleTy Unboxed $ map repTy l
+      utupDC    = getDataCon . utupTy
+      idInt0    = mkIdT 100 (utupTy [IntRep])
+      idInt1    = mkIdT 101 (repTy IntRep)
+      topBinds  =
+        [ StgTopStringLit idStr0 (BS8.pack "Hello!\n1 + 2 = %d\n")
+        , StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
+            StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
+              StgCase (
+                StgLit $ mkMachInt dflags 3
+              ) idInt0 (MultiValAlt 1)
+              [ (DataAlt (utupDC [IntRep]), [idInt1],
+                  StgOpApp
+                    (StgFCallOp
+                      (CCall $ CCallSpec
+                        (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                        CCallConv
+                        PlayRisky
+                      )
+                      (mkUnique 'f' 0)
+                    )
+                    [ StgVarArg idStr0
+                    , StgVarArg idInt1
+                    ] (repTy VoidRep)
+                )
+              ]
+        ]
+  compileProgram NCG [] topBinds
+
+-- IMPORTANT: binders can not be void rep
+-- CASE: ffi returns (##) unpack as prim VoidRep [COMPILE ERROR]
+unboxedVoid1 = do
+  let dflags    = unsafeGlobalDynFlags
+      mkIdT i t = mkVanillaGlobal (mkName i $ 'x' : show i) t
+      idStr0    = mkIdT 0 (repTy AddrRep)
+      idStr1    = mkIdT 1 (repTy AddrRep)
+      utupTy l  = mkTupleTy Unboxed $ map repTy l
+      utupDC    = getDataCon . utupTy
+      idVoid0   = mkIdT 100 (utupTy [])
+      topBinds  =
+        [ StgTopStringLit idStr0 (BS8.pack "Hello!")
+        , StgTopStringLit idStr1 (BS8.pack "OK!")
+        , StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
+            StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
+              StgCase (
+
+                  StgOpApp
+                    (StgFCallOp
+                      (CCall $ CCallSpec
+                        (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                        CCallConv
+                        PlayRisky
+                      )
+                      (mkUnique 'f' 0)
+                    )
+                    [ StgVarArg idStr0
+                    ] (utupTy [])
+
+              ) idVoid0 (PrimAlt VoidRep)
+              [ (DEFAULT, [],
+
+                  StgOpApp
+                    (StgFCallOp
+                      (CCall $ CCallSpec
+                        (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                        CCallConv
+                        PlayRisky
+                      )
+                      (mkUnique 'f' 0)
+                    )
+                    [ StgVarArg idStr1
+                    ] (utupTy [])
+
+                )
+              ]
+        ]
+  compileProgram NCG [] topBinds
+
+-- CASE: ffi returns prim VoidRep unpack as (##) with DataAlt + MultiValAlt 0
+unboxedVoid2 = do
+  let dflags    = unsafeGlobalDynFlags
+      mkIdT i t = mkVanillaGlobal (mkName i $ 'x' : show i) t
+      idStr0    = mkIdT 0 (repTy AddrRep)
+      idStr1    = mkIdT 1 (repTy AddrRep)
+      utupTy l  = mkTupleTy Unboxed $ map repTy l
+      utupDC    = getDataCon . utupTy
+      idVoid0   = mkIdT 100 (utupTy [])
+      topBinds  =
+        [ StgTopStringLit idStr0 (BS8.pack "Hello!\n")
+        , StgTopStringLit idStr1 (BS8.pack "OK!\n")
+        , StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
+            StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
+              StgCase (
+
+                  StgOpApp
+                    (StgFCallOp
+                      (CCall $ CCallSpec
+                        (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                        CCallConv
+                        PlayRisky
+                      )
+                      (mkUnique 'f' 0)
+                    )
+                    [ StgVarArg idStr0
+                    ] (repTy VoidRep)
+
+              ) idVoid0 (MultiValAlt 0)
+              [ (DataAlt (utupDC []), [],
+
+                  StgOpApp
+                    (StgFCallOp
+                      (CCall $ CCallSpec
+                        (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                        CCallConv
+                        PlayRisky
+                      )
+                      (mkUnique 'f' 0)
+                    )
+                    [ StgVarArg idStr1
+                    ] (repTy VoidRep)
+
+                )
+              ]
+        ]
+  compileProgram NCG [] topBinds
+
+-- CASE: ffi returns prim VoidRep unpack as (##) with DEFAULT + MultiValAlt 0
+unboxedVoid3 = do
+  let dflags    = unsafeGlobalDynFlags
+      mkIdT i t = mkVanillaGlobal (mkName i $ 'x' : show i) t
+      idStr0    = mkIdT 0 (repTy AddrRep)
+      idStr1    = mkIdT 1 (repTy AddrRep)
+      utupTy l  = mkTupleTy Unboxed $ map repTy l
+      utupDC    = getDataCon . utupTy
+      idVoid0   = mkIdT 100 (utupTy [])
+      topBinds  =
+        [ StgTopStringLit idStr0 (BS8.pack "Hello!\n")
+        , StgTopStringLit idStr1 (BS8.pack "OK!\n")
+        , StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
+            StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
+              StgCase (
+
+                  StgOpApp
+                    (StgFCallOp
+                      (CCall $ CCallSpec
+                        (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                        CCallConv
+                        PlayRisky
+                      )
+                      (mkUnique 'f' 0)
+                    )
+                    [ StgVarArg idStr0
+                    ] (repTy VoidRep)
+
+              ) idVoid0 (MultiValAlt 0)
+              [ (DEFAULT, [],
+
+                  StgOpApp
+                    (StgFCallOp
+                      (CCall $ CCallSpec
+                        (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                        CCallConv
+                        PlayRisky
+                      )
+                      (mkUnique 'f' 0)
+                    )
+                    [ StgVarArg idStr1
+                    ] (repTy VoidRep)
+
+                )
+              ]
+        ]
+  compileProgram NCG [] topBinds
+
+-- CASE: ffi void arg as (##)
+unboxedVoid4 = do
+  let dflags    = unsafeGlobalDynFlags
+      mkIdT i t = mkVanillaGlobal (mkName i $ 'x' : show i) t
+      idStr0    = mkIdT 0 (repTy AddrRep)
+      utupTy l  = mkTupleTy Unboxed $ map repTy l
+      utupDC    = getDataCon . utupTy
+      idVoid0   = mkIdT 100 (utupTy [])
+      topBinds  =
+        [ StgTopStringLit idStr0 (BS8.pack "OK!\n")
+        , StgTopLifted $ StgNonRec (mkIdNT 1 "main" $ repTy LiftedRep) $
+            StgRhsClosure dontCareCCS {-stgSatOcc-} stgUnsatOcc [] {-SingleEntry-}Updatable [voidArgId] $
+              StgCase (
+
+                StgConApp (utupDC []) [] []
+
+              ) idVoid0 (MultiValAlt 0)
+              [ (DEFAULT, [],
+
+                  StgOpApp
+                    (StgFCallOp
+                      (CCall $ CCallSpec
+                        (StaticTarget NoSourceText (mkFastString "printf") Nothing True)
+                        CCallConv
+                        PlayRisky
+                      )
+                      (mkUnique 'f' 0)
+                    )
+                    [ StgVarArg idStr0
+                    , StgVarArg idVoid0
+                    , StgVarArg idVoid0
+                    , StgVarArg idVoid0
+                    , StgVarArg idVoid0
+                    ] (repTy VoidRep)
+
+                )
+              ]
+        ]
+  compileProgram NCG [] topBinds

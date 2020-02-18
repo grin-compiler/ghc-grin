@@ -62,7 +62,14 @@ compileProgram backend tyCons topBinds = runGhc (Just libdir) $ do
     lintStgTopBindings dflags True "Manual" topBinds
 
   -- construct STG program manually
-  let ccs       = ([], [])
+  -- TODO: specify the following properly
+{-
+type CollectedCCs
+  = ( [CostCentre]       -- local cost-centres that need to be decl'd
+    , [CostCentreStack]  -- pre-defined "singleton" cost centre stacks
+    )
+-}
+  let ccs       = emptyCollectedCCs :: CollectedCCs
       hpc       = emptyHpcInfo False
 
   -- backend
@@ -91,7 +98,7 @@ compileProgram backend tyCons topBinds = runGhc (Just libdir) $ do
   env <- getSession
   liftIO $ do
     newGen dflags env outFname modl tyCons ccs topBinds hpc
-    oneShot env StopLn [(outFname, Just link)]
+    oneShot env StopLn [(outFname, Just link), ("my_lib.o", Nothing)]
   pure ()
 {-
   TODO:
