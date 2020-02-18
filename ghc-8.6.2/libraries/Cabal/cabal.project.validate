@@ -1,8 +1,0 @@
-packages: Cabal/ cabal-testsuite/ cabal-install/
-
-package Cabal
-  ghc-options: -Werror -fno-ignore-asserts
-package cabal-testsuite
-  ghc-options: -Werror -fno-ignore-asserts
-package cabal-install
-  ghc-options: -Werror -fno-ignore-asserts

@@ -1,6 +1,0 @@
-DocParagraph
-  (DocAppend
-     (DocString "Bla ")
-     (DocHyperlink
-        Hyperlink
-          {hyperlinkLabel = Just "link", hyperlinkUrl = "http://example.com"}))
