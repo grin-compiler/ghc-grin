@@ -460,6 +460,8 @@ Library
         GHC.Stg.Syntax
         GHC.Stg.FVs
         GHC.Stg.DepAnal
+        Stg.Syntax
+        Stg.Convert
         GHC.CoreToStg
         GHC.CoreToStg.Prep
         GHC.Types.RepType

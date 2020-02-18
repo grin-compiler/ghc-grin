@@ -1,4 +1,4 @@
-packages: ./
+packages: ./ ./custom-mod/Cabal-3.0.0.0
 
 -- This essentially freezes the build plan for hadrian
 index-state: 2019-12-16T07:24:23Z

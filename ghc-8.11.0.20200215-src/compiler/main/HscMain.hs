@@ -182,6 +182,10 @@ import GHC.Iface.Ext.Types  ( getAsts, hie_asts, hie_module )
 import GHC.Iface.Ext.Binary ( readHieFile, writeHieFile , hie_file_result)
 import GHC.Iface.Ext.Debug  ( diffFile, validateScopes )
 
+import qualified Stg.Convert as Stg
+import qualified Data.ByteString.Lazy as BSL
+import Data.Binary
+
 #include "HsVersions.h"
 
 
@@ -1422,6 +1426,12 @@ hscGenHardCode hsc_env cgguts location output_filename = do
               (S.toList local_ccs ++ caf_ccs, caf_cc_stacks)
             prof_init = profilingInitCode this_mod cost_centre_info
             foreign_stubs = foreign_stubs0 `appendStubC` prof_init
+
+        --- save stg ---
+        let stgBin      = encode (Stg.cvtModule {-core_binds prepd_binds-} [] [] "stg" modName stg_binds)
+            stg_output  = replaceExtension (ml_hi_file location) (objectSuf dflags ++ "_stgbin")
+            modName     = Module.moduleName $ cg_module cgguts
+        BSL.writeFile stg_output stgBin
 
         ------------------  Code generation ------------------
 

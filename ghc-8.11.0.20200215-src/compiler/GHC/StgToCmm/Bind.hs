@@ -88,7 +88,7 @@ cgTopRhsClosure dflags rec id ccs upd_flag args body =
   -- concurrent/should_run/4030 fails, for instance.
   --
   gen_code _ _ closure_label
-    | StgApp f [] <- body, null args, isNonRec rec
+    | StgApp f [] _ <- body, null args, isNonRec rec
     = do
          cg_info <- getCgIdInfo f
          emitDataCon closure_label indStaticInfoTable ccs [unLit (idInfoToAmode cg_info)]
@@ -262,11 +262,11 @@ mkRhsClosure    dflags bndr _cc
                 []                      -- A thunk
                 expr
   | let strip = stripStgTicksTopE (not . tickishIsCode)
-  , StgCase (StgApp scrutinee [{-no args-}])
+  , StgCase (StgApp scrutinee [{-no args-}] _)
          _   -- ignore bndr
          (AlgAlt _)
          [(DataAlt _, params, sel_expr)] <- strip expr
-  , StgApp selectee [{-no args-}] <- strip sel_expr
+  , StgApp selectee [{-no args-}] _ <- strip sel_expr
   , the_fv == scrutinee                -- Scrutinee is the only free variable
 
   , let (_, _, params_w_offsets) = mkVirtConstrOffsets dflags (addIdReps (assertNonVoidIds params))
@@ -293,7 +293,7 @@ mkRhsClosure    dflags bndr _cc
                 fvs
                 upd_flag
                 []                      -- No args; a thunk
-                (StgApp fun_id args)
+                (StgApp fun_id args _)
 
   -- We are looking for an "ApThunk"; see data con ApThunk in GHC.StgToCmm.Closure
   -- of form (x1 x2 .... xn), where all the xi are locals (not top-level)

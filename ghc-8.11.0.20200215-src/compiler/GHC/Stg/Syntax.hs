@@ -220,6 +220,7 @@ data GenStgExpr pass
   = StgApp
         Id       -- function
         [StgArg] -- arguments; may be empty
+        (Type, String)            -- Result type
 
 {-
 ************************************************************************
@@ -699,7 +700,7 @@ pprStgExpr :: OutputablePass pass => GenStgExpr pass -> SDoc
 pprStgExpr (StgLit lit)     = ppr lit
 
 -- general case
-pprStgExpr (StgApp func args)
+pprStgExpr (StgApp func args _)
   = hang (ppr func) 4 (sep (map (ppr) args))
 
 pprStgExpr (StgConApp con args _)

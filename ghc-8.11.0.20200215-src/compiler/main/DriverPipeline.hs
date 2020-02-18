@@ -1634,6 +1634,21 @@ getHCFilePackages filename =
           return []
 
 -----------------------------------------------------------------------------
+-- External STG linking, of .stgbin files
+
+getRecursiveContents :: String -> FilePath -> IO [FilePath]
+getRecursiveContents ext topdir = do
+  names <- getDirectoryContents topdir
+  let properNames = filter (`notElem` [".", ".."]) names
+  paths <- forM properNames $ \name -> do
+    let path = topdir </> name
+    isDirectory <- doesDirectoryExist path
+    if isDirectory
+      then getRecursiveContents ext path
+      else pure $ filter ((== ext) . takeExtension) [path]
+  return (concat paths)
+
+-----------------------------------------------------------------------------
 -- Static linking, of .o files
 
 -- The list of packages passed to link is the list of packages on
@@ -1712,6 +1727,19 @@ linkBinary' staticLink dflags o_files dep_packages = do
                             else l
               in ["-L" ++ l] ++ ["-Xlinker", "-rpath", "-Xlinker", libpath]
          | otherwise = ["-L" ++ l]
+
+
+    -- list stgbins
+    let stgbin_ext = "." ++ objectSuf dflags ++ "_stgbin"
+        stgbin_path = map takeDirectory o_files ++ pkg_lib_paths
+    --putStrLn $ "searching for stgbins with extension: " ++ stgbin_ext
+    --putStrLn $ "  in path\n" ++ unlines (map ('\t':) stgbin_path)
+    stgbins <- concat <$> mapM (getRecursiveContents stgbin_ext) stgbin_path
+
+    -- compile / link GRIN program
+    --when (ghcLink dflags == LinkBinary && staticLink == False) $ do
+    unless staticLink $ do
+      runGrin dflags $ map (SysTools.FileOption "") stgbins ++ [SysTools.Option "-o", SysTools.FileOption "" output_fn]
 
     pkg_lib_path_opts <-
       if gopt Opt_SingleLibFolder dflags

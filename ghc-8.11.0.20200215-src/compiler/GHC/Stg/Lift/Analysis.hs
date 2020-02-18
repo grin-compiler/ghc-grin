@@ -222,8 +222,8 @@ tagSkeletonExpr (StgConApp con args tys)
   = (NilSk, mkArgOccs args, StgConApp con args tys)
 tagSkeletonExpr (StgOpApp op args ty)
   = (NilSk, mkArgOccs args, StgOpApp op args ty)
-tagSkeletonExpr (StgApp f args)
-  = (NilSk, arg_occs, StgApp f args)
+tagSkeletonExpr (StgApp f args ty)
+  = (NilSk, arg_occs, StgApp f args ty)
   where
     arg_occs
       -- This checks for nullary applications, which we treat the same as

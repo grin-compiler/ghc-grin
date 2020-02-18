@@ -79,7 +79,7 @@ annTopBindingsDeps this_mod bs = zip bs (map top_bind bs)
     args bounds as = unionVarSets (map (arg bounds) as)
 
     expr :: BVs -> StgExpr -> FVs
-    expr bounds (StgApp f as) =
+    expr bounds (StgApp f as _) =
       var bounds f `unionVarSet` args bounds as
 
     expr _ StgLit{} =

@@ -122,8 +122,8 @@ binding env body_fv (StgRec pairs) = (StgRec pairs', fvs)
 expr :: Env -> StgExpr -> (CgStgExpr, DIdSet)
 expr env = go
   where
-    go (StgApp occ as)
-      = (StgApp occ as, unionDVarSet (args env as) (mkFreeVarSet env [occ]))
+    go (StgApp occ as ty)
+      = (StgApp occ as ty, unionDVarSet (args env as) (mkFreeVarSet env [occ]))
     go (StgLit lit) = (StgLit lit, emptyDVarSet)
     go (StgConApp dc as tys) = (StgConApp dc as tys, args env as)
     go (StgOpApp op as ty) = (StgOpApp op as ty, args env as)

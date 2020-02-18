@@ -356,11 +356,11 @@ coreToStgExpr (App (Lit LitRubbish) _some_unlifted_type)
   -- We lower 'LitRubbish' to @()@ here, which is much easier than doing it in
   -- a STG to Cmm pass.
   = coreToStgExpr (Var unitDataConId)
-coreToStgExpr (Var v)      = coreToStgApp v               [] []
-coreToStgExpr (Coercion _) = coreToStgApp coercionTokenId [] []
+coreToStgExpr e@(Var v)      = coreToStgApp v               [] [] (exprType e)
+coreToStgExpr e@(Coercion _) = coreToStgApp coercionTokenId [] [] (exprType e)
 
 coreToStgExpr expr@(App _ _)
-  = coreToStgApp f args ticks
+  = coreToStgApp f args ticks (exprType expr)
   where
     (f, args, ticks) = myCollectArgs expr
 
@@ -393,7 +393,8 @@ coreToStgExpr (Cast expr _)
 -- Cases require a little more real work.
 
 coreToStgExpr (Case scrut _ _ [])
-  = coreToStgExpr scrut
+  = panic "coreToStgExpr: empty alts after core prep"
+--  = coreToStgExpr scrut
     -- See Note [Empty case alternatives] in CoreSyn If the case
     -- alternatives are empty, the scrutinee must diverge or raise an
     -- exception, so we can just dive into it.
@@ -477,8 +478,9 @@ mkStgAltType bndr alts
 coreToStgApp :: Id            -- Function
              -> [CoreArg]     -- Arguments
              -> [Tickish Id]  -- Debug ticks
+             -> Type          -- Function result type
              -> CtsM StgExpr
-coreToStgApp f args ticks = do
+coreToStgApp f args ticks core_result_type = do
     (args', ticks') <- coreToStgArgs args
     how_bound <- lookupVarCts f
 
@@ -507,7 +509,7 @@ coreToStgApp f args ticks = do
                 -- the primop's wrapper.
                 PrimOpId op
                   | saturated    -> StgOpApp (StgPrimOp op) args' res_ty
-                  | otherwise    -> StgApp (primOpWrapperId op) args'
+                  | otherwise    -> StgApp (primOpWrapperId op) args' (core_result_type, "PrimOpId")
 
                 -- A call to some primitive Cmm function.
                 FCallId (CCall (CCallSpec (StaticTarget _ lbl (Just pkgId) True)
@@ -520,7 +522,7 @@ coreToStgApp f args ticks = do
                                     StgOpApp (StgFCallOp call (idType f)) args' res_ty
 
                 TickBoxOpId {}   -> pprPanic "coreToStg TickBox" $ ppr (f,args')
-                _other           -> StgApp f args'
+                _other           -> StgApp f args' (core_result_type, "CoreApp")
 
         tapp = foldr StgTick app (ticks ++ ticks')
 
@@ -556,7 +558,7 @@ coreToStgArgs (arg : args) = do         -- Non-type argument
     let
         (aticks, arg'') = stripStgTicksTop tickishFloatable arg'
         stg_arg = case arg'' of
-                       StgApp v []        -> StgVarArg v
+                       StgApp v [] _      -> StgVarArg v
                        StgConApp con [] _ -> StgVarArg (dataConWorkId con)
                        StgLit lit         -> StgLitArg lit
                        _                  -> pprPanic "coreToStgArgs" (ppr arg)

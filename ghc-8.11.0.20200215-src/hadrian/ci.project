@@ -1,4 +1,4 @@
-packages: ./
+packages: ./ ./custom-mod/Cabal-3.0.0.0
 
 package hadrian
     ghc-options: -Werror

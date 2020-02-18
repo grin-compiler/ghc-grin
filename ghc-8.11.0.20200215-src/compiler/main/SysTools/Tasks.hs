@@ -359,6 +359,11 @@ touch :: DynFlags -> String -> String -> IO ()
 touch dflags purpose arg = traceToolCommand dflags "touch" $
   runSomething dflags purpose (pgm_T dflags) [FileOption "" arg]
 
+runGrin :: DynFlags -> [Option] -> IO ()
+runGrin dflags args = do
+  let prog = "grin-ghc"
+  runSomething dflags "GRIN compiler" prog args
+
 -- * Tracing utility
 
 -- | Record in the eventlog when the given tool command starts

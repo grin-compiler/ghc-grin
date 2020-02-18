@@ -1923,6 +1923,11 @@ installLib verbosity lbi targetDir dynlibTargetDir _builtDir pkg lib clbi = do
   whenProf    $ copyModuleFiles "p_hi"
   whenShared  $ copyModuleFiles "dyn_hi"
 
+  -- copy .stgbin files over:
+  whenVanilla $ copyModuleFiles "o_stgbin"
+  whenProf    $ copyModuleFiles "p_o_stgbin"
+  whenShared  $ copyModuleFiles "dyn_o_stgbin"
+
   -- copy the built library files over:
   whenHasCode $ do
     whenVanilla $ do

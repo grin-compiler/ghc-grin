@@ -147,7 +147,7 @@ statRhs top (_, StgRhsClosure _ _ u _ body)
 
 statExpr :: StgExpr -> StatEnv
 
-statExpr (StgApp _ _)     = countOne Applications
+statExpr (StgApp _ _ _)   = countOne Applications
 statExpr (StgLit _)       = countOne Literals
 statExpr (StgConApp _ _ _)= countOne ConstructorApps
 statExpr (StgOpApp _ _ _) = countOne PrimitiveApps

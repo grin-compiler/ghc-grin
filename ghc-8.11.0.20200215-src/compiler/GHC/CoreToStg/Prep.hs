@@ -622,7 +622,7 @@ cpeRhsE env (Case scrut bndr ty alts)
                  -- enabled we instead produce an 'error' expression to catch
                  -- the case where a function we think should bottom
                  -- unexpectedly returns.
-               | gopt Opt_CatchBottoms (cpe_dynFlags env)
+               | gopt Opt_CatchBottoms (cpe_dynFlags env) || True
                , not (altsAreExhaustive alts)
                = addDefault alts (Just err)
                | otherwise = alts
