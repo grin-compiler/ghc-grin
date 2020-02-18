@@ -1,22 +1,19 @@
-{-# LANGUAGE LambdaCase, RecordWildCards #-}
+{-# LANGUAGE LambdaCase, RecordWildCards, OverloadedStrings #-}
 module Gen where
 
 import Control.Monad.State
-import Control.Monad
+import Control.Monad.Except
 import Data.Maybe
 import Text.Printf
 import Parser
 import Syntax
-import Lambda.Syntax (External(..), SimpleType(..), packName, unpackName, Name)
-import qualified Lambda.Syntax as L
+import Lambda.Syntax2 (External(..), SimpleType(..), packName, Name)
+import qualified Lambda.Syntax2 as L
 import qualified Lambda.Pretty as L
-import Text.Show.Pretty (ppShow)
-import Text.PrettyPrint.ANSI.Leijen hiding ((<$>))
+import Text.PrettyPrint.ANSI.Leijen hiding ((<$>), cat)
+--import Numeric
 
 import Data.Char
-import Data.List (intercalate)
-import Data.Set (Set)
-import qualified Data.Set as Set
 import Data.Map (Map)
 import qualified Data.Map as Map
 
@@ -27,36 +24,49 @@ readInfo = do
      Left err -> error ("parse error at " ++ (show err))
      Right p_o_specs@(Info _ _)
         -> seq (sanityTop p_o_specs) (pure p_o_specs)
-{-
-isMonomorph :: Ty -> Bool
-isMonomorph = \case
-  TyF a b -> all isMonomorph [a, b]
-  TyC a b -> all isMonomorph [a, b]
-  TyApp _ args -> null args
-  TyVar {} -> False
-  TyUTup a -> all isMonomorph a
--}
-cvtExternal :: String -> Ty -> Bool -> Either String External
-cvtExternal n t isEffectful = do
+
+deriveNewName :: Name -> G Name
+deriveNewName name = do
+  i <- Map.findWithDefault 0 name <$> gets envNameCounter
+  modify $ \env@Env{..} -> env {envNameCounter = Map.insert name (succ i) envNameCounter}
   {-
-  res <- reverse <$> firstOrderFunTy t
-  let (retTy' : revArgsTy') = res
-  retTy <- cvtTy $ prepareRetType retTy'
-  revArgsTy <- mapM cvtTy $ filter (not . isStateTy) revArgsTy'
+  let code    = ['0'..'9'] ++ ['a'..'z'] ++ ['A'..'Z']
+      baseX a = showIntAtBase (length code) (code !!) a ""
+  pure $ packName $ printf "%s.%s" name (baseX i)
   -}
-  ty <- cvtTy $ removeStateFromRetType t
+  pure $ packName $ printf "%s.%d" name i
+
+genName :: Name -> G Name
+genName name = do
+  m <- gets envNameMap
+  case Map.lookup name m of
+    Just n  -> pure n
+    Nothing -> do
+      n <- deriveNewName name
+      modify $ \env@Env{..} -> env {envNameMap = Map.insert name n envNameMap}
+      pure n
+
+clearTyVarMap :: G ()
+clearTyVarMap = modify $ \env -> env {envNameMap = mempty}
+
+cvtExternal :: String -> Ty -> Bool -> ExceptT String G External
+cvtExternal n t isEffectful = do
+  (retTy, argsTy) <- cvtFunTy $ removeStateFromRetType t
   pure External
     { eName       = packName n
-    , eType       = ty
+    , eRetType    = retTy
+    , eArgsType   = argsTy
     , eEffectful  = isEffectful
     , eKind       = L.PrimOp
     }
 
-mkUnboxedTuple :: [L.Ty] -> L.Ty
-mkUnboxedTuple args = case length args of
-  0 -> L.TyCon (packName "GHC.Prim.(##)") []
-  1 -> L.TyCon (packName "GHC.Prim.Unit#") args
-  n -> L.TyCon (packName $ "GHC.Prim.(#" ++ replicate (max 0 $ n-1) ',' ++ "#)") args
+mkUnboxedTuple :: [L.Ty] -> G L.Ty
+mkUnboxedTuple args = do
+  ut <- deriveNewName "t"
+  pure $ case length args of
+    0 -> L.TyCon ut (packName "GHC.Prim.(##)") []
+    1 -> L.TyCon ut (packName "GHC.Prim.Unit#") args
+    n -> L.TyCon ut (packName $ "GHC.Prim.(#" ++ replicate (max 0 $ n-1) ',' ++ "#)") args
 
 isStateTy :: Ty -> Bool
 isStateTy = \case
@@ -80,60 +90,42 @@ removeStateFromRetType = \case
           | otherwise   -> t
 
   t -> t
-{-
-firstOrderTy :: Ty -> Either String Ty
-firstOrderTy = \case
-  TyApp (TyCon n) args -> do
-    xs <- mapM firstOrderTy args
-    pure $ TyApp (TyCon n) xs
 
-  TyVar n
-    -> Right $ TyVar n
+-- generate unique names for type nodes
+cvtFunTy :: Ty -> ExceptT String G (L.Ty, [L.Ty])
+cvtFunTy a = do
+  lift clearTyVarMap
+  ty <- cvtTy a
+  case flattenFunTy ty of
+    L.TyFun _ r args -> pure (r, args)
+    t -> throwError $ "ivalid function type: " ++ show t
 
-  TyUTup args -> do
-    xs <- mapM firstOrderTy args
-    pure $ TyUTup xs
-
-  --TyF{} -> Left "higher order type"
-  TyF a b -> TyF <$> firstOrderTy a <*> firstOrderTy b
-  TyC{} -> Left "consraint type"
-  t -> Left $ "unsupported type: " ++ show t
-
-firstOrderFunTy :: Ty -> Either String [Ty]
-firstOrderFunTy = \case
-  TyF t x -> (:)   <$> firstOrderTy t <*> firstOrderFunTy x
-  t       -> (:[]) <$> firstOrderTy t
--}
-cvtTy :: Ty -> Either String L.Ty
-cvtTy ty = case {-adjustTy-} ty of
-  TyVar n -> Right $ L.TyVar $ packName n
-  TyApp (TyCon n) []
-    | Just t <- cvtType n -> Right $ L.TySimple t
-  TyApp (TyCon n) args
-    | Right xs <- mapM cvtTy args
-    -> Right $ L.TyCon (packName n) xs
-  TyUTup args
-    | Right xs <- mapM cvtTy args
-    -> Right $ mkUnboxedTuple xs
-  TyF a b
-    | Right a2 <- cvtTy a
-    , Right b2 <- cvtTy b
-    -> Right $ L.TyArr a2 b2
-  t -> Left $ "unsupported type: " ++ show t
-
-{-
--- removes state variable from primitive types
-adjustTy :: Ty -> Ty
-adjustTy = \case
-  TyApp (TyCon "TVar#")               [s, a]  -> TyApp (TyCon "TVar#")              [a]
-  TyApp (TyCon "MVar#")               [s, a]  -> TyApp (TyCon "MVar#")              [a]
-  TyApp (TyCon "MutVar#")             [s, a]  -> TyApp (TyCon "MutVar#")            [a]
-  TyApp (TyCon "MutableArray#")       [s, a]  -> TyApp (TyCon "MutableArray#")      [a]
-  TyApp (TyCon "SmallMutableArray#")  [s, a]  -> TyApp (TyCon "SmallMutableArray#") [a]
-  TyApp (TyCon "MutableArrayArray#")  [s]     -> TyApp (TyCon "MutableArrayArray#") []
-  TyApp (TyCon "MutableByteArray#")   [s]     -> TyApp (TyCon "MutableByteArray#")  []
+flattenFunTy :: L.Ty -> L.Ty
+flattenFunTy = \case
+  L.TyFun n1 (L.TyFun _n2 r args2) args1 -> flattenFunTy (L.TyFun n1 r (map flattenFunTy $ args1 ++ args2))
+  L.TyCon a b args -> L.TyCon a b (map flattenFunTy args)
   t -> t
--}
+
+cvtTy :: Ty -> ExceptT String G L.Ty
+cvtTy ty = case ty of
+  TyVar n -> L.TyVar <$> lift (genName (packName n))
+  TyApp (TyCon n) []
+    | Just t <- cvtType n
+    -> L.TySimple <$> lift (deriveNewName "t") <*> pure t
+  TyApp (TyCon n) args -> do
+    xs <- mapM cvtTy args
+    tn <- lift (deriveNewName "t")
+    pure $ L.TyCon tn (packName n) xs
+  TyUTup args -> do
+    xs <- mapM cvtTy args
+    lift $ mkUnboxedTuple xs
+  TyF a b -> do
+    a2 <- cvtTy a
+    b2 <- cvtTy b
+    tn <- lift (deriveNewName "tf")
+    pure $ L.TyFun tn b2 [a2]
+  t -> throwError $ "unsupported type: " ++ show t
+
 cvtType :: String -> Maybe SimpleType
 cvtType = \case
   "Char#"   -> Just T_Char
@@ -144,19 +136,6 @@ cvtType = \case
   "Addr#"   -> Just T_Addr
   _ -> Nothing
 
-tyVars :: L.Ty -> Set.Set Name
-tyVars = \case
-  L.TyCon _ a -> Set.unions $ map tyVars a
-  L.TyVar n   -> Set.singleton n
-  _ -> Set.empty
-{-
--- check for unknown type vars in result type
-hasUnknownTyVar :: [L.Ty] -> L.Ty -> Bool
-hasUnknownTyVar args res = not (Set.null $ Set.difference r a) where
-  a = Set.unions $ map tyVars args
-  r = tyVars res
-hasUnknownTyVar _ _ = False
--}
 data Env
   = Env
   { envSections         :: [(String, [External], [(String, String)])] -- section, externals, unsupported ops
@@ -164,6 +143,8 @@ data Env
   , envSectionTitle     :: String
   , envExternals        :: [External]
   , envUnsupported      :: [(String, String)] -- NOTE: primop name, message
+  , envNameMap          :: Map Name Name
+  , envNameCounter      :: Map Name Int
   }
 
 emptyEnv :: [Option] -> Env
@@ -173,6 +154,8 @@ emptyEnv opts = Env
   , envSectionTitle     = ""
   , envExternals        = []
   , envUnsupported      = []
+  , envNameMap          = mempty
+  , envNameCounter      = mempty
   }
 
 type G = State Env
@@ -204,15 +187,7 @@ flushSection = do
 
 setSection :: String -> G ()
 setSection title = modify $ \s@Env{..} -> s {envSectionTitle = title}
-{-
-whiteList :: Set String
-whiteList = Set.fromList
-  [ "newMVar#"
-  , "raise#"
-  , "raiseIO#"
-  , "getSpark#"
-  ]
--}
+
 visitEntry :: Entry -> G ()
 visitEntry = \case
   PrimVecOpSpec{..} -> unsupportedPrimop name "SIMD is not supported yet"
@@ -220,14 +195,15 @@ visitEntry = \case
 
   PrimOpSpec{..} -> do
     has_side_effects <- attrBool "has_side_effects" opts
-    case cvtExternal name ty has_side_effects of
+    err <- runExceptT $ cvtExternal name ty has_side_effects
+    case err of
       Right e@External{..}
         -- | not (hasUnknownTyVar eArgsType eRetType) || Set.member name whiteList
         -> addExternal e
         -- | otherwise
         -- -> unsupportedPrimop name "unknown type parameters in the result type"
-      Left err
-        -> unsupportedPrimop name err
+      Left msg
+        -> unsupportedPrimop name msg
 
   Section{..} -> do
     flushSection
@@ -254,7 +230,7 @@ genGHCPrimOps = do
         , "module Lambda.GHCPrimOps where"
         , ""
         , "import qualified Data.Set as Set"
-        , "import Lambda.Syntax"
+        , "import Lambda.Syntax2"
         , "import Lambda.TH"
         , ""
         ]
@@ -271,19 +247,19 @@ genGHCPrimOps = do
 
       primPrelude =
         [ "primPrelude :: Program"
-        , "primPrelude = [progConst|"
-        ] ++ map tab (concat [comment title ++ (lines $ showWidth 800 $ plain $ L.prettyExternals exts) ++ [""] | (title, exts, _) <- envSections]) ++
+        , "primPrelude = [progConst2|"
+        ] ++ map tab (concat [comment title ++ (lines $ showWidth 800 $ plain $ L.prettyExternals2 exts) ++ [""] | (title, exts, _) <- envSections]) ++
         ["  |]\n"]
 
       unsupported =
         [ "unsupported :: Set.Set String"
         , "unsupported = Set.fromList"
-        ] ++ go True envSections ++
+        ] ++ ppUnsupported True envSections ++
         ["  ]"]
 
-      go _ [] = []
-      go isFirst ((s,_,[]):xs) = go isFirst xs
-      go isFirst ((s,_,l):xs) = ["\n  -- " ++ s] ++ goSection isFirst l ++ go False xs
+      ppUnsupported _ [] = []
+      ppUnsupported isFirst ((_s,_,[]):xs) = ppUnsupported isFirst xs
+      ppUnsupported isFirst ((s,_,l):xs) = ["\n  -- " ++ s] ++ goSection isFirst l ++ ppUnsupported False xs
 
       goSection _ [] = []
       goSection True ((n,msg):xs)   = ["  [ " ++ (take 40 $ show n ++ repeat ' ') ++ " -- " ++ msg] ++ goSection False xs

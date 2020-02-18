@@ -18,7 +18,9 @@ module ParserM (
  ) where
 
 import Control.Applicative
-import Prelude
+
+import Prelude hiding (fail)
+import Control.Monad.Fail (MonadFail (..))
 
 import Control.Monad (ap, liftM)
 import Data.Word (Word8)
@@ -42,6 +44,8 @@ instance Monad ParserM where
                                             Left err ->
                                                 Left err
     return a = ParserM $ \i s -> Right (i, s, a)
+
+instance MonadFail ParserM where
     fail err = ParserM $ \_ _ -> Left err
 
 run_parser :: ParserM a -> (String -> Either String a)
