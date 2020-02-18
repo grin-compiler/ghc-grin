@@ -60,7 +60,7 @@ modes = subparser
         run <$> filterCond <*> dumpFile
       where
         run filterFn fname = do
-            dump <- filterFn <$> GhcDump.StgUtil.readDump fname
+            dump <- filterFn <$> Stg.Util.readDump fname
             print $ pprModule dump
 
     showPCoreMode :: Parser (IO ())
@@ -68,7 +68,7 @@ modes = subparser
         run <$> dumpFile
       where
         run fname = do
-          dump <- GhcDump.StgUtil.readDump fname
+          dump <- Stg.Util.readDump fname
           putStrLn . BS8.unpack . modulePrepCoreSrc $ dump
 
     showCoreMode :: Parser (IO ())
@@ -76,7 +76,7 @@ modes = subparser
         run <$> dumpFile
       where
         run fname = do
-          dump <- GhcDump.StgUtil.readDump fname
+          dump <- Stg.Util.readDump fname
           putStrLn . BS8.unpack . moduleCoreSrc $ dump
 
 main :: IO ()
