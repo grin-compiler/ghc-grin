@@ -15,7 +15,7 @@ import Control.Monad.Trans.Maybe
 
 -- GHC Dump
 import qualified Stg.Syntax as C
-import qualified Stg.Pretty as P
+import qualified Stg.Pretty as C
 import qualified Text.PrettyPrint.ANSI.Leijen as P
 
 -- Lambda
@@ -471,7 +471,12 @@ visitExpr mname expr = case expr of
   C.StgApp var [] _ _ -> do
     (n, t) <- genBinder var
     name <- genResultName mname
-    emitCmd $ S (name, t, Var n)
+    case t of
+      SingleValue LiftedRep -> do
+        -- NOTE: force thunk
+        emitCmd $ S (name, SingleValue UnliftedRep, App n [])
+      _ -> do
+        emitCmd $ S (name, t, Var n)
 
   -- S item
   -- generate result var if necessary
