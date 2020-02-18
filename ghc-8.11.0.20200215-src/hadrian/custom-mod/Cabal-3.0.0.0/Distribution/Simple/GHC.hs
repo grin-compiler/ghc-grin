@@ -110,6 +110,7 @@ import Distribution.Types.UnqualComponentName
 import Distribution.Utils.NubList
 import Language.Haskell.Extension
 
+import Control.Exception
 import Control.Monad (msum, forM_)
 import Data.Char (isLower)
 import qualified Data.Map as Map
@@ -1920,6 +1921,15 @@ installLib verbosity lbi targetDir dynlibTargetDir _builtDir pkg lib clbi = do
   whenVanilla $ copyModuleFiles "hi"
   whenProf    $ copyModuleFiles "p_hi"
   whenShared  $ copyModuleFiles "dyn_hi"
+
+  let copyStgBins = do
+        -- copy .stgbin files over:
+        whenVanilla $ copyModuleFiles "o_stgbin"
+        whenProf    $ copyModuleFiles "p_o_stgbin"
+        whenShared  $ copyModuleFiles "dyn_o_stgbin"
+      handleCopyEx :: SomeException -> IO ()
+      handleCopyEx _ = pure ()
+  catch copyStgBins handleCopyEx
 
   -- copy the built library files over:
   whenHasCode $ do
