@@ -97,6 +97,31 @@ var = lexeme (quotedVar <|> simpleVar) >>= \x -> case Set.member (unpackName x) 
   False -> return x
 
 ----
+primRep :: Parser PrimRep
+primRep = choice
+  [ VoidRep     <$ kw "VoidRep"
+  , LiftedRep   <$ kw "LiftedRep"
+  , UnliftedRep <$ kw "UnliftedRep"
+  , Int64Rep    <$ kw "Int64Rep"
+  , Word64Rep   <$ kw "Word64Rep"
+  , AddrRep     <$ kw "AddrRep"
+  , FloatRep    <$ kw "FloatRep"
+  , DoubleRep   <$ kw "DoubleRep"
+  ]
+
+repType :: Parser RepType
+repType = choice
+  [ UnboxedTuple <$> braces (many primRep)
+  , SingleValue  <$> primRep
+  , PolymorphicRep <$ kw "PolymorphicRep"
+  ]
+
+binder :: Parser (Name, RepType)
+binder = (,) <$> var <* op ":" <*> repType
+
+binderArg :: Parser (Name, RepType)
+binderArg = parens binder
+
 integer = lexeme L.decimal
 signedInteger = L.signed sc' integer
 
@@ -112,7 +137,7 @@ def = do
   L.indentGuard sc EQ pos1
   L.indentBlock sc $ do
     name <- var
-    args <- many var
+    args <- many binderArg
     op "="
     pure $ L.IndentSome Nothing (\l -> Def name args <$> mkBind l) bind
 
@@ -122,7 +147,7 @@ data BindKind
   | Lazy
   | ResultVar Name
 
-bind :: Parser (BindKind, [(Name, SimpleExp)])
+bind :: Parser (BindKind, [(Name, RepType, SimpleExp)])
 bind = do
   L.indentBlock sc $ do
     kind <- choice
@@ -135,7 +160,7 @@ bind = do
       ResultVar{} -> L.IndentNone (kind, [])
       _ -> L.IndentSome Nothing (pure . (kind,)) varBind
 
-mkBind :: [(BindKind, [(Name, SimpleExp)])] -> Parser Bind
+mkBind :: [(BindKind, [(Name, RepType, SimpleExp)])] -> Parser BindChain
 mkBind [(ResultVar v, [])]    = pure $ Var v
 mkBind [_]                    = fail "bind chains must end with a result variable"
 mkBind ((Recursive, l) : xs)  = LetRec l <$> mkBind xs
@@ -158,16 +183,16 @@ expKind = lookAhead $ do
     , pure KOther
     ]
 
-varBind :: Parser (Name, SimpleExp)
+varBind :: Parser (Name, RepType, SimpleExp)
 varBind = do
   expKind >>= \case
     KClosure  -> closure
     KCase     -> caseP
     KOther    -> simpleExp
 
-simpleExp :: Parser (Name, SimpleExp)
+simpleExp :: Parser (Name, RepType, SimpleExp)
 simpleExp = do
-  n <- var
+  (n, t) <- binder
   op "="
   e <- choice
     [ brackets (Con <$> var <*> many var)
@@ -179,28 +204,28 @@ simpleExp = do
           , pure $ Var f
           ]
     ]
-  pure (n, e)
+  pure (n, t, e)
 
-caseP :: Parser (Name, SimpleExp)
+caseP :: Parser (Name, RepType, SimpleExp)
 caseP = do
   L.indentBlock sc $ do
-    n <- var
+    (n, t) <- binder
     op "="
     kw "case"
     scrut <- var
     kw "of"
-    pure $ L.IndentSome Nothing (\alts -> pure (n, Case scrut alts)) alternative
+    pure $ L.IndentSome Nothing (\alts -> pure (n, t, Case scrut alts)) alternative
 
-closure :: Parser (Name, SimpleExp)
+closure :: Parser (Name, RepType, SimpleExp)
 closure = do
   L.indentBlock sc $ do
-    n <- var
+    (n, t) <- binder
     op "="
     op "\\"
     captured <- brackets (many var)
-    params <- many var
+    params <- many binderArg
     op "->"
-    pure $ L.IndentSome Nothing (\l -> (n,) . Closure captured params <$> mkBind l) bind
+    pure $ L.IndentSome Nothing (\l -> (n, t,) . Closure captured params <$> mkBind l) bind
 
 alternative :: Parser Alt
 alternative = do
@@ -230,11 +255,34 @@ literal = do
     , LChar                   <$ kw "T_Char"    <*  char '\'' <*> L.charLiteral <* char '\'' <* sc
     , LString                 <$ kw "T_String"  <*> bstrLiteral
     , LDouble . realToFrac    <$ kw "T_Double"  <*> rational
-    , try (LNullAddr          <$ kw "T_Addr"    <*  kw "NullAddr")
-    , LLabelAddr              <$ kw "T_Addr"    <*> bstrLiteral
     , LToken                  <$ kw "T_Token"   <*> bstrLiteral
     , LError                  <$ char '!'       <*> bstrLiteral
+    , kw "T_Addr" >> choice
+        [ LNullAddr <$ kw "NullAddr"
+        , LCodeAddr <$ kw "CodeAddr" <*> bstrLiteral <*> optional (lexeme L.decimal)
+        , LDataAddr <$ kw "DataAddr" <*> bstrLiteral
+        ]
     ]
+
+-- con groups
+
+conSpec :: Parser ConSpec
+conSpec = ConSpec <$> var <*> many primRep
+
+conGroup :: Parser ConGroup
+conGroup = do
+  L.indentGuard sc GT pos1
+  L.indentBlock sc $ do
+    kw "data"
+    name <- var
+    pure $ L.IndentSome Nothing (\cons -> pure $ ConGroup name cons) conSpec
+
+conGroups :: Parser [ConGroup]
+conGroups = do
+  L.indentGuard sc EQ pos1
+  L.indentBlock sc $ do
+    kw "constructors"
+    pure $ L.IndentSome Nothing pure conGroup
 
 -- static data
 
@@ -325,7 +373,7 @@ simpleType =
 -- top-level API
 
 lambdaModule :: Parser Program
-lambdaModule = Program <$> (concat <$> many externalBlock) <*> option [] staticDataBlock <*> many def <* sc <* eof
+lambdaModule = Program <$> (concat <$> many externalBlock) <*> option [] conGroups <*> option [] staticDataBlock <*> many def <* sc <* eof
 
 parseLambda :: String -> Text -> Either (ParseError Char Void) Program
 parseLambda filename content = runParser lambdaModule filename content
