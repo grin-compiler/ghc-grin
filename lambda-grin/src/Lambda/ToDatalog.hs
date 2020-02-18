@@ -133,16 +133,17 @@ convertStaticData StaticData{..} = do
 
 convertProgram :: Exp -> DL ()
 convertProgram = \case
-  Program e s d -> do
+  Program e c s d -> do
     mapM_ convertExternal e
     mapM_ convertStaticData s
+    -- TODO: cons
     mapM_ convertDef d
 
 convertDef :: Exp -> DL ()
 convertDef = \case
   Def n a b -> do
     emit [("IsFunction", [N n])]
-    emit [("FunctionParameter", [N n, I i, N p]) | (i,p) <- zip [0..] a]
+    emit [("FunctionParameter", [N n, I i, N p]) | (i,(p,t)) <- zip [0..] a]
     emit [("CodeArity", [N n, I $ length a])]
     -- bind
     ret <- convertBind (CodeName n) b
@@ -152,33 +153,33 @@ data InstInfo
   = CodeName  Name  -- first instruction's parent
   | InstName  Name  -- next instruction's parent
 
-emitInstSeq :: InstInfo -> (Name, a) -> DL InstInfo
-emitInstSeq i (n,_) = case i of
+emitInstSeq :: InstInfo -> (Name, a, b) -> DL InstInfo
+emitInstSeq i (n, _, _) = case i of
   CodeName p  -> emit [("FirstInst", [N p, N n])] >> pure (InstName n)
   InstName p  -> emit [("NextInst", [N p, N n])] >> pure (InstName n)
 
-convertBind :: InstInfo -> Bind -> DL Name
+convertBind :: InstInfo -> BindChain -> DL Name
 convertBind prevInst = \case
   Var n -> do
     pure n
   Let l b -> do
-    forM_ l $ \(n,e) -> do
+    forM_ l $ \(n,t,e) -> do
       emit [("EvalMode", [N n, S "lazy"])]
       convertSimpleExp n e
     i <- foldM emitInstSeq prevInst l
     convertBind i b
   LetS l b -> do
-    forM_ l $ \(n,e) -> do
+    forM_ l $ \(n,t,e) -> do
       emit [("EvalMode", [N n, S "strict"])]
       convertSimpleExp n e
     i <- foldM emitInstSeq prevInst l
     convertBind i b
   LetRec l b -> do
-    forM_ l $ \(n,e) -> do
+    forM_ l $ \(n,t,e) -> do
       emit [("EvalMode", [N n, S "lazy"])]
       convertSimpleExp n e
     case l of
-      (x,_) : _ -> emit [("RecGroup", [N x, N n]) | (n,_) <- l]
+      (x,_,_) : _ -> emit [("RecGroup", [N x, N n]) | (n,_,_) <- l]
       _ -> pure ()
     i <- foldM emitInstSeq prevInst l
     convertBind i b
@@ -209,7 +210,7 @@ convertSimpleExp result = \case
   Closure v p b -> do
     emit [("IsClosure", [N result])]
     emit [("ClosureVariable",  [N result, I i, N x]) | (i,x) <- zip [0..] v]
-    emit [("ClosureParameter", [N result, I i, N x]) | (i,x) <- zip [0..] p]
+    emit [("ClosureParameter", [N result, I i, N x]) | (i,(x,t)) <- zip [0..] p]
     emit [("CodeArity", [N result, I $ length p])]
     -- bind
     ret <- convertBind (CodeName result) b
@@ -241,7 +242,8 @@ litTag l = "lit:" ++ case l of
   LBool{}       -> "T_Bool"
   LChar{}       -> "T_Char"
   LString{}     -> "T_String"
-  LLabelAddr{}  -> "T_Addr"
+  LDataAddr{}   -> "T_Addr"
+  LCodeAddr{}   -> "T_Addr"
   LNullAddr{}   -> "T_Addr"
   LError{}      -> "LError"
   LToken t      -> show $ T_Token t
