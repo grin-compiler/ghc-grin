@@ -11,7 +11,7 @@ import qualified Data.Set as Set
 import Transformations.Util
 import Transformations.Names hiding (mkNameEnv)
 
-import Lambda.Syntax
+import Lambda.Syntax2
 import Lambda.Util
 
 {-
@@ -87,7 +87,7 @@ smash = cata folder where
     e                   -> embed e
 -}
 eliminateLams :: [Name] -> Program -> Program
-eliminateLams globals prg@(Program exts sdata defs) = Program exts sdata $ defs' ++ envClosures where
-  (Program exts sdata defs', Env{..}) = evalState (runStateT (liftLam{- . smash . closConv (defNames ++ globals)-} $ prg) emptyEnv) (mkNameEnv prg)
+eliminateLams globals prg@(Program exts cons sdata defs) = Program exts cons sdata $ defs' ++ envClosures where
+  (Program exts _ sdata defs', Env{..}) = evalState (runStateT (liftLam{- . smash . closConv (defNames ++ globals)-} $ prg) emptyEnv) (mkNameEnv prg)
   defNames = [n | Def n _ _ <- defs]
   emptyEnv = Env [] ""

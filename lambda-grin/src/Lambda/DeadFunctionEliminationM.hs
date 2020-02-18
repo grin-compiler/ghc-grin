@@ -19,11 +19,11 @@ import System.Process
 import System.IO
 import System.IO.Temp
 
-import Lambda.Syntax
+import Lambda.Syntax2
 import Transformations.Util
 
 deadFunctionEliminationM :: [String] -> Program -> IO Program
-deadFunctionEliminationM liveSources prg@(Program exts sdata defs) = do
+deadFunctionEliminationM liveSources prg@(Program exts cons sdata defs) = do
 
   putStrLn "export facts"
   tmpSys <- getCanonicalTemporaryDirectory
@@ -48,13 +48,14 @@ deadFunctionEliminationM liveSources prg@(Program exts sdata defs) = do
   let liveExts  = [e | e <- exts, Set.member (eName e) liveSet]
       liveDefs  = [d | d@(Def name _ _) <- defs, Set.member name liveSet]
       liveSData = [d | d <- sdata, Set.member (sName d) liveSet]
+      liveCons  = cons -- TODO
 
-  pure (Program liveExts liveSData liveDefs)
+  pure (Program liveExts liveCons liveSData liveDefs)
 
 type SM = StateT (Set Name) IO
 
 collectNamesM :: Handle -> Program -> IO ()
-collectNamesM h (Program exts sdata defs) = do
+collectNamesM h (Program exts cons sdata defs) = do
   let defSet :: Set Name
       defSet = Set.fromList [name | (Def name _ _) <- defs]
 
@@ -69,12 +70,14 @@ collectNamesM h (Program exts sdata defs) = do
 
       folder :: String -> ExpF () -> SM ()
       folder defName = \case
-        AppF name _ | Set.member name nameSet -> add defName name
-        VarF _ name | Set.member name nameSet -> add defName name
+        AppF name args -> mapM_ (add defName) $ name : args
+        ConF _ args    -> mapM_ (add defName) args
+        VarF name      -> add defName name
+        CaseF name _   -> add defName name
         exp -> pure ()
 
       add :: String -> Name -> SM ()
-      add defName n = do
+      add defName n = when (Set.member n nameSet) $ do
         s <- get
         case Set.member n s of
           True  -> pure ()

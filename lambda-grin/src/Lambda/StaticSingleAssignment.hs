@@ -1,26 +1,41 @@
-{-# LANGUAGE LambdaCase, TupleSections #-}
+{-# LANGUAGE LambdaCase, TupleSections, RecordWildCards #-}
 module Lambda.StaticSingleAssignment where
 
 import Control.Monad.State
 import Data.Functor.Foldable
+import Data.Set (Set)
+import qualified Data.Set as Set
 import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Foldable
 
 import Transformations.Names hiding (mkNameEnv)
 import Transformations.Util hiding (foldNameDefExpF)
-import Lambda.Syntax
+import Lambda.Syntax2
 import Lambda.Util
 
 type Env = Map Name Name
 
+ssaExternal :: External -> NameM External
+ssaExternal ext@External{..} = do
+  let names = Set.toList $ Set.unions [cata (foldNameTyF Set.singleton) t | t <- eRetType : eArgsType]
+  env <- forM names $ \n -> do
+    newN <- deriveNewName n
+    pure (n, newN)
+  let substFun :: Ty -> Ty
+      substFun t = ana (project . mapNameTy (subst $ Map.fromList env)) t
+  pure ext
+    { eRetType  = substFun eRetType
+    , eArgsType = map substFun eArgsType
+    }
+
 singleStaticAssignment :: Exp -> Exp
 singleStaticAssignment e = evalState (anaM build (mempty, e)) (mkNameEnv e) where
 
-  mkName :: (Env, [(Name, (Env, Exp))]) -> (Name, Exp) -> NameM (Env, [(Name, (Env, Exp))])
-  mkName (env', l) (n, b) = do
+  mkName :: (Env, [(Name, RepType, (Env, Exp))]) -> (Name, RepType, Exp) -> NameM (Env, [(Name, RepType, (Env, Exp))])
+  mkName (env', l) (n, t, b) = do
     n' <- deriveNewName n
-    pure (Map.insert n n' env', l ++ [(n', (env', b))])
+    pure (Map.insert n n' env', l ++ [(n', t, (env', b))])
 
   add :: Env -> (Name, Name) -> Env
   add env (k,v) = Map.insert k v env
@@ -30,6 +45,10 @@ singleStaticAssignment e = evalState (anaM build (mempty, e)) (mkNameEnv e) wher
 
   build :: (Env, Exp) -> NameM (ExpF (Env, Exp))
   build (env, e) = case e of
+
+    Program e c s d -> do
+      newExts <-  mapM ssaExternal e
+      pure $ ProgramF newExts c s (map (env,) d)
 
     -- name shadowing in the bind sequence
 
@@ -42,22 +61,25 @@ singleStaticAssignment e = evalState (anaM build (mempty, e)) (mkNameEnv e) wher
       pure $ LetSF bs' (newEnv, e)
 
     LetRec bs e -> do
-      let ns = map fst bs
+      let ns = map fst3 bs
       newNs <- mapM deriveNewName ns
       let newEnv = addMany env $ zip ns newNs
-      pure $ LetRecF [(n, (newEnv, b)) | (n, (_, b)) <- zip newNs bs] (newEnv, e)
+      pure $ LetRecF [(n, t, (newEnv, b)) | (n, (_, t, b)) <- zip newNs bs] (newEnv, e)
 
-    Closure vs ns e -> do
-      newNs <- mapM deriveNewName ns
-      pure $ ClosureF (map (subst env) vs) newNs (addMany env $ zip ns newNs, e)
+    Closure vs args e -> do
+      let (argNames, argTypes) = unzip args
+      newNs <- mapM deriveNewName argNames
+      pure $ ClosureF (map (subst env) vs) (zip newNs argTypes) (addMany env $ zip argNames newNs, e)
 
-    Def n ns e -> do
-      newNs <- mapM deriveNewName ns
-      pure $ DefF n newNs (addMany env $ zip ns newNs, e)
+    Def n args e -> do
+      let (argNames, argTypes) = unzip args
+      newNs <- mapM deriveNewName argNames
+      pure $ DefF n (zip newNs argTypes) (addMany env $ zip argNames newNs, e)
 
-    Alt (NodePat n ns) e -> do
+    Alt a (NodePat n ns) e -> do
+      newA <- deriveNewName a
       newNs <- mapM deriveNewName ns
-      pure $ AltF (NodePat n newNs) (addMany env $ zip ns newNs, e)
+      pure $ AltF newA (NodePat n newNs) (addMany env $ zip ns newNs, e)
 
     -- no name shadowing
 

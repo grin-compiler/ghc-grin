@@ -13,12 +13,12 @@ import qualified Data.ByteString.Char8 as BS8
 import Data.Functor.Foldable
 import qualified Data.Foldable
 
-import Lambda.Syntax
+import Lambda.Syntax2
 import Transformations.Util
 import Lambda.Util
 
 lintLambda :: Program -> IO ()
-lintLambda prg@(Program exts sdata _) = do
+lintLambda prg@(Program exts cons sdata _) = do
   let Env{..} = test prg
       tab     = ("  "++) . unpackName
       known   = Set.unions
@@ -61,15 +61,15 @@ addNames ns = Set.fromList ns
 test = cata folder where
   folder = \case
     -- use
-    VarF _ name       -> env {envUse = Set.singleton name}
-    AppF name e       -> mconcat $ env {envUse = Set.singleton name} : e
+    VarF name         -> env {envUse = Set.singleton name}
+    AppF name args    -> env {envUse = addNames $ name : args}
     -- def
-    DefF name args e  -> env {envDef = addDefs $ name : args} <> e
-    LetRecF binds e   -> mconcat [env {envDef = addDef name} <> a | (name, a) <- binds] <> e
-    LetSF binds e     -> mconcat [env {envDef = addDef name} <> a | (name, a) <- binds] <> e
-    LetF binds e      -> mconcat [env {envDef = addDef name} <> a | (name, a) <- binds] <> e
-    ClosureF v p e    -> env {envUse = addNames v, envDef = addDefs p} <> e
-    AltF (NodePat con args) e -> env {envDef = addDefs args, envCon = Set.singleton $ showTS (length args) <> "-" <> con} <> e
+    DefF name args e  -> env {envDef = addDefs $ name : map fst args} <> e
+    LetRecF binds e   -> mconcat [env {envDef = addDef name} <> a | (name, _, a) <- binds] <> e
+    LetSF binds e     -> mconcat [env {envDef = addDef name} <> a | (name, _, a) <- binds] <> e
+    LetF binds e      -> mconcat [env {envDef = addDef name} <> a | (name, _, a) <- binds] <> e
+    ClosureF v p e    -> env {envUse = addNames v, envDef = addDefs (map fst p)} <> e
+    AltF a (NodePat con args) e -> env {envDef = addDefs (a : args), envCon = Set.singleton $ showTS (length args) <> "-" <> con} <> e
     -- err
     LitF (LError err) -> env {envErr = Set.singleton $ packName $ BS8.unpack err}
     e -> Data.Foldable.fold e
@@ -82,4 +82,4 @@ expSize = cata folder where
     e       -> succ $ Data.Foldable.sum e
 
 programHistogram :: Program -> Map Int (Int, Name)
-programHistogram (Program _ _ defs) = Map.unionsWith (\(i1,n1) (i2,n2) -> (i1 + i2, n1)) [Map.singleton (expSize d) (1, n) | d@(Def n _ _) <- defs]
+programHistogram (Program _ _ _ defs) = Map.unionsWith (\(i1,n1) (i2,n2) -> (i1 + i2, n1)) [Map.singleton (expSize d) (1, n) | d@(Def n _ _) <- defs]

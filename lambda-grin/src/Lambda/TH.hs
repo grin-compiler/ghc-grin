@@ -1,7 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Lambda.TH
-  ( progConst
-  , progConst2
+  ( progConst2
   , prog2
   ) where
 
@@ -12,7 +11,6 @@ import Data.Maybe
 import Text.Megaparsec
 import NeatInterpolation
 
-import qualified Lambda.Parse as P
 import qualified Lambda.Parse2 as P2
 import qualified Data.Text as T
 
@@ -33,17 +31,6 @@ liftDataWithText :: Data a => a -> Q Exp
 liftDataWithText = dataToExpQ (\a -> liftText <$> cast a)
 
 -- NOTE: does not support metavariables
-progConst :: QuasiQuoter
-progConst = QuasiQuoter
-  { quoteExp = \input -> do
-      let src = T.pack $ normalizeQQInput input
-      case P.parseLambda "" src of
-        Left  e -> fail $ parseErrorPretty' src e
-        Right p -> liftDataWithText p
-  , quotePat  = undefined
-  , quoteType = undefined
-  , quoteDec  = undefined
-  }
 
 progConst2 :: QuasiQuoter
 progConst2 = QuasiQuoter
