@@ -6,8 +6,8 @@ allow-newer: true
 packages:
   - 'ghc-primop-lib'
   - 'ghc-primop-gen'
-  - 'ghc-dump-stg'
-  - 'ghc-dump-util'
+  - 'external-stg'
+  - 'external-stg-util'
   - 'ghc-grin'
   - 'lambda-grin'
 #  - '../grin/grin'
