@@ -1,7 +1,7 @@
 set -e -x
 
 find . -name '*.corebin'
-find . -name '*.stgbin'
+find . -name '*_stgbin'
 find . -name '*.lambda'
 find . -name '*.lambdabin'
 find . -name 'whole_program.out'
