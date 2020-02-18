@@ -15,11 +15,11 @@ GHC-GRIN can not compile programs yet.
 
 ## Components
 
-### ghc-dump-stg ghc-dump-util
+### external-stg, external-stg-util
 custom AST Data type for GHC ~~Core~~ STG with serialization support and tooling
 
-### ghc-8.2.2
-modified GHC which serializes the ~~core~~ STG AST of each compiled module using `ghc-dump-stg`, and calls an external tool to link them at link-time
+### ghc-8.11.0
+modified GHC which serializes the ~~core~~ STG AST of each compiled module using `external-stg`, and calls an external tool to link them at link-time
 
 ### lambda-grin
 utility (lambda calculus) layer for GRIN frontends
@@ -34,10 +34,10 @@ sample (stack based) projects to test the modified GHC with the GRIN backend
 
 Follow these steps to install GHC/GRIN and compile the benchmark programs:
 
-1. Compile included GHC-8.6.2  
-  `$ python3 boot`  
+1. Compile included GHC-8.11.0 (*ghc-8.11.0.20200215-src*)  
+  `$ ./boot`  
   `$ ./configure`  
-  `$ make -j8`
+  `$ hadrian/build.sh -j --flavour=Quickest`
 2. as soon as an error pops up: cannot execute 'grin-ghc'
    create a shell script with just this content (+ chmod 750):
 ```
