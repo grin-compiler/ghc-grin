@@ -1,0 +1,2010 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.1. Configuration &mdash; Cabal 3.0.0.0 User&#39;s Guide</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3. Package Concepts and Development" href="concepts-and-development.html" />
+    <link rel="prev" title="2. Configuration and Installing Packages" href="config-and-install.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Cabal
+          
+
+          
+            
+            <img src="_static/Cabal-dark.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="config-and-install.html">2. Configuration and Installing Packages</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.1. Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">2.1.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#repository-specification">2.1.2. Repository specification</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#using-secure-repositories">2.1.2.1. Using secure repositories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#legacy-repositories">2.1.2.2. Legacy repositories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#secure-local-repositories">2.1.2.3. Secure local repositories</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#building-and-installing-packages">2.2. Building and installing packages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building-and-installing-a-system-package">2.2.1. Building and installing a system package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-and-installing-a-user-package">2.2.2. Building and installing a user package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-packages-from-hackage">2.2.3. Installing packages from Hackage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#developing-with-sandboxes">2.2.4. Developing with sandboxes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sandboxes-basic-usage">2.2.4.1. Sandboxes: basic usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sandboxes-advanced-usage">2.2.4.2. Sandboxes: advanced usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-binary-package">2.2.5. Creating a binary package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-configure">2.2.6. setup configure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#programs-used-for-building">2.2.6.1. Programs used for building</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#installation-paths">2.2.6.2. Installation paths</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#controlling-flag-assignments">2.2.6.3. Controlling Flag Assignments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-test-suites">2.2.6.4. Building Test Suites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#miscellaneous-options">2.2.6.5. Miscellaneous options</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-build">2.2.7. setup build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-haddock">2.2.8. setup haddock</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-hscolour">2.2.9. setup hscolour</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-install">2.2.10. setup install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-copy">2.2.11. setup copy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-register">2.2.12. setup register</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-unregister">2.2.13. setup unregister</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-clean">2.2.14. setup clean</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-test">2.2.15. setup test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-sdist">2.2.16. setup sdist</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts-and-development.html">3. Package Concepts and Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs-and-stability.html">4. Reporting Bugs and Stability of Cabal Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nix-local-build-overview.html">5. Nix-style Local Builds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nix-integration.html">6. Nix Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-format-changelog.html">7. Package Description Format Specification History</a></li>
+</ul>
+
+            
+          
+  <a href="cabal-projectindex.html">Reference</a>
+  <a href="genindex.html">Index</a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Cabal</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="config-and-install.html">2. Configuration and Installing Packages</a> &raquo;</li>
+        
+      <li>2.1. Configuration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/haskell/cabal/blob/master/Cabal/doc/installing-packages.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configuration">
+<h1>2.1. Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>2.1.1. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The global configuration file for <code class="docutils literal notranslate"><span class="pre">cabal-install</span></code> is
+<code class="docutils literal notranslate"><span class="pre">~/.cabal/config</span></code>. If you do not have this file, <code class="docutils literal notranslate"><span class="pre">cabal</span></code> will create
+it for you on the first call to <code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">update</span></code>. Alternatively, you can
+explicitly ask <code class="docutils literal notranslate"><span class="pre">cabal</span></code> to create it for you using</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal user-config update
+</pre></div>
+</div>
+<p>You can change the location of the global configuration file by specifying
+either <code class="docutils literal notranslate"><span class="pre">--config-file=FILE</span></code> on the command line or by setting the
+<code class="docutils literal notranslate"><span class="pre">CABAL_CONFIG</span></code> environment variable.</p>
+<p>Most of the options in this configuration file are also available as
+command line arguments, and the corresponding documentation can be used
+to lookup their meaning. The created configuration file only specifies
+values for a handful of options. Most options are left at their default
+value, which it documents; for instance,</p>
+<div class="highlight-cabal notranslate"><div class="highlight"><pre><span></span><span class="c1">-- executable-stripping: True</span>
+</pre></div>
+</div>
+<p>means that the configuration file currently does not specify a value for
+the <code class="docutils literal notranslate"><span class="pre">executable-stripping</span></code> option (the line is commented out), and
+that the default is <code class="docutils literal notranslate"><span class="pre">True</span></code>; if you wanted to disable stripping of
+executables by default, you would change this line to</p>
+<div class="highlight-cabal notranslate"><div class="highlight"><pre><span></span><span class="k">executable-stripping</span><span class="p">:</span> False
+</pre></div>
+</div>
+<p>You can also use <code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">user-config</span> <span class="pre">update</span></code> to migrate configuration
+files created by older versions of <code class="docutils literal notranslate"><span class="pre">cabal</span></code>.</p>
+</div>
+<div class="section" id="repository-specification">
+<h2>2.1.2. Repository specification<a class="headerlink" href="#repository-specification" title="Permalink to this headline">¶</a></h2>
+<p>An important part of the configuration is the specification of the
+repository. When <code class="docutils literal notranslate"><span class="pre">cabal</span></code> creates a default config file, it configures
+the repository to be the central Hackage server:</p>
+<div class="highlight-cabal notranslate"><div class="highlight"><pre><span></span><span class="k">repository</span> hackage.haskell.org
+<span class="w">  </span><span class="k">url</span><span class="p">:</span> http<span class="p">:</span>//hackage.haskell.org/
+</pre></div>
+</div>
+<p>The name of the repository is given on the first line, and can be
+anything; packages downloaded from this repository will be cached under
+<code class="docutils literal notranslate"><span class="pre">~/.cabal/packages/hackage.haskell.org</span></code> (or whatever name you specify;
+you can change the prefix by changing the value of
+<code class="docutils literal notranslate"><span class="pre">remote-repo-cache</span></code>). If you want, you can configure multiple
+repositories, and <code class="docutils literal notranslate"><span class="pre">cabal</span></code> will combine them and be able to download
+packages from any of them.</p>
+<div class="section" id="using-secure-repositories">
+<h3>2.1.2.1. Using secure repositories<a class="headerlink" href="#using-secure-repositories" title="Permalink to this headline">¶</a></h3>
+<p>For repositories that support the TUF security infrastructure (this
+includes Hackage), you can enable secure access to the repository by
+specifying:</p>
+<div class="highlight-cabal notranslate"><div class="highlight"><pre><span></span><span class="k">repository</span> hackage.haskell.org
+<span class="w">  </span><span class="k">url</span><span class="p">:</span> http<span class="p">:</span>//hackage.haskell.org/
+<span class="w">  </span><span class="k">secure</span><span class="p">:</span> True
+<span class="w">  </span><span class="k">root-keys</span><span class="p">:</span> <span class="o">&lt;</span>root-key-IDs<span class="o">&gt;</span>
+<span class="w">  </span><span class="k">key-threshold</span><span class="p">:</span> <span class="o">&lt;</span>key-threshold<span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;root-key-IDs&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;key-threshold&gt;</span></code> values are used for
+bootstrapping. As part of the TUF infrastructure the repository will
+contain a file <code class="docutils literal notranslate"><span class="pre">root.json</span></code> (for instance,
+<a class="reference external" href="http://hackage.haskell.org/root.json">http://hackage.haskell.org/root.json</a>) which the client needs to do
+verification. However, how can <code class="docutils literal notranslate"><span class="pre">cabal</span></code> verify the <code class="docutils literal notranslate"><span class="pre">root.json</span></code> file
+<em>itself</em>? This is known as bootstrapping: if you specify a list of root
+key IDs and a corresponding threshold, <code class="docutils literal notranslate"><span class="pre">cabal</span></code> will verify that the
+downloaded <code class="docutils literal notranslate"><span class="pre">root.json</span></code> file has been signed with at least
+<code class="docutils literal notranslate"><span class="pre">&lt;key-threshold&gt;</span></code> keys from your set of <code class="docutils literal notranslate"><span class="pre">&lt;root-key-IDs&gt;</span></code>.</p>
+<p>You can, but are not recommended to, omit these two fields. In that case
+<code class="docutils literal notranslate"><span class="pre">cabal</span></code> will download the <code class="docutils literal notranslate"><span class="pre">root.json</span></code> field and use it without
+verification. Although this bootstrapping step is then unsafe, all
+subsequent access is secure (provided that the downloaded <code class="docutils literal notranslate"><span class="pre">root.json</span></code>
+was not tempered with). Of course, adding <code class="docutils literal notranslate"><span class="pre">root-keys</span></code> and
+<code class="docutils literal notranslate"><span class="pre">key-threshold</span></code> to your repository specification only shifts the
+problem, because now you somehow need to make sure that the key IDs you
+received were the right ones. How that is done is however outside the
+scope of <code class="docutils literal notranslate"><span class="pre">cabal</span></code> proper.</p>
+<p>More information about the security infrastructure can be found at
+<a class="reference external" href="https://github.com/well-typed/hackage-security">https://github.com/well-typed/hackage-security</a>.</p>
+</div>
+<div class="section" id="legacy-repositories">
+<h3>2.1.2.2. Legacy repositories<a class="headerlink" href="#legacy-repositories" title="Permalink to this headline">¶</a></h3>
+<p>Currently <code class="docutils literal notranslate"><span class="pre">cabal</span></code> supports two kinds of “legacy” repositories. The
+first is specified using</p>
+<div class="highlight-cabal notranslate"><div class="highlight"><pre><span></span><span class="k">remote-repo</span><span class="p">:</span> hackage.haskell.org<span class="p">:</span>http<span class="p">:</span>//hackage.haskell.org/packages/archive
+</pre></div>
+</div>
+<p>This is just syntactic sugar for</p>
+<div class="highlight-cabal notranslate"><div class="highlight"><pre><span></span><span class="k">repository</span> hackage.haskell.org
+<span class="w">  </span><span class="k">url</span><span class="p">:</span> hackage.haskell.org<span class="p">:</span>http<span class="p">:</span>//hackage.haskell.org/packages/archive
+</pre></div>
+</div>
+<p>although, in (and only in) the specific case of Hackage, the URL
+<code class="docutils literal notranslate"><span class="pre">http://hackage.haskell.org/packages/archive</span></code> will be silently
+translated to <code class="docutils literal notranslate"><span class="pre">http://hackage.haskell.org/</span></code>.</p>
+<p>The second kind of legacy repositories are so-called “local”
+repositories:</p>
+<div class="highlight-cabal notranslate"><div class="highlight"><pre><span></span><span class="k">local-repo</span><span class="p">:</span> my-local-repo<span class="p">:</span>/path/to/local/repo
+</pre></div>
+</div>
+<p>This can be used to access repositories on the local file system.
+However, the layout of these local repositories is different from the
+layout of remote repositories, and usage of these local repositories is
+deprecated.</p>
+</div>
+<div class="section" id="secure-local-repositories">
+<h3>2.1.2.3. Secure local repositories<a class="headerlink" href="#secure-local-repositories" title="Permalink to this headline">¶</a></h3>
+<p>If you want to use repositories on your local file system, it is
+recommended instead to use a <em>secure</em> local repository:</p>
+<div class="highlight-cabal notranslate"><div class="highlight"><pre><span></span><span class="k">repository</span> my-local-repo
+<span class="w">  </span><span class="k">url</span><span class="p">:</span> file<span class="p">:</span>/path/to/local/repo
+<span class="w">  </span><span class="k">secure</span><span class="p">:</span> True
+<span class="w">  </span><span class="k">root-keys</span><span class="p">:</span> <span class="o">&lt;</span>root-key-IDs<span class="o">&gt;</span>
+<span class="w">  </span><span class="k">key-threshold</span><span class="p">:</span> <span class="o">&lt;</span>key-threshold<span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The layout of these secure local repos matches the layout of remote
+repositories exactly; the <a class="reference external" href="http://hackage.haskell.org/package/hackage-repo-tool">hackage-repo-tool</a>
+can be used to create and manage such repositories.</p>
+</div>
+</div>
+</div>
+<div class="section" id="building-and-installing-packages">
+<span id="installing-packages"></span><h1>2.2. Building and installing packages<a class="headerlink" href="#building-and-installing-packages" title="Permalink to this headline">¶</a></h1>
+<p>After you’ve unpacked a Cabal package, you can build it by moving into
+the root directory of the package and running the <code class="docutils literal notranslate"><span class="pre">cabal</span></code> tool there:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal <span class="o">[</span>command<span class="o">]</span> <span class="o">[</span>option...<span class="o">]</span>
+</pre></div>
+</div>
+<p>The <em>command</em> argument selects a particular step in the build/install
+process.</p>
+<p>You can also get a summary of the command syntax with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal <span class="nb">help</span>
+</pre></div>
+</div>
+<p>Alternatively, you can also use the <code class="docutils literal notranslate"><span class="pre">Setup.hs</span></code> or <code class="docutils literal notranslate"><span class="pre">Setup.lhs</span></code>
+script:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> runhaskell Setup.hs <span class="o">[</span>command<span class="o">]</span> <span class="o">[</span>option...<span class="o">]</span>
+</pre></div>
+</div>
+<p>For the summary of the command syntax, run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal <span class="nb">help</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> runhaskell Setup.hs --help
+</pre></div>
+</div>
+<div class="section" id="building-and-installing-a-system-package">
+<h2>2.2.1. Building and installing a system package<a class="headerlink" href="#building-and-installing-a-system-package" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> runhaskell Setup.hs configure --ghc
+<span class="gp">$</span> runhaskell Setup.hs build
+<span class="gp">$</span> runhaskell Setup.hs install
+</pre></div>
+</div>
+<p>The first line readies the system to build the tool using GHC; for
+example, it checks that GHC exists on the system. The second line
+performs the actual building, while the last both copies the build
+results to some permanent place and registers the package with GHC.</p>
+</div>
+<div class="section" id="building-and-installing-a-user-package">
+<h2>2.2.2. Building and installing a user package<a class="headerlink" href="#building-and-installing-a-user-package" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> runhaskell Setup.hs configure --user
+<span class="gp">$</span> runhaskell Setup.hs build
+<span class="gp">$</span> runhaskell Setup.hs install
+</pre></div>
+</div>
+<p>The package is installed under the user’s home directory and is
+registered in the user’s package database (<a class="reference internal" href="#cmdoption-setup-configure-user"><code class="xref std std-option docutils literal notranslate"><span class="pre">setup</span> <span class="pre">configure</span> <span class="pre">--user</span></code></a>).</p>
+</div>
+<div class="section" id="installing-packages-from-hackage">
+<h2>2.2.3. Installing packages from Hackage<a class="headerlink" href="#installing-packages-from-hackage" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">cabal</span></code> tool also can download, configure, build and install a
+<a class="reference external" href="http://hackage.haskell.org/">Hackage</a> package and all of its
+dependencies in a single step. To do this, run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal install <span class="o">[</span>PACKAGE...<span class="o">]</span>
+</pre></div>
+</div>
+<p>To browse the list of available packages, visit the
+<a class="reference external" href="http://hackage.haskell.org/">Hackage</a> web site.</p>
+</div>
+<div class="section" id="developing-with-sandboxes">
+<h2>2.2.4. Developing with sandboxes<a class="headerlink" href="#developing-with-sandboxes" title="Permalink to this headline">¶</a></h2>
+<p>By default, any dependencies of the package are installed into the
+global or user package databases (e.g. using
+<code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">install</span> <span class="pre">--only-dependencies</span></code>). If you’re building several
+different packages that have incompatible dependencies, this can cause
+the build to fail. One way to avoid this problem is to build each
+package in an isolated environment (“sandbox”), with a sandbox-local
+package database. Because sandboxes are per-project, inconsistent
+dependencies can be simply disallowed.</p>
+<p>For more on sandboxes, see also <a class="reference external" href="http://coldwa.st/e/blog/2013-08-20-Cabal-sandbox.html">this
+article</a>.</p>
+<div class="section" id="sandboxes-basic-usage">
+<h3>2.2.4.1. Sandboxes: basic usage<a class="headerlink" href="#sandboxes-basic-usage" title="Permalink to this headline">¶</a></h3>
+<p>To initialise a fresh sandbox in the current directory, run
+<code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">sandbox</span> <span class="pre">init</span></code>. All subsequent commands (such as <code class="docutils literal notranslate"><span class="pre">build</span></code> and
+<code class="docutils literal notranslate"><span class="pre">install</span></code>) from this point will use the sandbox.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> /path/to/my/haskell/library
+<span class="gp">$</span> cabal sandbox init                   <span class="c1"># Initialise the sandbox</span>
+<span class="gp">$</span> cabal install --only-dependencies    <span class="c1"># Install dependencies into the sandbox</span>
+<span class="gp">$</span> cabal build                          <span class="c1"># Build your package inside the sandbox</span>
+</pre></div>
+</div>
+<p>It can be useful to make a source package available for installation in
+the sandbox - for example, if your package depends on a patched or an
+unreleased version of a library. This can be done with the
+<code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">sandbox</span> <span class="pre">add-source</span></code> command - think of it as “local <a class="reference external" href="http://hackage.haskell.org/">Hackage</a>”.
+If an add-source dependency is later modified, it is reinstalled automatically.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal sandbox add-source /my/patched/library <span class="c1"># Add a new add-source dependency</span>
+<span class="gp">$</span> cabal install --dependencies-only            <span class="c1"># Install it into the sandbox</span>
+<span class="gp">$</span> cabal build                                  <span class="c1"># Build the local package</span>
+<span class="gp">$</span> <span class="nv">$EDITOR</span> /my/patched/library/Source.hs        <span class="c1"># Modify the add-source dependency</span>
+<span class="gp">$</span> cabal build                                  <span class="c1"># Modified dependency is automatically reinstalled</span>
+</pre></div>
+</div>
+<p>Normally, the sandbox settings (such as optimisation level) are
+inherited from the main Cabal config file (<code class="docutils literal notranslate"><span class="pre">$HOME/cabal/config</span></code>).
+Sometimes, though, you need to change some settings specifically for a
+single sandbox. You can do this by creating a <code class="docutils literal notranslate"><span class="pre">cabal.config</span></code> file in
+the same directory with your <code class="docutils literal notranslate"><span class="pre">cabal.sandbox.config</span></code> (which was created
+by <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">init</span></code>). This file has the same syntax as the main Cabal
+config file.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat cabal.config
+<span class="go">documentation: True</span>
+<span class="go">constraints: foo == 1.0, bar &gt;= 2.0, baz</span>
+<span class="gp">$</span> cabal build                                  <span class="c1"># Uses settings from the cabal.config file</span>
+</pre></div>
+</div>
+<p>When you have decided that you no longer want to build your package
+inside a sandbox, just delete it:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal sandbox delete                       <span class="c1"># Built-in command</span>
+<span class="gp">$</span> rm -rf .cabal-sandbox cabal.sandbox.config <span class="c1"># Alternative manual method</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sandboxes-advanced-usage">
+<h3>2.2.4.2. Sandboxes: advanced usage<a class="headerlink" href="#sandboxes-advanced-usage" title="Permalink to this headline">¶</a></h3>
+<p>The default behaviour of the <code class="docutils literal notranslate"><span class="pre">add-source</span></code> command is to track
+modifications done to the added dependency and reinstall the sandbox
+copy of the package when needed. Sometimes this is not desirable: in
+these cases you can use <code class="docutils literal notranslate"><span class="pre">add-source</span> <span class="pre">--snapshot</span></code>, which disables the
+change tracking. In addition to <code class="docutils literal notranslate"><span class="pre">add-source</span></code>, there are also
+<code class="docutils literal notranslate"><span class="pre">list-sources</span></code> and <code class="docutils literal notranslate"><span class="pre">delete-source</span></code> commands.</p>
+<p>Sometimes one wants to share a single sandbox between multiple packages.
+This can be easily done with the <code class="docutils literal notranslate"><span class="pre">--sandbox</span></code> option:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p /path/to/shared-sandbox
+<span class="gp">$</span> <span class="nb">cd</span> /path/to/shared-sandbox
+<span class="gp">$</span> cabal sandbox init --sandbox .
+<span class="gp">$</span> <span class="nb">cd</span> /path/to/package-a
+<span class="gp">$</span> cabal sandbox init --sandbox /path/to/shared-sandbox
+<span class="gp">$</span> <span class="nb">cd</span> /path/to/package-b
+<span class="gp">$</span> cabal sandbox init --sandbox /path/to/shared-sandbox
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">sandbox</span> <span class="pre">init</span> <span class="pre">--sandbox</span> <span class="pre">.</span></code> puts all sandbox files into
+the current directory. By default, <code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">sandbox</span> <span class="pre">init</span></code> initialises a
+new sandbox in a newly-created subdirectory of the current working
+directory (<code class="docutils literal notranslate"><span class="pre">./.cabal-sandbox</span></code>).</p>
+<p>Using multiple different compiler versions simultaneously is also
+supported, via the <code class="docutils literal notranslate"><span class="pre">-w</span></code> option:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal sandbox init
+<span class="gp">$</span> cabal install --only-dependencies -w /path/to/ghc-1 <span class="c1"># Install dependencies for both compilers</span>
+<span class="gp">$</span> cabal install --only-dependencies -w /path/to/ghc-2
+<span class="gp">$</span> cabal configure -w /path/to/ghc-1                   <span class="c1"># Build with the first compiler</span>
+<span class="gp">$</span> cabal build
+<span class="gp">$</span> cabal configure -w /path/to/ghc-2                   <span class="c1"># Build with the second compiler</span>
+<span class="gp">$</span> cabal build
+</pre></div>
+</div>
+<p>It can be occasionally useful to run the compiler-specific package
+manager tool (e.g. <code class="docutils literal notranslate"><span class="pre">ghc-pkg</span></code>) tool on the sandbox package DB directly
+(for example, you may need to unregister some packages). The
+<code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">sandbox</span> <span class="pre">hc-pkg</span></code> command is a convenient wrapper that runs the
+compiler-specific package manager tool with the arguments:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal -v sandbox hc-pkg list
+<span class="go">Using a sandbox located at /path/to/.cabal-sandbox</span>
+<span class="go">&#39;ghc-pkg&#39; &#39;--global&#39; &#39;--no-user-package-conf&#39;</span>
+<span class="go">    &#39;--package-conf=/path/to/.cabal-sandbox/i386-linux-ghc-7.4.2-packages.conf.d&#39;</span>
+<span class="go">    &#39;list&#39;</span>
+<span class="go">[...]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">--require-sandbox</span></code> option makes all sandbox-aware commands
+(<code class="docutils literal notranslate"><span class="pre">install</span></code>/<code class="docutils literal notranslate"><span class="pre">build</span></code>/etc.) exit with error if there is no sandbox
+present. This makes it harder to accidentally modify the user package
+database. The option can be also turned on via the per-user
+configuration file (<code class="docutils literal notranslate"><span class="pre">~/.cabal/config</span></code>) or the per-project one
+(<code class="docutils literal notranslate"><span class="pre">$PROJECT_DIR/cabal.config</span></code>). The error can be squelched with
+<code class="docutils literal notranslate"><span class="pre">--no-require-sandbox</span></code>.</p>
+<p>The option <code class="docutils literal notranslate"><span class="pre">--sandbox-config-file</span></code> allows to specify the location of
+the <code class="docutils literal notranslate"><span class="pre">cabal.sandbox.config</span></code> file (by default, <code class="docutils literal notranslate"><span class="pre">cabal</span></code> searches for it
+in the current directory). This provides the same functionality as
+shared sandboxes, but sometimes can be more convenient. Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir my/sandbox
+<span class="gp">$</span> <span class="nb">cd</span> my/sandbox
+<span class="gp">$</span> cabal sandbox init
+<span class="gp">$</span> <span class="nb">cd</span> /path/to/my/project
+<span class="gp">$</span> cabal --sandbox-config-file<span class="o">=</span>/path/to/my/sandbox/cabal.sandbox.config install
+<span class="gp">#</span> Uses the sandbox located at /path/to/my/sandbox/.cabal-sandbox
+<span class="gp">$</span> <span class="nb">cd</span> ~
+<span class="gp">$</span> cabal --sandbox-config-file<span class="o">=</span>/path/to/my/sandbox/cabal.sandbox.config install
+<span class="gp">#</span> Still uses the same sandbox
+</pre></div>
+</div>
+<p>The sandbox config file can be also specified via the
+<code class="docutils literal notranslate"><span class="pre">CABAL_SANDBOX_CONFIG</span></code> environment variable.</p>
+<p>Finally, the flag <code class="docutils literal notranslate"><span class="pre">--ignore-sandbox</span></code> lets you temporarily ignore an
+existing sandbox:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir my/sandbox
+<span class="gp">$</span> <span class="nb">cd</span> my/sandbox
+<span class="gp">$</span> cabal sandbox init
+<span class="gp">$</span> cabal --ignore-sandbox install text
+<span class="gp">#</span> Installs <span class="s1">&#39;text&#39;</span> in the user package database <span class="o">(</span><span class="s1">&#39;~/.cabal&#39;</span><span class="o">)</span>.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="creating-a-binary-package">
+<h2>2.2.5. Creating a binary package<a class="headerlink" href="#creating-a-binary-package" title="Permalink to this headline">¶</a></h2>
+<p>When creating binary packages (e.g. for Red Hat or Debian) one needs to
+create a tarball that can be sent to another system for unpacking in the
+root directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> runhaskell Setup.hs configure --prefix<span class="o">=</span>/usr
+<span class="gp">$</span> runhaskell Setup.hs build
+<span class="gp">$</span> runhaskell Setup.hs copy --destdir<span class="o">=</span>/tmp/mypkg
+<span class="gp">$</span> tar -czf mypkg.tar.gz /tmp/mypkg/
+</pre></div>
+</div>
+<p>If the package contains a library, you need two additional steps:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> runhaskell Setup.hs register --gen-script
+<span class="gp">$</span> runhaskell Setup.hs unregister --gen-script
+</pre></div>
+</div>
+<p>This creates shell scripts <code class="docutils literal notranslate"><span class="pre">register.sh</span></code> and <code class="docutils literal notranslate"><span class="pre">unregister.sh</span></code>, which
+must also be sent to the target system. After unpacking there, the
+package must be registered by running the <code class="docutils literal notranslate"><span class="pre">register.sh</span></code> script. The
+<code class="docutils literal notranslate"><span class="pre">unregister.sh</span></code> script would be used in the uninstall procedure of the
+package. Similar steps may be used for creating binary packages for
+Windows.</p>
+<p>The following options are understood by all commands:</p>
+<dl class="option">
+<dt id="cmdoption-setup-help">
+<code class="descname">--help</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-h</code><code class="descclassname"> or -?</code><a class="headerlink" href="#cmdoption-setup-help" title="Permalink to this definition">¶</a></dt>
+<dd><p>List the available options for the command.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-verbose">
+<code class="descname">--verbose</code><code class="descclassname">=n or -v n</code><a class="headerlink" href="#cmdoption-setup-verbose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the verbosity level (0-3). The normal level is 1; a missing <em>n</em>
+defaults to 2.</p>
+<p>There is also an extended version of this command which can be
+used to fine-tune the verbosity of output.  It takes the
+form <code class="docutils literal notranslate"><span class="pre">[silent|normal|verbose|debug]</span></code><em>flags</em>, where <em>flags</em>
+is a list of <code class="docutils literal notranslate"><span class="pre">+</span></code> flags which toggle various aspects of
+output.  At the moment, only <code class="docutils literal notranslate"><span class="pre">+callsite</span></code> and <code class="docutils literal notranslate"><span class="pre">+callstack</span></code>
+are supported, which respectively toggle call site and call
+stack printing (these are only supported if Cabal
+is built with a sufficiently recent GHC.)</p>
+</dd></dl>
+
+<p>The various commands and the additional options they support are
+described below. In the simple build infrastructure, any other options
+will be reported as errors.</p>
+</div>
+<div class="section" id="setup-configure">
+<span id="id1"></span><h2>2.2.6. setup configure<a class="headerlink" href="#setup-configure" title="Permalink to this headline">¶</a></h2>
+<p>Prepare to build the package. Typically, this step checks that the
+target platform is capable of building the package, and discovers
+platform-specific features that are needed during the build.</p>
+<p>The user may also adjust the behaviour of later stages using the options
+listed in the following subsections. In the simple build infrastructure,
+the values supplied via these options are recorded in a private file
+read by later stages.</p>
+<p>If a user-supplied <code class="docutils literal notranslate"><span class="pre">configure</span></code> script is run (see the section on
+<a class="reference external" href="developing-packages.html#system-dependent-parameters">system-dependent
+parameters</a> or
+on <a class="reference external" href="developing-packages.html#more-complex-packages">complex
+packages</a>), it is
+passed the <a class="reference internal" href="#cmdoption-setup-configure-with-hc-pkg"><code class="xref std std-option docutils literal notranslate"><span class="pre">--with-hc-pkg</span></code></a>, <a class="reference internal" href="#cmdoption-setup-configure-prefix"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prefix</span></code></a>, <a class="reference internal" href="#cmdoption-setup-configure-bindir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--bindir</span></code></a>,
+<a class="reference internal" href="#cmdoption-setup-configure-libdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--libdir</span></code></a>, <a class="reference internal" href="#cmdoption-setup-configure-dynlibdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--dynlibdir</span></code></a>, <a class="reference internal" href="#cmdoption-setup-configure-datadir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--datadir</span></code></a>, <a class="reference internal" href="#cmdoption-setup-configure-libexecdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--libexecdir</span></code></a> and
+<a class="reference internal" href="#cmdoption-setup-configure-sysconfdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--sysconfdir</span></code></a> options. In addition the value of the
+<a class="reference internal" href="#cmdoption-setup-configure-with-compiler"><code class="xref std std-option docutils literal notranslate"><span class="pre">--with-compiler</span></code></a> option is passed in a <a class="reference internal" href="#cmdoption-setup-configure-with-hc-pkg"><code class="xref std std-option docutils literal notranslate"><span class="pre">--with-hc-pkg</span></code></a> option
+and all options specified with <a class="reference internal" href="#cmdoption-setup-configure-configure-option"><code class="xref std std-option docutils literal notranslate"><span class="pre">--configure-option</span></code></a> are passed on.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference external" href="https://www.gnu.org/software/autoconf/manual/autoconf.html#File-System-Conventions">GNU autoconf places restrictions on paths, including the directory
+that the package is built from.</a>
+The errors produced when this happens can be obscure; Cabal attempts to
+detect and warn in this situation, but it is not perfect.</p>
+</div>
+<p>In Cabal 2.0, support for a single positional argument was added to
+<code class="docutils literal notranslate"><span class="pre">setup</span> <span class="pre">configure</span></code> This makes Cabal configure the specific component to
+be configured. Specified names can be qualified with <code class="docutils literal notranslate"><span class="pre">lib:</span></code> or
+<code class="docutils literal notranslate"><span class="pre">exe:</span></code> in case just a name is ambiguous (as would be the case for a
+package named <code class="docutils literal notranslate"><span class="pre">p</span></code> which has a library and an executable named <code class="docutils literal notranslate"><span class="pre">p</span></code>.)
+This has the following effects:</p>
+<ul class="simple">
+<li>Subsequent invocations of <code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">register</span></code>, etc. operate only
+on the configured component.</li>
+<li>Cabal requires all “internal” dependencies (e.g., an executable
+depending on a library defined in the same package) must be found in
+the set of databases via <a class="reference internal" href="#cmdoption-setup-configure-package-db"><code class="xref std std-option docutils literal notranslate"><span class="pre">--package-db</span></code></a> (and related flags): these
+dependencies are assumed to be up-to-date. A dependency can be
+explicitly specified using <code class="xref std std-option docutils literal notranslate"><span class="pre">--dependency</span></code> simply by giving the name
+of the internal library; e.g., the dependency for an internal library
+named <code class="docutils literal notranslate"><span class="pre">foo</span></code> is given as
+<code class="docutils literal notranslate"><span class="pre">--dependency=pkg-internal=pkg-1.0-internal-abcd</span></code>.</li>
+<li>Only the dependencies needed for the requested component are
+required. Similarly, when <a class="reference internal" href="#cmdoption-setup-configure-exact-configuration"><code class="xref std std-option docutils literal notranslate"><span class="pre">--exact-configuration</span></code></a> is specified,
+it’s only necessary to specify <code class="xref std std-option docutils literal notranslate"><span class="pre">--dependency</span></code> for the component.
+(As mentioned previously, you <em>must</em> specify internal dependencies as
+well.)</li>
+<li>Internal <code class="docutils literal notranslate"><span class="pre">build-tool-depends</span></code> and <code class="docutils literal notranslate"><span class="pre">build-tools</span></code> dependencies are expected
+to be in the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> upon subsequent invocations of <code class="docutils literal notranslate"><span class="pre">setup</span></code>.</li>
+</ul>
+<p>Full details can be found in the <a class="reference external" href="https://github.com/ezyang/ghc-proposals/blob/master/proposals/0000-componentized-cabal.rst">Componentized Cabal
+proposal</a>.</p>
+<div class="section" id="programs-used-for-building">
+<h3>2.2.6.1. Programs used for building<a class="headerlink" href="#programs-used-for-building" title="Permalink to this headline">¶</a></h3>
+<p>The following options govern the programs used to process the source
+files of a package:</p>
+<dl class="option">
+<dt id="cmdoption-setup-configure-ghc">
+<code class="descname">--ghc</code><code class="descclassname"> or -g</code><code class="descclassname">, </code><code class="descname">--jhc</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--lhc</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--uhc</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-ghc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify which Haskell implementation to use to build the package. At
+most one of these flags may be given. If none is given, the
+implementation under which the setup script was compiled or
+interpreted is used.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-with-compiler">
+<code class="descname">--with-compiler</code><code class="descclassname">=path or -w *path*</code><a class="headerlink" href="#cmdoption-setup-configure-with-compiler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the path to a particular compiler. If given, this must match
+the implementation selected above. The default is to search for the
+usual name of the selected implementation.</p>
+<p>This flag also sets the default value of the <a class="reference internal" href="#cmdoption-setup-configure-with-hc-pkg"><code class="xref std std-option docutils literal notranslate"><span class="pre">--with-hc-pkg</span></code></a>
+option to the package tool for this compiler. Check the output of
+<code class="docutils literal notranslate"><span class="pre">setup</span> <span class="pre">configure</span> <span class="pre">-v</span></code> to ensure that it finds the right package
+tool (or use <a class="reference internal" href="#cmdoption-setup-configure-with-hc-pkg"><code class="xref std std-option docutils literal notranslate"><span class="pre">--with-hc-pkg</span></code></a> explicitly).</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-with-hc-pkg">
+<code class="descname">--with-hc-pkg</code><code class="descclassname">=path</code><a class="headerlink" href="#cmdoption-setup-configure-with-hc-pkg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the path to the package tool, e.g. <code class="docutils literal notranslate"><span class="pre">ghc-pkg</span></code>. The package
+tool must be compatible with the compiler specified by
+<a class="reference internal" href="#cmdoption-setup-configure-with-compiler"><code class="xref std std-option docutils literal notranslate"><span class="pre">--with-compiler</span></code></a>. If this option is omitted, the default value is
+determined from the compiler selected.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-with-prog">
+<code class="descname">--with-prog</code><code class="descclassname">=path</code><a class="headerlink" href="#cmdoption-setup-configure-with-prog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the path to the program <em>prog</em>. Any program known to Cabal
+can be used in place of <em>prog</em>. It can either be a fully path or the
+name of a program that can be found on the program search path. For
+example: <code class="docutils literal notranslate"><span class="pre">--with-ghc=ghc-6.6.1</span></code> or
+<code class="docutils literal notranslate"><span class="pre">--with-cpphs=/usr/local/bin/cpphs</span></code>. The full list of accepted
+programs is not enumerated in this user guide. Rather, run
+<code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">install</span> <span class="pre">--help</span></code> to view the list.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-prog-options">
+<code class="descname">--prog-options</code><code class="descclassname">=options</code><a class="headerlink" href="#cmdoption-setup-configure-prog-options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify additional options to the program <em>prog</em>. Any program known
+to Cabal can be used in place of <em>prog</em>. For example:
+<code class="docutils literal notranslate"><span class="pre">--alex-options=&quot;--template=mytemplatedir/&quot;</span></code>. The <em>options</em> is
+split into program options based on spaces. Any options containing
+embedded spaced need to be quoted, for example
+<code class="docutils literal notranslate"><span class="pre">--foo-options='--bar=&quot;C:\Program</span> <span class="pre">File\Bar&quot;'</span></code>. As an alternative
+that takes only one option at a time but avoids the need to quote,
+use <a class="reference internal" href="#cmdoption-setup-configure-prog-option"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prog-option</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-prog-option">
+<code class="descname">--prog-option</code><code class="descclassname">=option</code><a class="headerlink" href="#cmdoption-setup-configure-prog-option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify a single additional option to the program <em>prog</em>. For
+passing an option that contain embedded spaces, such as a file name
+with embedded spaces, using this rather than <a class="reference internal" href="#cmdoption-setup-configure-prog-options"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prog-options</span></code></a>
+means you do not need an additional level of quoting. Of course if you
+are using a command shell you may still need to quote, for example
+<code class="docutils literal notranslate"><span class="pre">--foo-options=&quot;--bar=C:\Program</span> <span class="pre">File\Bar&quot;</span></code>.</p>
+</dd></dl>
+
+<p>All of the options passed with either <a class="reference internal" href="#cmdoption-setup-configure-prog-options"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prog-options</span></code></a>
+or <a class="reference internal" href="#cmdoption-setup-configure-prog-option"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prog-option</span></code></a> are passed in the order they were
+specified on the configure command line.</p>
+</div>
+<div class="section" id="installation-paths">
+<h3>2.2.6.2. Installation paths<a class="headerlink" href="#installation-paths" title="Permalink to this headline">¶</a></h3>
+<p>The following options govern the location of installed files from a
+package:</p>
+<dl class="option">
+<dt id="cmdoption-setup-configure-prefix">
+<code class="descname">--prefix</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-configure-prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The root of the installation. For example for a global install you
+might use <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code> on a Unix system, or <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files</span></code>
+on a Windows system. The other installation paths are usually
+subdirectories of <em>prefix</em>, but they don’t have to be.</p>
+<p>In the simple build system, <em>dir</em> may contain the following path
+variables: <code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkg</span></code>, <code class="docutils literal notranslate"><span class="pre">$version</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$os</span></code>, <code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>, <code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-bindir">
+<code class="descname">--bindir</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-configure-bindir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executables that the user might invoke are installed here.</p>
+<p>In the simple build system, <em>dir</em> may contain the following path
+variables: <code class="docutils literal notranslate"><span class="pre">$prefix</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkg</span></code>, <code class="docutils literal notranslate"><span class="pre">$version</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>, <code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>, <code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-libdir">
+<code class="descname">--libdir</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-configure-libdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object-code libraries are installed here.</p>
+<p>In the simple build system, <em>dir</em> may contain the following path
+variables: <code class="docutils literal notranslate"><span class="pre">$prefix</span></code>, <code class="docutils literal notranslate"><span class="pre">$bindir</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkg</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$version</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>, <code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-dynlibdir">
+<code class="descname">--dynlibdir</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-configure-dynlibdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamic libraries are installed here.</p>
+<p>By default, this is set to <cite>$libdir/$abi</cite>, which is usually not equal to
+<cite>$libdir/$libsubdir</cite>.</p>
+<p>In the simple build system, <em>dir</em> may contain the following path
+variables: <code class="docutils literal notranslate"><span class="pre">$prefix</span></code>, <code class="docutils literal notranslate"><span class="pre">$bindir</span></code>, <code class="docutils literal notranslate"><span class="pre">$libdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkg</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$version</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>, <code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-libexecdir">
+<code class="descname">--libexecdir</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-configure-libexecdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executables that are not expected to be invoked directly by the user
+are installed here.</p>
+<p>In the simple build system, <em>dir</em> may contain the following path
+variables: <code class="docutils literal notranslate"><span class="pre">$prefix</span></code>, <code class="docutils literal notranslate"><span class="pre">$bindir</span></code>, <code class="docutils literal notranslate"><span class="pre">$libdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$libsubdir</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkg</span></code>, <code class="docutils literal notranslate"><span class="pre">$version</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>, <code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-datadir">
+<code class="descname">--datadir</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-configure-datadir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Architecture-independent data files are installed here.</p>
+<p>In the simple build system, <em>dir</em> may contain the following path
+variables: <code class="docutils literal notranslate"><span class="pre">$prefix</span></code>, <code class="docutils literal notranslate"><span class="pre">$bindir</span></code>, <code class="docutils literal notranslate"><span class="pre">$libdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$libsubdir</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkg</span></code>, <code class="docutils literal notranslate"><span class="pre">$version</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>, <code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-sysconfdir">
+<code class="descname">--sysconfdir</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-configure-sysconfdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Installation directory for the configuration files.</p>
+<p>In the simple build system, <em>dir</em> may contain the following path
+variables: <code class="docutils literal notranslate"><span class="pre">$prefix</span></code>, <code class="docutils literal notranslate"><span class="pre">$bindir</span></code>, <code class="docutils literal notranslate"><span class="pre">$libdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$libsubdir</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkg</span></code>, <code class="docutils literal notranslate"><span class="pre">$version</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>, <code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<p>In addition the simple build system supports the following installation
+path options:</p>
+<dl class="option">
+<dt id="cmdoption-setup-configure-libsubdir">
+<code class="descname">--libsubdir</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-configure-libsubdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>A subdirectory of <em>libdir</em> in which libraries are actually installed. For
+example, in the simple build system on Unix, the default <em>libdir</em> is
+<code class="docutils literal notranslate"><span class="pre">/usr/local/lib</span></code>, and <em>libsubdir</em> contains the compiler ABI and package
+identifier,
+e.g. <code class="docutils literal notranslate"><span class="pre">x86_64-linux-ghc-8.0.2/mypkg-0.1.0-IxQNmCA7qrSEQNkoHSF7A</span></code>, so
+libraries would be installed in
+<code class="docutils literal notranslate"><span class="pre">/usr/local/lib/x86_64-linux-ghc-8.0.2/mypkg-0.1.0-IxQNmCA7qrSEQNkoHSF7A/</span></code>.</p>
+<p><em>dir</em> may contain the following path variables: <code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$pkg</span></code>, <code class="docutils literal notranslate"><span class="pre">$version</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>, <code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-libexecsubdir">
+<code class="descname">--libexecsubdir</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-configure-libexecsubdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>A subdirectory of <em>libexecdir</em> in which private executables are
+installed. For example, in the simple build system on Unix, the default
+<em>libexecdir</em> is <code class="docutils literal notranslate"><span class="pre">/usr/local/libexec</span></code>, and <em>libsubdir</em> is
+<code class="docutils literal notranslate"><span class="pre">x86_64-linux-ghc-8.0.2/mypkg-0.1.0</span></code>, so private executables would be
+installed in <code class="docutils literal notranslate"><span class="pre">/usr/local/libexec/x86_64-linux-ghc-8.0.2/mypkg-0.1.0/</span></code></p>
+<p><em>dir</em> may contain the following path variables: <code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$pkg</span></code>, <code class="docutils literal notranslate"><span class="pre">$version</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>, <code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-datasubdir">
+<code class="descname">--datasubdir</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-configure-datasubdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>A subdirectory of <em>datadir</em> in which data files are actually
+installed.</p>
+<p><em>dir</em> may contain the following path variables: <code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$pkg</span></code>, <code class="docutils literal notranslate"><span class="pre">$version</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>, <code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-docdir">
+<code class="descname">--docdir</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-configure-docdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Documentation files are installed relative to this directory.</p>
+<p><em>dir</em> may contain the following path variables: <code class="docutils literal notranslate"><span class="pre">$prefix</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$bindir</span></code>, <code class="docutils literal notranslate"><span class="pre">$libdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$libsubdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$datadir</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$datasubdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkg</span></code>, <code class="docutils literal notranslate"><span class="pre">$version</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$os</span></code>, <code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>, <code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-htmldir">
+<code class="descname">--htmldir</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-configure-htmldir" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTML documentation files are installed relative to this directory.</p>
+<p><em>dir</em> may contain the following path variables: <code class="docutils literal notranslate"><span class="pre">$prefix</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$bindir</span></code>, <code class="docutils literal notranslate"><span class="pre">$libdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$libsubdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$datadir</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$datasubdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$docdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>, <code class="docutils literal notranslate"><span class="pre">$pkg</span></code>, <code class="docutils literal notranslate"><span class="pre">$version</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>, <code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>, <code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-program-prefix">
+<code class="descname">--program-prefix</code><code class="descclassname">=prefix</code><a class="headerlink" href="#cmdoption-setup-configure-program-prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepend <em>prefix</em> to installed program names.</p>
+<p><em>prefix</em> may contain the following path variables: <code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$pkg</span></code>, <code class="docutils literal notranslate"><span class="pre">$version</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>, <code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-program-suffix">
+<code class="descname">--program-suffix</code><code class="descclassname">=suffix</code><a class="headerlink" href="#cmdoption-setup-configure-program-suffix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append <em>suffix</em> to installed program names. The most obvious use for
+this is to append the program’s version number to make it possible
+to install several versions of a program at once:
+<code class="docutils literal notranslate"><span class="pre">--program-suffix='$version'</span></code>.</p>
+<p><em>suffix</em> may contain the following path variables: <code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$pkg</span></code>, <code class="docutils literal notranslate"><span class="pre">$version</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>, <code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$abitag</span></code></p>
+</dd></dl>
+
+<div class="section" id="path-variables-in-the-simple-build-system">
+<h4>2.2.6.2.1. Path variables in the simple build system<a class="headerlink" href="#path-variables-in-the-simple-build-system" title="Permalink to this headline">¶</a></h4>
+<p>For the simple build system, there are a number of variables that can be
+used when specifying installation paths. The defaults are also specified
+in terms of these variables. A number of the variables are actually for
+other paths, like <code class="docutils literal notranslate"><span class="pre">$prefix</span></code>. This allows paths to be specified
+relative to each other rather than as absolute paths, which is important
+for building relocatable packages (see <a class="reference external" href="#prefix-independence">prefix
+independence</a>).</p>
+<dl class="docutils">
+<dt>$prefix</dt>
+<dd>The path variable that stands for the root of the installation. For
+an installation to be relocatable, all other installation paths must
+be relative to the <code class="docutils literal notranslate"><span class="pre">$prefix</span></code> variable.</dd>
+<dt>$bindir</dt>
+<dd>The path variable that expands to the path given by the <a class="reference internal" href="#cmdoption-setup-configure-bindir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--bindir</span></code></a>
+configure option (or the default).</dd>
+<dt>$libdir</dt>
+<dd>As above but for <a class="reference internal" href="#cmdoption-setup-configure-libdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--libdir</span></code></a></dd>
+<dt>$libsubdir</dt>
+<dd>As above but for <a class="reference internal" href="#cmdoption-setup-configure-libsubdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--libsubdir</span></code></a></dd>
+<dt>$dynlibdir</dt>
+<dd>As above but for <a class="reference internal" href="#cmdoption-setup-configure-dynlibdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--dynlibdir</span></code></a></dd>
+<dt>$datadir</dt>
+<dd>As above but for <a class="reference internal" href="#cmdoption-setup-configure-datadir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--datadir</span></code></a></dd>
+<dt>$datasubdir</dt>
+<dd>As above but for <a class="reference internal" href="#cmdoption-setup-configure-datasubdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--datasubdir</span></code></a></dd>
+<dt>$docdir</dt>
+<dd>As above but for <a class="reference internal" href="#cmdoption-setup-configure-docdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--docdir</span></code></a></dd>
+<dt>$pkgid</dt>
+<dd>The name and version of the package, e.g. <code class="docutils literal notranslate"><span class="pre">mypkg-0.2</span></code></dd>
+<dt>$pkg</dt>
+<dd>The name of the package, e.g. <code class="docutils literal notranslate"><span class="pre">mypkg</span></code></dd>
+<dt>$version</dt>
+<dd>The version of the package, e.g. <code class="docutils literal notranslate"><span class="pre">0.2</span></code></dd>
+<dt>$compiler</dt>
+<dd>The compiler being used to build the package, e.g. <code class="docutils literal notranslate"><span class="pre">ghc-6.6.1</span></code></dd>
+<dt>$os</dt>
+<dd>The operating system of the computer being used to build the
+package, e.g. <code class="docutils literal notranslate"><span class="pre">linux</span></code>, <code class="docutils literal notranslate"><span class="pre">windows</span></code>, <code class="docutils literal notranslate"><span class="pre">osx</span></code>, <code class="docutils literal notranslate"><span class="pre">freebsd</span></code> or
+<code class="docutils literal notranslate"><span class="pre">solaris</span></code></dd>
+<dt>$arch</dt>
+<dd>The architecture of the computer being used to build the package,
+e.g. <code class="docutils literal notranslate"><span class="pre">i386</span></code>, <code class="docutils literal notranslate"><span class="pre">x86_64</span></code>, <code class="docutils literal notranslate"><span class="pre">ppc</span></code> or <code class="docutils literal notranslate"><span class="pre">sparc</span></code></dd>
+<dt>$abitag</dt>
+<dd>An optional tag that a compiler can use for telling incompatible
+ABI’s on the same architecture apart. GHCJS encodes the underlying
+GHC version in the ABI tag.</dd>
+<dt>$abi</dt>
+<dd>A shortcut for getting a path that completely identifies the
+platform in terms of binary compatibility. Expands to the same value
+as <code class="docutils literal notranslate"><span class="pre">$arch-$os-compiler-$abitag</span></code> if the compiler uses an abi tag,
+<code class="docutils literal notranslate"><span class="pre">$arch-$os-$compiler</span></code> if it doesn’t.</dd>
+</dl>
+</div>
+<div class="section" id="paths-in-the-simple-build-system">
+<h4>2.2.6.2.2. Paths in the simple build system<a class="headerlink" href="#paths-in-the-simple-build-system" title="Permalink to this headline">¶</a></h4>
+<p>For the simple build system, the following defaults apply:</p>
+<table border="1" class="docutils" id="id11">
+<caption><span class="caption-text">Default installation paths</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Option</td>
+<td>Unix Default</td>
+<td>Windows Default</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#cmdoption-setup-configure-prefix"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prefix</span></code></a> (global)</td>
+<td><code class="docutils literal notranslate"><span class="pre">/usr/local</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\Haskell</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#cmdoption-setup-configure-prefix"><code class="xref std std-option docutils literal notranslate"><span class="pre">--prefix</span></code></a> (per-user)</td>
+<td><code class="docutils literal notranslate"><span class="pre">$HOME/.cabal</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">%APPDATA%\cabal</span></code></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#cmdoption-setup-configure-bindir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--bindir</span></code></a></td>
+<td><code class="docutils literal notranslate"><span class="pre">$prefix/bin</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">$prefix\bin</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#cmdoption-setup-configure-libdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--libdir</span></code></a></td>
+<td><code class="docutils literal notranslate"><span class="pre">$prefix/lib</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">$prefix</span></code></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#cmdoption-setup-configure-libsubdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--libsubdir</span></code></a> (others)</td>
+<td><code class="docutils literal notranslate"><span class="pre">$pkgid/$compiler</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">$pkgid\$compiler</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#cmdoption-setup-configure-dynlibdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--dynlibdir</span></code></a></td>
+<td><code class="docutils literal notranslate"><span class="pre">$libdir/$abi</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">$libdir\$abi</span></code></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#cmdoption-setup-configure-libexecdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--libexecdir</span></code></a></td>
+<td><code class="docutils literal notranslate"><span class="pre">$prefix/libexec</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">$prefix\$pkgid</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#cmdoption-setup-configure-datadir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--datadir</span></code></a> (executable)</td>
+<td><code class="docutils literal notranslate"><span class="pre">$prefix/share</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">$prefix</span></code></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#cmdoption-setup-configure-datadir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--datadir</span></code></a> (library)</td>
+<td><code class="docutils literal notranslate"><span class="pre">$prefix/share</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\Haskell</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#cmdoption-setup-configure-datasubdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--datasubdir</span></code></a></td>
+<td><code class="docutils literal notranslate"><span class="pre">$pkgid</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">$pkgid</span></code></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#cmdoption-setup-configure-docdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--docdir</span></code></a></td>
+<td><code class="docutils literal notranslate"><span class="pre">$datadir/doc/$pkgid</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">$prefix\doc\$pkgid</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#cmdoption-setup-configure-sysconfdir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--sysconfdir</span></code></a></td>
+<td><code class="docutils literal notranslate"><span class="pre">$prefix/etc</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">$prefix\etc</span></code></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#cmdoption-setup-configure-htmldir"><code class="xref std std-option docutils literal notranslate"><span class="pre">--htmldir</span></code></a></td>
+<td><code class="docutils literal notranslate"><span class="pre">$docdir/html</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">$docdir\html</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#cmdoption-setup-configure-program-prefix"><code class="xref std std-option docutils literal notranslate"><span class="pre">--program-prefix</span></code></a></td>
+<td>(empty)</td>
+<td>(empty)</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#cmdoption-setup-configure-program-suffix"><code class="xref std std-option docutils literal notranslate"><span class="pre">--program-suffix</span></code></a></td>
+<td>(empty)</td>
+<td>(empty)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="prefix-independence">
+<h4>2.2.6.2.3. Prefix-independence<a class="headerlink" href="#prefix-independence" title="Permalink to this headline">¶</a></h4>
+<p>On Windows it is possible to obtain the pathname of the running program.
+This means that we can construct an installable executable package that
+is independent of its absolute install location. The executable can find
+its auxiliary files by finding its own path and knowing the location of
+the other files relative to <code class="docutils literal notranslate"><span class="pre">$bindir</span></code>. Prefix-independence is
+particularly useful: it means the user can choose the install location
+(i.e. the value of <code class="docutils literal notranslate"><span class="pre">$prefix</span></code>) at install-time, rather than having to
+bake the path into the binary when it is built.</p>
+<p>In order to achieve this, we require that for an executable on Windows,
+all of <code class="docutils literal notranslate"><span class="pre">$bindir</span></code>, <code class="docutils literal notranslate"><span class="pre">$libdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$dynlibdir</span></code>, <code class="docutils literal notranslate"><span class="pre">$datadir</span></code> and <code class="docutils literal notranslate"><span class="pre">$libexecdir</span></code> begin
+with <code class="docutils literal notranslate"><span class="pre">$prefix</span></code>. If this is not the case then the compiled executable
+will have baked-in all absolute paths.</p>
+<p>The application need do nothing special to achieve prefix-independence.
+If it finds any files using <code class="docutils literal notranslate"><span class="pre">getDataFileName</span></code> and the <a class="reference external" href="developing-packages.html#accessing-data-files-from-package-code">other functions
+provided for the
+purpose</a>,
+the files will be accessed relative to the location of the current
+executable.</p>
+<p>A library cannot (currently) be prefix-independent, because it will be
+linked into an executable whose file system location bears no relation
+to the library package.</p>
+</div>
+</div>
+<div class="section" id="controlling-flag-assignments">
+<h3>2.2.6.3. Controlling Flag Assignments<a class="headerlink" href="#controlling-flag-assignments" title="Permalink to this headline">¶</a></h3>
+<p>Flag assignments (see the <a class="reference external" href="developing-packages.html#resolution-of-conditions-and-flags">resolution of conditions and
+flags</a>)
+can be controlled with the following command line options.</p>
+<dl class="option">
+<dt id="cmdoption-setup-configure-f">
+<code class="descname">-f</code><code class="descclassname"> flagname or -f -flagname</code><a class="headerlink" href="#cmdoption-setup-configure-f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Force the specified flag to <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code> (if preceded with
+a <code class="docutils literal notranslate"><span class="pre">-</span></code>). Later specifications for the same flags will override
+earlier, i.e., specifying <code class="docutils literal notranslate"><span class="pre">-fdebug</span> <span class="pre">-f-debug</span></code> is equivalent to
+<code class="docutils literal notranslate"><span class="pre">-f-debug</span></code></p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-flags">
+<code class="descname">--flags</code><code class="descclassname">=flagspecs</code><a class="headerlink" href="#cmdoption-setup-configure-flags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as <code class="docutils literal notranslate"><span class="pre">-f</span></code>, but allows specifying multiple flag assignments at
+once. The parameter is a space-separated list of flag names (to
+force a flag to <code class="docutils literal notranslate"><span class="pre">true</span></code>), optionally preceded by a <code class="docutils literal notranslate"><span class="pre">-</span></code> (to force
+a flag to <code class="docutils literal notranslate"><span class="pre">false</span></code>). For example,
+<code class="docutils literal notranslate"><span class="pre">--flags=&quot;debug</span> <span class="pre">-feature1</span> <span class="pre">feature2&quot;</span></code> is equivalent to
+<code class="docutils literal notranslate"><span class="pre">-fdebug</span> <span class="pre">-f-feature1</span> <span class="pre">-ffeature2</span></code>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="building-test-suites">
+<h3>2.2.6.4. Building Test Suites<a class="headerlink" href="#building-test-suites" title="Permalink to this headline">¶</a></h3>
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-tests">
+<code class="descname">--enable-tests</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-enable-tests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the test suites defined in the package description file during
+the <code class="docutils literal notranslate"><span class="pre">build</span></code> stage. Check for dependencies required by the test
+suites. If the package is configured with this option, it will be
+possible to run the test suites with the <code class="docutils literal notranslate"><span class="pre">test</span></code> command after the
+package is built.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-tests">
+<code class="descname">--disable-tests</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-tests" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Do not build any test suites during the <code class="docutils literal notranslate"><span class="pre">build</span></code> stage.
+Do not check for dependencies required only by the test suites. It
+will not be possible to invoke the <code class="docutils literal notranslate"><span class="pre">test</span></code> command without
+reconfiguring the package.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-coverage">
+<code class="descname">--enable-coverage</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-enable-coverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build libraries and executables (including test suites) with Haskell
+Program Coverage enabled. Running the test suites will automatically
+generate coverage reports with HPC.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-coverage">
+<code class="descname">--disable-coverage</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-coverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Do not enable Haskell Program Coverage.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="miscellaneous-options">
+<h3>2.2.6.5. Miscellaneous options<a class="headerlink" href="#miscellaneous-options" title="Permalink to this headline">¶</a></h3>
+<dl class="option">
+<dt id="cmdoption-setup-configure-user">
+<code class="descname">--user</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does a per-user installation. This changes the <a class="reference external" href="#paths-in-the-simple-build-system">default installation
+prefix</a>. It also allow
+dependencies to be satisfied by the user’s package database, in
+addition to the global database. This also implies a default of
+<code class="docutils literal notranslate"><span class="pre">--user</span></code> for any subsequent <code class="docutils literal notranslate"><span class="pre">install</span></code> command, as packages
+registered in the global database should not depend on packages
+registered in a user’s database.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-global">
+<code class="descname">--global</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-global" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Does a global installation. In this case package
+dependencies must be satisfied by the global package database. All
+packages in the user’s package database will be ignored. Typically
+the final installation step will require administrative privileges.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-package-db">
+<code class="descname">--package-db</code><code class="descclassname">=db</code><a class="headerlink" href="#cmdoption-setup-configure-package-db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows package dependencies to be satisfied from this additional
+package database <em>db</em> in addition to the global package database.
+All packages in the user’s package database will be ignored. The
+interpretation of <em>db</em> is implementation-specific. Typically it will
+be a file or directory. Not all implementations support arbitrary
+package databases.</p>
+<p>This pushes an extra db onto the db stack. The <a class="reference internal" href="#cmdoption-setup-configure-global"><code class="xref std std-option docutils literal notranslate"><span class="pre">--global</span></code></a> and
+<a class="reference internal" href="#cmdoption-setup-configure-user"><code class="xref std std-option docutils literal notranslate"><span class="pre">--user</span></code></a> mode switches add the respective [Global] and [Global,
+User] dbs to the initial stack. There is a compiler-implementation
+constraint that the global db must appear first in the stack, and if
+the user one appears at all, it must appear immediately after the
+global db.</p>
+<p>To reset the stack, use <code class="docutils literal notranslate"><span class="pre">--package-db=clear</span></code>.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-ipid">
+<code class="descname">--ipid</code><code class="descclassname">=ipid</code><a class="headerlink" href="#cmdoption-setup-configure-ipid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the <em>installed package identifier</em> of the package to be
+built; this identifier is passed on to GHC and serves as the basis
+for linker symbols and the <code class="docutils literal notranslate"><span class="pre">id</span></code> field in a <code class="docutils literal notranslate"><span class="pre">ghc-pkg</span></code>
+registration. When a package has multiple components, the actual
+component identifiers are derived off of this identifier (e.g., an
+internal library <code class="docutils literal notranslate"><span class="pre">foo</span></code> from package <code class="docutils literal notranslate"><span class="pre">p-0.1-abcd</span></code> will get the
+identifier <code class="docutils literal notranslate"><span class="pre">p-0.1-abcd-foo</span></code>.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-cid">
+<code class="descname">--cid</code><code class="descclassname">=cid</code><a class="headerlink" href="#cmdoption-setup-configure-cid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the <em>component identifier</em> of the component being built;
+this is only valid if you are configuring a single component.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-default-user-config">
+<code class="descname">--default-user-config</code><code class="descclassname">=file</code><a class="headerlink" href="#cmdoption-setup-configure-default-user-config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows a “default” <code class="docutils literal notranslate"><span class="pre">cabal.config</span></code> freeze file to be passed in
+manually. This file will only be used if one does not exist in the
+project directory already. Typically, this can be set from the
+global cabal <code class="docutils literal notranslate"><span class="pre">config</span></code> file so as to provide a default set of
+partial constraints to be used by projects, providing a way for
+users to peg themselves to stable package collections.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-optimization">
+<code class="descname">--enable-optimization[</code><code class="descclassname">=n] or -O [n]</code><a class="headerlink" href="#cmdoption-setup-configure-enable-optimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Build with optimization flags (if available). This is
+appropriate for production use, taking more time to build faster
+libraries and programs.</p>
+<p>The optional <em>n</em> value is the optimisation level. Some compilers
+support multiple optimisation levels. The range is 0 to 2. Level 0
+is equivalent to <a class="reference internal" href="#cmdoption-setup-configure-disable-optimization"><code class="xref std std-option docutils literal notranslate"><span class="pre">--disable-optimization</span></code></a>, level 1 is the
+default if no <em>n</em> parameter is given. Level 2 is higher optimisation
+if the compiler supports it. Level 2 is likely to lead to longer
+compile times and bigger generated code.</p>
+<p>When optimizations are enabled, Cabal passes <code class="docutils literal notranslate"><span class="pre">-O2</span></code> to the C compiler.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-optimization">
+<code class="descname">--disable-optimization</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-optimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build without optimization. This is suited for development: building
+will be quicker, but the resulting library or programs will be
+slower.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-profiling">
+<code class="descname">--enable-profiling</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-enable-profiling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build libraries and executables with profiling enabled (for
+compilers that support profiling as a separate mode). For this to
+work, all libraries used by this package must also have been built
+with profiling support. For libraries this involves building an
+additional instance of the library in addition to the normal
+non-profiling instance. For executables it changes the single
+executable to be built in profiling mode.</p>
+<p>This flag covers both libraries and executables, but can be
+overridden by the <a class="reference internal" href="#cmdoption-setup-configure-enable-library-profiling"><code class="xref std std-option docutils literal notranslate"><span class="pre">--enable-library-profiling</span></code></a> flag.</p>
+<p>See also the <code class="xref std std-option docutils literal notranslate"><span class="pre">--profiling-detail</span></code> flag below.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-profiling">
+<code class="descname">--disable-profiling</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-profiling" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Do not enable profiling in generated libraries and
+executables.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-library-profiling">
+<code class="descname">--enable-library-profiling</code><code class="descclassname"> or -p</code><a class="headerlink" href="#cmdoption-setup-configure-enable-library-profiling" title="Permalink to this definition">¶</a></dt>
+<dd><p>As with <a class="reference internal" href="#cmdoption-setup-configure-enable-profiling"><code class="xref std std-option docutils literal notranslate"><span class="pre">--enable-profiling</span></code></a> above, but it applies only for
+libraries. So this generates an additional profiling instance of the
+library in addition to the normal non-profiling instance.</p>
+<p>The <a class="reference internal" href="#cmdoption-setup-configure-enable-profiling"><code class="xref std std-option docutils literal notranslate"><span class="pre">--enable-profiling</span></code></a> flag controls the profiling mode for both
+libraries and executables, but if different modes are desired for
+libraries versus executables then use <a class="reference internal" href="#cmdoption-setup-configure-enable-library-profiling"><code class="xref std std-option docutils literal notranslate"><span class="pre">--enable-library-profiling</span></code></a>
+as well.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-library-profiling">
+<code class="descname">--disable-library-profiling</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-library-profiling" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Do not generate an additional profiling version of the library.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-profiling-detail">
+<code class="descname">--profiling-detail[</code><code class="descclassname">=level]</code><a class="headerlink" href="#cmdoption-setup-configure-profiling-detail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Some compilers that support profiling, notably GHC, can allocate
+costs to different parts of the program and there are different
+levels of granularity or detail with which this can be done. In
+particular for GHC this concept is called “cost centers”, and GHC
+can automatically add cost centers, and can do so in different ways.</p>
+<p>This flag covers both libraries and executables, but can be
+overridden by the <code class="xref std std-option docutils literal notranslate"><span class="pre">--library-profiling-detail</span></code> flag.</p>
+<p>Currently this setting is ignored for compilers other than GHC. The
+levels that cabal currently supports are:</p>
+<dl class="docutils">
+<dt>default</dt>
+<dd>For GHC this uses <code class="docutils literal notranslate"><span class="pre">exported-functions</span></code> for libraries and
+<code class="docutils literal notranslate"><span class="pre">toplevel-functions</span></code> for executables.</dd>
+<dt>none</dt>
+<dd>No costs will be assigned to any code within this component.</dd>
+<dt>exported-functions</dt>
+<dd>Costs will be assigned at the granularity of all top level
+functions exported from each module. In GHC specifically, this
+is for non-inline functions.</dd>
+<dt>toplevel-functions</dt>
+<dd>Costs will be assigned at the granularity of all top level
+functions in each module, whether they are exported from the
+module or not. In GHC specifically, this is for non-inline
+functions.</dd>
+<dt>all-functions</dt>
+<dd>Costs will be assigned at the granularity of all functions in
+each module, whether top level or local. In GHC specifically,
+this is for non-inline toplevel or where-bound functions or
+values.</dd>
+</dl>
+<p>This flag is new in Cabal-1.24. Prior versions used the equivalent
+of <code class="docutils literal notranslate"><span class="pre">none</span></code> above.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-library-profiling-detail">
+<code class="descname">--library-profiling-detail[</code><code class="descclassname">=level]</code><a class="headerlink" href="#cmdoption-setup-configure-library-profiling-detail" title="Permalink to this definition">¶</a></dt>
+<dd><p>As with <code class="xref std std-option docutils literal notranslate"><span class="pre">--profiling-detail</span></code> above, but it applies only for
+libraries.</p>
+<p>The level for both libraries and executables is set by the
+<code class="xref std std-option docutils literal notranslate"><span class="pre">--profiling-detail</span></code> flag, but if different levels are desired
+for libraries versus executables then use
+<code class="xref std std-option docutils literal notranslate"><span class="pre">--library-profiling-detail</span></code> as well.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-library-vanilla">
+<code class="descname">--enable-library-vanilla</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-enable-library-vanilla" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Build ordinary libraries (as opposed to profiling
+libraries). This is independent of the
+<a class="reference internal" href="#cmdoption-setup-configure-enable-library-profiling"><code class="xref std std-option docutils literal notranslate"><span class="pre">--enable-library-profiling</span></code></a> option. If you enable both, you get
+both.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-library-vanilla">
+<code class="descname">--disable-library-vanilla</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-library-vanilla" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do not build ordinary libraries. This is useful in conjunction with
+<a class="reference internal" href="#cmdoption-setup-configure-enable-library-profiling"><code class="xref std std-option docutils literal notranslate"><span class="pre">--enable-library-profiling</span></code></a> to build only profiling libraries,
+rather than profiling and ordinary libraries.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-library-for-ghci">
+<code class="descname">--enable-library-for-ghci</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-enable-library-for-ghci" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Build libraries suitable for use with GHCi.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-library-for-ghci">
+<code class="descname">--disable-library-for-ghci</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-library-for-ghci" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not all platforms support GHCi and indeed on some platforms, trying
+to build GHCi libs fails. In such cases this flag can be used as a
+workaround.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-split-objs">
+<code class="descname">--enable-split-objs</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-enable-split-objs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the GHC <code class="docutils literal notranslate"><span class="pre">-split-objs</span></code> feature when building the library. This
+reduces the final size of the executables that use the library by
+allowing them to link with only the bits that they use rather than
+the entire library. The downside is that building the library takes
+longer and uses considerably more memory.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-split-objs">
+<code class="descname">--disable-split-objs</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-split-objs" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Do not use the GHC <code class="docutils literal notranslate"><span class="pre">-split-objs</span></code> feature. This makes
+building the library quicker but the final executables that use the
+library will be larger.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-executable-stripping">
+<code class="descname">--enable-executable-stripping</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-enable-executable-stripping" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) When installing binary executable programs, run the
+<code class="docutils literal notranslate"><span class="pre">strip</span></code> program on the binary. This can considerably reduce the
+size of the executable binary file. It does this by removing
+debugging information and symbols. While such extra information is
+useful for debugging C programs with traditional debuggers it is
+rarely helpful for debugging binaries produced by Haskell compilers.</p>
+<p>Not all Haskell implementations generate native binaries. For such
+implementations this option has no effect.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-executable-stripping">
+<code class="descname">--disable-executable-stripping</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-executable-stripping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do not strip binary executables during installation. You might want
+to use this option if you need to debug a program using gdb, for
+example if you want to debug the C parts of a program containing
+both Haskell and C code. Another reason is if your are building a
+package for a system which has a policy of managing the stripping
+itself (such as some Linux distributions).</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-shared">
+<code class="descname">--enable-shared</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-enable-shared" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build shared library. This implies a separate compiler run to
+generate position independent code as required on most platforms.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-shared">
+<code class="descname">--disable-shared</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-shared" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Do not build shared library.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-static">
+<code class="descname">--enable-static</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-enable-static" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a static library. This passes <code class="docutils literal notranslate"><span class="pre">-staticlib</span></code> to GHC (available
+for iOS, and with 8.4 more platforms).  The result is an archive <code class="docutils literal notranslate"><span class="pre">.a</span></code>
+containing all dependent haskell libararies combined.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-static">
+<code class="descname">--disable-static</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-static" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Do not build a static library.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-executable-dynamic">
+<code class="descname">--enable-executable-dynamic</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-enable-executable-dynamic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Link dependent Haskell libraries into executables dynamically.
+The executable’s library dependencies must have been
+built as shared objects. This implies <a class="reference internal" href="#cmdoption-setup-configure-enable-shared"><code class="xref std std-option docutils literal notranslate"><span class="pre">--enable-shared</span></code></a>
+unless <a class="reference internal" href="#cmdoption-setup-configure-disable-shared"><code class="xref std std-option docutils literal notranslate"><span class="pre">--disable-shared</span></code></a> is explicitly specified.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-executable-dynamic">
+<code class="descname">--disable-executable-dynamic</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-executable-dynamic" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Link dependent Haskell libraries into executables statically.
+Non-Haskell (C) libraries are still linked dynamically, including libc,
+so the result is still not a fully static executable
+unless <a class="reference internal" href="#cmdoption-setup-configure-enable-executable-static"><code class="xref std std-option docutils literal notranslate"><span class="pre">--enable-executable-static</span></code></a> is given.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-enable-executable-static">
+<code class="descname">--enable-executable-static</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-enable-executable-static" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build fully static executables.
+This link all dependent libraries into executables statically,
+including libc.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-executable-static">
+<code class="descname">--disable-executable-static</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-executable-static" title="Permalink to this definition">¶</a></dt>
+<dd><p>(default) Do not build fully static executables.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-configure-option">
+<code class="descname">--configure-option</code><code class="descclassname">=str</code><a class="headerlink" href="#cmdoption-setup-configure-configure-option" title="Permalink to this definition">¶</a></dt>
+<dd><p>An extra option to an external <code class="docutils literal notranslate"><span class="pre">configure</span></code> script, if one is used
+(see the section on <a class="reference external" href="developing-packages.html#system-dependent-parameters">system-dependent
+parameters</a>).
+There can be several of these options.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-extra-include-dirs">
+<code class="descname">--extra-include-dirs[</code><code class="descclassname">=dir]</code><a class="headerlink" href="#cmdoption-setup-configure-extra-include-dirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>An extra directory to search for C header files. You can use this
+flag multiple times to get a list of directories.</p>
+<p>You might need to use this flag if you have standard system header
+files in a non-standard location that is not mentioned in the
+package’s <code class="docutils literal notranslate"><span class="pre">.cabal</span></code> file. Using this option has the same affect as
+appending the directory <em>dir</em> to the <code class="docutils literal notranslate"><span class="pre">include-dirs</span></code> field in each
+library and executable in the package’s <code class="docutils literal notranslate"><span class="pre">.cabal</span></code> file. The
+advantage of course is that you do not have to modify the package at
+all. These extra directories will be used while building the package
+and for libraries it is also saved in the package registration
+information and used when compiling modules that use the library.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-extra-lib-dirs">
+<code class="descname">--extra-lib-dirs[</code><code class="descclassname">=dir]</code><a class="headerlink" href="#cmdoption-setup-configure-extra-lib-dirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>An extra directory to search for system libraries files. You can use
+this flag multiple times to get a list of directories.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-extra-framework-dirs">
+<code class="descname">--extra-framework-dirs[</code><code class="descclassname">=dir]</code><a class="headerlink" href="#cmdoption-setup-configure-extra-framework-dirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>An extra directory to search for frameworks (OS X only). You can use
+this flag multiple times to get a list of directories.</p>
+<p>You might need to use this flag if you have standard system
+libraries in a non-standard location that is not mentioned in the
+package’s <code class="docutils literal notranslate"><span class="pre">.cabal</span></code> file. Using this option has the same affect as
+appending the directory <em>dir</em> to the <code class="docutils literal notranslate"><span class="pre">extra-lib-dirs</span></code> field in
+each library and executable in the package’s <code class="docutils literal notranslate"><span class="pre">.cabal</span></code> file. The
+advantage of course is that you do not have to modify the package at
+all. These extra directories will be used while building the package
+and for libraries it is also saved in the package registration
+information and used when compiling modules that use the library.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-dependency">
+<code class="descname">--dependency[</code><code class="descclassname">=pkgname=ipid]</code><a class="headerlink" href="#cmdoption-setup-configure-dependency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify that a particular dependency should used for a particular
+package name. In particular, it declares that any reference to
+<em>pkgname</em> in a <code class="docutils literal notranslate"><span class="pre">build-depends</span></code> should be resolved to <em>ipid</em>.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-exact-configuration">
+<code class="descname">--exact-configuration</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-exact-configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>This changes Cabal to require every dependency be explicitly
+specified using <code class="xref std std-option docutils literal notranslate"><span class="pre">--dependency</span></code>, rather than use Cabal’s (very
+simple) dependency solver. This is useful for programmatic use of
+Cabal’s API, where you want to error if you didn’t specify enough
+<code class="xref std std-option docutils literal notranslate"><span class="pre">--dependency</span></code> flags.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-allow-newer">
+<code class="descname">--allow-newer[</code><code class="descclassname">=pkgs]</code><code class="descclassname">, </code><code class="descname">--allow-older[</code><code class="descclassname">=pkgs]</code><a class="headerlink" href="#cmdoption-setup-configure-allow-newer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selectively relax upper or lower bounds in dependencies without
+editing the package description respectively.</p>
+<p>The following description focuses on upper bounds and the
+<code class="xref std std-option docutils literal notranslate"><span class="pre">--allow-newer</span></code> flag, but applies analogously to
+<code class="xref std std-option docutils literal notranslate"><span class="pre">--allow-older</span></code> and lower bounds. <code class="xref std std-option docutils literal notranslate"><span class="pre">--allow-newer</span></code>
+and <code class="xref std std-option docutils literal notranslate"><span class="pre">--allow-older</span></code> can be used at the same time.</p>
+<p>If you want to install a package A that depends on B &gt;= 1.0 &amp;&amp; &lt;
+2.0, but you have the version 2.0 of B installed, you can compile A
+against B 2.0 by using <code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">install</span> <span class="pre">--allow-newer=B</span> <span class="pre">A</span></code>. This
+works for the whole package index: if A also depends on C that in
+turn depends on B &lt; 2.0, C’s dependency on B will be also relaxed.</p>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> foo
+<span class="gp">$</span> cabal configure
+<span class="go">Resolving dependencies...</span>
+<span class="go">cabal: Could not resolve dependencies:</span>
+<span class="go">[...]</span>
+<span class="gp">$</span> cabal configure --allow-newer
+<span class="go">Resolving dependencies...</span>
+<span class="go">Configuring foo...</span>
+</pre></div>
+</div>
+<p>Additional examples:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> Relax upper bounds in all dependencies.
+<span class="gp">$</span> cabal install --allow-newer foo
+
+<span class="gp">#</span> Relax upper bounds only in dependencies on bar, baz and quux.
+<span class="gp">$</span> cabal install --allow-newer<span class="o">=</span>bar,baz,quux foo
+
+<span class="gp">#</span> Relax the upper bound on bar and force <span class="nv">bar</span><span class="o">==</span><span class="m">2</span>.1.
+<span class="gp">$</span> cabal install --allow-newer<span class="o">=</span>bar --constraint<span class="o">=</span><span class="s2">&quot;bar==2.1&quot;</span> foo
+</pre></div>
+</div>
+<p>It’s also possible to limit the scope of <code class="xref std std-option docutils literal notranslate"><span class="pre">--allow-newer</span></code> to single
+packages with the <code class="docutils literal notranslate"><span class="pre">--allow-newer=scope:dep</span></code> syntax. This means
+that the dependency on <code class="docutils literal notranslate"><span class="pre">dep</span></code> will be relaxed only for the package
+<code class="docutils literal notranslate"><span class="pre">scope</span></code>.</p>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> Relax upper bound in foo<span class="s1">&#39;s dependency on base; also relax upper bound in</span>
+<span class="gp">#</span><span class="s1"> every package&#39;</span>s dependency on lens.
+<span class="gp">$</span> cabal install --allow-newer<span class="o">=</span>foo:base,lens
+
+<span class="gp">#</span> Relax upper bounds in foo<span class="s1">&#39;s dependency on base and bar&#39;</span>s dependency
+<span class="gp">#</span> on time<span class="p">;</span> also relax the upper bound in the dependency on lens specified by
+<span class="gp">#</span> any package.
+<span class="gp">$</span> cabal install --allow-newer<span class="o">=</span>foo:base,lens --allow-newer<span class="o">=</span>bar:time
+</pre></div>
+</div>
+<p>Finally, one can enable <code class="xref std std-option docutils literal notranslate"><span class="pre">--allow-newer</span></code> permanently by setting
+<code class="docutils literal notranslate"><span class="pre">allow-newer:</span> <span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">~/.cabal/config</span></code> file. Enabling
+‘allow-newer’ selectively is also supported in the config file
+(<code class="docutils literal notranslate"><span class="pre">allow-newer:</span> <span class="pre">foo,</span> <span class="pre">bar,</span> <span class="pre">baz:base</span></code>).</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-constraint">
+<code class="descname">--constraint</code><code class="descclassname">=constraint</code><a class="headerlink" href="#cmdoption-setup-configure-constraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restrict solutions involving a package to given version
+bounds, flag settings, and other properties. For example, to
+consider only install plans that use version 2.1 of <code class="docutils literal notranslate"><span class="pre">bar</span></code>
+or do not use <code class="docutils literal notranslate"><span class="pre">bar</span></code> at all, write:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal install --constraint<span class="o">=</span><span class="s2">&quot;bar == 2.1&quot;</span>
+</pre></div>
+</div>
+<p>Version bounds have the same syntax as <code class="docutils literal notranslate"><span class="pre">build-depends</span></code>. As
+a special case, the following prevents <code class="docutils literal notranslate"><span class="pre">bar</span></code> from being
+used at all:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> Note: this is just syntax sugar <span class="k">for</span> <span class="s1">&#39;&gt; 1 &amp;&amp; &lt; 1&#39;</span>, and is
+<span class="gp">#</span> supported by build-depends.
+<span class="gp">$</span> cabal install --constraint<span class="o">=</span><span class="s2">&quot;bar -none&quot;</span>
+</pre></div>
+</div>
+<p>You can also specify flag assignments:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> Require bar to be installed with the foo flag turned on and
+<span class="gp">#</span> the baz flag turned off.
+<span class="gp">$</span> cabal install --constraint<span class="o">=</span><span class="s2">&quot;bar +foo -baz&quot;</span>
+</pre></div>
+</div>
+<p>To specify multiple constraints, you may pass the
+<code class="docutils literal notranslate"><span class="pre">constraint</span></code> option multiple times.</p>
+<p>There are also some more specialized constraints, which most people
+don’t generally need:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> Require that a version of bar be used that is already installed in
+<span class="gp">#</span> the global package database.
+<span class="gp">$</span> cabal install --constraint<span class="o">=</span><span class="s2">&quot;bar installed&quot;</span>
+
+<span class="gp">#</span> Require the <span class="nb">local</span> <span class="nb">source</span> copy of bar to be used.
+<span class="gp">#</span> <span class="o">(</span>Note: By default, <span class="k">if</span> we have a <span class="nb">local</span> package we will
+<span class="gp">#</span> automatically use it, so it will generally not be necessary to
+<span class="gp">#</span> specify this.<span class="o">)</span>
+<span class="gp">$</span> cabal install --constraint<span class="o">=</span><span class="s2">&quot;bar source&quot;</span>
+
+<span class="gp">#</span> Require that bar have <span class="nb">test</span> suites and benchmarks enabled.
+<span class="gp">$</span> cabal install --constraint<span class="o">=</span><span class="s2">&quot;bar test&quot;</span> --constraint<span class="o">=</span><span class="s2">&quot;bar bench&quot;</span>
+</pre></div>
+</div>
+<p>By default, constraints only apply to build dependencies
+(<code class="docutils literal notranslate"><span class="pre">build-depends</span></code>), build dependencies of build
+dependencies, and so on. Constraints normally do not apply to
+dependencies of the <code class="docutils literal notranslate"><span class="pre">Setup.hs</span></code> script of any package
+(<code class="docutils literal notranslate"><span class="pre">setup-depends</span></code>) nor do they apply to build tools
+(<code class="docutils literal notranslate"><span class="pre">build-tool-depends</span></code>) or the dependencies of build
+tools. To explicitly apply a constraint to a setup or build
+tool dependency, you can add a qualifier to the constraint as
+follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> Example use of the <span class="s1">&#39;any&#39;</span> qualifier. This constraint
+<span class="gp">#</span> applies to package bar anywhere in the dependency graph.
+<span class="gp">$</span> cabal install --constraint<span class="o">=</span><span class="s2">&quot;any.bar == 1.0&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> Example uses of <span class="s1">&#39;setup&#39;</span> qualifiers.
+
+<span class="gp">#</span> This constraint applies to package bar when it is a
+<span class="gp">#</span> dependency of any Setup.hs script.
+<span class="gp">$</span> cabal install --constraint<span class="o">=</span><span class="s2">&quot;setup.bar == 1.0&quot;</span>
+
+<span class="gp">#</span> This constraint applies to package bar when it is a
+<span class="gp">#</span> dependency of the Setup.hs script of package foo.
+<span class="gp">$</span> cabal install --constraint<span class="o">=</span><span class="s2">&quot;foo:setup.bar == 1.0&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-preference">
+<code class="descname">--preference</code><code class="descclassname">=preference</code><a class="headerlink" href="#cmdoption-setup-configure-preference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify a soft constraint on versions of a package. The solver will
+attempt to satisfy these preferences on a “best-effort” basis.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-configure-disable-response-files">
+<code class="descname">--disable-response-files</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-configure-disable-response-files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable workaround for older versions of programs such as <code class="docutils literal notranslate"><span class="pre">ar</span></code> or
+<code class="docutils literal notranslate"><span class="pre">ld</span></code> that do not support response file arguments (i.e. <code class="docutils literal notranslate"><span class="pre">&#64;file</span></code>
+arguments). You may want this flag only if you specify custom ar
+executable. For system <code class="docutils literal notranslate"><span class="pre">ar</span></code> or the one bundled with <code class="docutils literal notranslate"><span class="pre">ghc</span></code> on
+Windows the <code class="docutils literal notranslate"><span class="pre">cabal</span></code> should do the right thing and hence should
+normally not require this flag.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="setup-build">
+<span id="id2"></span><h2>2.2.7. setup build<a class="headerlink" href="#setup-build" title="Permalink to this headline">¶</a></h2>
+<p>Perform any preprocessing or compilation needed to make this package
+ready for installation.</p>
+<p>This command takes the following options:</p>
+<dl class="option">
+<dt id="cmdoption-setup-build-prog-options">
+<code class="descname">--prog-options</code><code class="descclassname">=options</code><code class="descclassname">, </code><code class="descname">--prog-option</code><code class="descclassname">=option</code><a class="headerlink" href="#cmdoption-setup-build-prog-options" title="Permalink to this definition">¶</a></dt>
+<dd><p>These are mostly the same as the <a class="reference external" href="#setup-configure">options configure
+step</a>. Unlike the options specified at the
+configure step, any program options specified at the build step are
+not persistent but are used for that invocation only. They options
+specified at the build step are in addition not in replacement of
+any options specified at the configure step.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="setup-haddock">
+<span id="id3"></span><h2>2.2.8. setup haddock<a class="headerlink" href="#setup-haddock" title="Permalink to this headline">¶</a></h2>
+<p>Build the documentation for the package using <a class="reference external" href="http://www.haskell.org/haddock/">Haddock</a>.
+By default, only the documentation for the exposed modules is generated
+(but see the <a class="reference internal" href="#cmdoption-setup-haddock-executables"><code class="xref std std-option docutils literal notranslate"><span class="pre">--executables</span></code></a> and <a class="reference internal" href="#cmdoption-setup-haddock-internal"><code class="xref std std-option docutils literal notranslate"><span class="pre">--internal</span></code></a> flags below).</p>
+<p>This command takes the following options:</p>
+<dl class="option">
+<dt id="cmdoption-setup-haddock-hoogle">
+<code class="descname">--hoogle</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-haddock-hoogle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a file <code class="docutils literal notranslate"><span class="pre">dist/doc/html/</span></code><em>pkgid</em><code class="docutils literal notranslate"><span class="pre">.txt</span></code>, which can be
+converted by <a class="reference external" href="http://www.haskell.org/hoogle/">Hoogle</a> into a
+database for searching. This is equivalent to running <a class="reference external" href="http://www.haskell.org/haddock/">Haddock</a>
+with the <code class="docutils literal notranslate"><span class="pre">--hoogle</span></code> flag.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-haddock-html-location">
+<code class="descname">--html-location</code><code class="descclassname">=url</code><a class="headerlink" href="#cmdoption-setup-haddock-html-location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify a template for the location of HTML documentation for
+prerequisite packages. The substitutions (<a class="reference external" href="#paths-in-the-simple-build-system">see
+listing</a>) are applied to the
+template to obtain a location for each package, which will be used
+by hyperlinks in the generated documentation. For example, the
+following command generates links pointing at <a class="reference external" href="http://hackage.haskell.org/">Hackage</a> pages:</p>
+<blockquote>
+<div>setup haddock
+–html-location=’<a class="reference external" href="http://hackage.haskell.org/packages/archive/$pkg/latest/doc/html">http://hackage.haskell.org/packages/archive/$pkg/latest/doc/html</a>’</div></blockquote>
+<p>Here the argument is quoted to prevent substitution by the shell. If
+this option is omitted, the location for each package is obtained
+using the package tool (e.g. <code class="docutils literal notranslate"><span class="pre">ghc-pkg</span></code>).</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-haddock-executables">
+<code class="descname">--executables</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-haddock-executables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Also run <a class="reference external" href="http://www.haskell.org/haddock/">Haddock</a> for the modules of all the executable programs. By default
+<a class="reference external" href="http://www.haskell.org/haddock/">Haddock</a> is run only on the exported modules.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-haddock-internal">
+<code class="descname">--internal</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-haddock-internal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run <a class="reference external" href="http://www.haskell.org/haddock/">Haddock</a> for the all
+modules, including unexposed ones, and make
+<a class="reference external" href="http://www.haskell.org/haddock/">Haddock</a> generate documentation
+for unexported symbols as well.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-haddock-css">
+<code class="descname">--css</code><code class="descclassname">=path</code><a class="headerlink" href="#cmdoption-setup-haddock-css" title="Permalink to this definition">¶</a></dt>
+<dd><p>The argument <em>path</em> denotes a CSS file, which is passed to
+<a class="reference external" href="http://www.haskell.org/haddock/">Haddock</a> and used to set the
+style of the generated documentation. This is only needed to
+override the default style that
+<a class="reference external" href="http://www.haskell.org/haddock/">Haddock</a> uses.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-haddock-hyperlink-source">
+<code class="descname">--hyperlink-source</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-haddock-hyperlink-source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate <a class="reference external" href="http://www.haskell.org/haddock/">Haddock</a> documentation integrated with <a class="reference external" href="http://www.cs.york.ac.uk/fp/darcs/hscolour/">HsColour</a> . First,
+<a class="reference external" href="http://www.cs.york.ac.uk/fp/darcs/hscolour/">HsColour</a> is run to generate colourised code. Then <a class="reference external" href="http://www.haskell.org/haddock/">Haddock</a> is run to
+generate HTML documentation. Each entity shown in the documentation is
+linked to its definition in the colourised code.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-haddock-hscolour-css">
+<code class="descname">--hscolour-css</code><code class="descclassname">=path</code><a class="headerlink" href="#cmdoption-setup-haddock-hscolour-css" title="Permalink to this definition">¶</a></dt>
+<dd><p>The argument <em>path</em> denotes a CSS file, which is passed to <a class="reference external" href="http://www.cs.york.ac.uk/fp/darcs/hscolour/">HsColour</a> as in</p>
+<blockquote>
+<div>runhaskell Setup.hs hscolour –css=*path*</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="setup-hscolour">
+<span id="id4"></span><h2>2.2.9. setup hscolour<a class="headerlink" href="#setup-hscolour" title="Permalink to this headline">¶</a></h2>
+<p>Produce colourised code in HTML format using <a class="reference external" href="http://www.cs.york.ac.uk/fp/darcs/hscolour/">HsColour</a>. Colourised code for
+exported modules is put in <code class="docutils literal notranslate"><span class="pre">dist/doc/html/</span></code><em>pkgid</em><code class="docutils literal notranslate"><span class="pre">/src</span></code>.</p>
+<p>This command takes the following options:</p>
+<dl class="option">
+<dt id="cmdoption-setup-hscolour-executables">
+<code class="descname">--executables</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-hscolour-executables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Also run <a class="reference external" href="http://www.cs.york.ac.uk/fp/darcs/hscolour/">HsColour</a> on the sources of all executable programs. Colourised
+code is put in <code class="docutils literal notranslate"><span class="pre">dist/doc/html/</span></code><em>pkgid</em>/<em>executable</em><code class="docutils literal notranslate"><span class="pre">/src</span></code>.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-hscolour-css">
+<code class="descname">--css</code><code class="descclassname">=path</code><a class="headerlink" href="#cmdoption-setup-hscolour-css" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the given CSS file for the generated HTML files. The CSS file
+defines the colours used to colourise code. Note that this copies
+the given CSS file to the directory with the generated HTML files
+(renamed to <code class="docutils literal notranslate"><span class="pre">hscolour.css</span></code>) rather than linking to it.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="setup-install">
+<span id="id5"></span><h2>2.2.10. setup install<a class="headerlink" href="#setup-install" title="Permalink to this headline">¶</a></h2>
+<p>Copy the files into the install locations and (for library packages)
+register the package with the compiler, i.e. make the modules it
+contains available to programs.</p>
+<p>The <a class="reference external" href="#installation-paths">install locations</a> are determined by
+options to <a class="reference internal" href="#id1">setup configure</a>.</p>
+<p>This command takes the following options:</p>
+<dl class="option">
+<dt id="cmdoption-setup-install-global">
+<code class="descname">--global</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-install-global" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register this package in the system-wide database. (This is the
+default, unless the <a class="reference internal" href="#cmdoption-setup-configure-user"><code class="xref std std-option docutils literal notranslate"><span class="pre">setup</span> <span class="pre">configure</span> <span class="pre">--user</span></code></a> option was supplied
+to the <code class="docutils literal notranslate"><span class="pre">configure</span></code> command.)</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-install-user">
+<code class="descname">--user</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-install-user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register this package in the user’s local package database. (This is
+the default if the <a class="reference internal" href="#cmdoption-setup-configure-user"><code class="xref std std-option docutils literal notranslate"><span class="pre">setup</span> <span class="pre">configure</span> <span class="pre">--user</span></code></a> option was supplied
+to the <code class="docutils literal notranslate"><span class="pre">configure</span></code> command.)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="setup-copy">
+<span id="id6"></span><h2>2.2.11. setup copy<a class="headerlink" href="#setup-copy" title="Permalink to this headline">¶</a></h2>
+<p>Copy the files without registering them. This command is mainly of use
+to those creating binary packages.</p>
+<p>This command takes the following option:</p>
+<dl class="option">
+<dt id="cmdoption-setup-copy-destdir">
+<code class="descname">--destdir</code><code class="descclassname">=path</code><a class="headerlink" href="#cmdoption-setup-copy-destdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the directory under which to place installed files. If this is
+not given, then the root directory is assumed.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="setup-register">
+<span id="id7"></span><h2>2.2.12. setup register<a class="headerlink" href="#setup-register" title="Permalink to this headline">¶</a></h2>
+<p>Register this package with the compiler, i.e. make the modules it
+contains available to programs. This only makes sense for library
+packages. Note that the <code class="docutils literal notranslate"><span class="pre">install</span></code> command incorporates this action.
+The main use of this separate command is in the post-installation step
+for a binary package.</p>
+<p>This command takes the following options:</p>
+<dl class="option">
+<dt id="cmdoption-setup-register-global">
+<code class="descname">--global</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-register-global" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register this package in the system-wide database. (This is the
+default.)</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-register-user">
+<code class="descname">--user</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-register-user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register this package in the user’s local package database.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-register-gen-script">
+<code class="descname">--gen-script</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-register-gen-script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instead of registering the package, generate a script containing
+commands to perform the registration. On Unix, this file is called
+<code class="docutils literal notranslate"><span class="pre">register.sh</span></code>, on Windows, <code class="docutils literal notranslate"><span class="pre">register.bat</span></code>. This script might be
+included in a binary bundle, to be run after the bundle is unpacked
+on the target system.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-register-gen-pkg-config">
+<code class="descname">--gen-pkg-config[</code><code class="descclassname">=path]</code><a class="headerlink" href="#cmdoption-setup-register-gen-pkg-config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instead of registering the package, generate a package registration
+file (or directory, in some circumstances). This only applies to
+compilers that support package registration files which at the
+moment is only GHC. The file should be used with the compiler’s
+mechanism for registering packages. This option is mainly intended
+for packaging systems. If possible use the <a class="reference internal" href="#cmdoption-setup-register-gen-script"><code class="xref std std-option docutils literal notranslate"><span class="pre">--gen-script</span></code></a> option
+instead since it is more portable across Haskell implementations.
+The <em>path</em> is optional and can be used to specify a particular
+output file to generate. Otherwise, by default the file is the
+package name and version with a <code class="docutils literal notranslate"><span class="pre">.conf</span></code> extension.</p>
+<p>This option outputs a directory if the package requires multiple
+registrations: this can occur if internal/convenience libraries are
+used. These configuration file names are sorted so that they can be
+registered in order.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-register-inplace">
+<code class="descname">--inplace</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-register-inplace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the package for use directly from the build tree, without
+needing to install it. This can be useful for testing: there’s no
+need to install the package after modifying it, just recompile and
+test.</p>
+<p>This flag does not create a build-tree-local package database. It
+still registers the package in one of the user or global databases.</p>
+<p>However, there are some caveats. It only works with GHC (currently).
+It only works if your package doesn’t depend on having any
+supplemental files installed — plain Haskell libraries should be
+fine.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="setup-unregister">
+<span id="id8"></span><h2>2.2.13. setup unregister<a class="headerlink" href="#setup-unregister" title="Permalink to this headline">¶</a></h2>
+<p>Deregister this package with the compiler.</p>
+<p>This command takes the following options:</p>
+<dl class="option">
+<dt id="cmdoption-setup-unregister-global">
+<code class="descname">--global</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-unregister-global" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deregister this package in the system-wide database. (This is the
+default.)</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-unregister-user">
+<code class="descname">--user</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-unregister-user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deregister this package in the user’s local package database.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-unregister-gen-script">
+<code class="descname">--gen-script</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-unregister-gen-script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instead of deregistering the package, generate a script containing
+commands to perform the deregistration. On Unix, this file is called
+<code class="docutils literal notranslate"><span class="pre">unregister.sh</span></code>, on Windows, <code class="docutils literal notranslate"><span class="pre">unregister.bat</span></code>. This script might
+be included in a binary bundle, to be run on the target system.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="setup-clean">
+<span id="id9"></span><h2>2.2.14. setup clean<a class="headerlink" href="#setup-clean" title="Permalink to this headline">¶</a></h2>
+<p>Remove any local files created during the <code class="docutils literal notranslate"><span class="pre">configure</span></code>, <code class="docutils literal notranslate"><span class="pre">build</span></code>,
+<code class="docutils literal notranslate"><span class="pre">haddock</span></code>, <code class="docutils literal notranslate"><span class="pre">register</span></code> or <code class="docutils literal notranslate"><span class="pre">unregister</span></code> steps, and also any files
+and directories listed in the <a class="reference internal" href="developing-packages.html#pkg-field-extra-tmp-files" title="package.cabal extra-tmp-files field"><code class="xref cabal cabal-pkg-field docutils literal notranslate"><span class="pre">extra-tmp-files</span></code></a> field.</p>
+<p>This command takes the following options:</p>
+<dl class="option">
+<dt id="cmdoption-setup-clean-save-configure">
+<code class="descname">--save-configure</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-s</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-clean-save-configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keeps the configuration information so it is not necessary to run
+the configure step again before building.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="setup-test">
+<h2>2.2.15. setup test<a class="headerlink" href="#setup-test" title="Permalink to this headline">¶</a></h2>
+<p>Run the test suites specified in the package description file. Aside
+from the following flags, Cabal accepts the name of one or more test
+suites on the command line after <code class="docutils literal notranslate"><span class="pre">test</span></code>. When supplied, Cabal will run
+only the named test suites, otherwise, Cabal will run all test suites in
+the package.</p>
+<dl class="option">
+<dt id="cmdoption-setup-test-builddir">
+<code class="descname">--builddir</code><code class="descclassname">=dir</code><a class="headerlink" href="#cmdoption-setup-test-builddir" title="Permalink to this definition">¶</a></dt>
+<dd><p>The directory where Cabal puts generated build files (default:
+<code class="docutils literal notranslate"><span class="pre">dist</span></code>). Test logs will be located in the <code class="docutils literal notranslate"><span class="pre">test</span></code> subdirectory.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-test-human-log">
+<code class="descname">--human-log</code><code class="descclassname">=path</code><a class="headerlink" href="#cmdoption-setup-test-human-log" title="Permalink to this definition">¶</a></dt>
+<dd><p>The template used to name human-readable test logs; the path is
+relative to <code class="docutils literal notranslate"><span class="pre">dist/test</span></code>. By default, logs are named according to
+the template <code class="docutils literal notranslate"><span class="pre">$pkgid-$test-suite.log</span></code>, so that each test suite
+will be logged to its own human-readable log file. Template
+variables allowed are: <code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>,
+<code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>, <code class="docutils literal notranslate"><span class="pre">$abitag</span></code>, <code class="docutils literal notranslate"><span class="pre">$test-suite</span></code>, and <code class="docutils literal notranslate"><span class="pre">$result</span></code>.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-test-machine-log">
+<code class="descname">--machine-log</code><code class="descclassname">=path</code><a class="headerlink" href="#cmdoption-setup-test-machine-log" title="Permalink to this definition">¶</a></dt>
+<dd><p>The path to the machine-readable log, relative to <code class="docutils literal notranslate"><span class="pre">dist/test</span></code>. The
+default template is <code class="docutils literal notranslate"><span class="pre">$pkgid.log</span></code>. Template variables allowed are:
+<code class="docutils literal notranslate"><span class="pre">$pkgid</span></code>, <code class="docutils literal notranslate"><span class="pre">$compiler</span></code>, <code class="docutils literal notranslate"><span class="pre">$os</span></code>, <code class="docutils literal notranslate"><span class="pre">$arch</span></code>, <code class="docutils literal notranslate"><span class="pre">$abi</span></code>, <code class="docutils literal notranslate"><span class="pre">$abitag</span></code>
+and <code class="docutils literal notranslate"><span class="pre">$result</span></code>.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-test-show-details">
+<code class="descname">--show-details</code><code class="descclassname">=filter</code><a class="headerlink" href="#cmdoption-setup-test-show-details" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if the results of individual test cases are shown on the
+terminal. May be <code class="docutils literal notranslate"><span class="pre">always</span></code> (always show), <code class="docutils literal notranslate"><span class="pre">never</span></code> (never show),
+<code class="docutils literal notranslate"><span class="pre">failures</span></code> (show only failed results), or <code class="docutils literal notranslate"><span class="pre">streaming</span></code> (show all
+results in real time).</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-test-test-options">
+<code class="descname">--test-options</code><code class="descclassname">=options</code><a class="headerlink" href="#cmdoption-setup-test-test-options" title="Permalink to this definition">¶</a></dt>
+<dt id="cmdoption-setup-test-arg-give">
+<code class="descname">Give</code><code class="descclassname"> extra options to the test executables.</code><a class="headerlink" href="#cmdoption-setup-test-arg-give" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-test-test-option">
+<code class="descname">--test-option</code><code class="descclassname">=option</code><a class="headerlink" href="#cmdoption-setup-test-test-option" title="Permalink to this definition">¶</a></dt>
+<dd><p>give an extra option to the test executables. There is no need to
+quote options containing spaces because a single option is assumed,
+so options will not be split on spaces.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-setup-test-test-wrapper">
+<code class="descname">--test-wrapper</code><code class="descclassname">=path</code><a class="headerlink" href="#cmdoption-setup-test-test-wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>The wrapper script/application used to setup and tear down the test
+execution context. The text executable path and test arguments are
+passed as arguments to the wrapper and it is expected that the wrapper
+will return the test’s return code, as well as a copy of stdout/stderr.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="setup-sdist">
+<span id="id10"></span><h2>2.2.16. setup sdist<a class="headerlink" href="#setup-sdist" title="Permalink to this headline">¶</a></h2>
+<p>Create a system- and compiler-independent source distribution in a file
+<em>package</em>-<em>version</em><code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> in the <code class="docutils literal notranslate"><span class="pre">dist</span></code> subdirectory, for
+distribution to package builders. When unpacked, the commands listed in
+this section will be available.</p>
+<p>The files placed in this distribution are the package description file,
+the setup script, the sources of the modules named in the package
+description file, and files named in the <code class="docutils literal notranslate"><span class="pre">license-file</span></code>, <code class="docutils literal notranslate"><span class="pre">main-is</span></code>,
+<code class="docutils literal notranslate"><span class="pre">c-sources</span></code>, <code class="docutils literal notranslate"><span class="pre">asm-sources</span></code>, <code class="docutils literal notranslate"><span class="pre">cmm-sources</span></code>, <code class="docutils literal notranslate"><span class="pre">js-sources</span></code>,
+<code class="docutils literal notranslate"><span class="pre">data-files</span></code>, <code class="docutils literal notranslate"><span class="pre">extra-source-files</span></code> and <code class="docutils literal notranslate"><span class="pre">extra-doc-files</span></code> fields.</p>
+<p>This command takes the following option:</p>
+<dl class="option">
+<dt id="cmdoption-setup-sdist-snapshot">
+<code class="descname">--snapshot</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-setup-sdist-snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append today’s date (in “YYYYMMDD” format) to the version number for
+the generated source package. The original package is unaffected.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="concepts-and-development.html" class="btn btn-neutral float-right" title="3. Package Concepts and Development" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="config-and-install.html" class="btn btn-neutral float-left" title="2. Configuration and Installing Packages" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2003-2017, Cabal Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

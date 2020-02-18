@@ -1,0 +1,388 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1. Introduction &mdash; Cabal 3.0.0.0 User&#39;s Guide</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. Configuration and Installing Packages" href="config-and-install.html" />
+    <link rel="prev" title="Welcome to the Cabal User Guide" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Cabal
+          
+
+          
+            
+            <img src="_static/Cabal-dark.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#a-tool-for-working-with-packages">1.1. A tool for working with packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-s-in-a-package">1.2. What’s in a package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cabal-featureset">1.3. Cabal featureset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#similar-systems">1.4. Similar systems</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config-and-install.html">2. Configuration and Installing Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts-and-development.html">3. Package Concepts and Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs-and-stability.html">4. Reporting Bugs and Stability of Cabal Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nix-local-build-overview.html">5. Nix-style Local Builds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nix-integration.html">6. Nix Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-format-changelog.html">7. Package Description Format Specification History</a></li>
+</ul>
+
+            
+          
+  <a href="cabal-projectindex.html">Reference</a>
+  <a href="genindex.html">Index</a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Cabal</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>1. Introduction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/haskell/cabal/blob/master/Cabal/doc/intro.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p>Cabal is the standard package system for
+<a class="reference external" href="http://www.haskell.org/">Haskell</a> software. It helps people to
+configure, build and install Haskell software and to distribute it
+easily to other users and developers.</p>
+<p>There is a command line tool called <code class="docutils literal notranslate"><span class="pre">cabal</span></code> for working with Cabal
+packages. It helps with installing existing packages and also helps
+people developing their own packages. It can be used to work with local
+packages or to install packages from online package archives, including
+automatically installing dependencies. By default it is configured to
+use <a class="reference external" href="http://hackage.haskell.org/">Hackage</a> which is Haskell’s central
+package archive that contains thousands of libraries and applications in
+the Cabal package format.</p>
+<div class="section" id="introduction">
+<h1>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>Cabal is a package system for Haskell software. The point of a package
+system is to enable software developers and users to easily distribute,
+use and reuse software. A package system makes it easier for developers
+to get their software into the hands of users. Equally importantly, it
+makes it easier for software developers to be able to reuse software
+components written by other developers.</p>
+<p>Packaging systems deal with packages and with Cabal we call them <em>Cabal
+packages</em>. The Cabal package is the unit of distribution. Every Cabal
+package has a name and a version number which are used to identify the
+package, e.g. <code class="docutils literal notranslate"><span class="pre">filepath-1.0</span></code>.</p>
+<p>Cabal packages can depend on other Cabal packages. There are tools to
+enable automated package management. This means it is possible for
+developers and users to install a package plus all of the other Cabal
+packages that it depends on. It also means that it is practical to make
+very modular systems using lots of packages that reuse code written by
+many developers.</p>
+<p>Cabal packages are source based and are typically (but not necessarily)
+portable to many platforms and Haskell implementations. The Cabal
+package format is designed to make it possible to translate into other
+formats, including binary packages for various systems.</p>
+<p>When distributed, Cabal packages use the standard compressed tarball
+format, with the file extension <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code>, e.g.
+<code class="docutils literal notranslate"><span class="pre">filepath-1.0.tar.gz</span></code>.</p>
+<p>Note that packages are not part of the Haskell language, rather they are
+a feature provided by the combination of Cabal and GHC (and several
+other Haskell implementations).</p>
+<div class="section" id="a-tool-for-working-with-packages">
+<h2>1.1. A tool for working with packages<a class="headerlink" href="#a-tool-for-working-with-packages" title="Permalink to this headline">¶</a></h2>
+<p>There is a command line tool, called “<code class="docutils literal notranslate"><span class="pre">cabal</span></code>”, that users and
+developers can use to build and install Cabal packages. It can be used
+for both local packages and for packages available remotely over the
+network. It can automatically install Cabal packages plus any other
+Cabal packages they depend on.</p>
+<p>Developers can use the tool with packages in local directories, e.g.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> foo/
+<span class="gp">$</span> cabal install
+</pre></div>
+</div>
+<p>While working on a package in a local directory, developers can run the
+individual steps to configure and build, and also generate documentation
+and run test suites and benchmarks.</p>
+<p>It is also possible to install several local packages at once, e.g.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal install foo/ bar/
+</pre></div>
+</div>
+<p>Developers and users can use the tool to install packages from remote
+Cabal package archives. By default, the <code class="docutils literal notranslate"><span class="pre">cabal</span></code> tool is configured to
+use the central Haskell package archive called
+<a class="reference external" href="http://hackage.haskell.org/">Hackage</a> but it is possible to use it
+with any other suitable archive.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal install xmonad
+</pre></div>
+</div>
+<p>This will install the <code class="docutils literal notranslate"><span class="pre">xmonad</span></code> package plus all of its dependencies.</p>
+<p>In addition to packages that have been published in an archive,
+developers can install packages from local or remote tarball files, for
+example</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal install foo-1.0.tar.gz
+<span class="gp">$</span> cabal install http://example.com/foo-1.0.tar.gz
+</pre></div>
+</div>
+<p>Cabal provides a number of ways for a user to customise how and where a
+package is installed. They can decide where a package will be installed,
+which Haskell implementation to use and whether to build optimised code
+or build with the ability to profile code. It is not expected that users
+will have to modify any of the information in the <code class="docutils literal notranslate"><span class="pre">.cabal</span></code> file.</p>
+<p>For full details, see the section on <a class="reference external" href="installing-packages.html">building and installing
+packages</a>.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">cabal</span></code> is not the only tool for working with Cabal
+packages. Due to the standardised format and a library for reading
+<code class="docutils literal notranslate"><span class="pre">.cabal</span></code> files, there are several other special-purpose tools.</p>
+</div>
+<div class="section" id="what-s-in-a-package">
+<h2>1.2. What’s in a package<a class="headerlink" href="#what-s-in-a-package" title="Permalink to this headline">¶</a></h2>
+<p>A Cabal package consists of:</p>
+<ul class="simple">
+<li>Haskell software, including libraries, executables and tests</li>
+<li>metadata about the package in a standard human and machine readable
+format (the “<code class="docutils literal notranslate"><span class="pre">.cabal</span></code>” file)</li>
+<li>a standard interface to build the package (the “<code class="docutils literal notranslate"><span class="pre">Setup.hs</span></code>” file)</li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">.cabal</span></code> file contains information about the package, supplied by
+the package author. In particular it lists the other Cabal packages that
+the package depends on.</p>
+<p>For full details on what goes in the <code class="docutils literal notranslate"><span class="pre">.cabal</span></code> and <code class="docutils literal notranslate"><span class="pre">Setup.hs</span></code> files,
+and for all the other features provided by the build system, see the
+section on <a class="reference external" href="developing-packages.html">developing packages</a>.</p>
+</div>
+<div class="section" id="cabal-featureset">
+<h2>1.3. Cabal featureset<a class="headerlink" href="#cabal-featureset" title="Permalink to this headline">¶</a></h2>
+<p>Cabal and its associated tools and websites covers:</p>
+<ul class="simple">
+<li>a software build system</li>
+<li>software configuration</li>
+<li>packaging for distribution</li>
+<li>automated package management<ul>
+<li>natively using the <code class="docutils literal notranslate"><span class="pre">cabal</span></code> command line tool; or</li>
+<li>by translation into native package formats such as RPM or deb</li>
+</ul>
+</li>
+<li>web and local Cabal package archives<ul>
+<li>central Hackage website with 1000’s of Cabal packages</li>
+</ul>
+</li>
+</ul>
+<p>Some parts of the system can be used without others. In particular the
+built-in build system for simple packages is optional: it is possible to
+use custom build systems.</p>
+</div>
+<div class="section" id="similar-systems">
+<h2>1.4. Similar systems<a class="headerlink" href="#similar-systems" title="Permalink to this headline">¶</a></h2>
+<p>The Cabal system is roughly comparable with the system of Python Eggs,
+Ruby Gems or Perl distributions. Each system has a notion of
+distributable packages, and has tools to manage the process of
+distributing and installing packages.</p>
+<p>Hackage is an online archive of Cabal packages. It is roughly comparable
+to CPAN but with rather fewer packages (around 5,000 vs 28,000).</p>
+<p>Cabal is often compared with autoconf and automake and there is some
+overlap in functionality. The most obvious similarity is that the
+command line interface for actually configuring and building packages
+follows the same steps and has many of the same configuration
+parameters.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./configure --prefix<span class="o">=</span>...
+<span class="gp">$</span> make
+<span class="gp">$</span> make install
+</pre></div>
+</div>
+<p>compared to</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal configure --prefix<span class="o">=</span>...
+<span class="gp">$</span> cabal build
+<span class="gp">$</span> cabal install
+</pre></div>
+</div>
+<p>Cabal’s build system for simple packages is considerably less flexible
+than make/automake, but has builtin knowledge of how to build Haskell
+code and requires very little manual configuration. Cabal’s simple build
+system is also portable to Windows, without needing a Unix-like
+environment such as cygwin/mingwin.</p>
+<p>Compared to autoconf, Cabal takes a somewhat different approach to
+package configuration. Cabal’s approach is designed for automated
+package management. Instead of having a configure script that tests for
+whether dependencies are available, Cabal packages specify their
+dependencies. There is some scope for optional and conditional
+dependencies. By having package authors specify dependencies it makes it
+possible for tools to install a package and all of its dependencies
+automatically. It also makes it possible to translate (in a
+mostly-automatically way) into another package format like RPM or deb
+which also have automatic dependency resolution.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="config-and-install.html" class="btn btn-neutral float-right" title="2. Configuration and Installing Packages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to the Cabal User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2003-2017, Cabal Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

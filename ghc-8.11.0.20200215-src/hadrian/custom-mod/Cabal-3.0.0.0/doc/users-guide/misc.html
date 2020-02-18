@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.1. Reporting bugs and deficiencies &mdash; Cabal 3.0.0.0 User&#39;s Guide</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="5. Nix-style Local Builds" href="nix-local-build-overview.html" />
+    <link rel="prev" title="4. Reporting Bugs and Stability of Cabal Interfaces" href="bugs-and-stability.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Cabal
+          
+
+          
+            
+            <img src="_static/Cabal-dark.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config-and-install.html">2. Configuration and Installing Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts-and-development.html">3. Package Concepts and Development</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="bugs-and-stability.html">4. Reporting Bugs and Stability of Cabal Interfaces</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.1. Reporting bugs and deficiencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stability-of-cabal-interfaces">4.2. Stability of Cabal interfaces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cabal-file-format">4.2.1. Cabal file format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#command-line-interface">4.2.2. Command-line interface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#very-stable-command-line-interfaces">4.2.2.1. Very Stable Command-line interfaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stable-command-line-interfaces">4.2.2.2. Stable Command-line interfaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unstable-command-line">4.2.2.3. Unstable command-line</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#functions-and-types">4.2.3. Functions and Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#very-stable-api">4.2.3.1. Very Stable API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#semi-stable-api">4.2.3.2. Semi-stable API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unstable-api">4.2.3.3. Unstable API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hackage">4.2.4. Hackage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nix-local-build-overview.html">5. Nix-style Local Builds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nix-integration.html">6. Nix Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-format-changelog.html">7. Package Description Format Specification History</a></li>
+</ul>
+
+            
+          
+  <a href="cabal-projectindex.html">Reference</a>
+  <a href="genindex.html">Index</a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Cabal</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="bugs-and-stability.html">4. Reporting Bugs and Stability of Cabal Interfaces</a> &raquo;</li>
+        
+      <li>4.1. Reporting bugs and deficiencies</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/haskell/cabal/blob/master/Cabal/doc/misc.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="reporting-bugs-and-deficiencies">
+<h1>4.1. Reporting bugs and deficiencies<a class="headerlink" href="#reporting-bugs-and-deficiencies" title="Permalink to this headline">¶</a></h1>
+<p>Please report any flaws or feature requests in the <a class="reference external" href="https://github.com/haskell/cabal/issues">bug
+tracker</a>.</p>
+<p>For general discussion or queries email the libraries mailing list
+<a class="reference external" href="mailto:libraries&#37;&#52;&#48;haskell&#46;org">libraries<span>&#64;</span>haskell<span>&#46;</span>org</a>. There is also a development mailing list
+<a class="reference external" href="mailto:cabal-devel&#37;&#52;&#48;haskell&#46;org">cabal-devel<span>&#64;</span>haskell<span>&#46;</span>org</a>.</p>
+</div>
+<div class="section" id="stability-of-cabal-interfaces">
+<h1>4.2. Stability of Cabal interfaces<a class="headerlink" href="#stability-of-cabal-interfaces" title="Permalink to this headline">¶</a></h1>
+<p>The Cabal library and related infrastructure is still under active
+development. New features are being added and limitations and bugs are
+being fixed. This requires internal changes and often user visible
+changes as well. We therefore cannot promise complete future-proof
+stability, at least not without halting all development work.</p>
+<p>This section documents the aspects of the Cabal interface that we can
+promise to keep stable and which bits are subject to change.</p>
+<div class="section" id="cabal-file-format">
+<h2>4.2.1. Cabal file format<a class="headerlink" href="#cabal-file-format" title="Permalink to this headline">¶</a></h2>
+<p>This is backwards compatible and mostly forwards compatible. New fields
+can be added without breaking older versions of Cabal. Fields can be
+deprecated without breaking older packages.</p>
+</div>
+<div class="section" id="command-line-interface">
+<h2>4.2.2. Command-line interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="very-stable-command-line-interfaces">
+<h3>4.2.2.1. Very Stable Command-line interfaces<a class="headerlink" href="#very-stable-command-line-interfaces" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">./setup</span> <span class="pre">configure</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">--prefix</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">--user</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">--ghc</span></code>, <code class="docutils literal notranslate"><span class="pre">--uhc</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">--verbose</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">--prefix</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">./setup</span> <span class="pre">build</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">./setup</span> <span class="pre">install</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">./setup</span> <span class="pre">register</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">./setup</span> <span class="pre">copy</span></code></li>
+</ul>
+</div>
+<div class="section" id="stable-command-line-interfaces">
+<h3>4.2.2.2. Stable Command-line interfaces<a class="headerlink" href="#stable-command-line-interfaces" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="unstable-command-line">
+<h3>4.2.2.3. Unstable command-line<a class="headerlink" href="#unstable-command-line" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="functions-and-types">
+<h2>4.2.3. Functions and Types<a class="headerlink" href="#functions-and-types" title="Permalink to this headline">¶</a></h2>
+<p>The Cabal library follows the <a class="reference external" href="http://pvp.haskell.org/">Package Versioning Policy</a>.
+This means that within a stable major release, for example 1.2.x, there
+will be no incompatible API changes. But minor versions increments, for
+example 1.2.3, indicate compatible API additions.</p>
+<p>The Package Versioning Policy does not require any API guarantees
+between major releases, for example between 1.2.x and 1.4.x. In practise
+of course not everything changes between major releases. Some parts of
+the API are more prone to change than others. The rest of this section
+gives some informal advice on what level of API stability you can expect
+between major releases.</p>
+<div class="section" id="very-stable-api">
+<h3>4.2.3.1. Very Stable API<a class="headerlink" href="#very-stable-api" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">defaultMain</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">defaultMainWithHooks</span> <span class="pre">defaultUserHooks</span></code></li>
+</ul>
+<p>But regular <code class="docutils literal notranslate"><span class="pre">defaultMainWithHooks</span></code> isn’t stable since <code class="docutils literal notranslate"><span class="pre">UserHooks</span></code>
+changes.</p>
+</div>
+<div class="section" id="semi-stable-api">
+<h3>4.2.3.2. Semi-stable API<a class="headerlink" href="#semi-stable-api" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">UserHooks</span></code> The hooks API will change in the future</li>
+<li><code class="docutils literal notranslate"><span class="pre">Distribution.*</span></code> is mostly declarative information about packages
+and is somewhat stable.</li>
+</ul>
+</div>
+<div class="section" id="unstable-api">
+<h3>4.2.3.3. Unstable API<a class="headerlink" href="#unstable-api" title="Permalink to this headline">¶</a></h3>
+<p>Everything under <code class="docutils literal notranslate"><span class="pre">Distribution.Simple.*</span></code> has no stability guarantee.</p>
+</div>
+</div>
+<div class="section" id="hackage">
+<h2>4.2.4. Hackage<a class="headerlink" href="#hackage" title="Permalink to this headline">¶</a></h2>
+<p>The index format is a partly stable interface. It consists of a tar.gz
+file that contains directories with <code class="docutils literal notranslate"><span class="pre">.cabal</span></code> files in. In future it
+may contain more kinds of files so do not assume every file is a
+<code class="docutils literal notranslate"><span class="pre">.cabal</span></code> file. Incompatible revisions to the format would involve
+bumping the name of the index file, i.e., <code class="docutils literal notranslate"><span class="pre">00-index.tar.gz</span></code>,
+<code class="docutils literal notranslate"><span class="pre">01-index.tar.gz</span></code> etc.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="nix-local-build-overview.html" class="btn btn-neutral float-right" title="5. Nix-style Local Builds" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="bugs-and-stability.html" class="btn btn-neutral float-left" title="4. Reporting Bugs and Stability of Cabal Interfaces" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2003-2017, Cabal Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

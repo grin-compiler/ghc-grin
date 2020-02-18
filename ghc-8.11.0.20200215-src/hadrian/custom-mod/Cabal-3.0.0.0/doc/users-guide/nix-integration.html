@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6. Nix Integration &mdash; Cabal 3.0.0.0 User&#39;s Guide</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="7. Package Description Format Specification History" href="file-format-changelog.html" />
+    <link rel="prev" title="5.1. Quickstart" href="nix-local-build.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Cabal
+          
+
+          
+            
+            <img src="_static/Cabal-dark.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.0.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config-and-install.html">2. Configuration and Installing Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts-and-development.html">3. Package Concepts and Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs-and-stability.html">4. Reporting Bugs and Stability of Cabal Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nix-local-build-overview.html">5. Nix-style Local Builds</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. Nix Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#enabling-nix-integration">6.1. Enabling Nix Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-nix-expressions">6.2. Creating Nix Expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nix-expression-evaluation">6.3. Nix Expression Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#further-reading">6.4. Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="file-format-changelog.html">7. Package Description Format Specification History</a></li>
+</ul>
+
+            
+          
+  <a href="cabal-projectindex.html">Reference</a>
+  <a href="genindex.html">Index</a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Cabal</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>6. Nix Integration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/haskell/cabal/blob/master/Cabal/doc/nix-integration.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nix-integration">
+<h1>6. Nix Integration<a class="headerlink" href="#nix-integration" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://nixos.org/nix/">Nix</a> is a package manager popular with some Haskell developers due to its focus on reliability and reproducibility. <code class="docutils literal notranslate"><span class="pre">cabal</span></code> now has the ability to integrate with Nix for dependency management during local package development.</p>
+<div class="section" id="enabling-nix-integration">
+<h2>6.1. Enabling Nix Integration<a class="headerlink" href="#enabling-nix-integration" title="Permalink to this headline">¶</a></h2>
+<p>To enable Nix integration, simply pass the <code class="docutils literal notranslate"><span class="pre">--enable-nix</span></code> global option when you call <code class="docutils literal notranslate"><span class="pre">cabal</span></code>. To use this option everywhere, edit your <code class="docutils literal notranslate"><span class="pre">$HOME/.cabal/config</span></code> file to include:</p>
+<div class="highlight-cabal notranslate"><div class="highlight"><pre><span></span><span class="k">nix</span><span class="p">:</span> True
+</pre></div>
+</div>
+<p>If the package (which must be locally unpacked) provides a <code class="docutils literal notranslate"><span class="pre">shell.nix</span></code> or <code class="docutils literal notranslate"><span class="pre">default.nix</span></code> file, this flag will cause <code class="docutils literal notranslate"><span class="pre">cabal</span></code> to run most commands through <code class="docutils literal notranslate"><span class="pre">nix-shell</span></code>. If both expressions are present, <code class="docutils literal notranslate"><span class="pre">shell.nix</span></code> is preferred. The following commands are affected:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">configure</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">build</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">repl</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">install</span></code> (only if installing into a sandbox)</li>
+<li><code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">haddock</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">freeze</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">gen-bounds</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">cabal</span> <span class="pre">run</span></code></li>
+</ul>
+<p>If the package does not provide an expression, <code class="docutils literal notranslate"><span class="pre">cabal</span></code> runs normally.</p>
+</div>
+<div class="section" id="creating-nix-expressions">
+<h2>6.2. Creating Nix Expressions<a class="headerlink" href="#creating-nix-expressions" title="Permalink to this headline">¶</a></h2>
+<p>The Nix package manager is based on a lazy, pure, functional programming language; packages are defined by expressions in this language. The fastest way to create a Nix expression for a Cabal package is with the <a class="reference external" href="https://github.com/NixOS/cabal2nix">cabal2nix</a> tool. To create a <code class="docutils literal notranslate"><span class="pre">shell.nix</span></code> expression for the package in the current directory, run this command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cabal2nix --shell ./. &gt;shell.nix
+</pre></div>
+</div>
+</div>
+<div class="section" id="nix-expression-evaluation">
+<h2>6.3. Nix Expression Evaluation<a class="headerlink" href="#nix-expression-evaluation" title="Permalink to this headline">¶</a></h2>
+<p>(This section describes for advanced users how Nix expressions are evaluated.)</p>
+<p>First, the Nix expression (<code class="docutils literal notranslate"><span class="pre">shell.nix</span></code> or <code class="docutils literal notranslate"><span class="pre">default.nix</span></code>) is instantiated with <code class="docutils literal notranslate"><span class="pre">nix-instantiate</span></code>. The <code class="docutils literal notranslate"><span class="pre">--add-root</span></code> and <code class="docutils literal notranslate"><span class="pre">--indirect</span></code> options are used to create an indirect root in the Cabal build directory, preventing Nix from garbage collecting the derivation while in use. The <code class="docutils literal notranslate"><span class="pre">IN_NIX_SHELL</span></code> environment variable is set so that <code class="docutils literal notranslate"><span class="pre">builtins.getEnv</span></code> works as it would in <code class="docutils literal notranslate"><span class="pre">nix-shell</span></code>.</p>
+<p>Next, the commands above are run through <code class="docutils literal notranslate"><span class="pre">nix-shell</span></code> using the instantiated derivation. Again, <code class="docutils literal notranslate"><span class="pre">--add-root</span></code> and <code class="docutils literal notranslate"><span class="pre">--indirect</span></code> are used to prevent Nix from garbage collecting the packages in the environment. The child <code class="docutils literal notranslate"><span class="pre">cabal</span></code> process reads the <code class="docutils literal notranslate"><span class="pre">CABAL_IN_NIX_SHELL</span></code> environment variable to prevent it from spawning additional child shells.</p>
+</div>
+<div class="section" id="further-reading">
+<h2>6.4. Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="http://nixos.org/nix/manual/#chap-writing-nix-expressions">Nix manual</a> provides further instructions for writing Nix expressions. The <a class="reference external" href="http://nixos.org/nixpkgs/manual/#users-guide-to-the-haskell-infrastructure">Nixpkgs manual</a> describes the infrastructure provided for Haskell packages.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="file-format-changelog.html" class="btn btn-neutral float-right" title="7. Package Description Format Specification History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="nix-local-build.html" class="btn btn-neutral float-left" title="5.1. Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2003-2017, Cabal Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
