@@ -25,10 +25,6 @@ instance Show Unique where
 
 -- type related
 
-data UnliftedSpec
-  = UnliftedAlgTyCon
-  | UnliftedPrimType  Name
-
 data PrimRep
   = VoidRep
   | LiftedRep
