@@ -3,12 +3,12 @@
 {-# LANGUAGE RecordWildCards, LambdaCase #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module GhcDump.StgPretty
+module Stg.Pretty
   ( Pretty(..)
-  , module GhcDump.StgPretty
+  , module Stg.Pretty
   ) where
 
-import GhcDump_StgAst
+import Stg.Syntax
 
 import Data.Ratio
 import qualified Data.ByteString.Char8 as BS
@@ -16,7 +16,7 @@ import Text.PrettyPrint.ANSI.Leijen
 
 {-
 data ForeignCall
-data PrimCall = PrimCall -- T_Text T_Text
+data PrimCall = PrimCall -- Name Name
 data UpdateFlag = ReEntrant | Updatable | SingleEntry
 -}
 
@@ -34,18 +34,18 @@ maybeParens :: Bool -> Doc -> Doc
 maybeParens True  = parens
 maybeParens False = id
 
-ppTypeInfo :: TypeInfo -> Doc
-ppTypeInfo = comment . text . show
+ppType :: Type -> Doc
+ppType = red . text . show
 
 pprBinder :: Binder -> Doc
-pprBinder b = (pretty . binderUniqueName $ b) <+> comment (text (show u) <> exported) <+> ppTypeInfo (binderType b) where
+pprBinder b = parens $ (exported . pretty . binderUniqueName $ b) <+> text "::" <+> ppType (binderType b) where
   BinderId u  = binderId b
-  exported    = if binderIsExported b then text " exported" else mempty
+  exported    = if binderIsExported b then green else id
 
-instance Pretty TypeInfo where
-    pretty = ppTypeInfo
+instance Pretty Type where
+    pretty = ppType
 
-instance Pretty T_Text where
+instance Pretty Name where
     pretty = text . BS.unpack
 
 instance Pretty ModuleName where
@@ -64,12 +64,12 @@ instance Pretty LitNumType where
     LitNumWord64  -> "Word64"
 
 instance Pretty Lit where
-    pretty (MachChar x) = "'" <> char x <> "'#"
-    pretty (MachStr x) = "\"" <> text (BS.unpack x) <> "\"#"
-    pretty MachNullAddr = "nullAddr#"
-    pretty (MachFloat x) = "FLOAT" <> parens (pprRational x)
-    pretty (MachDouble x) = "DOUBLE" <> parens (pprRational x)
-    pretty (MachLabel x) = "LABEL"<> parens (pretty x)
+    pretty (LitChar x) = "'" <> char x <> "'#"
+    pretty (LitString x) = "\"" <> text (BS.unpack x) <> "\"#"
+    pretty LitNullAddr = "nullAddr#"
+    pretty (LitFloat x) = "FLOAT" <> parens (pprRational x)
+    pretty (LitDouble x) = "DOUBLE" <> parens (pprRational x)
+    pretty (LitLabel x s) = "LABEL"<> parens (pretty x) <+> text (show s)
     pretty (LitNumber t i) = "#" <> pretty t <> "#" <> pretty i
 
 instance Pretty AltCon where
@@ -118,10 +118,9 @@ pprExpr' parens exp = case exp of
                                , indent 2 $ vcat $ map (pprAlt) alts
                                , "}"
                                ]
-  StgApp f args         -> maybeParens parens $ hang' (pprBinder f) 2 (sep $ map (pprArg) args)
-  StgOpApp op args ty   -> maybeParens parens $ hang' (pprOp op <+> braces (pretty ty)) 2 (sep $ map (pprArg) args)
-  StgConApp dc args t   -> maybeParens parens $ hang' (pretty dc <+> comment (pretty t)) 2 (sep $ map (pprArg) args)
-  StgLam b x            -> maybeParens parens $ hang' ("\\" <+> sep (map (pprBinder) b) <+> smallRArrow) 2 (pprExpr' False x)
+  StgApp f args ty s    -> maybeParens parens $ hang' (pprBinder f) 2 (sep $ map (pprArg) args) <+> text "::" <+> (pretty ty) <+> comment (pretty s)
+  StgOpApp op args ty   -> maybeParens parens $ hang' (pprOp op) 2 (sep $ map (pprArg) args) <+> text "::" <+> (pretty ty)
+  StgConApp dc args _t  -> maybeParens parens $ hang' (pretty dc) 2 (sep $ map (pprArg) args)
   StgLet b e            -> maybeParens parens $ "let" <+> (align $ pprBinding b) <$$> "in" <+> align (pprExpr' False e)
   StgLetNoEscape b e    -> maybeParens parens $ "lettail" <+> (align $ pprBinding b) <$$> "in" <+> align (pprExpr' False e)
 
@@ -132,9 +131,8 @@ instance Pretty Expr where
 
 pprRhs :: Rhs -> Doc
 pprRhs = \case
-  StgRhsClosure vs u bs e -> text "closure" <+> parens (sep $ text "F:" : map pprBinder vs) <+> parens (sep $ text "B:" : map pprBinder bs) <+>
-                              braces (line <> pprExpr e)
-  StgRhsCon d vs          -> pretty d <+> (sep $ map (pprArg) vs)
+  StgRhsClosure u bs e -> text "closure" <+> parens (sep $ text "B:" : map pprBinder bs) <+> braces (line <> pprExpr e)
+  StgRhsCon d vs -> pretty d <+> (sep $ map (pprArg) vs)
 
 pprBinding :: Binding -> Doc
 pprBinding = \case
@@ -159,29 +157,23 @@ pprTopBinding = \case
 instance Pretty TopBinding where
   pretty = pprTopBinding
 
-{-
-  = Module
-    { modulePhase       :: T_Text
-    , moduleName        :: ModuleName
-    , moduleDependency  :: [ModuleName]
-    , moduleExternals   :: [(ModuleName, [bndr])]
-    , moduleDataCons    :: [(ModuleName, [bndr])]
-    , moduleTyCons      :: [(ModuleName, [TyCon' occ])]
-    , moduleExported    :: [(ModuleName, [BinderId])]
-    , moduleTopBindings :: [TopBinding' bndr occ]
-    }
+pprTyCon :: AlgTyCon -> Doc
+pprTyCon AlgTyCon{..} = pretty modName <> text "." <> pretty tcName <$$> (indent 2 $ vsep (map pretty tcDataCons)) <> line where
+  modName = sdcModule $ head tcDataCons -- NOTE: AlgTyCons must have at least one constructor
 
-data TyCon' occ
-  = TyCon
-  { tcName      :: T_Text
-  , tcId        :: TyConId
-  , tcDataCons  :: [occ]
-  }
--}
-pprTyCon :: TyCon -> Doc
-pprTyCon TyCon{..} = pretty tcName <$$> (indent 2 $ vsep (map pretty tcDataCons)) <> line
+pprSDataCon :: SDataCon -> Doc
+pprSDataCon SDataCon{..} = pretty sdcModule <> text "." <> pretty sdcName <+> text "::" <+> text (show sdcRep)
 
-instance Pretty TyCon where
+instance Pretty SDataCon where
+    pretty = pprSDataCon
+
+pprDataCon :: DataCon -> Doc
+pprDataCon DataCon{..} = pretty dcModule <> text "." <> pretty dcName <+> text "::" <+> text (show dcRep)
+
+instance Pretty DataCon where
+    pretty = pprDataCon
+
+instance Pretty AlgTyCon where
   pretty = pprTyCon
 
 pprModule :: Module -> Doc
@@ -189,9 +181,8 @@ pprModule m =
   comment (pretty $ modulePhase m)
   <$$> text "module" <+> pretty (moduleName m) <+> "where" <> line
   <$$> vsep [text "using" <+> pretty n | n <- moduleDependency m] <> line
-  <$$> text "externals" <$$> vsep [indent 2 $ vsep (map pretty bl) | (n, bl) <- moduleExternals m] <> line
-  <$$> text "data" <$$> vsep [indent 2 $ vsep (map pretty bl) | (n, bl) <- moduleDataCons m] <> line
-  <$$> text "type" <$$> vsep [indent 2 $ vsep (map pretty tl) | (n, tl) <- moduleTyCons m] <> line
+  <$$> text "externals" <$$> vsep [indent 2 $ vsep (map pretty bl) | (n, bl) <- moduleExternalTopIds m] <> line
+  <$$> text "type" <$$> vsep [indent 2 $ vsep (map pretty tl) | (n, tl) <- moduleAlgTyCons m] <> line
   <$$> vsep (map (pprTopBinding) (moduleTopBindings m))
 
 instance Pretty Module where
