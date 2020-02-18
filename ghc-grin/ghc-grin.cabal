@@ -27,11 +27,12 @@ library
       base
     , containers
     , mtl
+    , transformers
     , text
     , bytestring
     , lambda-grin
-    , ghc-dump-stg
-    , ghc-dump-util
+    , external-stg
+    , external-stg-util
     , ansi-wl-pprint
     , recursion-schemes
     , ghc
@@ -62,7 +63,7 @@ executable ghc-grin
                      , bytestring
                      , grin
                      , ghc-grin
-                     , ghc-dump-stg
-                     , ghc-dump-util
+                     , external-stg
+                     , external-stg-util
                      , lambda-grin
   default-language:    Haskell2010

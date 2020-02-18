@@ -1,4 +1,4 @@
-{-# LANGUAGE StandaloneDeriving, LambdaCase #-}
+{-# LANGUAGE StandaloneDeriving, LambdaCase, OverloadedStrings #-}
 module Main where
 
 import Text.Printf
@@ -10,15 +10,15 @@ import System.Environment
 import System.Exit
 import System.IO
 
-import GhcDump_StgAst (ModuleName(..), moduleName)
-import GhcDump.StgUtil
+import Stg.Syntax (ModuleName(..), moduleName)
+import Stg.Util
 
 import Lambda.GHCSymbols as GHCSymbols
 import Lambda.FromStg
-import Lambda.Syntax
-import qualified Lambda.Syntax2 as L2
+import Lambda.Syntax2
+--import qualified Lambda.Syntax2 as L2
 import Lambda.Pretty
-import Lambda.ToSyntax2
+--import Lambda.ToSyntax2
 --import Lambda.GrinCodeGen
 import Lambda.Lint
 import Lambda.StaticSingleAssignment
@@ -27,7 +27,7 @@ import Lambda.DeadFunctionEliminationM
 import Pipeline.Pipeline
 
 import Data.Maybe
-import Data.List (foldl', nubBy)
+import Data.List (foldl', nubBy, unzip4)
 import qualified Data.Set as Set
 import qualified Data.Map.Strict as Map
 import qualified Data.ByteString.Char8 as BS8
@@ -63,9 +63,10 @@ deriving instance Show ResourceLimits
 showWidth :: Int -> Doc -> String
 showWidth w x = displayS (renderPretty 0.4 w x) ""
 
+-- TODO: move to Lambda.Util
 concatPrograms :: [Program] -> Program
-concatPrograms prgs = Program (nubExts $ concat exts) (concat sdata) (concat defs) where
-  (exts, sdata, defs) = unzip3 [(e, s, d) | Program e s d <- prgs]
+concatPrograms prgs = Program (nubExts $ concat exts) (concat cgroups) (concat sdata) (concat defs) where
+  (exts, cgroups, sdata, defs) = unzip4 [(e, c, s, d) | Program e c s d <- prgs]
   nubExts = nubBy (\a b -> eName a == eName b)
 
 collectImportedModules :: [FilePath] -> String -> IO [FilePath]
@@ -124,7 +125,7 @@ toLambda fname = do
       new = do
         printf "toLambda: %s\n" fname
         stgModule <- readDump fname
-        program@(Program exts sdata defs) <- codegenLambda stgModule
+        program@(Program exts cgroups sdata defs) <- codegenLambda stgModule
 
         let lambdaName = replaceExtension fname "lambda"
         writeFile lambdaName . showWidth 800 . plain $ pretty program
@@ -134,18 +135,23 @@ toLambda fname = do
   cache h lambdabinName load new
 
 sortDefs :: Program -> Program
-sortDefs (Program exts sdata defs) = Program exts (Map.elems $ Map.fromList [(sName d, d) | d <- sdata]) . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
+sortDefs (Program exts cgroups sdata defs) = Program exts cgroups (Map.elems $ Map.fromList [(sName d, d) | d <- sdata]) . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
 
+{-
 replaceMain :: Program -> Program
-replaceMain (Program exts sdata defs) = (Program exts sdata (mainFun : filter notMain defs)) where
+replaceMain (Program exts cgroups sdata defs) = (Program exts cgroups sdata (mainFun : filter notMain defs)) where
   mainName = packName ":Main.main"
   notMain (Def n _ _) = n /= mainName
   mainFun = Def mainName [] $ App (packName "Main.main") [Lit $ LToken $ BS8.pack "GHC.Prim.void#"]
+-}
 
 addMain :: Program -> Program
-addMain (Program exts sdata defs) = (Program exts sdata (mainFun : defs)) where
-  mainName = packName "::Main.main"
-  mainFun = Def mainName [] $ App (packName ":Main.main") [Lit $ LToken $ BS8.pack "GHC.Prim.void#"]
+addMain (Program exts cgroups sdata defs) = (Program exts cgroups sdata (mainFun : defs)) where
+  mainName = "::Main.main"
+  mainFun = Def mainName [] $ LetS
+    [ ("::Main.main.v00", SingleValue VoidRep, Lit $ LToken $ BS8.pack "GHC.Prim.void#")
+    , ("::Main.main.v01", SingleValue LiftedRep, App (packName ":Main.main") ["::Main.main.v00"])
+    ] (Var "::Main.main.v01")
 
 cg_main :: Opts -> IO ()
 cg_main opts = do
@@ -165,14 +171,12 @@ cg_main opts = do
 
   let wholeProgramBloat = addMain $ concatPrograms progList
   wholeProgram <- sortDefs . singleStaticAssignment <$> deadFunctionEliminationM (["::Main.main", ":Main.main", "Main.main"] ++ GHCSymbols.liveSymbols) wholeProgramBloat
-  let wholeProgram2     = toSyntax2 wholeProgram :: L2.Program
-      output_fn         = output opts
+  let output_fn         = output opts
   writeFile (output_fn ++ ".lambda") . showWidth 800 . plain $ pretty wholeProgram
-  writeFile (output_fn ++ ".2.lambda") . showWidth 800 . plain $ pretty wholeProgram2
   lintLambda wholeProgram
   printf "all: %d pruned: %d\n" (length $ inputs opts) (length prunedDeps)
-  let Program extsStripped  sdataStripped defsStripped  = wholeProgram
-      Program extsBloat     sdataBloat    defsBloat     = wholeProgramBloat
+  let Program extsStripped  cgrouspStripped sdataStripped defsStripped  = wholeProgram
+      Program extsBloat     cgroupsBloat    sdataBloat    defsBloat     = wholeProgramBloat
       conDefCount           = length [() | Def _ _ (Con{}) <- defsStripped]
   printf "bloat    lambda def count: %d\n" (length defsBloat)
   printf "stripped lambda def count: %d\n" (length defsStripped)
@@ -186,7 +190,6 @@ cg_main opts = do
   --printf "dead modules:\n%s" (unlines $ Set.toList $ aset Set.\\ pset)
 
   BS.writeFile (output_fn ++ ".lambdabin") $ encode wholeProgram
-  BS.writeFile (output_fn ++ ".2.lambdabin") $ encode wholeProgram2
   {-
   let lambdaGrin = codegenGrin wholeProgram
   writeFile (output_fn ++ ".grin") $ show $ plain $ pretty lambdaGrin
