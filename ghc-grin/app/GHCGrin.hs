@@ -16,6 +16,7 @@ import Stg.Util
 import Lambda.GHCSymbols as GHCSymbols
 import Lambda.FromStg
 import Lambda.Syntax
+import Lambda.Util
 --import qualified Lambda.Syntax as L
 import Lambda.Pretty
 --import Lambda.ToSyntax2
@@ -27,7 +28,7 @@ import Lambda.DeadFunctionEliminationM
 import Pipeline.Pipeline
 
 import Data.Maybe
-import Data.List (foldl', nubBy, unzip4)
+import Data.List (foldl')
 import qualified Data.Set as Set
 import qualified Data.Map.Strict as Map
 import qualified Data.ByteString.Char8 as BS8
@@ -62,12 +63,6 @@ deriving instance Show ResourceLimits
 
 showWidth :: Int -> Doc -> String
 showWidth w x = displayS (renderPretty 0.4 w x) ""
-
--- TODO: move to Lambda.Util
-concatPrograms :: [Program] -> Program
-concatPrograms prgs = Program (nubExts $ concat exts) (concat cgroups) (concat sdata) (concat defs) where
-  (exts, cgroups, sdata, defs) = unzip4 [(e, c, s, d) | Program e c s d <- prgs]
-  nubExts = nubBy (\a b -> eName a == eName b)
 
 collectImportedModules :: [FilePath] -> String -> IO [FilePath]
 collectImportedModules stgbinFileNames mod = do
@@ -134,9 +129,6 @@ toLambda fname = do
 
   cache h lambdabinName load new
 
-sortDefs :: Program -> Program
-sortDefs (Program exts cgroups sdata defs) = Program exts cgroups (Map.elems $ Map.fromList [(sName d, d) | d <- sdata]) . Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs]
-
 {-
 replaceMain :: Program -> Program
 replaceMain (Program exts cgroups sdata defs) = (Program exts cgroups sdata (mainFun : filter notMain defs)) where
@@ -170,7 +162,7 @@ cg_main opts = do
   putStrLn "finished toLambda"
 
   let wholeProgramBloat = addMain $ concatPrograms progList
-  wholeProgram <- sortDefs . singleStaticAssignment <$> deadFunctionEliminationM (["::Main.main", ":Main.main", "Main.main"] ++ GHCSymbols.liveSymbols) wholeProgramBloat
+  wholeProgram <- sortProgramDefs . singleStaticAssignment <$> deadFunctionEliminationM (["::Main.main", ":Main.main", "Main.main"] ++ GHCSymbols.liveSymbols) wholeProgramBloat
   let output_fn         = output opts
   writeFile (output_fn ++ ".lambda") . showWidth 800 . plain $ pretty wholeProgram
   lintLambda wholeProgram

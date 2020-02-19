@@ -4,6 +4,8 @@ module Lambda.Util where
 import Data.Functor.Foldable
 import qualified Data.Set as Set
 import qualified Data.Foldable
+import qualified Data.Map as Map
+import Data.List (nubBy, unzip4)
 
 import Transformations.Names hiding (mkNameEnv)
 import Transformations.Util hiding (foldNameDefExpF)
@@ -86,3 +88,17 @@ foldNameTyF f = \case
   TyVarF n      -> f n
   TySimpleF n _ -> f n
   TyFunF n _ _  -> f n
+
+-- TODO: validate merge operation (i.e. con group and external definiton must match if names are matching, def names must be unique)
+concatPrograms :: [Program] -> Program
+concatPrograms prgs = Program (nubExts $ concat exts) (nubConGroups $ concat cgroups) (concat sdata) (concat defs) where
+  (exts, cgroups, sdata, defs) = unzip4 [(e, c, s, d) | Program e c s d <- prgs]
+  nubExts = nubBy (\a b -> eName a == eName b)
+  nubConGroups = nubBy (\a b -> cgName a == cgName b)
+
+sortProgramDefs :: Program -> Program
+sortProgramDefs (Program exts cgroups sdata defs) =
+  Program exts
+    (Map.elems $ Map.fromList [(cgName c, c) | c <- cgroups])
+    (Map.elems $ Map.fromList [(sName d, d) | d <- sdata])
+    (Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs])
