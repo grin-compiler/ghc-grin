@@ -89,17 +89,21 @@ collectNamesM hDef hCon (Program exts _cons sdata defs) = do
 
       folder :: String -> ExpF () -> IO ()
       folder defName = \case
-        AppF name args -> mapM_ (add hDef defName) $ name : args
-        ConF con args  -> mapM_ (add hDef defName) args >> add hCon defName con
-        VarF name      -> add hDef defName name
-        CaseF name _   -> add hDef defName name
-        AltF _ (NodePat con _) _ ->  add hCon defName con
+        AppF name args -> mapM_ (addDef defName) $ name : args
+        ConF con args  -> mapM_ (addDef defName) args >> addCon defName con
+        VarF name      -> addDef defName name
+        CaseF name _   -> addDef defName name
+        AltF _ (NodePat con _) _ ->  addCon defName con
         exp -> pure ()
 
-      add :: Handle -> String -> Name -> IO ()
-      add h defName n = do
-            when (Set.member n nameSet) $ do
-              hPutStrLn h $ defName <> "\t" <> unpackName n
+      addCon :: String -> Name -> IO ()
+      addCon defName n = do
+        hPutStrLn hCon $ defName <> "\t" <> unpackName n
+
+      addDef :: String -> Name -> IO ()
+      addDef defName n = do
+        when (Set.member n nameSet) $ do
+          hPutStrLn hDef $ defName <> "\t" <> unpackName n
 
   forM_ defs $ \def@(Def name _ _) -> do
     cataM (folder (unpackName name)) def
