@@ -1,17 +1,42 @@
 .symbol_type Name
 
-.decl DefReference(def:Name, ref:Name)
-.decl LiveSource(name:Name)
+// input fatcs
+.decl ConGroup(group:Name, con:Name)
+.input ConGroup
 
+.decl ConReference(def:Name, con:Name)
+.input ConReference
+
+.decl DefReference(def:Name, ref:Name)
 .input DefReference
+
+.decl LiveSource(name:Name)
 .input LiveSource
 
-.decl LiveName(name:Name)
-.output LiveName
+// output fatcs
+.decl LiveDefName(name:Name)
+.output LiveDefName
 
-LiveName(n) :-
+.decl LiveGroupName(group:Name)
+.output LiveGroupName
+
+// internal fatcs
+.decl LiveConName(con:Name)
+
+// calculate live defs
+LiveDefName(n) :-
   LiveSource(n).
 
-LiveName(ref) :-
+LiveDefName(ref) :-
   DefReference(n, ref),
-  LiveName(n).
+  LiveDefName(n).
+
+// calcualte live cons
+LiveConName(con) :-
+  ConReference(def, con),
+  LiveDefName(def).
+
+// caculate live con groups
+LiveGroupName(group) :-
+  ConGroup(group, con),
+  LiveConName(con).
