@@ -225,7 +225,7 @@ ffiArgType = \case
         n0 <- lift (deriveNewName "t")
         pure $ TySimple n0 t1
 
-      C.UnboxedTuple [C.VoidRep]
+      C.UnboxedTuple []
         | name `elem` ["GHC.Prim.coercionToken#", "GHC.Prim.realWorld#", "GHC.Prim.void#"]
         -> do
           n0 <- lift (deriveNewName "t")
@@ -508,11 +508,16 @@ visitExpr mname expr = case expr of
     -- caseses
       -- pattern match: emit case an create alts ; generate result var if necessary
       -- eval: continue building the binding chain (default rhs) ; no need for result var because binding chain continues
-    scrutName <- genName scrutResult
+    (scrutName, scrutType) <- genBinder scrutResult
     visitExpr (Just scrutName) scrutExpr
     case alts of
       -- NOTE: force convention in STG
       [C.Alt C.AltDefault [] rhsExpr] -> visitExpr mname rhsExpr
+
+      -- NOTE: effectful operation return convention in STG
+      [C.Alt C.AltDataCon{} [] rhsExpr]
+        | scrutType == UnboxedTuple []
+        -> visitExpr mname rhsExpr
 
       -- normal case
       _ -> do

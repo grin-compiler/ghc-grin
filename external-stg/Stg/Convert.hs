@@ -179,7 +179,7 @@ cvtTypeNormal t
   ---------------- end -------
 
   | GHC.isUnboxedTupleType t
-  = UnboxedTuple (map cvtPrimRep $ GHC.typePrimRepArgs t)
+  = UnboxedTuple (map cvtPrimRep $ GHC.typePrimRep t)
 
   | [rep] <- GHC.typePrimRepArgs t
   = SingleValue (cvtPrimRep rep)
@@ -419,15 +419,16 @@ mkSDataCon dc = SDataCon
   , sdcModule = cvtModuleName $ GHC.moduleName $ GHC.nameModule n
   , sdcRep    = if GHC.isUnboxedTupleCon dc
                   then UnboxedDataCon
-                  else AlgDataCon $ map (getConArgRep . dcpp "3" GHC.typePrimRepArgs) $ dcpp "2" GHC.dataConRepArgTys $ dcpp "1" id $ dc
+                  else AlgDataCon $ concatMap (getConArgRep . dcpp "3" GHC.typePrimRepArgs) $ dcpp "2" GHC.dataConRepArgTys $ dcpp "1" id $ dc
   } where
       dcpp :: GHC.Outputable o => String -> (o -> a) -> o -> a
       dcpp _ f x = f x
       --dcpp msg f a = trace ("mkSDataCon " ++ msg ++ " : " ++ ppr a) $ f a
       n = GHC.getName dc
       getConArgRep = \case
-        [r] -> cvtPrimRep r
-        r   -> error $ "data con " ++ ppr n ++ "has invalid argument representation: " ++ ppr r
+        [GHC.VoidRep] -> [] -- HINT: drop VoidRep arguments, the STG constructor builder code also ignores them
+        [r]           -> [cvtPrimRep r]
+        r             -> error $ "data con " ++ ppr n ++ "has invalid argument representation: " ++ ppr r
 
 topBindIds :: GHC.StgTopBinding -> [GHC.Id]
 topBindIds = \case
