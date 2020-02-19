@@ -145,6 +145,7 @@ data Binder
 binderUniqueName :: Binder -> Name
 binderUniqueName Binder{..}
   | binderIsExported  = getModuleName binderModule <> BS8.pack "." <> binderName
+  | binderIsTop       = getModuleName binderModule <> BS8.pack "." <> binderName <> BS8.pack ('.' : show u)
   | otherwise         = binderName <> BS8.pack ('.' : show u)
   where BinderId u = binderId
 
