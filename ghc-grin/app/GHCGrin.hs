@@ -17,13 +17,9 @@ import Lambda.GHCSymbols as GHCSymbols
 import Lambda.FromStg
 import Lambda.Syntax
 import Lambda.Util
---import qualified Lambda.Syntax as L
 import Lambda.Pretty
---import Lambda.ToSyntax2
---import Lambda.GrinCodeGen
 import Lambda.Lint
 import Lambda.StaticSingleAssignment
---import Lambda.ClosureConversion
 import Lambda.DeadFunctionEliminationM
 import Pipeline.Pipeline
 

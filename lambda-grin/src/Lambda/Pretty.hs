@@ -53,7 +53,7 @@ instance Pretty Exp where
       -- Alt
       AltF name cpat exp  -> nest 2 (pretty cpat <+> text "@" <+> pretty name <+> text "->" <$$> pretty exp)
       -- Extra
-      ClosureF vars args exp -> nest 2 (keyword "\\" <> brackets (hsep (map pretty vars)) <+> hsep (map prettyBinderArg args) <+> text "->" Leijen.<$> pretty exp)
+      ClosureF vars args exp -> nest 2 (keyword "\\" <> hsep (brackets (hsep (map pretty vars)) : map prettyBinderArg args ++ [text "->"]) Leijen.<$> pretty exp)
 
 instance Pretty Lit where
   pretty = \case
