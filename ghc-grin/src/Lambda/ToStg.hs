@@ -157,15 +157,17 @@ setDataCons conGroups = do
         dcMaps    = [Map.singleton csName (dc, csArgsRep) | (L.ConSpec{..}, dc) <- dataCons]
     modify' $ \env@Env{..} -> env {dataConMap = Map.unions (dataConMap : dcMaps), tyCons = tyCon : tyCons}
 
-getDataCon :: L.Name -> StgM DataCon
-getDataCon con = do
+getDataCon :: L.RepType -> L.Name -> StgM DataCon
+getDataCon (L.UnboxedTuple l) _con = pure $ tupleDataCon Unboxed (length l)
+getDataCon _conTy con = do
   m <- gets dataConMap
   case Map.lookup con m of
     Nothing -> error $ "unknown DataCon: " ++ L.unpackName con
     Just dc -> pure $ fst dc
 
-getDataConArgTypes :: L.Name -> StgM [L.PrimRep]
-getDataConArgTypes con = do
+getDataConArgTypes :: L.RepType -> L.Name -> StgM [L.PrimRep]
+getDataConArgTypes (L.UnboxedTuple l) _con = pure $ l
+getDataConArgTypes _conTy con = do
   m <- gets dataConMap
   case Map.lookup con m of
     Nothing -> error $ "unknown DataCon: " ++ L.unpackName con
@@ -181,14 +183,14 @@ getEvalAltType = \case
     _               -> PrimAlt $ getPrimRep r
 
 getPatternMatchAltType :: L.RepType -> [L.Alt] -> StgM AltType
-getPatternMatchAltType rt alts = case rt of
+getPatternMatchAltType scrutTy alts = case scrutTy of
   L.UnboxedTuple l -> pure . MultiValAlt $ length l
   L.SingleValue  r -> case r of
     L.LiftedRep    -> algAlt alts
     L.UnliftedRep  -> algAlt alts
-    _               -> pure . PrimAlt $ getPrimRep r
+    _              -> pure . PrimAlt $ getPrimRep r
   where
-    algAlt ((L.Alt _ (L.NodePat con _) _) : _) = AlgAlt . dataConTyCon <$> getDataCon con
+    algAlt ((L.Alt _ (L.NodePat con _) _) : _) = AlgAlt . dataConTyCon <$> getDataCon scrutTy con
     algAlt _ = error "can not calculate AltType"
 
 -- conversion
@@ -242,7 +244,7 @@ isTopCon _ = False
 convertConDef :: L.Def -> StgM ()
 convertConDef (L.Def name [] _) = do
   nameId <- getVarId name
-  dataCon <- getDataCon name
+  dataCon <- getDataCon (L.SingleValue L.UnliftedRep) name
   addTopBinding $ StgTopLifted $ StgNonRec nameId $ StgRhsCon dontCareCCS dataCon []
 
 -- top rhs closure
@@ -257,7 +259,7 @@ convertClosureDef (L.Def name args exp) = do
 convertRHS :: L.SimpleExp -> StgM StgRhs
 convertRHS = \case
   L.Con con args -> do
-    dataCon <- getDataCon con
+    dataCon <- getDataCon (L.SingleValue L.UnliftedRep) con
     stgArgs <- mapM getVarId args
     pure $ StgRhsCon dontCareCCS dataCon (map StgVarArg stgArgs)
 
@@ -298,7 +300,7 @@ convertExp = \case
     binds2 <- forM binds $ \(name, repType, sexp) -> do
       nameId <- addVarId name repType
       let altKind = getEvalAltType repType
-      sexp2 <- convertStrictExp nameId sexp
+      sexp2 <- convertStrictExp repType nameId sexp
       pure (nameId, sexp2, altKind)
 
     bind2 <- convertExp bind
@@ -306,8 +308,8 @@ convertExp = \case
     let mkCase (nameId, exp, altKind) tailExp = StgCase exp nameId altKind [(DEFAULT, [], tailExp)]
     pure $ foldr mkCase bind2 binds2
 
-convertStrictExp :: Id -> L.SimpleExp -> StgM StgExpr
-convertStrictExp resultId = \case
+convertStrictExp :: L.RepType -> Id -> L.SimpleExp -> StgM StgExpr
+convertStrictExp resultTy resultId = \case
   L.App name args -> do
     stgArgs <- forM args $ \a -> StgVarArg <$> getVarId a
     extMap <- gets externalMap
@@ -323,7 +325,7 @@ convertStrictExp resultId = \case
           pure $ StgOpApp (StgFCallOp (CCall callSpec) u) stgArgs (idType resultId)
 
   L.Con name args -> do
-    dataCon <- getDataCon name
+    dataCon <- getDataCon resultTy name
     stgArgs <- mapM getVarId args
     pure $ StgConApp dataCon (map StgVarArg stgArgs) (error "StgConApp type list")
 
@@ -334,18 +336,18 @@ convertStrictExp resultId = \case
     let (defaultAlts, normalAlts) = partition (\(L.Alt _ pat _) -> pat == L.DefaultPat) alts
     sructRepType <- getVarRepType name
     altKind <- getPatternMatchAltType sructRepType normalAlts
-    alts2 <- mapM convertAlt $ defaultAlts ++ normalAlts
+    alts2 <- mapM (convertAlt sructRepType) $ defaultAlts ++ normalAlts
     stgVar <- StgApp <$> getVarId name <*> pure []
     pure $ StgCase stgVar resultId altKind alts2
 
   exp -> convertExp exp
 
-convertAlt :: L.Alt -> StgM StgAlt
-convertAlt (L.Alt name pat bind) = do
+convertAlt :: L.RepType -> L.Alt -> StgM StgAlt
+convertAlt scrutTy (L.Alt name pat bind) = do
   (altCon, params) <- case pat of
     L.NodePat conName args -> do
-      dataCon <- getDataCon conName
-      dcArgTys <- getDataConArgTypes conName
+      dataCon <- getDataCon scrutTy conName
+      dcArgTys <- getDataConArgTypes scrutTy conName
       stgArgs <- mapM (uncurry addVarId) $ zip args (map L.SingleValue dcArgTys)
       pure (DataAlt dataCon, stgArgs)
     L.LitPat l -> pure (LitAlt $ convertLiteral l, [])
