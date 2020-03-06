@@ -1,5 +1,5 @@
 {-# LANGUAGE RecordWildCards, LambdaCase #-}
-module Stg.Reconstruct (reconModule) where
+module Stg.Reconstruct (reconModule, topBindings) where
 
 import Data.Foldable
 import Data.Bifunctor
@@ -18,7 +18,8 @@ instance Hashable DataConId where
 
 data BinderMap
   = BinderMap
-  { bmModule      :: ModuleName
+  { bmUnitId      :: UnitId
+  , bmModule      :: ModuleName
   , bmIdMap       :: HM.HashMap BinderId Binder
   , bmDataConMap  :: HM.HashMap DataConId DataCon
   }
@@ -59,66 +60,100 @@ reconLocalBinder BinderMap{..} SBinder{..} = -- HINT: local binders only
   , binderId          = sbinderId
   , binderType        = sbinderType
   , binderTypeSig     = sbinderTypeSig
+  , binderUnitId      = bmUnitId
   , binderModule      = bmModule
   , binderIsTop       = False
   , binderIsExported  = False
   }
 
+reconDataCon :: UnitId -> ModuleName -> AlgTyCon -> SDataCon -> DataCon
+reconDataCon u m tc SDataCon{..} = DataCon
+  { dcName    = sdcName
+  , dcId      = sdcId
+  , dcUnitId  = u
+  , dcModule  = m
+  , dcRep     = sdcRep
+  , dcTyCon   = tc
+  }
+
+reconAlgTyCon :: UnitId -> ModuleName -> SAlgTyCon -> AlgTyCon
+reconAlgTyCon u m AlgTyCon{..} = tc where
+  tc = AlgTyCon
+    { tcName      = tcName
+    , tcDataCons  = map (reconDataCon u m tc) tcDataCons
+    }
+
 reconModule :: SModule -> Module
-reconModule Module{..} = Module modulePhase moduleName moduleDependency exts moduleAlgTyCons moduleExported binds moduleCoreSrc modulePrepCoreSrc
-  where
-    bm    = BinderMap
-            { bmModule      = moduleName
-            , bmIdMap       = HM.fromList [(binderId b, b) | b <- tops ++ concatMap snd exts]
-            , bmDataConMap  = HM.fromList [(dcId dc, dc) | dc <- cons]
-            }
+reconModule Module{..} = mod where
+  mod = Module
+    { modulePhase           = modulePhase
+    , moduleUnitId          = moduleUnitId
+    , moduleName            = moduleName
+    , moduleDependency      = moduleDependency
+    , moduleExternalTopIds  = exts
+    , moduleAlgTyCons       = algs
+    , moduleExported        = moduleExported
+    , moduleTopBindings     = binds
+    , moduleForeignStubs    = moduleForeignStubs
+    , moduleForeignFiles    = moduleForeignFiles
+    , moduleCoreSrc         = moduleCoreSrc
+    , modulePrepCoreSrc     = modulePrepCoreSrc
+    }
 
-    cons  = [ mkDataCon m tc dc
-            | (m, algTyCons) <- moduleAlgTyCons
-            , tc <- algTyCons
-            , dc <- tcDataCons tc
-            ]
+  bm    = BinderMap
+          { bmUnitId      = moduleUnitId
+          , bmModule      = moduleName
+          , bmIdMap       = HM.fromList [(binderId b, b) | b <- tops ++ concatMap snd (concatMap snd exts)]
+          , bmDataConMap  = HM.fromList [(dcId dc, dc) | dc <- cons]
+          }
 
-    mkDataCon :: ModuleName -> AlgTyCon -> SDataCon -> DataCon
-    mkDataCon m tc SDataCon{..} = DataCon
-      { dcName    = sdcName
-      , dcId      = sdcId
-      , dcModule  = m
-      , dcRep     = sdcRep
-      , dcTyCon   = tc
-      }
+  cons :: [DataCon]
+  cons  = [ dc
+          | (u, ml) <- algs
+          , (m, algTyCons) <- ml
+          , tc <- algTyCons
+          , dc <- tcDataCons tc
+          ]
 
-    binds = map reconTopBinding moduleTopBindings
+  algs :: [(UnitId, [(ModuleName, [AlgTyCon])])]
+  algs = [(u, [(m, map (reconAlgTyCon u m) l) | (m, l) <- ml]) | (u, ml) <- moduleAlgTyCons]
 
-    modNameMap = HM.fromList [(b, m) | (m,l) <- moduleExported, b <- l]
+  binds :: [TopBinding]
+  binds = map reconTopBinding moduleTopBindings
 
-    tops  = [ mkTopBinder modName exported b
-            | b@SBinder{..} <- concatMap topBindings moduleTopBindings
-            , let modName   = HM.lookupDefault moduleName sbinderId modNameMap
-            , let exported  = HM.member sbinderId modNameMap
-            ]
-    exts    = [(m, map (mkTopBinder m True) l) | (m, l) <- moduleExternalTopIds]
+  modNameMap = HM.fromList [(b, (u, m)) | (u, ml) <- moduleExported, (m, l) <- ml, b <- l]
 
-    mkTopBinder :: ModuleName -> Bool -> SBinder -> Binder
-    mkTopBinder m exported SBinder{..} =
-      Binder
-      { binderName        = sbinderName
-      , binderId          = sbinderId
-      , binderType        = sbinderType
-      , binderTypeSig     = sbinderTypeSig
-      , binderModule      = m
-      , binderIsTop       = True
-      , binderIsExported  = exported
-      }
+  tops :: [Binder]
+  tops  = [ mkTopBinder unitId modName exported b
+          | b@SBinder{..} <- concatMap topBindings moduleTopBindings
+          , let (unitId, modName) = HM.lookupDefault (moduleUnitId, moduleName) sbinderId modNameMap
+          , let exported          = HM.member sbinderId modNameMap
+          ]
 
-    reconTopBinder :: SBinder -> Binder
-    reconTopBinder b = getBinder bm $ sbinderId b
+  exts :: [(UnitId, [(ModuleName, [Binder])])]
+  exts = [(u, [(m, map (mkTopBinder u m True) l) | (m, l) <- ml]) | (u, ml) <- moduleExternalTopIds]
 
-    reconTopBinding :: STopBinding -> TopBinding
-    reconTopBinding = \case
-      StgTopStringLit b s           -> StgTopStringLit (reconTopBinder b) s
-      StgTopLifted (StgNonRec b r)  -> StgTopLifted $ StgNonRec (reconTopBinder b) (reconRhs bm r)
-      StgTopLifted (StgRec bs)      -> StgTopLifted $ StgRec [(reconTopBinder b, reconRhs bm r) | (b,r) <- bs]
+  mkTopBinder :: UnitId -> ModuleName -> Bool -> SBinder -> Binder
+  mkTopBinder u m exported SBinder{..} =
+    Binder
+    { binderName        = sbinderName
+    , binderId          = sbinderId
+    , binderType        = sbinderType
+    , binderTypeSig     = sbinderTypeSig
+    , binderUnitId      = u
+    , binderModule      = m
+    , binderIsTop       = True
+    , binderIsExported  = exported
+    }
+
+  reconTopBinder :: SBinder -> Binder
+  reconTopBinder b = getBinder bm $ sbinderId b
+
+  reconTopBinding :: STopBinding -> TopBinding
+  reconTopBinding = \case
+    StgTopStringLit b s           -> StgTopStringLit (reconTopBinder b) s
+    StgTopLifted (StgNonRec b r)  -> StgTopLifted $ StgNonRec (reconTopBinder b) (reconRhs bm r)
+    StgTopLifted (StgRec bs)      -> StgTopLifted $ StgRec [(reconTopBinder b, reconRhs bm r) | (b,r) <- bs]
 
 topBindings :: TopBinding' idBnd idOcc dcOcc -> [idBnd]
 topBindings = \case
@@ -133,7 +168,7 @@ reconExpr bm = \case
                                bm'  = insertBinder b' bm
                            in StgCase (reconExpr bm x) b' (map (reconAlt bm') alts)
   StgApp f args t s     -> StgApp (getBinder bm f) (map (reconArg bm) args) t s
-  StgOpApp op args t    -> StgOpApp op (map (reconArg bm) args) t
+  StgOpApp op args t tn -> StgOpApp op (map (reconArg bm) args) t tn
   StgConApp dc args t   -> StgConApp (getDataCon bm dc) (map (reconArg bm) args) t
   StgLet b e            -> let (bm', b') = reconBinding bm b
                            in StgLet b' (reconExpr bm' e)
