@@ -1,2 +1,0 @@
-'Proxy @_ :: forall {k} {_ :: k}. Proxy @{k} _
-= 'Proxy @{k} @_

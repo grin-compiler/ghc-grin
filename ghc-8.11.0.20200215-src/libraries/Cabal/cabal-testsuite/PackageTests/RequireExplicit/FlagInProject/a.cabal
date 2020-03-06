@@ -1,7 +1,0 @@
-cabal-version: 2.2
-name: a
-version: 0
-
-library
-  build-depends:
-    some-lib

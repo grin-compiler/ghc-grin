@@ -1,3 +1,0 @@
-
-rnfail051.hs:7:17: error:
-    View pattern in expression context: _ -> putStrLn "_"

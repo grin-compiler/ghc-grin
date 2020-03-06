@@ -1,3 +1,0 @@
-
-NoNumericUnderscores1.hs:11:3: error:
-    Use NumericUnderscores to allow underscores in floating literals

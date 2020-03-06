@@ -1,6 +1,0 @@
-
-T7809.hs:8:8: error:
-    • Illegal polymorphic type: forall a. a -> a
-      GHC doesn't yet support impredicative polymorphism
-    • In the expansion of type synonym ‘PolyId’
-      In the type signature: foo :: F PolyId

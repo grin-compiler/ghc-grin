@@ -1,3 +1,0 @@
-#!/bin/sh
-echo "GHC package manager version 9999999"
-exit 0

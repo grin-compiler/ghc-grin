@@ -1,3 +1,0 @@
-packages:
-  ./
-reject-unconstrained-dependencies: all

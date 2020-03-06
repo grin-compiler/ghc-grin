@@ -1,4 +1,0 @@
-
-T14588.hs:3:19: error:
-    Illegal bang-pattern (use BangPatterns):
-    !x

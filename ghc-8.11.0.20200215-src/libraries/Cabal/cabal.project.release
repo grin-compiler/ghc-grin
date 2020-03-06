@@ -1,4 +1,0 @@
-packages: Cabal/
-packages: cabal-install/
-tests: False
-benchmarks: False

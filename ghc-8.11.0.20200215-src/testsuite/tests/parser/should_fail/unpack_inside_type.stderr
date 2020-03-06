@@ -1,3 +1,0 @@
-
-unpack_inside_type.hs:3:25: error:
-    {-# UNPACK #-} cannot appear inside a type.

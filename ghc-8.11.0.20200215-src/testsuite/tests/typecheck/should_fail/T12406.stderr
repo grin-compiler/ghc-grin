@@ -1,3 +1,0 @@
-
-T12406.hs:20:28: error:
-    Variable not in scope: join :: m0 (f0 ()) -> IO ()

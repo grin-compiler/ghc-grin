@@ -1,7 +1,0 @@
-cabal-version: 2.2
-name: some-lib
-version: 1.0
-
-library
-  exposed-modules:
-    Foo

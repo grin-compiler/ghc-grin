@@ -1,3 +1,0 @@
-
-strictnessDataCon_B.hs:1:27: error:
-    {-# UNPACK #-} cannot appear inside a type.

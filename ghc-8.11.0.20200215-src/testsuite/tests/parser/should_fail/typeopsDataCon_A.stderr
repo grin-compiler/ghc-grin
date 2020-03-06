@@ -1,4 +1,0 @@
-
-typeopsDataCon_A.hs:1:10: error:
-    Cannot parse an infix data constructor in a data/newtype declaration:
-      Int :+ Int :+ Int

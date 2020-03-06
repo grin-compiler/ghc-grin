@@ -1,2 +1,0 @@
-(Data.Proxy.Proxy @(*) GHC.Base.String -> *) ->
-Data.Either.Either (*) ((* -> *) -> *)

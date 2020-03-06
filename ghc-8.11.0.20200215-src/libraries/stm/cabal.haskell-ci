@@ -1,2 +1,0 @@
-tests:       <7.2.1 || >=7.2.2
-installed:   +all -random

@@ -1,5 +1,0 @@
-:set -fobject-code
-:load A.hs
-c_two caf
-:load A.hs
-c_two caf

@@ -1,6 +1,0 @@
-packages:
-  ./a
-  ./b
-
-constraints:
-  some-lib -any

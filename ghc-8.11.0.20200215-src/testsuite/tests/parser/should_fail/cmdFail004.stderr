@@ -1,2 +1,0 @@
-
-cmdFail004.hs:4:16: error: Parse error in command: _ -> (_ -< _)

@@ -1,1 +1,0 @@
-T10069.$wc1 [InlPrag=NOINLINE] :: GHC.Prim.Int# -> GHC.Prim.Int#

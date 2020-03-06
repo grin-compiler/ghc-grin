@@ -1,4 +1,0 @@
-packages: . testsuite/
-
-package testsuite
-  tests: true

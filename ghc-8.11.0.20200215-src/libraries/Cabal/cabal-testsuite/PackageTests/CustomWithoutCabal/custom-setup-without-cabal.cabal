@@ -1,9 +1,0 @@
-cabal-version: 2.0
-name: custom-setup-without-cabal
-version: 1.0
-build-type: Custom
-
-custom-setup
-  setup-depends: base
-
-library

@@ -1,3 +1,0 @@
-
-T16610.hs:6:3: error:
-    ‘wrong’ is not a (visible) method of class ‘Eq’

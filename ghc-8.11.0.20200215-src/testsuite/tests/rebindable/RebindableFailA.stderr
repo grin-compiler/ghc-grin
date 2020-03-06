@@ -1,3 +1,0 @@
-RebindableFailA: Failed with error
-CallStack (from HasCallStack):
-  error, called at RebindableFailA.hs:10:10 in main:Main

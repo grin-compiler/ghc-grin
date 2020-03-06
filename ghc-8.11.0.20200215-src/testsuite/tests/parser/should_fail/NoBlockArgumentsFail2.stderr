@@ -1,6 +1,0 @@
-
-NoBlockArgumentsFail2.hs:6:22: error:
-    Unexpected lambda expression in function application:
-        \ x -> print x
-    You could write it with parentheses
-    Or perhaps you meant to enable BlockArguments?

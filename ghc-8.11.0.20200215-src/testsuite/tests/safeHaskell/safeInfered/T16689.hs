@@ -1,4 +1,0 @@
-{-# LANGUAGE Safe #-}
-
-main = return ()
-
