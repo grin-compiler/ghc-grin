@@ -1,0 +1,22 @@
+resolver: lts-15.0
+
+allow-newer: true
+
+packages:
+  - 'mini-ghc-grin'
+
+extra-path:
+  - /home/csaba/haskell/ghc-gitlab/ghc-8.11.0.20200222-src-git-toSTG/ghc-8.11.0.20200222-src/_build/stage1/bin
+
+# Turn on system GHC
+system-ghc: true
+skip-ghc-check: true
+
+dump-logs: all
+
+build:
+  keep-tmp-files: true
+  #cabal-verbose: true
+
+ghc-options:
+  mini-ghc-grin: -DEXT_STG_FOR_NON_PATCHED_GHC
