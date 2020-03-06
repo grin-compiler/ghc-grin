@@ -32,6 +32,9 @@ LiveDefName(ref) :-
   LiveDefName(n).
 
 // calcualte live cons
+LiveConName(n) :-
+  LiveSource(n).
+
 LiveConName(con) :-
   ConReference(def, con),
   LiveDefName(def).
