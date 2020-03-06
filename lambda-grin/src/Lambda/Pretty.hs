@@ -2,8 +2,13 @@
 module Lambda.Pretty
   ( printLambda
   , prettyExternals
+  , showName
+  , showWidth
+  , showWide
+  , PP(..)
   ) where
 
+import Data.Char
 import qualified Data.Vector as V
 import Data.List (groupBy)
 import qualified Data.Set as Set
@@ -12,11 +17,15 @@ import Data.Functor.Foldable as Foldable
 import Text.PrettyPrint.ANSI.Leijen as Leijen
 
 import Lambda.Syntax
-import Grin.Pretty ()
+import Lambda.Parse (allowedInitial, allowedSpecial)
+
+-- Pretty Show instance wrapper ; i.e. useful for hspec tests
+newtype PP a = PP a deriving Eq
+instance Pretty a => Show (PP a ) where
+  show (PP a) = showWide . plain . pretty $ a
 
 printLambda :: Exp -> IO ()
 printLambda exp = putDoc (pretty exp) >> putStrLn ""
-
 
 keyword :: String -> Doc
 keyword = yellow . text
@@ -33,12 +42,17 @@ prettyBinderArg = parens . prettyBinder
 instance Pretty Exp where
   pretty prg = cata folder prg where
     extNames      = case prg of
-                      Program exts _ _ _ -> Set.fromList $ map eName exts
-                      _                     -> Set.empty
+                      Program{..} -> Set.fromList $ map eName pExternals
+                      _           -> Set.empty
     isPrimName n  = Set.member n extNames
 
     folder = \case
-      ProgramF exts cons sdata defs -> vcat (prettyExternals exts : prettyConGroups cons : prettyStaticData sdata : map pretty defs)
+      ProgramF{..} -> vcat ( prettyExternals pExternalsF
+                           : prettyConGroups pConstructorsF
+                           : prettyPublicNames pPublicNamesF
+                           : prettyStaticData pStaticDataF
+                           : map pretty pDefinitionsF
+                           )
       DefF name args exp  -> nest 2 (hsep (pretty name : map prettyBinderArg args) <+> text "=" <$$> pretty exp) <> line
       -- Exp
       AppF name args      -> hsep (((if isPrimName name then dullyellow else cyan) $ pretty name) : text "$" : map pretty args)
@@ -53,7 +67,7 @@ instance Pretty Exp where
       -- Alt
       AltF name cpat exp  -> nest 2 (pretty cpat <+> text "@" <+> pretty name <+> text "->" <$$> pretty exp)
       -- Extra
-      ClosureF vars args exp -> nest 2 (keyword "\\" <> hsep (brackets (hsep (map pretty vars)) : map prettyBinderArg args ++ [text "->"]) Leijen.<$> pretty exp)
+      ClosureF vars args exp -> nest 2 (keyword "\\closure" <+> hsep (brackets (hsep (map pretty vars)) : map prettyBinderArg args ++ [text "->"]) Leijen.<$> pretty exp)
 
 instance Pretty Lit where
   pretty = \case
@@ -76,9 +90,13 @@ instance Pretty Pat where
     LitPat  lit       -> pretty lit
     DefaultPat        -> keyword "_"
 
+prettyPublicNames :: [Name] -> Doc
+prettyPublicNames [] = mempty
+prettyPublicNames names = keyword "public names" <$$> vsep (map (indent 2 . pretty) names) <> line
+
 prettyConGroups :: [ConGroup] -> Doc
 prettyConGroups [] = mempty
-prettyConGroups cons = keyword "constructors" <$$> line <> vsep (map prettyConGroup cons) <> line where
+prettyConGroups cons = keyword "constructors" <$$> line <> vsep (map prettyConGroup cons) <> line
 
 prettyConGroup :: ConGroup -> Doc
 prettyConGroup (ConGroup name cons) = indent 2 (keyword "data" <+> pretty name <$$> indent 2 (vsep $ map (prettyConSpec width) cons)) <> line where
@@ -142,3 +160,24 @@ instance Pretty RepType where
     SingleValue t   -> pretty t
     UnboxedTuple l  -> braces (hsep $ map pretty l)
     PolymorphicRep  -> red $ text "PolymorphicRep"
+
+-- Name
+showName :: Name -> String
+showName n = case unpackName n of
+  []    -> ""
+  str@(c:s)
+    | c `elem` allowedInitial && all (\a -> isAlphaNum a || elem a allowedSpecial) s -> str
+    | otherwise -> '"' : go str
+    where
+      go [] = ['"']
+      go ('"':xs) = '\\' : '"' : go xs
+      go (a : xs) = a : go xs
+
+instance Pretty Name where
+  pretty = text . showName
+
+showWide :: Doc -> String
+showWide = showWidth 156
+
+showWidth :: Int -> Doc -> String
+showWidth w x = displayS (renderPretty 0.4 w x) ""
