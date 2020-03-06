@@ -1,7 +1,7 @@
 {-# LANGUAGE LambdaCase, TupleSections, StandaloneDeriving, TypeSynonymInstances, FlexibleInstances, RecordWildCards, OverloadedStrings #-}
 module Lambda.FromStg (codegenLambda) where
 
-import Data.List (intercalate)
+import Data.List (intercalate, partition)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Map.Strict (Map)
@@ -15,12 +15,14 @@ import Control.Monad.Trans.Maybe
 
 -- GHC Dump
 import qualified Stg.Syntax as C
+import qualified Stg.Reconstruct as C
 import qualified Stg.Pretty as C
 import qualified Text.PrettyPrint.ANSI.Leijen as P
 
 -- Lambda
 import Lambda.Syntax
 import Lambda.Util
+import Lambda.Name
 
 import qualified Lambda.GHCPrimOps as GHCPrim
 
@@ -28,8 +30,7 @@ type CG = StateT Env IO
 
 data Env
   = Env
-  { moduleName    :: !Name
-  , externals     :: !(Map Name External)
+  { externals     :: !(Map Name External)
   , defs          :: ![Def]
   , staticData    :: ![StaticData]
 
@@ -41,6 +42,22 @@ data Env
   , namePool      :: !(Map Name Int)
   , nameSet       :: !(Set Name)
   , binderNameMap :: !(Map Name Name)
+
+  -- data constructors
+  , conGroupMap   :: Map Name ConGroup
+  }
+
+emptyEnv :: Env
+emptyEnv = Env
+  { externals     = mempty
+  , defs          = mempty
+  , staticData    = mempty
+  , commands      = mempty
+  , commandStack  = mempty
+  , namePool      = mempty
+  , nameSet       = mempty
+  , binderNameMap = mempty
+  , conGroupMap   = mempty
   }
 
 -- utility
@@ -55,9 +72,8 @@ addStaticData :: StaticData -> CG ()
 addStaticData sd = modify' $ \env -> env {staticData = sd : staticData env}
 
 -- data con handling
-
 genDataConName :: C.DataCon -> Name
-genDataConName C.DataCon{..} = packName . BS8.unpack $ C.getModuleName dcModule <> "." <> dcName
+genDataConName C.DataCon{..} = mkPackageQualifiedName (BS8.unpack $ C.getUnitId dcUnitId) (BS8.unpack $ C.getModuleName dcModule) (BS8.unpack dcName)
 
 -- name handling
 
@@ -69,7 +85,7 @@ deriveNewName name = do
   -}
   (newName, conflict) <- state $ \env@Env{..} ->
     let idx = Map.findWithDefault 0 name namePool
-        new = packName $ printf "%s.%d" name idx
+        new = packName $ printf "%s_%d" name idx
     in  ( (new, Set.member new nameSet)
         , env {namePool = Map.insert name (succ idx) namePool, nameSet = Set.insert new nameSet}
         )
@@ -77,10 +93,20 @@ deriveNewName name = do
     then deriveNewName name
     else pure newName
 
+encodeBinderName :: C.Binder -> Name
+encodeBinderName C.Binder{..}
+  | binderIsExported  = mkPackageQualifiedName unitId modName (BS8.unpack binderName)
+  | binderIsTop       = mkPackageQualifiedName unitId modName (BS8.unpack binderName ++ "_" ++ show bu)
+  | otherwise         = packName (BS8.unpack binderName ++ "_" ++ show bu)
+  where
+    C.BinderId bu = binderId
+    unitId        = BS8.unpack $ C.getUnitId binderUnitId
+    modName       = BS8.unpack $ C.getModuleName binderModule
+
 -- maps GHC unique binder names to unique lambda names
 genName :: C.Binder -> CG Name
 genName b = do
-  let originalName = packName . BS8.unpack . C.binderUniqueName $ b
+  let originalName = encodeBinderName b
   Env{..} <- get
   case Map.lookup originalName binderNameMap of
     Just name -> pure name
@@ -100,42 +126,9 @@ genBinder b = (,) <$> genName b <*> pure (convertType $ C.binderType b)
 
 -- rep type conversion
 
--- TODO: fix name decoding
-{-
-
-toLambda: /home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.6.2/libraries/base/dist-install/build/Control/Exception/Base.stgbin
-unknown DataCon representation:
-  Binder
-    { binderName        = "(#,#)"
-    , binderId          = BinderId 86
-    , binderType        = TypeInfo
-                            { tRep    = Nothing
-                            , tTyCon  = Nothing
-                            , tType   = "forall a b. a -> b -> (# a, b #)"
-                            }
-    , binderModule      = ModuleName { getModuleName = "GHC.Prim" }
-    , binderIsTop       = True
-    , binderIsExported  = True
-    }
-
-  TyCon
-    { tcName      = "(#,#)"
-    , tcId        = TyConId 54
-    , tcDataCons  =
-        [ Binder
-            { binderName        = "(#,#)"
-            , binderId          = BinderId 86
-            , binderType        = TypeInfo {tRep = Nothing, tTyCon = Nothing, tType = "forall a b. a -> b -> (# a, b #)"}
-            , binderModule      = ModuleName {getModuleName = "GHC.Prim"}
-            , binderIsTop       = True
-            , binderIsExported  = True
-            }
-        ]
-    }
--}
 isUnboxedTuple :: BS8.ByteString -> Bool
-isUnboxedTuple "GHC.Prim.Unit#" = True
-isUnboxedTuple name             = BS8.isPrefixOf "GHC.Prim.(#" name
+isUnboxedTuple "ghc-prim_GHC.Prim.Unit#" = True
+isUnboxedTuple name = BS8.isPrefixOf "ghc-prim_GHC.Prim.(#" name
 
 convertType :: C.Type -> RepType
 convertType = \case
@@ -145,18 +138,16 @@ convertType = \case
 
 getPrimRep :: C.PrimRep -> PrimRep
 getPrimRep = \case
-  -- TODO
-  C.Int8Rep     -> Int64Rep
-  C.Int16Rep    -> Int64Rep
-  C.Int32Rep    -> Int64Rep
+  C.Int8Rep     -> Int8Rep
+  C.Int16Rep    -> Int16Rep
+  C.Int32Rep    -> Int32Rep
   C.Int64Rep    -> Int64Rep
   C.IntRep      -> Int64Rep
-  C.Word8Rep    -> Word64Rep
-  C.Word16Rep   -> Word64Rep
-  C.Word32Rep   -> Word64Rep
+  C.Word8Rep    -> Word8Rep
+  C.Word16Rep   -> Word16Rep
+  C.Word32Rep   -> Word32Rep
   C.Word64Rep   -> Word64Rep
   C.WordRep     -> Word64Rep
-  -- OK from here
   C.AddrRep     -> AddrRep
   C.FloatRep    -> FloatRep
   C.DoubleRep   -> DoubleRep
@@ -226,7 +217,7 @@ ffiArgType = \case
         pure $ TySimple n0 t1
 
       C.UnboxedTuple []
-        | name `elem` ["GHC.Prim.coercionToken#", "GHC.Prim.realWorld#", "GHC.Prim.void#"]
+        | name `elem` ["ghc-prim_GHC.Prim.coercionToken#", "ghc-prim_GHC.Prim.realWorld#", "ghc-prim_GHC.Prim.void#"]
         -> do
           n0 <- lift (deriveNewName "t")
           pure $ TyCon n0 name []
@@ -248,9 +239,9 @@ mkUnboxedTuple :: [Ty] -> CG Ty
 mkUnboxedTuple args = do
   n0 <- deriveNewName "t"
   pure $ case length args of
-    0 -> TyCon n0 "GHC.Prim.(##)" []
-    1 -> TyCon n0 "GHC.Prim.Unit#" args
-    n -> TyCon n0 (packName $ "GHC.Prim.(#" ++ replicate (max 0 $ n-1) ',' ++ "#)") args
+    0 -> TyCon n0 "ghc-prim_GHC.Prim.(##)" []
+    1 -> TyCon n0 "ghc-prim_GHC.Prim.Unit#" args
+    n -> TyCon n0 (packName $ "ghc-prim_GHC.Prim.(#" ++ replicate (max 0 $ n-1) ',' ++ "#)") args
 
 -- literal conversion
 
@@ -296,7 +287,7 @@ convertLit = \case
     C.LitNumWord    -> LWord64 $ fromIntegral i
     C.LitNumWord64  -> LWord64 $ fromIntegral i
   C.LitFloat   f  -> LFloat $ realToFrac f
-  C.LitDouble  f  -> LFloat $ realToFrac f
+  C.LitDouble  f  -> LDouble $ realToFrac f
   C.LitString  s  -> LString s
   C.LitChar    c  -> LChar c
   C.LitNullAddr   -> LNullAddr
@@ -306,31 +297,32 @@ convertLit = \case
 
 -- data con and ty con conversion
 
-convertTyCons :: [(C.ModuleName, [C.AlgTyCon])] -> [ConGroup]
+convertTyCons :: [(C.UnitId, [(C.ModuleName, [C.AlgTyCon])])] -> [ConGroup]
 convertTyCons tyConsGroups =
-  [ mkConGroup mod tc
-  | (mod, tyCons) <- tyConsGroups
+  [ mkConGroup u mod tc
+  | (u, ml) <- tyConsGroups
+  , (mod, tyCons) <- ml
   , tc <- tyCons
   , not (isUnboxed tc)
   ] where
       isUnboxed tc = case C.tcDataCons tc of
-        [dc]  -> C.sdcRep dc == C.UnboxedDataCon
+        [dc]  -> C.dcRep dc == C.UnboxedTupleCon
         _     -> False
 
-mkConGroup :: C.ModuleName -> C.AlgTyCon -> ConGroup
-mkConGroup mod tc
+mkConGroup :: C.UnitId -> C.ModuleName -> C.AlgTyCon -> ConGroup
+mkConGroup u mod tc
   = ConGroup
-  { cgName  = packName $ BS8.unpack (C.getModuleName mod) ++ "." ++ BS8.unpack (C.tcName tc)
+  { cgName  = mkPackageQualifiedName (BS8.unpack $ C.getUnitId u) (BS8.unpack $ C.getModuleName mod) (BS8.unpack $ C.tcName tc)
   , cgCons  = map (mkConSpec tc) $ C.tcDataCons tc
   }
 
-mkConSpec :: C.AlgTyCon -> C.SDataCon -> ConSpec
-mkConSpec tc C.SDataCon{..}
+mkConSpec :: C.AlgTyCon -> C.DataCon -> ConSpec
+mkConSpec tc C.DataCon{..}
   = ConSpec
-  { csName    = packName . BS8.unpack $ C.getModuleName sdcModule <> "." <> sdcName
-  , csArgsRep = case sdcRep of
+  { csName    = mkPackageQualifiedName (BS8.unpack $ C.getUnitId dcUnitId) (BS8.unpack $ C.getModuleName dcModule) (BS8.unpack dcName)
+  , csArgsRep = case dcRep of
       C.AlgDataCon l    -> map getPrimRep l
-      C.UnboxedDataCon  -> error $ "impossible - unboxed type: " ++ show tc
+      C.UnboxedTupleCon -> error $ "impossible - unboxed type: " ++ show tc
   }
 
 -- stg ast conversion
@@ -353,9 +345,9 @@ visitArgT = \case
   C.StgVarArg o -> do
     (name, repType) <- genBinder o
     n <- case name of
-      "GHC.Prim.coercionToken#" -> emitLitArg (SingleValue VoidRep) $ LToken "GHC.Prim.coercionToken#"
-      "GHC.Prim.realWorld#"     -> emitLitArg (SingleValue VoidRep) $ LToken "GHC.Prim.realWorld#"
-      "GHC.Prim.void#"          -> emitLitArg (SingleValue VoidRep) $ LToken "GHC.Prim.void#"
+      "ghc-prim_GHC.Prim.coercionToken#" -> emitLitArg (SingleValue VoidRep) $ LToken "ghc-prim_GHC.Prim.coercionToken#"
+      "ghc-prim_GHC.Prim.realWorld#"     -> emitLitArg (SingleValue VoidRep) $ LToken "ghc-prim_GHC.Prim.realWorld#"
+      "ghc-prim_GHC.Prim.void#"          -> emitLitArg (SingleValue VoidRep) $ LToken "ghc-prim_GHC.Prim.void#"
       _ -> pure name
     pure (n, repType)
 
@@ -396,21 +388,51 @@ genResultName = \case
   Just n  -> pure n
   Nothing -> deriveNewName "result"
 
+-- tagToEnum special case
+genTagToEnum :: Name -> [C.Arg] -> Maybe C.Name -> CG ()
+genTagToEnum resultName [arg] (Just tcName) = do
+  let notEnumCon ConSpec{..} = csArgsRep /= []
+      tyConName = packName (BS8.unpack tcName)
+  conMap <- gets conGroupMap
+  case Map.lookup tyConName conMap of
+    Nothing -> error $ "unknown TyCon name: " ++ unpackName tyConName ++ " at instruction: " ++ unpackName resultName
+    Just ConGroup{..}
+      | any notEnumCon cgCons
+      , null cgCons
+      -> error $ "invalid tagToEnum semantics (not enum ty con) at instruction: " ++ unpackName resultName
+      | otherwise -> do
+          arg2 <- visitArg arg
+          alts <- forM (zip [0..] cgCons) $ \(tagIdx, ConSpec{..}) -> do
+            altName <- deriveNewName "tagToEnum_alt"
+            conVar <- deriveNewName "tagToEnum_con"
+            let conExp = LetS [(conVar, SingleValue UnliftedRep, Con csName [])] $ Var conVar
+            pure $ Alt altName (LitPat (LInt64 tagIdx)) conExp
+          let ((Alt defaultAltName _ defaultExp) : alts2) = alts
+              defaultAlt = Alt defaultAltName DefaultPat defaultExp
+              -- QUESTION: sould the default alt raise an exception? or does GHC generate the validator code?
+          emitCmd $ S (resultName, SingleValue UnliftedRep, Case arg2 $ defaultAlt : alts2)
+
+genTagToEnum resultName _ _ = error $ "can not convert tagToEnum# at instruction: " ++ unpackName resultName
+
 -- primop conversion
 -- GHC/Stg Prim Op call conversion
 
 primMap :: Map Name External
-primMap = Map.fromList [(eName, e) | e@External{..} <- prims] where
-  Program prims _ _ _  = GHCPrim.primPrelude
+primMap = Map.fromList [(eName, e) | e@External{..} <- pExternals] where
+  Program{..}  = GHCPrim.primPrelude
 
-visitOpApp :: Name -> C.StgOp -> [C.Arg] -> C.Type -> CG ()
-visitOpApp resultName op args ty = do
+visitOpApp :: Name -> C.StgOp -> [C.Arg] -> C.Type -> Maybe C.Name -> CG ()
+visitOpApp resultName op args ty tc = do
   ffiTys <- runMaybeT $ do
     argsTy <- mapM ffiArgType args
     retTy <- ffiRetType ty
     pure (retTy, argsTy)
   let resultRepType = convertType ty
   case op of
+    -- NOTE: tagToEnum primop is replaced with generated code
+    C.StgPrimOp "tagToEnum#" -> do
+      genTagToEnum resultName args tc
+
     C.StgPrimOp prim -> do
       let name = packName (BS8.unpack prim)
       case Map.lookup name primMap of
@@ -474,7 +496,7 @@ visitExpr mname expr = case expr of
     case t of
       SingleValue LiftedRep -> do
         -- NOTE: force thunk
-        emitCmd $ S (name, SingleValue UnliftedRep, App n [])
+        emitCmd $ S (name, SingleValue LiftedRep, App n [])
       _ -> do
         emitCmd $ S (name, t, Var n)
 
@@ -499,9 +521,9 @@ visitExpr mname expr = case expr of
 
   -- S item
   -- generate result var if necessary
-  C.StgOpApp op args ty -> do
+  C.StgOpApp op args ty tc -> do
     name <- genResultName mname
-    visitOpApp name op args ty
+    visitOpApp name op args ty tc
 
   C.StgCase scrutExpr scrutResult alts  -> do
     -- collect scrutinee Cmds
@@ -513,12 +535,12 @@ visitExpr mname expr = case expr of
     case alts of
       -- NOTE: force convention in STG
       [C.Alt C.AltDefault [] rhsExpr] -> visitExpr mname rhsExpr
-
+{-
       -- NOTE: effectful operation return convention in STG
       [C.Alt C.AltDataCon{} [] rhsExpr]
         | scrutType == UnboxedTuple []
         -> visitExpr mname rhsExpr
-
+-}
       -- normal case
       _ -> do
         (altResultRepTypes, alts2) <- unzip <$> mapM visitAlt alts
@@ -598,7 +620,7 @@ visitRhs :: C.Rhs -> CG (RepType, SimpleExp)
 visitRhs = \case
   C.StgRhsCon con args -> do
     c <- Con (genDataConName con) <$> mapM visitArg args
-    pure (SingleValue UnliftedRep, c)
+    pure (SingleValue LiftedRep, c)
 
   C.StgRhsClosure _ bs body -> do
     openNewBindChain
@@ -638,20 +660,6 @@ visitTopBinder = \case
   C.StgTopLifted (C.StgRec bs) -> do
     mapM_ (uncurry visitTopRhs) bs
 
-registerTopBinderName :: C.TopBinding -> CG ()
-registerTopBinderName = \case
-  C.StgTopStringLit b _ -> do
-    genName b
-    pure ()
-
-  C.StgTopLifted (C.StgNonRec b _) -> do
-    genName b
-    pure ()
-
-  C.StgTopLifted (C.StgRec bs) -> forM_ bs $ \(b, _) -> do
-    genName b
-    pure ()
-
 {-
   rewrite and do on the fly:
     done - lit arg to name
@@ -663,14 +671,29 @@ registerTopBinderName = \case
     walk ext stg and collect values and expressions in state monad
 -}
 
-visitModule :: C.Module -> CG ()
+visitModule :: C.Module -> CG [Name]
 visitModule C.Module{..} = do
-  mapM_ registerTopBinderName moduleTopBindings
+  -- register top level names
+  let (exportedIds, internalIds) = partition C.binderIsExported $ concatMap C.topBindings moduleTopBindings
+  mapM_ genName internalIds
+  exportedTopNames <- mapM genName exportedIds
+  -- register external names
+  extNames <- mapM genName (concatMap snd $ concatMap snd moduleExternalTopIds)
+  -- convert bindings
   mapM_ visitTopBinder moduleTopBindings
+  -- return public names: external top ids + exported top bindings
+  pure $ extNames ++ exportedTopNames
 
 codegenLambda :: C.Module -> IO Program
 codegenLambda mod = do
-  let modName   = packName . BS8.unpack . C.getModuleName $ C.moduleName mod
-  Env{..} <- execStateT (visitModule mod) (Env modName mempty mempty mempty mempty mempty mempty mempty mempty)
-  let conGroups = convertTyCons $ C.moduleAlgTyCons mod
-  pure . smashLet $ Program (Map.elems externals) conGroups staticData defs
+  let modName     = packName . BS8.unpack . C.getModuleName $ C.moduleName mod
+      conGroups   = convertTyCons $ C.moduleAlgTyCons mod
+      initialEnv  = emptyEnv { conGroupMap = Map.fromList [(cgName c, c) | c <- conGroups] }
+  (publicNames, Env{..}) <- runStateT (visitModule mod) initialEnv
+  pure . smashLet $ Program
+    { pExternals    = Map.elems externals
+    , pConstructors = conGroups
+    , pPublicNames  = publicNames
+    , pStaticData   = staticData
+    , pDefinitions  = defs
+    }

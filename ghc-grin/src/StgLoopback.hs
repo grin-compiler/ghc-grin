@@ -2,34 +2,51 @@ module StgLoopback where
 
 -- Compiler
 import GHC
-import DynFlags
 import ErrUtils
-import Platform ( platformOS, osSubsectionsViaSymbols )
-import HscTypes
+import GHC.Platform ( platformOS, osSubsectionsViaSymbols )
 import Outputable
 import GHC.Paths ( libdir )
-import DriverPipeline
-import DriverPhases
+--import HscTypes
+--import DriverPhases
+--import DynFlags
+--import DriverPipeline
+--import HscMain
+--import CodeOutput
+--import Hooks
+import GHC.Driver.Session
+import GHC.Driver.Types
+import GHC.Driver.Pipeline
+import GHC.Driver.Phases
+import GHC.Driver.Main
+import GHC.Driver.Hooks
+import GHC.Driver.CodeOutput
 
 -- Stg Types
+import FastString
 import Module
+import NameSet
 import Stream (Stream)
 import qualified Stream
-import StgSyn
+import GHC.Stg.Syntax
 import CostCentre
-import CodeOutput
-import StgLint
+import GHC.Stg.Lint
+import GHC.Stg.FVs
+import GHC.Stg.Unarise
 
 -- Core Passes
-import StgCmm (codeGen)
-import Cmm
-import CmmInfo (cmmToRawCmm )
-import CmmPipeline (cmmPipeline)
-import CmmBuildInfoTables (emptySRT)
+import GHC.StgToCmm (codeGen)
+import GHC.Cmm
+import GHC.Cmm.Info (cmmToRawCmm )
 import UniqSupply ( mkSplitUniqSupply, initUs_ )
 
 import Control.Monad.Trans
 import Control.Monad
+
+import Data.Binary
+import qualified Data.Set as Set
+
+import qualified Stg.Syntax as C
+import qualified Stg.Convert as C
 
 -------------------------------------------------------------------------------
 -- Module
@@ -43,6 +60,7 @@ modloc = ModLocation
  { ml_hs_file  = Nothing
  , ml_hi_file  = "Example.hi"
  , ml_obj_file = "Example.o"
+ , ml_hie_file = "Example.hie"
  }
 
 -------------------------------------------------------------------------------
@@ -52,14 +70,28 @@ modloc = ModLocation
 data Backend = NCG | LLVM
 
 compileProgram :: Backend -> [TyCon] -> [StgTopBinding] -> IO ()
-compileProgram backend tyCons topBinds = runGhc (Just libdir) $ do
+compileProgram backend tyCons topBinds_simple = runGhc (Just libdir) $ do
   dflags <- getSessionDynFlags
 
   liftIO $ do
+
+    -- save exported external STG
+    let stgFName = "whole_program_original.stgbin"
+    putStrLn $ "writing " ++ stgFName
+    encodeFile stgFName $ C.cvtModule [] [] "whole-program-stg" mainUnitId (mkModuleName ":Main") topBinds_simple NoStubs []
+
     putStrLn "==== STG ===="
-    putStrLn $ showSDoc dflags $ pprStgTopBindings topBinds
+--    putStrLn $ showSDoc dflags $ pprStgTopBindings topBinds_simple
     putStrLn "==== Lint STG ===="
-    lintStgTopBindings dflags True "Manual" topBinds
+    lintStgTopBindings dflags modl False "Manual" topBinds_simple
+
+  us <- liftIO $ mkSplitUniqSupply 'g'
+  let topBinds = unarise us topBinds_simple
+
+  liftIO $ do
+    let stgFName = "whole_program_unarised.stgbin"
+    putStrLn $ "writing " ++ stgFName
+    encodeFile stgFName $ C.cvtModule [] [] "whole-program-stg" mainUnitId (mkModuleName ":Main") topBinds NoStubs []
 
   -- construct STG program manually
   -- TODO: specify the following properly
@@ -82,32 +114,84 @@ type CollectedCCs
 
   -- Compile & Link
   dflags <- getSessionDynFlags
-  setSessionDynFlags $
+  pkgs <- setSessionDynFlags $
     dflags { hscTarget = target, ghcLink = LinkBinary }
     `gopt_set`  Opt_KeepSFiles
     `gopt_set`  Opt_KeepLlvmFiles
 --    `dopt_set`  Opt_D_dump_cmm
-    `dopt_set`  Opt_D_dump_cmm_raw
+--    `dopt_set`  Opt_D_dump_cmm_raw
 --    `dopt_set`  Opt_D_dump_cmm_from_stg
     `dopt_set`  Opt_D_dump_timings
     `gopt_set`  Opt_DoStgLinting
     `gopt_set`  Opt_DoCmmLinting
 
+  let libSet = Set.fromList ["rts", "ghc-prim-cbits", "base-cbits", "integer-gmp-cbits"]
+  dflags <- getSessionDynFlags
+  let ignored_pkgs  = [IgnorePackage p |  p <- map (unpackFS . installedUnitIdFS) pkgs, Set.notMember p libSet]
+      my_pkgs       = [ExposePackage p (PackageArg p)  (ModRenaming True []) | p <- Set.toList libSet]
+  setSessionDynFlags $ dflags { ignorePackageFlags = ignored_pkgs, packageFlags = my_pkgs }
   dflags <- getSessionDynFlags
 
   env <- getSession
   liftIO $ do
     newGen dflags env outFname modl tyCons ccs topBinds hpc
-    oneShot env StopLn [(outFname, Just link), ("my_lib.o", Nothing)]
+    oneShot env StopLn [(outFname, Just link){-, ("my_lib.o", Nothing)-}, ("stubs.c", Nothing)]
   pure ()
-{-
-  TODO:
-    prevent linking haskell libraries i.e. base, integer-gmp, ghc-prim
--}
 
 -------------
 -- from GHC
 -------------
+cStub :: String
+cStub = unlines
+  [ "#include \"stdio.h\""
+  , "HsInt32 ghczuwrapperZC0ZCbaseZCSystemziPosixziInternalsZCSEEKzuEND(void) {return SEEK_END;}"
+  , "#include \"stdio.h\""
+  , "HsInt32 ghczuwrapperZC1ZCbaseZCSystemziPosixziInternalsZCSEEKzuSET(void) {return SEEK_SET;}"
+  , "#include \"stdio.h\""
+  , "HsInt32 ghczuwrapperZC2ZCbaseZCSystemziPosixziInternalsZCSEEKzuCUR(void) {return SEEK_CUR;}"
+  , "#include \"sys/stat.h\""
+  , "HsInt32 ghczuwrapperZC3ZCbaseZCSystemziPosixziInternalsZCSzuISSOCK(HsWord32 a1) {return S_ISSOCK(a1);}"
+  , "#include \"sys/stat.h\""
+  , "HsInt32 ghczuwrapperZC4ZCbaseZCSystemziPosixziInternalsZCSzuISFIFO(HsWord32 a1) {return S_ISFIFO(a1);}"
+  , "#include \"sys/stat.h\""
+  , "HsInt32 ghczuwrapperZC5ZCbaseZCSystemziPosixziInternalsZCSzuISDIR(HsWord32 a1) {return S_ISDIR(a1);}"
+  , "#include \"sys/stat.h\""
+  , "HsInt32 ghczuwrapperZC6ZCbaseZCSystemziPosixziInternalsZCSzuISBLK(HsWord32 a1) {return S_ISBLK(a1);}"
+  , "#include \"sys/stat.h\""
+  , "HsInt32 ghczuwrapperZC7ZCbaseZCSystemziPosixziInternalsZCSzuISCHR(HsWord32 a1) {return S_ISCHR(a1);}"
+  , "#include \"sys/stat.h\""
+  , "HsInt32 ghczuwrapperZC8ZCbaseZCSystemziPosixziInternalsZCSzuISREG(HsWord32 a1) {return S_ISREG(a1);}"
+  , "#include \"HsBase.h\""
+  , "HsInt32 ghczuwrapperZC9ZCbaseZCSystemziPosixziInternalsZCtcsetattr(HsInt32 a1, HsInt32 a2, struct termios* a3) {return tcsetattr(a1, a2, a3);}"
+  , "#include \"HsBase.h\""
+  , "HsInt32 ghczuwrapperZC10ZCbaseZCSystemziPosixziInternalsZCtcgetattr(HsInt32 a1, struct termios* a2) {return tcgetattr(a1, a2);}"
+  , "#include \"signal.h\""
+  , "HsInt32 ghczuwrapperZC11ZCbaseZCSystemziPosixziInternalsZCsigprocmask(HsInt32 a1, sigset_t* a2, sigset_t* a3) {return sigprocmask(a1, a2, a3);}"
+  , "#include \"signal.h\""
+  , "HsInt32 ghczuwrapperZC12ZCbaseZCSystemziPosixziInternalsZCsigaddset(sigset_t* a1, HsInt32 a2) {return sigaddset(a1, a2);}"
+  , "#include \"signal.h\""
+  , "HsInt32 ghczuwrapperZC13ZCbaseZCSystemziPosixziInternalsZCsigemptyset(sigset_t* a1) {return sigemptyset(a1);}"
+  , "#include \"HsBase.h\""
+  , "HsInt32 ghczuwrapperZC14ZCbaseZCSystemziPosixziInternalsZCmkfifo(void* a1, HsWord32 a2) {return mkfifo(a1, a2);}"
+  , "#include \"HsBase.h\""
+  , "HsInt32 ghczuwrapperZC15ZCbaseZCSystemziPosixziInternalsZCfcntl(HsInt32 a1, HsInt32 a2, struct flock* a3) {return fcntl(a1, a2, a3);}"
+  , "#include \"HsBase.h\""
+  , "HsInt32 ghczuwrapperZC16ZCbaseZCSystemziPosixziInternalsZCfcntl(HsInt32 a1, HsInt32 a2, HsInt64 a3) {return fcntl(a1, a2, a3);}"
+  , "#include \"HsBase.h\""
+  , "HsInt32 ghczuwrapperZC17ZCbaseZCSystemziPosixziInternalsZCfcntl(HsInt32 a1, HsInt32 a2) {return fcntl(a1, a2);}"
+  , "#include \"HsBase.h\""
+  , "HsInt32 ghczuwrapperZC18ZCbaseZCSystemziPosixziInternalsZCutime(void* a1, struct utimbuf* a2) {return utime(a1, a2);}"
+  , "#include \"HsBase.h\""
+  , "HsInt64 ghczuwrapperZC19ZCbaseZCSystemziPosixziInternalsZCwrite(HsInt32 a1, HsWord8* a2, HsWord64 a3) {return write(a1, a2, a3);}"
+  , "#include \"HsBase.h\""
+  , "HsInt64 ghczuwrapperZC20ZCbaseZCSystemziPosixziInternalsZCwrite(HsInt32 a1, HsWord8* a2, HsWord64 a3) {return write(a1, a2, a3);}"
+  , "#include \"HsBase.h\""
+  , "HsInt64 ghczuwrapperZC21ZCbaseZCSystemziPosixziInternalsZCread(HsInt32 a1, HsWord8* a2, HsWord64 a3) {return read(a1, a2, a3);}"
+  , "#include \"HsBase.h\""
+  , "HsInt64 ghczuwrapperZC22ZCbaseZCSystemziPosixziInternalsZCread(HsInt32 a1, HsWord8* a2, HsWord64 a3) {return read(a1, a2, a3);}"
+  , "#include \"unistd.h\""
+  , "HsInt64 ghczuwrapperZC23ZCbaseZCSystemziPosixziInternalsZClseek(HsInt32 a1, HsInt64 a2, HsInt32 a3) {return lseek(a1, a2, a3);}"
+  ]
 
 newGen :: DynFlags
        -> HscEnv
@@ -117,92 +201,32 @@ newGen :: DynFlags
        -> CollectedCCs
        -> [StgTopBinding]
        -> HpcInfo
-       -> IO (FilePath, Maybe FilePath, [(ForeignSrcLang, FilePath)])
+       -> IO (FilePath, Maybe FilePath, [(ForeignSrcLang, FilePath)], NameSet)
 newGen dflags hsc_env output_filename this_mod data_tycons cost_centre_info stg_binds hpc_info = do
   -- TODO: add these to parameters
   let location = modloc
-      foreign_stubs = NoStubs
+      foreign_stubs = NoStubs-- empty (text cStub)
       foreign_files = []
-      dependencies = []
+      dependencies = [] -- only used for HscC target
 
-  cmms <- {-# SCC "StgCmm" #-}
+  cmms <- {-# SCC "StgToCmm" #-}
                   doCodeGen hsc_env this_mod data_tycons
                       cost_centre_info
                       stg_binds hpc_info
 
   ------------------  Code output -----------------------
   rawcmms0 <- {-# SCC "cmmToRawCmm" #-}
-            cmmToRawCmm dflags cmms
+            lookupHook cmmToRawCmmHook
+              (\dflg _ -> cmmToRawCmm dflg) dflags dflags (Just this_mod) cmms
 
-  let dump a = do dumpIfSet_dyn dflags Opt_D_dump_cmm_raw "Raw Cmm"
-                    (ppr a)
-                  return a
+  let dump a = do
+        unless (null a) $
+          dumpIfSet_dyn dflags Opt_D_dump_cmm_raw "Raw Cmm" FormatCMM (ppr a)
+        return a
       rawcmms1 = Stream.mapM dump rawcmms0
 
-  (output_filename, (_stub_h_exists, stub_c_exists), foreign_fps)
+  (output_filename, (_stub_h_exists, stub_c_exists), foreign_fps, caf_infos)
       <- {-# SCC "codeOutput" #-}
         codeOutput dflags this_mod output_filename location
         foreign_stubs foreign_files dependencies rawcmms1
-  return (output_filename, stub_c_exists, foreign_fps)
-
-
-doCodeGen   :: HscEnv -> Module -> [TyCon]
-            -> CollectedCCs
-            -> [StgTopBinding]
-            -> HpcInfo
-            -> IO (Stream IO CmmGroup ())
-         -- Note we produce a 'Stream' of CmmGroups, so that the
-         -- backend can be run incrementally.  Otherwise it generates all
-         -- the C-- up front, which has a significant space cost.
-doCodeGen hsc_env this_mod data_tycons
-              cost_centre_info stg_binds hpc_info = do
-    let dflags = hsc_dflags hsc_env
-
-    let cmm_stream :: Stream IO CmmGroup ()
-        cmm_stream = {-# SCC "StgCmm" #-}
-            StgCmm.codeGen dflags this_mod data_tycons
-                           cost_centre_info stg_binds hpc_info
-
-        -- codegen consumes a stream of CmmGroup, and produces a new
-        -- stream of CmmGroup (not necessarily synchronised: one
-        -- CmmGroup on input may produce many CmmGroups on output due
-        -- to proc-point splitting).
-
-    let dump1 a = do dumpIfSet_dyn dflags Opt_D_dump_cmm_from_stg
-                       "Cmm produced by codegen" (ppr a)
-                     return a
-
-        ppr_stream1 = Stream.mapM dump1 cmm_stream
-
-    -- We are building a single SRT for the entire module, so
-    -- we must thread it through all the procedures as we cps-convert them.
-    us <- mkSplitUniqSupply 'S'
-
-    -- When splitting, we generate one SRT per split chunk, otherwise
-    -- we generate one SRT for the whole module.
-    let
-     pipeline_stream
-      | gopt Opt_SplitObjs dflags || gopt Opt_SplitSections dflags ||
-        osSubsectionsViaSymbols (platformOS (targetPlatform dflags))
-        = {-# SCC "cmmPipeline" #-}
-          let run_pipeline us cmmgroup = do
-                (_topSRT, cmmgroup) <-
-                  cmmPipeline hsc_env (emptySRT this_mod) cmmgroup
-                return (us, cmmgroup)
-
-          in do _ <- Stream.mapAccumL run_pipeline us ppr_stream1
-                return ()
-
-      | otherwise
-        = {-# SCC "cmmPipeline" #-}
-          let run_pipeline = cmmPipeline hsc_env
-          in void $ Stream.mapAccumL run_pipeline (emptySRT this_mod) ppr_stream1
-
-    let
-        dump2 a = do dumpIfSet_dyn dflags Opt_D_dump_cmm
-                        "Output Cmm" (ppr a)
-                     return a
-
-        ppr_stream2 = Stream.mapM dump2 pipeline_stream
-
-    return ppr_stream2
+  return (output_filename, stub_c_exists, foreign_fps, caf_infos)

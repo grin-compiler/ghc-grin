@@ -16,12 +16,12 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:
-    Lambda.ToStg
+--    Lambda.ToStg
     Lambda.FromStg
     Lambda.GHCPrimOps
     Lambda.GHCSymbols
-    StgLoopback
-    StgSample
+--    StgLoopback
+--    StgSample
 
   build-depends:
       base
@@ -38,7 +38,6 @@ library
     , ghc
     , ghc-paths
     , time
-    , store
 
   default-language:    Haskell2010
 
@@ -58,10 +57,9 @@ executable ghc-grin
                      , containers
                      , unix
                      , ansi-wl-pprint
-                     , store
+                     , binary
                      , blake2
                      , bytestring
-                     , grin
                      , ghc-grin
                      , external-stg
                      , external-stg-util
