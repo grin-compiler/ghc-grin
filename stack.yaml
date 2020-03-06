@@ -1,4 +1,4 @@
-resolver: nightly-2018-11-07
+resolver: lts-15.0
 
 # due to functor-infix
 allow-newer: true
@@ -10,32 +10,11 @@ packages:
   - 'external-stg-util'
   - 'ghc-grin'
   - 'lambda-grin'
-#  - '../grin/grin'
-
-extra-deps:
-  - monad-gen-0.3.0.1
-  - functor-infix-0.0.5
-  - megaparsec-6.5.0
-  - neat-interpolation-0.3.2.2
-  - set-extra-1.4.1
-  - llvm-hs-pretty-0.6.1.0
-  - blake2-0.3.0
-  - github: grin-compiler/grin
-    commit: 8b0c264a35caba335c662ae064d5b5d5a7e6214d
-    subdirs:
-      - grin
-
-  - github: csabahruska/llvm-hs
-    commit: 5e5feb5d125df3c789ef85ca344bced283b2fbaa
-    subdirs:
-      - llvm-hs
-      - llvm-hs-pure
-
-flags:
-  llvm-hs:
-    shared-llvm: true
 
 build:
   test-arguments:
     additional-args:
       - "--seed=11010"
+
+ghc-options:
+  external-stg: -DEXT_STG_FOR_NON_PATCHED_GHC
