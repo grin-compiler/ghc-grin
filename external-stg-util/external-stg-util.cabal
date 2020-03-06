@@ -32,8 +32,6 @@ executable ext-stg
                        external-stg,
                        external-stg-util,
                        ansi-wl-pprint,
-                       regex-tdfa,
-                       regex-tdfa-text,
                        bytestring,
                        optparse-applicative
   default-language:    Haskell2010
