@@ -18,13 +18,13 @@ import Transformations.Util
 import Lambda.Util
 
 lintLambda :: Program -> IO ()
-lintLambda prg@(Program exts cons sdata _) = do
+lintLambda prg@Program{..} = do
   let Env{..} = test prg
       tab     = ("  "++) . unpackName
       known   = Set.unions
                   [ Map.keysSet envDef
-                  , Set.fromList [eName | External{..} <- exts]
-                  , Set.fromList [sName | StaticData{..} <- sdata]
+                  , Set.fromList [eName | External{..} <- pExternals]
+                  , Set.fromList [sName | StaticData{..} <- pStaticData]
                   ]
       unknown = Set.difference envUse known
   --printf "node pats:\n%s" . unlines . map tab $ Set.toList envCon
@@ -82,4 +82,4 @@ expSize = cata folder where
     e       -> succ $ Data.Foldable.sum e
 
 programHistogram :: Program -> Map Int (Int, Name)
-programHistogram (Program _ _ _ defs) = Map.unionsWith (\(i1,n1) (i2,n2) -> (i1 + i2, n1)) [Map.singleton (expSize d) (1, n) | d@(Def n _ _) <- defs]
+programHistogram Program{..} = Map.unionsWith (\(i1,n1) (i2,n2) -> (i1 + i2, n1)) [Map.singleton (expSize d) (1, n) | d@(Def n _ _) <- pDefinitions]

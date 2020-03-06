@@ -3,9 +3,10 @@
 {-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveGeneric, DeriveDataTypeable #-}
 module Lambda.Syntax
   ( module Lambda.Syntax
-  , Grin.packName
-  , Grin.unpackName
-  , Grin.showTS
+  , Name
+  , packName
+  , unpackName
+  , showTS
   , Ty(..)
   , SimpleType(..)
   , ExternalKind(..)
@@ -27,12 +28,10 @@ import Data.Word
 import Data.ByteString (ByteString)
 import Data.Functor.Foldable as Foldable
 import Data.Functor.Foldable.TH
-import Data.Store
-import Data.Store.TH
+import Data.Binary
 import Data.Text (Text)
-import qualified Grin.Grin as Grin
+import Lambda.Name
 
-type Name = Grin.Name
 type ConName = Name
 
 data Ty
@@ -86,7 +85,13 @@ data PrimRep
   = VoidRep
   | LiftedRep
   | UnliftedRep   -- ^ Unlifted pointer
+  | Int8Rep       -- ^ Signed, 8-bit value
+  | Int16Rep      -- ^ Signed, 16-bit value
+  | Int32Rep      -- ^ Signed, 32-bit value
   | Int64Rep      -- ^ Signed, 64 bit value (with 32-bit words only)
+  | Word8Rep      -- ^ Unsigned, 8 bit value
+  | Word16Rep     -- ^ Unsigned, 16 bit value
+  | Word32Rep     -- ^ Unsigned, 32 bit value
   | Word64Rep     -- ^ Unsigned, 64 bit value (with 32-bit words only)
   | AddrRep       -- ^ A pointer, but /not/ to a Haskell value (use '(Un)liftedRep')
   | FloatRep
@@ -123,7 +128,13 @@ type BindChain  = Exp
 type SimpleExp  = Exp
 
 data Exp
-  = Program     [External] [ConGroup] [StaticData] [Def]
+  = Program
+    { pExternals    :: [External]
+    , pConstructors :: [ConGroup]
+    , pPublicNames  :: [Name]
+    , pStaticData   :: [StaticData]
+    , pDefinitions  :: [Def]
+    }
   -- Binding
   | Def         Name [(Name, RepType)] BindChain
   -- Exp
@@ -166,17 +177,18 @@ data Pat
 
 makeBaseFunctor ''Ty
 makeBaseFunctor ''Exp
-makeStore ''Grin.Name
-makeStore ''SimpleType
-makeStore ''ExternalKind
-makeStore ''StaticValue
-makeStore ''StaticData
-makeStore ''PrimRep
-makeStore ''RepType
-makeStore ''ConSpec
-makeStore ''ConGroup
-makeStore ''Lit
-makeStore ''Pat
-makeStore ''Ty
-makeStore ''External
-makeStore ''Exp
+
+instance Binary Name
+instance Binary SimpleType
+instance Binary ExternalKind
+instance Binary StaticValue
+instance Binary StaticData
+instance Binary PrimRep
+instance Binary RepType
+instance Binary ConSpec
+instance Binary ConGroup
+instance Binary Lit
+instance Binary Pat
+instance Binary Ty
+instance Binary External
+instance Binary Exp

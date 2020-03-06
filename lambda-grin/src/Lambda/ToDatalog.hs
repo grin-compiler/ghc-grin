@@ -133,11 +133,11 @@ convertStaticData StaticData{..} = do
 
 convertProgram :: Exp -> DL ()
 convertProgram = \case
-  Program e c s d -> do
-    mapM_ convertExternal e
-    mapM_ convertStaticData s
-    -- TODO: cons
-    mapM_ convertDef d
+  Program{..} -> do
+    mapM_ convertExternal pExternals
+    mapM_ convertStaticData pStaticData
+    -- TODO: cons, and others
+    mapM_ convertDef pDefinitions
 
 convertDef :: Exp -> DL ()
 convertDef = \case

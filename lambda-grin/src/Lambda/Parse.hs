@@ -3,6 +3,8 @@
 module Lambda.Parse
   ( parseLambda
   , parseProg
+  , allowedInitial
+  , allowedSpecial
   ) where
 
 import Data.Ratio ((%))
@@ -22,14 +24,6 @@ import Lambda.Syntax
 import qualified Data.Text.IO as T
 import qualified Text.Megaparsec as M
 
-main = do
-  let fname = "basic00.2.lambda"
-  content <- T.readFile fname
-  case parseLambda fname content of
-    Right{} -> putStrLn "OK"
-    Left err -> do
-      error . M.parseErrorPretty' content $ err
-
 -- indetifier rules for parser and pretty printer
 allowedSpecial :: String
 allowedSpecial = "._':!@-"
@@ -37,7 +31,7 @@ allowedSpecial = "._':!@-"
 allowedInitial :: String
 allowedInitial = "._" ++ ['a'..'z'] ++ ['A'..'Z']
 
-keywords = Set.fromList ["case","of","let","letrec","letS", "primop", "ffi", "effectful", "_"]
+keywords = Set.fromList ["case","of","let","letrec","letS", "primop", "ffi", "effectful", "_", "closure"]
 
 type Parser = Parsec Void Text
 
@@ -70,7 +64,7 @@ escaped :: Parser Char
 escaped = string "\\\"" >> pure '"'
 
 quotedVar :: Parser Name
-quotedVar = packName <$ char '"' <*> someTill (escaped <|> anyChar) (char '"')
+quotedVar = packName <$ char '"' <*> someTill (escaped <|> anySingle) (char '"')
 
 escapedStringChar :: Parser Char
 escapedStringChar =
@@ -85,7 +79,7 @@ escapedStringChar =
   (string "\\v" >> pure '\v')
 
 quotedString :: Parser Text
-quotedString = fromString <$> (char '"' *> manyTill (escapedStringChar <|> anyChar) (char '"'))
+quotedString = fromString <$> (char '"' *> manyTill (escapedStringChar <|> anySingle) (char '"'))
 
 simpleVar :: Parser Name
 simpleVar = (\c s -> packName $ c : s) <$> oneOf allowedInitial <*> many (alphaNumChar <|> oneOf allowedSpecial)
@@ -102,7 +96,13 @@ primRep = choice
   [ VoidRep     <$ kw "VoidRep"
   , LiftedRep   <$ kw "LiftedRep"
   , UnliftedRep <$ kw "UnliftedRep"
+  , Int8Rep     <$ kw "Int8Rep"
+  , Int16Rep    <$ kw "Int16Rep"
+  , Int32Rep    <$ kw "Int32Rep"
   , Int64Rep    <$ kw "Int64Rep"
+  , Word8Rep    <$ kw "Word8Rep"
+  , Word16Rep   <$ kw "Word16Rep"
+  , Word32Rep   <$ kw "Word32Rep"
   , Word64Rep   <$ kw "Word64Rep"
   , AddrRep     <$ kw "AddrRep"
   , FloatRep    <$ kw "FloatRep"
@@ -178,7 +178,7 @@ expKind = lookAhead $ do
   var
   op "="
   choice
-    [ KClosure <$ op "\\"
+    [ KClosure <$ op "\\closure"
     , KCase <$ kw "case"
     , pure KOther
     ]
@@ -221,7 +221,7 @@ closure = do
   L.indentBlock sc $ do
     (n, t) <- binder
     op "="
-    op "\\"
+    op "\\closure"
     captured <- brackets (many var)
     params <- many binderArg
     op "->"
@@ -283,6 +283,16 @@ conGroups = do
   L.indentBlock sc $ do
     kw "constructors"
     pure $ L.IndentSome Nothing pure conGroup
+
+-- public names
+
+publicNames :: Parser [Name]
+publicNames = do
+  L.indentGuard sc EQ pos1
+  L.indentBlock sc $ do
+    kw "public"
+    kw "names"
+    pure $ L.IndentSome Nothing pure var
 
 -- static data
 
@@ -373,10 +383,15 @@ simpleType =
 -- top-level API
 
 lambdaModule :: Parser Program
-lambdaModule = Program <$> (concat <$> many externalBlock) <*> option [] conGroups <*> option [] staticDataBlock <*> many def <* sc <* eof
+lambdaModule = Program <$> (concat <$> many externalBlock)
+                       <*> option [] conGroups
+                       <*> option [] publicNames
+                       <*> option [] staticDataBlock
+                       <*> many def
+                       <* sc <* eof
 
-parseLambda :: String -> Text -> Either (ParseError Char Void) Program
+parseLambda :: String -> Text -> Either (ParseErrorBundle Text Void) Program
 parseLambda filename content = runParser lambdaModule filename content
 
 parseProg :: Text -> Exp
-parseProg src = either (error . parseErrorPretty' src) id . parseLambda "" $ src
+parseProg src = either (error . errorBundlePretty) id . parseLambda "" $ src

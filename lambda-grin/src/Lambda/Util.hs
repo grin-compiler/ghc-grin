@@ -1,14 +1,14 @@
-{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE LambdaCase, RecordWildCards #-}
 module Lambda.Util where
 
 import Data.Functor.Foldable
 import qualified Data.Set as Set
 import qualified Data.Foldable
 import qualified Data.Map as Map
-import Data.List (nubBy, unzip4)
+import Data.List (unzip5)
 
-import Transformations.Names hiding (mkNameEnv)
-import Transformations.Util hiding (foldNameDefExpF)
+import Transformations.Names
+import Transformations.Util
 import Lambda.Syntax
 
 mkNameEnv :: Exp -> NameEnv
@@ -26,7 +26,7 @@ foldLocalNameDefExpF f = \case
 
 foldNameDefExpF :: (Monoid m) => (Name -> m) -> ExpF a -> m
 foldNameDefExpF f = \case
-  ProgramF _ _ sdata _    -> mconcat $ map (f . sName) sdata
+  ProgramF{..}            -> mconcat $ map (f . sName) pStaticDataF
   DefF n args _           -> mconcat $ f n : map (f . fst) args
   LetF bs _               -> mconcat $ map (f . fst3) bs
   LetRecF bs _            -> mconcat $ map (f . fst3) bs
@@ -40,7 +40,9 @@ fst3 (a, _, _) = a
 
 mapNameExp :: (Name -> Name) -> Exp -> Exp
 mapNameExp f = \case
-  Program e c s d -> Program e c [sd {sName = f $ sName sd} | sd <- s] d
+  prg@Program{..} -> prg { pPublicNames = map f pPublicNames
+                         , pStaticData  = [sd {sName = f $ sName sd} | sd <- pStaticData]
+                         }
   Def n args e    -> Def (f n) [(f a, t) | (a, t) <- args] e
   exp             -> mapLocalNameExp f exp
 
@@ -91,14 +93,22 @@ foldNameTyF f = \case
 
 -- TODO: validate merge operation (i.e. con group and external definiton must match if names are matching, def names must be unique)
 concatPrograms :: [Program] -> Program
-concatPrograms prgs = Program (nubExts $ concat exts) (nubConGroups $ concat cgroups) (concat sdata) (concat defs) where
-  (exts, cgroups, sdata, defs) = unzip4 [(e, c, s, d) | Program e c s d <- prgs]
-  nubExts = nubBy (\a b -> eName a == eName b)
-  nubConGroups = nubBy (\a b -> cgName a == cgName b)
+concatPrograms prgs = prg where
+  (exts, cgroups, publics, sdata, defs) = unzip5 [(e, c, p, s, d) | Program e c p s d <- prgs]
+  nubExts l       = Map.elems $ Map.fromList [(eName x, x) | x <- l]
+  nubConGroups l  = Map.elems $ Map.fromList [(cgName x, x) | x <- l]
+  prg = Program
+    { pExternals    = nubExts $ concat exts
+    , pConstructors = nubConGroups $ concat cgroups
+    , pPublicNames  = Set.toList . Set.fromList $ concat publics
+    , pStaticData   = concat sdata
+    , pDefinitions  = concat defs
+    }
 
 sortProgramDefs :: Program -> Program
-sortProgramDefs (Program exts cgroups sdata defs) =
-  Program exts
-    (Map.elems $ Map.fromList [(cgName c, c) | c <- cgroups])
-    (Map.elems $ Map.fromList [(sName d, d) | d <- sdata])
-    (Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- defs])
+sortProgramDefs prg@Program{..} = prg
+  { pConstructors = Map.elems $ Map.fromList [(cgName c, c) | c <- pConstructors]
+  , pPublicNames  = Set.toList $ Set.fromList pPublicNames
+  , pStaticData   = Map.elems $ Map.fromList [(sName d, d) | d <- pStaticData]
+  , pDefinitions  = Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- pDefinitions]
+  }
