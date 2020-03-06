@@ -2,57 +2,53 @@ module Lambda.GHCSymbols where
 
 liveSymbols =
   -- base
-  [ "Control.Exception.Base.absentSumFieldError"
-  , "Control.Exception.Base.nestedAtomically"
-  , "Control.Exception.Base.nonTermination"
-  , "GHC.IO.Exception.allocationLimitExceeded"
-  , "GHC.IO.Exception.blockedIndefinitelyOnMVar"
-  , "GHC.IO.Exception.blockedIndefinitelyOnSTM"
-  , "GHC.IO.Exception.cannotCompactFunction"
-  , "GHC.IO.Exception.cannotCompactMutable"
-  , "GHC.IO.Exception.cannotCompactPinned"
-  , "GHC.IO.Exception.heapOverflow"
-  , "GHC.IO.Exception.stackOverflow"
-  , "GHC.Event.Thread.blockedOnBadFD"
-
-  , "GHC.Conc.IO.ensureIOManagerIsRunning"
-  , "GHC.Conc.IO.ioManagerCapabilitiesChanged"
-  , "GHC.Conc.Signal.runHandlersPtr"
-  , "GHC.Conc.Sync.runSparks"
-  , "GHC.Pack.unpackCString"
-  , "GHC.TopHandler.flushStdHandles"
-  , "GHC.TopHandler.runIO"
-  , "GHC.TopHandler.runMainIO"
-  , "GHC.TopHandler.runNonIO"
-  , "GHC.Weak.runFinalizerBatch"
+  [ "base_Control.Exception.Base.absentSumFieldError"
+  , "base_Control.Exception.Base.nestedAtomically"
+  , "base_Control.Exception.Base.nonTermination"
+  , "base_GHC.Conc.IO.ensureIOManagerIsRunning"
+  , "base_GHC.Conc.IO.ioManagerCapabilitiesChanged"
+  , "base_GHC.Conc.Signal.runHandlersPtr"
+  , "base_GHC.Conc.Sync.runSparks"
+  , "base_GHC.Event.Thread.blockedOnBadFD"
+  , "base_GHC.Exception.Type.divZeroException"
+  , "base_GHC.Exception.Type.overflowException"
+  , "base_GHC.Exception.Type.underflowException"
+  , "base_GHC.Int.I16#"
+  , "base_GHC.Int.I32#"
+  , "base_GHC.Int.I64#"
+  , "base_GHC.Int.I8#"
+  , "base_GHC.IO.Exception.allocationLimitExceeded"
+  , "base_GHC.IO.Exception.blockedIndefinitelyOnMVar"
+  , "base_GHC.IO.Exception.blockedIndefinitelyOnSTM"
+  , "base_GHC.IO.Exception.cannotCompactFunction"
+  , "base_GHC.IO.Exception.cannotCompactMutable"
+  , "base_GHC.IO.Exception.cannotCompactPinned"
+  , "base_GHC.IO.Exception.heapOverflow"
+  , "base_GHC.IO.Exception.stackOverflow"
+  , "base_GHC.Pack.unpackCString"
+  , "base_GHC.Ptr.FunPtr"
+  , "base_GHC.Ptr.Ptr"
+  , "base_GHC.Stable.StablePtr"
+  , "base_GHC.TopHandler.flushStdHandles"
+  , "base_GHC.TopHandler.runIO"
+  , "base_GHC.TopHandler.runMainIO"
+  , "base_GHC.TopHandler.runNonIO"
+  , "base_GHC.Weak.runFinalizerBatch"
+  , "base_GHC.Word.W16#"
+  , "base_GHC.Word.W32#"
+  , "base_GHC.Word.W64#"
+  , "base_GHC.Word.W8#"
 
   -- ghc-prim
-  , "GHC.Tuple.()"
-  , "GHC.Types.False"
-  , "GHC.Types.True"
+  , "ghc-prim_GHC.Tuple.()"
+  , "ghc-prim_GHC.Types.C#"
+  , "ghc-prim_GHC.Types.D#"
+  , "ghc-prim_GHC.Types.F#"
+  , "ghc-prim_GHC.Types.False"
+  , "ghc-prim_GHC.Types.I#"
+  , "ghc-prim_GHC.Types_True"
+  , "ghc-prim_GHC.Types.W#"
+
+  -- main
+  , "main_:Main.main"
   ]
-
-{-
-  Q:  what is con_info? is it callable code?
-      how is it generated?
-      does it have stg representation?
-
-
-         GHC.Int_I16zh_con_info
-         GHC.Int_I32zh_con_info
-         GHC.Int_I64zh_con_info
-         GHC.Int_I8zh_con_info
-         GHC.Ptr_FunPtr_con_info
-         GHC.Ptr_Ptr_con_info
-         GHC.Stable_StablePtr_con_info
-         GHC.Word_W16zh_con_info
-         GHC.Word_W32zh_con_info
-         GHC.Word_W64zh_con_info
-         GHC.Word_W8zh_con_info
-
-         ghczmprim_GHC.Types_Czh_con_info
-         ghczmprim_GHC.Types_Izh_con_info
-         ghczmprim_GHC.Types_Fzh_con_info
-         ghczmprim_GHC.Types_Dzh_con_info
-         ghczmprim_GHC.Types_Wzh_con_info
--}
