@@ -34,7 +34,7 @@ deriveNewName name = do
       baseX a = showIntAtBase (length code) (code !!) a ""
   pure $ packName $ printf "%s.%s" name (baseX i)
   -}
-  pure $ packName $ printf "%s.%d" name i
+  pure $ packName $ printf "%s_%d" name i
 
 genName :: Name -> G Name
 genName name = do
@@ -64,9 +64,9 @@ mkUnboxedTuple :: [L.Ty] -> G L.Ty
 mkUnboxedTuple args = do
   ut <- deriveNewName "t"
   pure $ case length args of
-    0 -> L.TyCon ut (packName "GHC.Prim.(##)") []
-    1 -> L.TyCon ut (packName "GHC.Prim.Unit#") args
-    n -> L.TyCon ut (packName $ "GHC.Prim.(#" ++ replicate (max 0 $ n-1) ',' ++ "#)") args
+    0 -> L.TyCon ut (packName "ghc-prim_GHC.Prim.(##)") []
+    1 -> L.TyCon ut (packName "ghc-prim_GHC.Prim.Unit#") args
+    n -> L.TyCon ut (packName $ "ghc-prim_GHC.Prim.(#" ++ replicate (max 0 $ n-1) ',' ++ "#)") args
 
 isStateTy :: Ty -> Bool
 isStateTy = \case
