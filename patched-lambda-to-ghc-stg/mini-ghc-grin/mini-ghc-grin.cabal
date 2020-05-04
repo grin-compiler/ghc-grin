@@ -15,12 +15,15 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:
-    Lambda.Name
-    Lambda.Syntax
-    Lambda.ToStg
+    --Lambda.Name
+    --Lambda.Syntax
+    --Lambda.ToStg
     StgLoopback
+    Stg.ToStg
     Stg.Convert
     Stg.Syntax
+    Stg.Util
+    Stg.Reconstruct
 
   build-depends:
       base
@@ -35,6 +38,8 @@ library
     , binary
     , recursion-schemes
     , filepath
+    , unordered-containers
+    , hashable
 
   default-language:    Haskell2010
 
@@ -46,4 +51,31 @@ executable gen-exe
                      , binary
                      , ghc
                      , mini-ghc-grin
+                     , split
+                     , process
+                     , filepath
+                     , filemanip
+                     , containers
+                     , bytestring
+  default-language:    Haskell2010
+
+executable gen-obj
+  hs-source-dirs:      app
+  main-is:             genObj.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , ghc
+                     , mini-ghc-grin
+                     , filepath
+  default-language:    Haskell2010
+
+executable show-ghc-stg
+  hs-source-dirs:      app
+  main-is:             showGHCStg.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , ghc
+                     , ghc-paths
+                     , mini-ghc-grin
+                     , filepath
   default-language:    Haskell2010
