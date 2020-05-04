@@ -92,10 +92,14 @@ PNode(f, f, arity, arity) :-
     - nampespace might be unnecessary
 */
 
-.decl ExecCall(namespace:symbol, call_result:Variable, fun:CodeName, arg_count:number)
-.decl ExecCallArgument(namespace:symbol, call_result:Variable, fun:CodeName, i:number, value:Variable)
+.decl ExecCall(namespace:symbol, call_inst:Variable, fun:CodeName, arg_count:number)
+.decl ExecCallArgument(namespace:symbol, call_inst:Variable, fun:CodeName, i:number, value:Variable)
+//.decl ExecCallResult_PointsTo(namespace:symbol, call_inst:Variable, result:Variable)
+//.decl ExecCallResult_TypeVarPointsTo(namespace:symbol, call_inst:Variable, result:Variable, ty_var:Variable)
 .output ExecCall
 .output ExecCallArgument
+//.output ExecCallResult_PointsTo
+//.output ExecCallResult_TypeVarPointsTo
 
 USED("CFA-01-A")
 ExecCall("normal-call", r, fun, arg_count) :-
