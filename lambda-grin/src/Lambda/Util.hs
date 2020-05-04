@@ -5,7 +5,7 @@ import Data.Functor.Foldable
 import qualified Data.Set as Set
 import qualified Data.Foldable
 import qualified Data.Map as Map
-import Data.List (unzip5)
+import Data.List (unzip6)
 
 import Transformations.Names
 import Transformations.Util
@@ -41,6 +41,7 @@ fst3 (a, _, _) = a
 mapNameExp :: (Name -> Name) -> Exp -> Exp
 mapNameExp f = \case
   prg@Program{..} -> prg { pPublicNames = map f pPublicNames
+                         , pForeignExportedNames = map f pForeignExportedNames
                          , pStaticData  = [sd {sName = f $ sName sd} | sd <- pStaticData]
                          }
   Def n args e    -> Def (f n) [(f a, t) | (a, t) <- args] e
@@ -94,13 +95,14 @@ foldNameTyF f = \case
 -- TODO: validate merge operation (i.e. con group and external definiton must match if names are matching, def names must be unique)
 concatPrograms :: [Program] -> Program
 concatPrograms prgs = prg where
-  (exts, cgroups, publics, sdata, defs) = unzip5 [(e, c, p, s, d) | Program e c p s d <- prgs]
+  (exts, cgroups, publics, fexported, sdata, defs) = unzip6 [(e, c, p, f, s, d) | Program e c p f s d <- prgs]
   nubExts l       = Map.elems $ Map.fromList [(eName x, x) | x <- l]
   nubConGroups l  = Map.elems $ Map.fromList [(cgName x, x) | x <- l]
   prg = Program
     { pExternals    = nubExts $ concat exts
     , pConstructors = nubConGroups $ concat cgroups
     , pPublicNames  = Set.toList . Set.fromList $ concat publics
+    , pForeignExportedNames = Set.toList . Set.fromList $ concat fexported
     , pStaticData   = concat sdata
     , pDefinitions  = concat defs
     }
@@ -109,6 +111,7 @@ sortProgramDefs :: Program -> Program
 sortProgramDefs prg@Program{..} = prg
   { pConstructors = Map.elems $ Map.fromList [(cgName c, c) | c <- pConstructors]
   , pPublicNames  = Set.toList $ Set.fromList pPublicNames
+  , pForeignExportedNames = Set.toList $ Set.fromList pForeignExportedNames
   , pStaticData   = Map.elems $ Map.fromList [(sName d, d) | d <- pStaticData]
   , pDefinitions  = Map.elems $ Map.fromList [(n,d) | d@(Def n _ _) <- pDefinitions]
   }

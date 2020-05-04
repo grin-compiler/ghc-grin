@@ -50,6 +50,7 @@ instance Pretty Exp where
       ProgramF{..} -> vcat ( prettyExternals pExternalsF
                            : prettyConGroups pConstructorsF
                            : prettyPublicNames pPublicNamesF
+                           : prettyForeignExportedNames pForeignExportedNamesF
                            : prettyStaticData pStaticDataF
                            : map pretty pDefinitionsF
                            )
@@ -89,6 +90,10 @@ instance Pretty Pat where
     NodePat tag vars  -> parens $ hsep (pretty tag : map pretty vars)
     LitPat  lit       -> pretty lit
     DefaultPat        -> keyword "_"
+
+prettyForeignExportedNames :: [Name] -> Doc
+prettyForeignExportedNames [] = mempty
+prettyForeignExportedNames names = keyword "foreign exported names" <$$> vsep (map (indent 2 . pretty) names) <> line
 
 prettyPublicNames :: [Name] -> Doc
 prettyPublicNames [] = mempty

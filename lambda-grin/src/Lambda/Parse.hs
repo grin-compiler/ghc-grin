@@ -294,6 +294,17 @@ publicNames = do
     kw "names"
     pure $ L.IndentSome Nothing pure var
 
+-- foreign exported names
+
+foreignExportedNames :: Parser [Name]
+foreignExportedNames = do
+  L.indentGuard sc EQ pos1
+  L.indentBlock sc $ do
+    kw "foreign"
+    kw "exported"
+    kw "names"
+    pure $ L.IndentSome Nothing pure var
+
 -- static data
 
 staticData :: Parser StaticData
@@ -386,6 +397,7 @@ lambdaModule :: Parser Program
 lambdaModule = Program <$> (concat <$> many externalBlock)
                        <*> option [] conGroups
                        <*> option [] publicNames
+                       <*> option [] foreignExportedNames
                        <*> option [] staticDataBlock
                        <*> many def
                        <* sc <* eof

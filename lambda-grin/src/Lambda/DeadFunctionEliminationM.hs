@@ -50,7 +50,7 @@ deadFunctionEliminationM liveSources prg@Program{..} = do
 
   let srcFile = tmpDfe </> "LiveSource.facts"
   putStrLn srcFile
-  writeFile srcFile $ unlines liveSources
+  writeFile srcFile . unlines $ liveSources ++ map unpackName pForeignExportedNames
 
   -- run analysis
   putStrLn "run: deadFunctionEliminationM"
@@ -67,6 +67,7 @@ deadFunctionEliminationM liveSources prg@Program{..} = do
     { pExternals    = [e | e <- pExternals, Set.member (eName e) liveDefSet]
     , pConstructors = [c | c <- pConstructors, Set.member (cgName c) liveConGroupSet]
     , pPublicNames  = [n | n <- pPublicNames, Set.member n liveDefSet]
+    , pForeignExportedNames = pForeignExportedNames
     , pStaticData   = [d | d <- pStaticData, Set.member (sName d) liveDefSet]
     , pDefinitions  = [d | d@(Def name _ _) <- pDefinitions, Set.member name liveDefSet]
     }

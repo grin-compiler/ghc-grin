@@ -49,11 +49,12 @@ singleStaticAssignment e = evalState (anaM build (mempty, e)) (mkNameEnv e) wher
     Program{..} -> do
       newExts <-  mapM ssaExternal pExternals
       pure $ ProgramF
-        { pExternalsF     = newExts
-        , pConstructorsF  = pConstructors
-        , pPublicNamesF   = pPublicNames
-        , pStaticDataF    = pStaticData
-        , pDefinitionsF   = map (env,) pDefinitions
+        { pExternalsF             = newExts
+        , pConstructorsF          = pConstructors
+        , pPublicNamesF           = pPublicNames
+        , pForeignExportedNamesF  = pForeignExportedNames
+        , pStaticDataF            = pStaticData
+        , pDefinitionsF           = map (env,) pDefinitions
         }
 
     -- name shadowing in the bind sequence

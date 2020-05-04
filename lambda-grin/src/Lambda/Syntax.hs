@@ -129,11 +129,12 @@ type SimpleExp  = Exp
 
 data Exp
   = Program
-    { pExternals    :: [External]
-    , pConstructors :: [ConGroup]
-    , pPublicNames  :: [Name]
-    , pStaticData   :: [StaticData]
-    , pDefinitions  :: [Def]
+    { pExternals            :: [External]
+    , pConstructors         :: [ConGroup]
+    , pPublicNames          :: [Name]
+    , pForeignExportedNames :: [Name]
+    , pStaticData           :: [StaticData]
+    , pDefinitions          :: [Def]
     }
   -- Binding
   | Def         Name [(Name, RepType)] BindChain
