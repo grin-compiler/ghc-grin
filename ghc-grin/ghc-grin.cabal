@@ -55,6 +55,7 @@ executable ghc-grin
                      , filepath
                      , directory
                      , containers
+                     , filemanip
                      , unix
                      , ansi-wl-pprint
                      , binary
