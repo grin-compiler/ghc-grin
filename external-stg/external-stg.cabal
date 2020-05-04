@@ -15,6 +15,7 @@ cabal-version:       >=1.10
 library
   other-modules:       GhcPrelude
   exposed-modules:
+--    Stg.UnariseType
 --    Stg.Convert
     Stg.Syntax
   ghc-options:         -Wall
