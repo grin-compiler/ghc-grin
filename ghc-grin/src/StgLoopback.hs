@@ -48,6 +48,9 @@ import qualified Data.Set as Set
 import qualified Stg.Syntax as C
 import qualified Stg.Convert as C
 
+import Data.List (isSuffixOf)
+import System.FilePath
+
 -------------------------------------------------------------------------------
 -- Module
 -------------------------------------------------------------------------------
@@ -55,22 +58,68 @@ import qualified Stg.Convert as C
 modl :: Module
 modl = mkModule mainUnitId (mkModuleName ":Main")
 
-modloc :: ModLocation
-modloc = ModLocation
- { ml_hs_file  = Nothing
- , ml_hi_file  = "Example.hi"
- , ml_obj_file = "Example.o"
- , ml_hie_file = "Example.hie"
- }
-
 -------------------------------------------------------------------------------
 -- Compilation
 -------------------------------------------------------------------------------
 
 data Backend = NCG | LLVM
 
-compileProgram :: Backend -> [TyCon] -> [StgTopBinding] -> IO ()
-compileProgram backend tyCons topBinds_simple = runGhc (Just libdir) $ do
+
+compileToObject :: Backend -> UnitId -> ModuleName -> ForeignStubs -> [TyCon] -> [StgTopBinding] -> FilePath -> IO ()
+compileToObject backend unitId modName stubs tyCons topBinds_simple outputName = runGhc (Just libdir) $ do
+  dflags <- getSessionDynFlags
+
+  let ccs       = emptyCollectedCCs :: CollectedCCs
+      hpc       = emptyHpcInfo False
+
+      this_mod  = mkModule unitId modName :: Module
+
+      -- backend
+      (target, link, outAsmFName) = case backend of
+        LLVM  -> (HscLlvm, LlvmOpt, outputName -<.> ".ll")
+        NCG   -> (HscAsm, As False, outputName -<.> ".s")
+
+      beforeStgbinFName = outputName -<.> ".before_unarise.stgbin"
+      afterStgbinFName  = outputName -<.> ".after_unarise.stgbin"
+
+  liftIO $ do
+{-
+    putStrLn "==== Writing before unarise STG ===="
+    encodeFile beforeStgbinFName $ C.cvtModule [] [] "whole program stg before unarise" mainUnitId (mkModuleName ":Main") topBinds_simple NoStubs []
+-}
+    putStrLn "==== Lint STG ===="
+    lintStgTopBindings dflags this_mod True "Manual" topBinds_simple
+
+  us <- liftIO $ mkSplitUniqSupply 'g'
+  --let topBinds = unarise us topBinds_simple
+  let topBinds = topBinds_simple
+{-
+  liftIO $ do
+    putStrLn "==== Writing after unarise STG ===="
+    encodeFile afterStgbinFName $ C.cvtModule [] [] "whole program stg after unarise" mainUnitId (mkModuleName ":Main") topBinds NoStubs []
+-}
+  -- Compile
+  dflags <- getSessionDynFlags
+  l <- setSessionDynFlags $
+    dflags { hscTarget = target, ghcLink = NoLink }
+    `gopt_set`  Opt_KeepSFiles
+    `gopt_set`  Opt_KeepLlvmFiles
+--    `dopt_set`  Opt_D_dump_cmm
+    `dopt_set`  Opt_D_dump_cmm_raw
+--    `dopt_set`  Opt_D_dump_cmm_from_stg
+    `dopt_set`  Opt_D_dump_timings
+    `gopt_set`  Opt_DoStgLinting
+    `gopt_set`  Opt_DoCmmLinting
+
+  env <- getSession
+  liftIO $ do
+    newGen dflags env outAsmFName this_mod stubs tyCons ccs topBinds hpc
+    oneShot env StopLn [(outAsmFName, Just link)]
+  pure ()
+
+
+compileProgram :: Backend -> [String] -> [String] -> [String] -> [String] -> ForeignStubs -> [TyCon] -> [StgTopBinding] -> IO ()
+compileProgram backend incPaths libPaths ldOpts clikeFiles stubs tyCons topBinds_simple = runGhc (Just libdir) $ do
   dflags <- getSessionDynFlags
 
   liftIO $ do
@@ -112,10 +161,15 @@ type CollectedCCs
       LLVM  -> (HscLlvm, LlvmOpt)
       NCG   -> (HscAsm, As False)
 
+  -- WORKAROUND: filter out rts includes
+  let incPathsFixed = [p | p <- incPaths, not (isSuffixOf "rts-1.0/include" p)]
+
   -- Compile & Link
   dflags <- getSessionDynFlags
   pkgs <- setSessionDynFlags $
-    dflags { hscTarget = target, ghcLink = LinkBinary }
+    dflags { hscTarget = target, ghcLink = LinkBinary, libraryPaths = libraryPaths dflags ++ libPaths, ldInputs = ldInputs dflags ++ map Option ldOpts
+      , includePaths = addQuoteInclude (includePaths dflags) incPathsFixed
+      }
     `gopt_set`  Opt_KeepSFiles
     `gopt_set`  Opt_KeepLlvmFiles
 --    `dopt_set`  Opt_D_dump_cmm
@@ -125,7 +179,7 @@ type CollectedCCs
     `gopt_set`  Opt_DoStgLinting
     `gopt_set`  Opt_DoCmmLinting
 
-  let libSet = Set.fromList ["rts", "ghc-prim-cbits", "base-cbits", "integer-gmp-cbits"]
+  let libSet = Set.fromList ["rts"] -- "rts", "ghc-prim-cbits", "base-cbits", "integer-gmp-cbits"]
   dflags <- getSessionDynFlags
   let ignored_pkgs  = [IgnorePackage p |  p <- map (unpackFS . installedUnitIdFS) pkgs, Set.notMember p libSet]
       my_pkgs       = [ExposePackage p (PackageArg p)  (ModRenaming True []) | p <- Set.toList libSet]
@@ -134,78 +188,35 @@ type CollectedCCs
 
   env <- getSession
   liftIO $ do
-    newGen dflags env outFname modl tyCons ccs topBinds hpc
-    oneShot env StopLn [(outFname, Just link){-, ("my_lib.o", Nothing)-}, ("stubs.c", Nothing)]
+    (_, stub_c_exists, _, _) <- newGen dflags env outFname modl stubs tyCons ccs topBinds hpc
+    let stubC = case stub_c_exists of
+          Nothing -> []
+          Just f  -> [(f, Nothing)]
+    oneShot env StopLn $ (outFname, Just link) : [(c, Nothing) | c <- clikeFiles] ++ stubC
   pure ()
 
 -------------
 -- from GHC
 -------------
-cStub :: String
-cStub = unlines
-  [ "#include \"stdio.h\""
-  , "HsInt32 ghczuwrapperZC0ZCbaseZCSystemziPosixziInternalsZCSEEKzuEND(void) {return SEEK_END;}"
-  , "#include \"stdio.h\""
-  , "HsInt32 ghczuwrapperZC1ZCbaseZCSystemziPosixziInternalsZCSEEKzuSET(void) {return SEEK_SET;}"
-  , "#include \"stdio.h\""
-  , "HsInt32 ghczuwrapperZC2ZCbaseZCSystemziPosixziInternalsZCSEEKzuCUR(void) {return SEEK_CUR;}"
-  , "#include \"sys/stat.h\""
-  , "HsInt32 ghczuwrapperZC3ZCbaseZCSystemziPosixziInternalsZCSzuISSOCK(HsWord32 a1) {return S_ISSOCK(a1);}"
-  , "#include \"sys/stat.h\""
-  , "HsInt32 ghczuwrapperZC4ZCbaseZCSystemziPosixziInternalsZCSzuISFIFO(HsWord32 a1) {return S_ISFIFO(a1);}"
-  , "#include \"sys/stat.h\""
-  , "HsInt32 ghczuwrapperZC5ZCbaseZCSystemziPosixziInternalsZCSzuISDIR(HsWord32 a1) {return S_ISDIR(a1);}"
-  , "#include \"sys/stat.h\""
-  , "HsInt32 ghczuwrapperZC6ZCbaseZCSystemziPosixziInternalsZCSzuISBLK(HsWord32 a1) {return S_ISBLK(a1);}"
-  , "#include \"sys/stat.h\""
-  , "HsInt32 ghczuwrapperZC7ZCbaseZCSystemziPosixziInternalsZCSzuISCHR(HsWord32 a1) {return S_ISCHR(a1);}"
-  , "#include \"sys/stat.h\""
-  , "HsInt32 ghczuwrapperZC8ZCbaseZCSystemziPosixziInternalsZCSzuISREG(HsWord32 a1) {return S_ISREG(a1);}"
-  , "#include \"HsBase.h\""
-  , "HsInt32 ghczuwrapperZC9ZCbaseZCSystemziPosixziInternalsZCtcsetattr(HsInt32 a1, HsInt32 a2, struct termios* a3) {return tcsetattr(a1, a2, a3);}"
-  , "#include \"HsBase.h\""
-  , "HsInt32 ghczuwrapperZC10ZCbaseZCSystemziPosixziInternalsZCtcgetattr(HsInt32 a1, struct termios* a2) {return tcgetattr(a1, a2);}"
-  , "#include \"signal.h\""
-  , "HsInt32 ghczuwrapperZC11ZCbaseZCSystemziPosixziInternalsZCsigprocmask(HsInt32 a1, sigset_t* a2, sigset_t* a3) {return sigprocmask(a1, a2, a3);}"
-  , "#include \"signal.h\""
-  , "HsInt32 ghczuwrapperZC12ZCbaseZCSystemziPosixziInternalsZCsigaddset(sigset_t* a1, HsInt32 a2) {return sigaddset(a1, a2);}"
-  , "#include \"signal.h\""
-  , "HsInt32 ghczuwrapperZC13ZCbaseZCSystemziPosixziInternalsZCsigemptyset(sigset_t* a1) {return sigemptyset(a1);}"
-  , "#include \"HsBase.h\""
-  , "HsInt32 ghczuwrapperZC14ZCbaseZCSystemziPosixziInternalsZCmkfifo(void* a1, HsWord32 a2) {return mkfifo(a1, a2);}"
-  , "#include \"HsBase.h\""
-  , "HsInt32 ghczuwrapperZC15ZCbaseZCSystemziPosixziInternalsZCfcntl(HsInt32 a1, HsInt32 a2, struct flock* a3) {return fcntl(a1, a2, a3);}"
-  , "#include \"HsBase.h\""
-  , "HsInt32 ghczuwrapperZC16ZCbaseZCSystemziPosixziInternalsZCfcntl(HsInt32 a1, HsInt32 a2, HsInt64 a3) {return fcntl(a1, a2, a3);}"
-  , "#include \"HsBase.h\""
-  , "HsInt32 ghczuwrapperZC17ZCbaseZCSystemziPosixziInternalsZCfcntl(HsInt32 a1, HsInt32 a2) {return fcntl(a1, a2);}"
-  , "#include \"HsBase.h\""
-  , "HsInt32 ghczuwrapperZC18ZCbaseZCSystemziPosixziInternalsZCutime(void* a1, struct utimbuf* a2) {return utime(a1, a2);}"
-  , "#include \"HsBase.h\""
-  , "HsInt64 ghczuwrapperZC19ZCbaseZCSystemziPosixziInternalsZCwrite(HsInt32 a1, HsWord8* a2, HsWord64 a3) {return write(a1, a2, a3);}"
-  , "#include \"HsBase.h\""
-  , "HsInt64 ghczuwrapperZC20ZCbaseZCSystemziPosixziInternalsZCwrite(HsInt32 a1, HsWord8* a2, HsWord64 a3) {return write(a1, a2, a3);}"
-  , "#include \"HsBase.h\""
-  , "HsInt64 ghczuwrapperZC21ZCbaseZCSystemziPosixziInternalsZCread(HsInt32 a1, HsWord8* a2, HsWord64 a3) {return read(a1, a2, a3);}"
-  , "#include \"HsBase.h\""
-  , "HsInt64 ghczuwrapperZC22ZCbaseZCSystemziPosixziInternalsZCread(HsInt32 a1, HsWord8* a2, HsWord64 a3) {return read(a1, a2, a3);}"
-  , "#include \"unistd.h\""
-  , "HsInt64 ghczuwrapperZC23ZCbaseZCSystemziPosixziInternalsZClseek(HsInt32 a1, HsInt64 a2, HsInt32 a3) {return lseek(a1, a2, a3);}"
-  ]
 
 newGen :: DynFlags
        -> HscEnv
        -> FilePath
        -> Module
+       -> ForeignStubs
        -> [TyCon]
        -> CollectedCCs
        -> [StgTopBinding]
        -> HpcInfo
        -> IO (FilePath, Maybe FilePath, [(ForeignSrcLang, FilePath)], NameSet)
-newGen dflags hsc_env output_filename this_mod data_tycons cost_centre_info stg_binds hpc_info = do
+newGen dflags hsc_env output_filename this_mod foreign_stubs data_tycons cost_centre_info stg_binds hpc_info = do
   -- TODO: add these to parameters
-  let location = modloc
-      foreign_stubs = NoStubs-- empty (text cStub)
+  let location = ModLocation
+        { ml_hs_file  = Just $ output_filename -<.> ".hs"
+        , ml_hi_file  = output_filename -<.> ".hi"
+        , ml_obj_file = output_filename -<.> ".o"
+        , ml_hie_file = output_filename -<.> ".hie"
+        }
       foreign_files = []
       dependencies = [] -- only used for HscC target
 
