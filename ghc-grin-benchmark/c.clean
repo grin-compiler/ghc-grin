@@ -1,0 +1,14 @@
+#reset
+
+set -x -e
+
+#GRINGHCPATH=/home/csaba/haskell/grin-compiler/ghc-grin/ghc-8.11.0.20200215-src/_build/stage1/bin
+
+#rm -fr .stack-root/setup-exe-cache
+#rm -fr .stack-root/setup-exe-src
+
+stack --stack-root `pwd`/.stack-root clean
+
+#rm -fr .stack-work
+
+#time stack --stack-root `pwd`/.stack-root build
