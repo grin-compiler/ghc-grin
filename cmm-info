@@ -1,0 +1,11 @@
+https://gitlab.haskell.org/ghc/ghc/wikis/commentary/compiler/cmm-type
+https://gitlab.haskell.org/ghc/ghc/wikis/commentary/compiler/cmm-syntax
+https://gitlab.haskell.org/ghc/ghc/wikis/commentary/rts/cmm
+
+Stack Traces in Haskell
+ARASH ROUHANI
+https://www.arashrouhani.com/papers/master-thesis.pdf
+
+Low Level Virtual Machine for Glasgow Haskell Compiler
+David Terei
+https://llvm.org/pubs/2009-10-TereiThesis.pdf

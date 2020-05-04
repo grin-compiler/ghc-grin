@@ -1,0 +1,29 @@
+approaches:
+
+# via lambda
+
+  lambda lifting
+  compile closures to lambda pairs
+  generate eval / apply for every function
+
+  ## untyped
+  - syntax directed unboxed primitive values
+    result: insufficient information, because primitive types are called as code pointers
+
+  - boxed primitive values
+    result: it works, but leads to inefficient code
+
+  ## typed
+  - type directed unboxed primitive values
+
+# direct stg to grin
+
+  possible tricks:
+    - generate top level closures from closures + P nodes with the bound variables
+
+Question:
+  - how to extract information if a value is a primitive type or a boxed value?
+
+  TODO:
+    done - use resultIsLevPoly
+    done - export PrimRep for binders to stg-dump

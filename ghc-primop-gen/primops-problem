@@ -1,0 +1,126 @@
+higher order function problem:
+  atomicModifyMutVar#     :: MutVar# s a -> (a -> b) -> State# s -> (# State# s, c #)
+  maskAsyncExceptions#    :: (State# RealWorld -> (# State# RealWorld, a #)) -> (State# RealWorld -> (# State# RealWorld, a #))
+  maskUninterruptible#    :: (State# RealWorld -> (# State# RealWorld, a #)) -> (State# RealWorld -> (# State# RealWorld, a #))
+  unmaskAsyncExceptions#  :: (State# RealWorld -> (# State# RealWorld, a #)) -> (State# RealWorld -> (# State# RealWorld, a #))
+
+  catch#      :: (State# RealWorld -> (# State# RealWorld, a #) ) -> (b -> State# RealWorld -> (# State# RealWorld, a #) ) -> State# RealWorld -> (# State# RealWorld, a #)
+  atomically# :: (State# RealWorld -> (# State# RealWorld, a #) ) -> State# RealWorld -> (# State# RealWorld, a #)
+  catchRetry# :: (State# RealWorld -> (# State# RealWorld, a #) ) -> (State# RealWorld -> (# State# RealWorld, a #) ) -> (State# RealWorld -> (# State# RealWorld, a #) )
+  catchSTM#   :: (State# RealWorld -> (# State# RealWorld, a #) ) -> (b -> State# RealWorld -> (# State# RealWorld, a #) ) -> (State# RealWorld -> (# State# RealWorld, a #) )
+  clearCCS#   :: (State# s -> (# State# s, a #)) -> State# s -> (# State# s, a #)
+  mkWeak#     :: o -> b -> (State# RealWorld -> (# State# RealWorld, c #)) -> State# RealWorld -> (# State# RealWorld, Weak# b #)
+
+QUESTION:
+  how to handle higher order primops? (external defs)
+  how to track data-flow accurately? (use site specialization)
+  should we handle GHC higher order primops specially or sould we support higher order functions in general?
+  can the wrapper semantics be replaced with begin/end first order commands?
+  how do related project handle exception primitives?
+    - JHC ; ioError only
+    - LHC ; 
+    - UHC ; Exceptional GRIN
+    - HRC ; generates code which use HRR runtime i.e. ihrExceptionHandlerGet, ihrExceptionExnGet
+
+NOTES:
+  These primops should be modele according the meaning and not the type signature.
+  Each higher order primop acts as a wrapper function or does callback registration.
+
+vector primops (not supported):
+  broadcast#
+  pack#
+  unpack#
+  insert#
+  plus#
+  minus#
+  times#
+  divide#
+  quot#
+  rem#
+  negate#
+  indexOffAddr#
+  readOffAddr#
+  writeOffAddr#
+  indexArrayAs#
+  readArrayAs#
+  writeArrayAs#
+  indexOffAddrAs#
+  readOffAddrAs#
+  writeOffAddrAs#
+
+IDEA:
+  express problematic GHC primops in GRIN as code (as implementation)
+  Q: what would it look like for each problematic primop?
+  A: check how GHC implements them
+
+Higher-order details:
+
+  # simple identity wrapper with monomorph input ; first order output
+  atomically#             :: (State# RealWorld -> (# State# RealWorld, a #))
+                          -> State# RealWorld
+                          -> (# State# RealWorld, a #)
+
+  # simple identity wrapper with monomorph input ; higher order output
+  maskAsyncExceptions#    :: (State# RealWorld -> (# State# RealWorld, a #))
+                          -> (State# RealWorld -> (# State# RealWorld, a #))
+
+  maskUninterruptible#    :: (State# RealWorld -> (# State# RealWorld, a #))
+                          -> (State# RealWorld -> (# State# RealWorld, a #))
+
+  unmaskAsyncExceptions#  :: (State# RealWorld -> (# State# RealWorld, a #))
+                          -> (State# RealWorld -> (# State# RealWorld, a #))
+
+  catchRetry#             :: (State# RealWorld -> (# State# RealWorld, a #))
+                          -> (State# RealWorld -> (# State# RealWorld, a #))
+                          -> (State# RealWorld -> (# State# RealWorld, a #))
+
+  # simple identity wrapper with parametric input ; first order output
+  clearCCS#               :: (State# s -> (# State# s, a #))
+                          -> State# s
+                          -> (# State# s, a #)
+
+  # callback registration
+  mkWeak#   :: o
+            -> b
+            -> (State# RealWorld -> (# State# RealWorld, c #))
+            -> State# RealWorld
+            -> (# State# RealWorld, Weak# b #)
+
+  # invalid / hacky type signature
+  atomicModifyMutVar#     :: MutVar# s a -> (a -> b) -> State# s -> (# State# s, c #)
+
+  # first order output ; parameter comes from argument function implicitly through raise
+  catch#    :: (State# RealWorld -> (# State# RealWorld, a #))
+            -> (b -> State# RealWorld -> (# State# RealWorld, a #))
+            -> State# RealWorld
+            -> (# State# RealWorld, a #)
+
+  # higher order output ; parameter comes from argument function implicitly through raise
+  catchSTM# :: (State# RealWorld -> (# State# RealWorld, a #))
+            -> (b -> State# RealWorld -> (# State# RealWorld, a #))
+            -> (State# RealWorld -> (# State# RealWorld, a #))
+
+IDEA: Temporal hack for
+  identity wrappers ; replace the wrapper primop with its argument ; ok for:
+    done - atomically#
+    done - maskAsyncExceptions#
+    done - maskUninterruptible#
+    done - unmaskAsyncExceptions#
+    done catchRetry#
+    done - clearCCS#
+
+  callback registration ; ignore the callback
+    done - mkWeak#
+
+  implement in grin
+    atomicModifyMutVar#
+      mv f s =
+        lock mv
+        x0 <- readMutVar mv
+        x1 <- apply f x0
+        writeMutVar mv x1
+        unlock mv
+
+TO SOLVE:
+  done - catch#
+  done - catchSTM#

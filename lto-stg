@@ -1,0 +1,21 @@
+pipeline:
+  - generate facts per module ; append to file
+  - run simple DFE ; read back the result (per module?)
+  - generate code per module
+
+- compiler app:
+    - compiles a single stg module
+    - leaves out dead top level bindings and TyCons
+
+- driver app:
+    - collects facts from stg modules
+    - executes DFE DL
+    - runs multiple compiler apps
+    - links the whole app
+
+#1 Stage: no DFE
+  - compile modules
+  - link to app
+
+#2 Stage
+  - 

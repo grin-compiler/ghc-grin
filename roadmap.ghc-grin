@@ -1,0 +1,57 @@
+# MVP
+
+## Feature Cut
+  - no exceptions
+  - no threads
+  - ignore / workaround problematic primops (~10 primops)
+  - no GC
+  - no weak pointers
+  - no stable pointers
+  - no STM
+
+# Goals
+  - end-to-end compiler pipeline
+  - analyze / optimize programs with non problematic primops
+  - report unsupported primops and features
+  - codegen simple primops
+  - codegen and link simple FFI
+
+
+milestone todo - docs
+  - pateron video
+  - grin project page
+  - patreon project page
+
+milestone todo - programming
+  - finalize ghc/grin pipeline
+  - linking phase
+  - FFI extension
+  - ghc/grin test framework
+
+
+small step programming TODO:
+  GHC semantics:
+    done - what is dynamic target? ; it's a jump to a runtime known Addr (indirect call)
+    done - is ByteArray treated specially in GHC FFI codegen? YES, see: getFCallArgs
+    - study Foreign Cmm codegen: StgCmmForeign.hs
+    - how are coercions related to data representation?
+  ghc-primop:
+    done - generate primop prelude for Lambda
+    done - delete state parameter from prim types i.e. MutVar s a
+    done - generate primop prelude for GRIN
+  STG -> Lambda:
+    done - add externals for primops calls
+    done - add externals for FFI calls
+    done - validate if FFI calls use simple types only
+    done - do not report externals as unknown
+    done - eliminate wrapper primops (i.e. atomicXXX)
+    done - allow ByteArray and MutableByteArray arguments as special case in FFI
+    done - generate code for tagToEnum / add enough type info
+    done - strip exetrnals for the whole program
+    - group by kinds of used primiops (simple type / parametric / unsupported)
+  Lambda -> GRIN:
+    - map Ty-s properly
+    - add missing types to GRIN
+    - add Addr type
+    - add label as Addr constant
+    - linker phase

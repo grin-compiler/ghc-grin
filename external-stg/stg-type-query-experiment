@@ -1,0 +1,62 @@
+[OK]  isUnboxedTupleCon   - worked unconditionally for all DataCons that external stg deals with
+
+      isUnboxedTupleType
+
+
+experiments:
+  OK - no type, just DC isUTup, type PP
+  OK - no type, just datacon, type PP ; this validates the full DataCon conversion => [DATACON CONVERSION IS ALL OK]
+  NO - isUnboxedTupleType test for all types in Stg AST
+    A: no, it does not work for leviti polymorphic type
+  NO - isTypeLevPoly + isUnboxedTupleType
+    A: isUnboxedTupleType still fails
+  OK - no StgApp ty + isTypeLevPoly + isUnboxedTupleType + cvtBinderIdClosureParam, data con, type PP
+  OK - full type (no StgApp ty), data con, type PP
+  NO - only StgApp ty (original) + isTypeLevPoly ; check if App result type is valid at core to stg conversion step
+    A: core to stg res_ty is already messed up, use core app expre type instead
+    it is possible that it is
+      NO - not valid from the begining ; pass core's ret_ty promptly + add unboxed sum checking to cvtType
+      OK got examples - catch exceptions ; dump the types ; store original fun type + arg types + result type ; GOAL: collect example cases of failure
+      - stg optimization messes it up ; cse or unarise
+  OK - use original core app exp type in StgApp result type + igonre StgApp added by stg optimizations cse/unarise
+  OK - use core App result type + cse + unarise + with unboxed sum types (no type unarisation)
+  - do not support unboxed sums ; check if there is any in the base
+  - use core App result type + cse + unarise + unarise unboxes sum types
+
+
+  - export stg before cse and unarisation
+  - disable stg cse
+
+StgApp thoughs:
+  - StgApp [] ; variable, does not force, result type is the variable type
+  - StgApp args are always single values
+  - StgApp as scrutinee ; case binder decides the type
+  - StgApp as 
+
+  to consider
+    - is case scrutinee (app in case)
+    - is saturated
+    - is variable
+
+2 APPROACH to extract fun app rep type:
+  - from core type (PREFERRED)
+  - from stg ast
+
+
+NOTE:
+  ubxSumRepType :: [[PrimRep]] -> [SlotTy]
+
+  unbox tuple can not be thunk
+
+TODO:
+  external stg pretty printer
+  include pretty printed core in stgbin
+  include the origin of stgapp (Var/Coercion/App)
+
+QUESTIONS:
+  Is all core App mapped to StgApp?
+  A: yes
+
+  Is StgApp strict?
+
+  Can an StgApp create thunk?

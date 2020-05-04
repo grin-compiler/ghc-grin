@@ -1,0 +1,29 @@
+stgin -> lambda -> lambda2 -> ghc/stg -> ghc codegen
+
+requirements:
+  - data con information must be preservered: tag, names, type rep
+
+TODO:
+  extend lambda to store this info OR use these info from stgbin directly
+
+NOTE:
+  data con names are globally unique
+
+  I have to understand how codegen works for data cons.
+  All the relevant information needs to be reconstructed and passed to stg/cmm codegen.
+
+TODO:
+  top string literals
+    - it is static data
+    - it is not callable code
+    - does not generate PNodes
+
+  data defintions
+    - data constructior defintion order specifies the tag value
+    - some primpos relies on this convention
+
+  data cons
+    - always called saturated
+    - returns data constructor pointer
+    - does not generate PNodes
+

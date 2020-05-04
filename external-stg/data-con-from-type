@@ -1,0 +1,7 @@
+-- | Attempts to tease a type apart into a type constructor and the application
+-- of a number of arguments to that constructor
+splitTyConApp_maybe :: HasDebugCallStack => Type -> Maybe (TyCon, [Type])
+
+-- | As 'tyConDataCons_maybe', but returns the empty list of constructors if no
+-- constructors could be found
+tyConDataCons :: TyCon -> [DataCon]

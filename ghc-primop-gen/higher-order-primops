@@ -1,0 +1,63 @@
+// pass primop argument to higher-order function
+"clearCCS#" :: (State# s -> (# State# s, a #))
+            -> State# s
+            -> (# State# s, a #)
+
+// pass primop argument to higher-order function
+"atomically#" :: (State# RealWorld -> (# State# RealWorld, a #) )
+              -> State# RealWorld
+              -> (# State# RealWorld, a #)
+
+// the function just gets called with the proper state/realworld token value
+// the second function parameter is collected from raise and raiseIO values
+"catch#"  :: (State# RealWorld -> (# State# RealWorld, a #) )
+          -> (b -> State# RealWorld -> (# State# RealWorld, a #) )
+          -> State# RealWorld
+          -> (# State# RealWorld, a #)
+
+// each function gets called with the proper state/realworld token value
+"catchRetry#" :: (State# RealWorld -> (# State# RealWorld, a #) )
+              -> (State# RealWorld -> (# State# RealWorld, a #) )
+              -> State# RealWorld
+              -> (# State# RealWorld, a #)
+
+// the function just gets called with the proper state/realworld token value
+// the second function parameter is collected from raise and raiseIO values
+"catchSTM#" :: (State# RealWorld -> (# State# RealWorld, a #) )
+            -> (b -> State# RealWorld -> (# State# RealWorld, a #) )
+            -> State# RealWorld
+            -> (# State# RealWorld, a #)
+
+// the primop returns is its single function argument
+"maskAsyncExceptions#"  :: (State# RealWorld -> (# State# RealWorld, a #))
+                        -> State# RealWorld
+                        -> (# State# RealWorld, a #)
+
+// the primop returns is its single function argument
+"maskUninterruptible#"  :: (State# RealWorld -> (# State# RealWorld, a #))
+                        -> State# RealWorld
+                        -> (# State# RealWorld, a #)
+
+// the primop returns is its single function argument
+"unmaskAsyncExceptions#"  :: (State# RealWorld -> (# State# RealWorld, a #))
+                          -> State# RealWorld
+                          -> (# State# RealWorld, a #)
+
+
+// the primop returns a function ; the primop is the origin of that function, it also should be treated as a primop function
+"finalizeWeak#" :: Weak# a
+                -> State# RealWorld
+                -> (# State# RealWorld, Int#, (State# RealWorld -> (# State# RealWorld, b #) ) #)
+
+// gets parameter from mutvar content, the result is function result value
+"atomicModifyMutVar#" :: MutVar# s a
+                      -> (a -> b)
+                      -> State# s
+                      -> (# State# s, c #)
+
+// the function just gets called with the proper state/realworld token value
+"mkWeak#" :: o
+          -> b
+          -> (State# RealWorld -> (# State# RealWorld, c #))
+          -> State# RealWorld
+          -> (# State# RealWorld, Weak# b #)
