@@ -1,7 +1,7 @@
 module Stg.Util
     ( -- * Convenient IO
-      readDump, readDump',
-      readDumpInfo
+      readStgbin, readStgbin',
+      readStgbinInfo
     ) where
 
 import Prelude hiding (readFile)
@@ -13,11 +13,11 @@ import Data.Binary.Get
 import Stg.Syntax
 import Stg.Reconstruct
 
-readDump' :: FilePath -> IO SModule
-readDump' fname = decode <$> BSL.readFile fname
+readStgbin' :: FilePath -> IO SModule
+readStgbin' fname = decode <$> BSL.readFile fname
 
-readDump :: FilePath -> IO Module
-readDump fname = reconModule <$> readDump' fname
+readStgbin :: FilePath -> IO Module
+readStgbin fname = reconModule <$> readStgbin' fname
 
-readDumpInfo :: FilePath -> IO (Name, UnitId, ModuleName, [(UnitId, [ModuleName])])
-readDumpInfo fname = decode <$> BSL.readFile fname
+readStgbinInfo :: FilePath -> IO (Name, UnitId, ModuleName, ForeignStubs, Bool, [(UnitId, [ModuleName])])
+readStgbinInfo fname = decode <$> BSL.readFile fname

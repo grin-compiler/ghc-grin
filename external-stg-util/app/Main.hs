@@ -21,6 +21,7 @@ modes = subparser
     (  mode "show" showMode (progDesc "print Stg")
     <> mode "show-prep-core" showPCoreMode (progDesc "print prep Core")
     <> mode "show-core" showCoreMode (progDesc "print Core")
+    <> mode "show-ghc-stg" showGHCStgMode (progDesc "print GHC Stg")
     )
   where
     mode :: String -> Parser a -> InfoMod a -> Mod CommandFields a
@@ -34,7 +35,7 @@ modes = subparser
         run <$> dumpFile
       where
         run fname = do
-            dump <- Stg.Util.readDump fname
+            dump <- Stg.Util.readStgbin fname
             print $ pprModule dump
 
     showPCoreMode :: Parser (IO ())
@@ -42,7 +43,7 @@ modes = subparser
         run <$> dumpFile
       where
         run fname = do
-          dump <- Stg.Util.readDump fname
+          dump <- Stg.Util.readStgbin fname
           putStrLn . BS8.unpack . modulePrepCoreSrc $ dump
 
     showCoreMode :: Parser (IO ())
@@ -50,8 +51,16 @@ modes = subparser
         run <$> dumpFile
       where
         run fname = do
-          dump <- Stg.Util.readDump fname
+          dump <- Stg.Util.readStgbin fname
           putStrLn . BS8.unpack . moduleCoreSrc $ dump
+
+    showGHCStgMode :: Parser (IO ())
+    showGHCStgMode =
+        run <$> dumpFile
+      where
+        run fname = do
+          dump <- Stg.Util.readStgbin fname
+          putStrLn . BS8.unpack . moduleStgSrc $ dump
 
 main :: IO ()
 main = join $ execParser $ info (helper <*> modes) mempty

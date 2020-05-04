@@ -16,12 +16,16 @@ instance Hashable BinderId where
 instance Hashable DataConId where
     hashWithSalt salt (DataConId (Unique c i)) = salt `hashWithSalt` c `hashWithSalt` i
 
+instance Hashable TyConId where
+    hashWithSalt salt (TyConId (Unique c i)) = salt `hashWithSalt` c `hashWithSalt` i
+
 data BinderMap
   = BinderMap
   { bmUnitId      :: UnitId
   , bmModule      :: ModuleName
   , bmIdMap       :: HM.HashMap BinderId Binder
   , bmDataConMap  :: HM.HashMap DataConId DataCon
+  , bmTyConMap    :: HM.HashMap TyConId TyCon
   }
 
 -- Id handling
@@ -50,6 +54,14 @@ getDataCon BinderMap{..} bid = case HM.lookup bid bmDataConMap of
   Nothing -> error $ "unknown data con "++ show bid ++ ":\nin scope:\n" ++
               unlines (map (\(bid',b) -> show bid' ++ "\t" ++ show b) (HM.toList bmDataConMap))
 
+-- TyCon handling
+getTyCon :: BinderMap -> TyConId -> TyCon
+getTyCon BinderMap{..} i = case HM.lookup i bmTyConMap of
+  Just b  -> b
+  Nothing -> error $ "unknown ty con "++ show i ++ ":\nin scope:\n" ++
+              unlines (map (\(i',b) -> show i' ++ "\t" ++ show b) (HM.toList bmTyConMap))
+
+
 
 -- "recon" == "reconstruct"
 
@@ -62,11 +74,10 @@ reconLocalBinder BinderMap{..} SBinder{..} = -- HINT: local binders only
   , binderTypeSig     = sbinderTypeSig
   , binderUnitId      = bmUnitId
   , binderModule      = bmModule
-  , binderIsTop       = False
-  , binderIsExported  = False
+  , binderScope       = LocalScope
   }
 
-reconDataCon :: UnitId -> ModuleName -> AlgTyCon -> SDataCon -> DataCon
+reconDataCon :: UnitId -> ModuleName -> TyCon -> SDataCon -> DataCon
 reconDataCon u m tc SDataCon{..} = DataCon
   { dcName    = sdcName
   , dcId      = sdcId
@@ -76,65 +87,64 @@ reconDataCon u m tc SDataCon{..} = DataCon
   , dcTyCon   = tc
   }
 
-reconAlgTyCon :: UnitId -> ModuleName -> SAlgTyCon -> AlgTyCon
-reconAlgTyCon u m AlgTyCon{..} = tc where
-  tc = AlgTyCon
-    { tcName      = tcName
-    , tcDataCons  = map (reconDataCon u m tc) tcDataCons
+reconTyCon :: UnitId -> ModuleName -> STyCon -> TyCon
+reconTyCon u m STyCon{..} = tc where
+  tc = TyCon
+    { tcName      = stcName
+    , tcId        = stcId
+    , tcUnitId    = u
+    , tcModule    = m
+    , tcDataCons  = map (reconDataCon u m tc) stcDataCons
     }
 
 reconModule :: SModule -> Module
 reconModule Module{..} = mod where
   mod = Module
-    { modulePhase           = modulePhase
-    , moduleUnitId          = moduleUnitId
-    , moduleName            = moduleName
-    , moduleDependency      = moduleDependency
-    , moduleExternalTopIds  = exts
-    , moduleAlgTyCons       = algs
-    , moduleExported        = moduleExported
-    , moduleTopBindings     = binds
-    , moduleForeignStubs    = moduleForeignStubs
-    , moduleForeignFiles    = moduleForeignFiles
-    , moduleCoreSrc         = moduleCoreSrc
-    , modulePrepCoreSrc     = modulePrepCoreSrc
+    { modulePhase               = modulePhase
+    , moduleUnitId              = moduleUnitId
+    , moduleName                = moduleName
+    , moduleForeignStubs        = moduleForeignStubs
+    , moduleHasForeignExported  = moduleHasForeignExported
+    , moduleDependency          = moduleDependency
+    , moduleExternalTopIds      = exts
+    , moduleTyCons              = tyConList
+    , moduleTopBindings         = binds
+    , moduleForeignFiles        = moduleForeignFiles
+    , moduleCoreSrc             = moduleCoreSrc
+    , modulePrepCoreSrc         = modulePrepCoreSrc
+    , moduleStgSrc              = moduleStgSrc
     }
 
-  bm    = BinderMap
-          { bmUnitId      = moduleUnitId
-          , bmModule      = moduleName
-          , bmIdMap       = HM.fromList [(binderId b, b) | b <- tops ++ concatMap snd (concatMap snd exts)]
-          , bmDataConMap  = HM.fromList [(dcId dc, dc) | dc <- cons]
-          }
+  bm = BinderMap
+       { bmUnitId      = moduleUnitId
+       , bmModule      = moduleName
+       , bmIdMap       = HM.fromList [(binderId b, b) | b <- tops ++ concatMap snd (concatMap snd exts)]
+       , bmDataConMap  = HM.fromList [(dcId dc, dc) | dc <- cons]
+       , bmTyConMap    = HM.fromList [(tcId tc, tc) | tc <- tyCons]
+       }
+
+  tyCons :: [TyCon]
+  tyCons = concatMap (concatMap snd . snd) tyConList
 
   cons :: [DataCon]
-  cons  = [ dc
-          | (u, ml) <- algs
-          , (m, algTyCons) <- ml
-          , tc <- algTyCons
-          , dc <- tcDataCons tc
-          ]
+  cons = concatMap tcDataCons tyCons
 
-  algs :: [(UnitId, [(ModuleName, [AlgTyCon])])]
-  algs = [(u, [(m, map (reconAlgTyCon u m) l) | (m, l) <- ml]) | (u, ml) <- moduleAlgTyCons]
+  tyConList :: [(UnitId, [(ModuleName, [TyCon])])]
+  tyConList = [(u, [(m, map (reconTyCon u m) l) | (m, l) <- ml]) | (u, ml) <- moduleTyCons]
 
   binds :: [TopBinding]
   binds = map reconTopBinding moduleTopBindings
 
-  modNameMap = HM.fromList [(b, (u, m)) | (u, ml) <- moduleExported, (m, l) <- ml, b <- l]
-
   tops :: [Binder]
-  tops  = [ mkTopBinder unitId modName exported b
+  tops  = [ mkTopBinder moduleUnitId moduleName sbinderScope b
           | b@SBinder{..} <- concatMap topBindings moduleTopBindings
-          , let (unitId, modName) = HM.lookupDefault (moduleUnitId, moduleName) sbinderId modNameMap
-          , let exported          = HM.member sbinderId modNameMap
           ]
 
   exts :: [(UnitId, [(ModuleName, [Binder])])]
-  exts = [(u, [(m, map (mkTopBinder u m True) l) | (m, l) <- ml]) | (u, ml) <- moduleExternalTopIds]
+  exts = [(u, [(m, map (mkTopBinder u m HaskellExported) l) | (m, l) <- ml]) | (u, ml) <- moduleExternalTopIds]
 
-  mkTopBinder :: UnitId -> ModuleName -> Bool -> SBinder -> Binder
-  mkTopBinder u m exported SBinder{..} =
+  mkTopBinder :: UnitId -> ModuleName -> Scope -> SBinder -> Binder
+  mkTopBinder u m scope SBinder{..} =
     Binder
     { binderName        = sbinderName
     , binderId          = sbinderId
@@ -142,8 +152,7 @@ reconModule Module{..} = mod where
     , binderTypeSig     = sbinderTypeSig
     , binderUnitId      = u
     , binderModule      = m
-    , binderIsTop       = True
-    , binderIsExported  = exported
+    , binderScope       = scope
     }
 
   reconTopBinder :: SBinder -> Binder
@@ -155,7 +164,7 @@ reconModule Module{..} = mod where
     StgTopLifted (StgNonRec b r)  -> StgTopLifted $ StgNonRec (reconTopBinder b) (reconRhs bm r)
     StgTopLifted (StgRec bs)      -> StgTopLifted $ StgRec [(reconTopBinder b, reconRhs bm r) | (b,r) <- bs]
 
-topBindings :: TopBinding' idBnd idOcc dcOcc -> [idBnd]
+topBindings :: TopBinding' idBnd idOcc dcOcc tcOcc -> [idBnd]
 topBindings = \case
   StgTopLifted (StgNonRec b _)  -> [b]
   StgTopLifted (StgRec bs)      -> map fst bs
@@ -164,16 +173,16 @@ topBindings = \case
 reconExpr :: BinderMap -> SExpr -> Expr
 reconExpr bm = \case
   StgLit l              -> StgLit l
-  StgCase x b alts      -> let b'   = reconLocalBinder bm b
+  StgCase x b at alts   -> let b'   = reconLocalBinder bm b
                                bm'  = insertBinder b' bm
-                           in StgCase (reconExpr bm x) b' (map (reconAlt bm') alts)
+                           in StgCase (reconExpr bm x) b' (reconAltType bm at) (map (reconAlt bm') alts)
   StgApp f args t s     -> StgApp (getBinder bm f) (map (reconArg bm) args) t s
-  StgOpApp op args t tn -> StgOpApp op (map (reconArg bm) args) t tn
+  StgOpApp op args t tc -> StgOpApp op (map (reconArg bm) args) t (getTyCon bm <$> tc)
   StgConApp dc args t   -> StgConApp (getDataCon bm dc) (map (reconArg bm) args) t
   StgLet b e            -> let (bm', b') = reconBinding bm b
                            in StgLet b' (reconExpr bm' e)
   StgLetNoEscape b e    -> let (bm', b') = reconBinding bm b
-                           in StgLet b' (reconExpr bm' e)
+                           in StgLetNoEscape b' (reconExpr bm' e)
 
 reconBinding :: BinderMap -> SBinding -> (BinderMap, Binding)
 reconBinding bm = \case
@@ -207,3 +216,10 @@ reconAltCon bm = \case
   AltDataCon dc -> AltDataCon $ getDataCon bm dc
   AltLit l      -> AltLit l
   AltDefault    -> AltDefault
+
+reconAltType :: BinderMap -> SAltType -> AltType
+reconAltType bm = \case
+  PolyAlt       -> PolyAlt
+  MultiValAlt i -> MultiValAlt i
+  PrimAlt r     -> PrimAlt r
+  AlgAlt tc     -> AlgAlt $ getTyCon bm tc

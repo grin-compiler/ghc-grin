@@ -68,12 +68,16 @@ data PrimElemRep
 -}
 
 data Type
-  = SingleValue     PrimRep
-  | UnboxedTuple    [PrimRep]
+  = SingleValue     !PrimRep
+  | UnboxedTuple    ![PrimRep]
   | PolymorphicRep
   deriving (Eq, Ord, Generic, Show)
 
 -- data con related
+
+newtype TyConId
+  = TyConId Unique
+  deriving (Eq, Ord, Binary, Show)
 
 newtype DataConId
   = DataConId Unique
@@ -82,14 +86,22 @@ newtype DataConId
 -- raw data con
 data DataConRep
   = AlgDataCon      ![PrimRep]
-  | UnboxedTupleCon
+  | UnboxedTupleCon !Int
   deriving (Eq, Ord, Generic, Show)
 
 data SDataCon
   = SDataCon
   { sdcName   :: !Name
   , sdcId     :: !DataConId
-  , sdcRep    :: DataConRep
+  , sdcRep    :: !DataConRep
+  }
+  deriving (Eq, Ord, Generic, Show)
+
+data STyCon
+  = STyCon
+  { stcName     :: !Name
+  , stcId       :: !TyConId
+  , stcDataCons :: ![SDataCon]
   }
   deriving (Eq, Ord, Generic, Show)
 
@@ -101,14 +113,17 @@ data DataCon
   , dcUnitId :: !UnitId
   , dcModule :: !ModuleName
   , dcRep    :: !DataConRep
-  , dcTyCon  :: !AlgTyCon
+  , dcTyCon  :: !TyCon
   }
   deriving (Eq, Ord, Generic, Show)
 
-data AlgTyCon' dcBnd
-  = AlgTyCon
+data TyCon
+  = TyCon
   { tcName      :: !Name
-  , tcDataCons  :: ![dcBnd]
+  , tcId        :: !TyConId
+  , tcUnitId    :: !UnitId
+  , tcModule    :: !ModuleName
+  , tcDataCons  :: ![DataCon]
   }
   deriving (Eq, Ord, Generic, Show)
 
@@ -132,71 +147,77 @@ data SBinder
     , sbinderId       :: !BinderId
     , sbinderType     :: !Type
     , sbinderTypeSig  :: !Name
+    , sbinderScope    :: !Scope
     }
   deriving (Eq, Ord, Generic, Show)
 
 data Binder
   = Binder
-    { binderName        :: !Name
-    , binderId          :: !BinderId
-    , binderType        :: !Type
-    , binderTypeSig     :: !Name
-    , binderUnitId      :: !UnitId
-    , binderModule      :: !ModuleName
-    , binderIsTop       :: !Bool
-    , binderIsExported  :: !Bool
+    { binderName      :: !Name
+    , binderId        :: !BinderId
+    , binderType      :: !Type
+    , binderTypeSig   :: !Name
+    , binderScope     :: !Scope
+    , binderUnitId    :: !UnitId
+    , binderModule    :: !ModuleName
     }
   deriving (Eq, Ord, Generic, Show)
 
+data Scope
+  = LocalScope      -- ^ visible for expression body
+  | GlobalScope     -- ^ visible for a single haskell module
+  | HaskellExported -- ^ visible for every haskell module
+  | ForeignExported -- ^ visible for foreign libraries
+  deriving (Eq, Ord, Generic, Show)
+
 binderUniqueName :: Binder -> Name
-binderUniqueName Binder{..}
-  | binderIsExported  = getUnitId binderUnitId <> "_" <> getModuleName binderModule <> "." <> binderName
-  | binderIsTop       = getUnitId binderUnitId <> "_" <> getModuleName binderModule <> "." <> binderName <> BS8.pack ('.' : show u)
-  | otherwise         = binderName <> BS8.pack ('.' : show u)
-  where BinderId u = binderId
+binderUniqueName Binder{..} = case binderScope of
+  LocalScope  -> binderName <> BS8.pack ('.' : show u)
+  GlobalScope -> getUnitId binderUnitId <> "_" <> getModuleName binderModule <> "." <> binderName <> BS8.pack ('.' : show u)
+  _           -> getUnitId binderUnitId <> "_" <> getModuleName binderModule <> "." <> binderName
+  where
+    BinderId u = binderId
 
 data LitNumType
-  = LitNumInteger -- ^ @Integer@ (see Note [Integer literals])
-  | LitNumNatural -- ^ @Natural@ (see Note [Natural literals])
-  | LitNumInt     -- ^ @Int#@ - according to target machine
+  = LitNumInt     -- ^ @Int#@ - according to target machine
   | LitNumInt64   -- ^ @Int64#@ - exactly 64 bits
   | LitNumWord    -- ^ @Word#@ - according to target machine
   | LitNumWord64  -- ^ @Word64#@ - exactly 64 bits
   deriving (Eq, Ord, Generic, Show)
 
 data LabelSpec
-  = FunctionLabel (Maybe Int) -- only for stdcall convention
+  = FunctionLabel !(Maybe Int) -- only for stdcall convention
   | DataLabel
   deriving (Eq, Ord, Generic, Show)
 
 data Lit
-  = LitChar     Char
-  | LitString   BS.ByteString
+  = LitChar     !Char
+  | LitString   !BS.ByteString
   | LitNullAddr
-  | LitFloat    Rational
-  | LitDouble   Rational
-  | LitLabel    BS8.ByteString LabelSpec
-  | LitNumber   LitNumType Integer
+  | LitFloat    !Rational
+  | LitDouble   !Rational
+  | LitLabel    !BS8.ByteString LabelSpec
+  | LitNumber   !LitNumType !Integer
   deriving (Eq, Ord, Generic, Show)
 
 -- | A top-level binding.
-data TopBinding' idBnd idOcc dcOcc
+data TopBinding' idBnd idOcc dcOcc tcOcc
 -- See Note [CoreSyn top-level string literals]
-  = StgTopLifted    (Binding' idBnd idOcc dcOcc)
+  = StgTopLifted    (Binding' idBnd idOcc dcOcc tcOcc)
   | StgTopStringLit idBnd BS.ByteString
   deriving (Eq, Ord, Generic, Show)
 
-data Binding' idBnd idOcc dcOcc
-  = StgNonRec idBnd (Rhs' idBnd idOcc dcOcc)
-  | StgRec    [(idBnd, Rhs' idBnd idOcc dcOcc)]
+data Binding' idBnd idOcc dcOcc tcOcc
+  = StgNonRec idBnd (Rhs' idBnd idOcc dcOcc tcOcc)
+  | StgRec    [(idBnd, Rhs' idBnd idOcc dcOcc tcOcc)]
   deriving (Eq, Ord, Generic, Show)
 
 data Arg' idOcc
   = StgVarArg  idOcc
-  | StgLitArg  Lit
+  | StgLitArg  !Lit
   deriving (Eq, Ord, Generic, Show)
 
-data Expr' idBnd idOcc dcOcc
+data Expr' idBnd idOcc dcOcc tcOcc
   = StgApp
         idOcc         -- function
         [Arg' idOcc]  -- arguments; may be empty
@@ -214,52 +235,58 @@ data Expr' idBnd idOcc dcOcc
   | StgOpApp    StgOp         -- Primitive op or foreign call
                 [Arg' idOcc]  -- Saturated.
                 Type          -- result type
-                (Maybe Name)  -- result type name (required for tagToEnum wrapper generator)
+                (Maybe tcOcc) -- result type name (required for tagToEnum wrapper generator)
 
   | StgCase
-        (Expr' idBnd idOcc dcOcc)     -- the thing to examine
+        (Expr' idBnd idOcc dcOcc tcOcc)     -- the thing to examine
 
-        idBnd                         -- binds the result of evaluating the scrutinee
-
-        [Alt' idBnd idOcc dcOcc]      -- The DEFAULT case is always *first*
-                                      -- if it is there at all
+        idBnd                               -- binds the result of evaluating the scrutinee
+        (AltType' tcOcc)
+        [Alt' idBnd idOcc dcOcc tcOcc]      -- The DEFAULT case is always *first*
+                                            -- if it is there at all
 
   | StgLet
-        (Binding' idBnd idOcc dcOcc)  -- right hand sides (see below)
-        (Expr' idBnd idOcc dcOcc)     -- body
+        (Binding' idBnd idOcc dcOcc tcOcc)  -- right hand sides (see below)
+        (Expr' idBnd idOcc dcOcc tcOcc)     -- body
 
   | StgLetNoEscape
-        (Binding' idBnd idOcc dcOcc)  -- right hand sides (see below)
-        (Expr' idBnd idOcc dcOcc)     -- body
+        (Binding' idBnd idOcc dcOcc tcOcc)  -- right hand sides (see below)
+        (Expr' idBnd idOcc dcOcc tcOcc)     -- body
   deriving (Eq, Ord, Generic, Show)
 
+data AltType' tcOcc
+  = PolyAlt
+  | MultiValAlt !Int
+  | PrimAlt     !PrimRep
+  | AlgAlt      tcOcc
+  deriving (Eq, Ord, Generic, Show)
 
 data UpdateFlag = ReEntrant | Updatable | SingleEntry
   deriving (Eq, Ord, Generic, Show)
 
-data Rhs' idBnd idOcc dcOcc
+data Rhs' idBnd idOcc dcOcc tcOcc
   = StgRhsClosure
         !UpdateFlag               -- ReEntrant | Updatable | SingleEntry
         [idBnd]                   -- arguments; if empty, then not a function;
                                   -- as above, order is important.
-        (Expr' idBnd idOcc dcOcc) -- body
+        (Expr' idBnd idOcc dcOcc tcOcc) -- body
 
   | StgRhsCon
         dcOcc  -- DataCon
         [Arg' idOcc]        -- Args
   deriving (Eq, Ord, Generic, Show)
 
-data Alt' idBnd idOcc dcOcc
+data Alt' idBnd idOcc dcOcc tcOcc
   = Alt
     { altCon     :: !(AltCon' dcOcc)
     , altBinders :: [idBnd]
-    , altRHS     :: Expr' idBnd idOcc dcOcc
+    , altRHS     :: Expr' idBnd idOcc dcOcc tcOcc
     }
   deriving (Eq, Ord, Generic, Show)
 
 data AltCon' dcOcc
   = AltDataCon  dcOcc
-  | AltLit      Lit
+  | AltLit      !Lit
   | AltDefault
   deriving (Eq, Ord, Generic, Show)
 
@@ -269,26 +296,31 @@ data Safety = PlaySafe | PlayInterruptible | PlayRisky
 data CCallConv = CCallConv | CApiConv | StdCallConv | PrimCallConv | JavaScriptCallConv
   deriving (Eq, Ord, Generic, Show)
 
+data SourceText
+  = SourceText    !BS8.ByteString
+  | NoSourceText
+  deriving (Eq, Ord, Generic, Show)
+
 data CCallTarget
-  = StaticTarget BS8.ByteString
+  = StaticTarget !SourceText !BS8.ByteString !(Maybe UnitId) !Bool
   | DynamicTarget
   deriving (Eq, Ord, Generic, Show)
 
 data ForeignCall
   = ForeignCall
-  { foreignCTarget  :: CCallTarget
-  , foreignCConv    :: CCallConv
-  , foreignCSafety  :: Safety
+  { foreignCTarget  :: !CCallTarget
+  , foreignCConv    :: !CCallConv
+  , foreignCSafety  :: !Safety
   }
   deriving (Eq, Ord, Generic, Show)
 
-data PrimCall = PrimCall -- BS8.ByteString BS8.ByteString
+data PrimCall = PrimCall !BS8.ByteString !UnitId
   deriving (Eq, Ord, Generic, Show)
 
 data StgOp
-  = StgPrimOp     Name
-  | StgPrimCallOp PrimCall
-  | StgFCallOp    ForeignCall
+  = StgPrimOp     !Name
+  | StgPrimCallOp !PrimCall
+  | StgFCallOp    !ForeignCall
   deriving (Eq, Ord, Generic, Show)
 
 -- foreign export stubs
@@ -296,8 +328,8 @@ data StgOp
 data ForeignStubs
   = NoStubs
   | ForeignStubs
-    { fsCHeader :: BS8.ByteString
-    , fsCSource :: BS8.ByteString
+    { fsCHeader :: !BS8.ByteString
+    , fsCSource :: !BS8.ByteString
     }
   deriving (Eq, Ord, Generic, Show)
 
@@ -312,56 +344,59 @@ data ForeignSrcLang
 
 -- the whole module
 
-data Module' idBnd idOcc dcOcc dcBnd
+data Module' idBnd idOcc dcOcc tcBnd tcOcc
   = Module
-  { modulePhase           :: !BS8.ByteString
-  , moduleUnitId          :: !UnitId
-  , moduleName            :: !ModuleName
-  , moduleDependency      :: ![(UnitId, [ModuleName])]
-  , moduleExternalTopIds  :: ![(UnitId, [(ModuleName, [idBnd])])]
-  , moduleAlgTyCons       :: ![(UnitId, [(ModuleName, [AlgTyCon' dcBnd])])]
-  , moduleExported        :: ![(UnitId, [(ModuleName, [BinderId])])]
-  , moduleTopBindings     :: ![TopBinding' idBnd idOcc dcOcc]
-  , moduleForeignStubs    :: !ForeignStubs
-  , moduleForeignFiles    :: ![(ForeignSrcLang, FilePath)]
-  , moduleCoreSrc         :: !BS8.ByteString
-  , modulePrepCoreSrc     :: !BS8.ByteString
+  { modulePhase               :: !BS8.ByteString
+  , moduleUnitId              :: !UnitId
+  , moduleName                :: !ModuleName
+  , moduleForeignStubs        :: !ForeignStubs
+  , moduleHasForeignExported  :: !Bool
+  , moduleDependency          :: ![(UnitId, [ModuleName])]
+  , moduleExternalTopIds      :: ![(UnitId, [(ModuleName, [idBnd])])]
+  , moduleTyCons              :: ![(UnitId, [(ModuleName, [tcBnd])])]
+  , moduleTopBindings         :: ![TopBinding' idBnd idOcc dcOcc tcOcc]
+  , moduleForeignFiles        :: ![(ForeignSrcLang, FilePath)]
+  , moduleCoreSrc             :: !BS8.ByteString
+  , modulePrepCoreSrc         :: !BS8.ByteString
+  , moduleStgSrc              :: !BS8.ByteString
   }
   deriving (Eq, Ord, Generic, Show)
 
 -- convenience layers: raw and user friendly
 
 -- raw - as it is serialized
-type SModule     = Module'      SBinder BinderId DataConId SDataCon
-type STopBinding = TopBinding'  SBinder BinderId DataConId
-type SBinding    = Binding'     SBinder BinderId DataConId
-type SExpr       = Expr'        SBinder BinderId DataConId
-type SRhs        = Rhs'         SBinder BinderId DataConId
-type SAlt        = Alt'         SBinder BinderId DataConId
+type SModule     = Module'      SBinder BinderId DataConId STyCon  TyConId
+type STopBinding = TopBinding'  SBinder BinderId DataConId TyConId
+type SBinding    = Binding'     SBinder BinderId DataConId TyConId
+type SExpr       = Expr'        SBinder BinderId DataConId TyConId
+type SRhs        = Rhs'         SBinder BinderId DataConId TyConId
+type SAlt        = Alt'         SBinder BinderId DataConId TyConId
 type SAltCon     = AltCon'      DataConId
+type SAltType    = AltType'     TyConId
 type SArg        = Arg'         BinderId
-type SAlgTyCon   = AlgTyCon'    SDataCon
 
 -- user friendly - rich information
-type Module     = Module'      Binder Binder DataCon DataCon
-type TopBinding = TopBinding'  Binder Binder DataCon
-type Binding    = Binding'     Binder Binder DataCon
-type Expr       = Expr'        Binder Binder DataCon
-type Rhs        = Rhs'         Binder Binder DataCon
-type Alt        = Alt'         Binder Binder DataCon
+type Module     = Module'      Binder Binder DataCon TyCon TyCon
+type TopBinding = TopBinding'  Binder Binder DataCon TyCon
+type Binding    = Binding'     Binder Binder DataCon TyCon
+type Expr       = Expr'        Binder Binder DataCon TyCon
+type Rhs        = Rhs'         Binder Binder DataCon TyCon
+type Alt        = Alt'         Binder Binder DataCon TyCon
 type AltCon     = AltCon'      DataCon
+type AltType    = AltType'     TyCon
 type Arg        = Arg'         Binder
-type AlgTyCon   = AlgTyCon'    DataCon
 
 instance Binary Unique
 instance Binary PrimElemRep
 instance Binary PrimRep
 instance Binary Type
+instance Binary Scope
 instance Binary Binder
 instance Binary SBinder
 instance Binary LitNumType
 instance Binary LabelSpec
 instance Binary Lit
+instance Binary SourceText
 instance Binary CCallTarget
 instance Binary CCallConv
 instance Binary Safety
@@ -371,14 +406,15 @@ instance Binary UpdateFlag
 instance Binary StgOp
 instance Binary DataConRep
 instance Binary SDataCon
+instance Binary STyCon
 instance Binary ForeignStubs
 instance Binary ForeignSrcLang
-instance (Binary dcBnd) => Binary (AlgTyCon' dcBnd)
+instance (Binary tcOcc) => Binary (AltType' tcOcc)
 instance (Binary dcOcc) => Binary (AltCon' dcOcc)
 instance (Binary idOcc) => Binary (Arg' idOcc)
-instance (Binary idBnd, Binary idOcc, Binary dcOcc) => Binary (TopBinding' idBnd idOcc dcOcc)
-instance (Binary idBnd, Binary idOcc, Binary dcOcc) => Binary (Binding' idBnd idOcc dcOcc)
-instance (Binary idBnd, Binary idOcc, Binary dcOcc) => Binary (Expr' idBnd idOcc dcOcc)
-instance (Binary idBnd, Binary idOcc, Binary dcOcc) => Binary (Rhs' idBnd idOcc dcOcc)
-instance (Binary idBnd, Binary idOcc, Binary dcOcc) => Binary (Alt' idBnd idOcc dcOcc)
-instance (Binary idBnd, Binary idOcc, Binary dcOcc, Binary dcBnd) => Binary (Module' idBnd idOcc dcOcc dcBnd)
+instance (Binary idBnd, Binary idOcc, Binary dcOcc, Binary tcOcc) => Binary (TopBinding' idBnd idOcc dcOcc tcOcc)
+instance (Binary idBnd, Binary idOcc, Binary dcOcc, Binary tcOcc) => Binary (Binding' idBnd idOcc dcOcc tcOcc)
+instance (Binary idBnd, Binary idOcc, Binary dcOcc, Binary tcOcc) => Binary (Rhs' idBnd idOcc dcOcc tcOcc)
+instance (Binary idBnd, Binary idOcc, Binary dcOcc, Binary tcOcc) => Binary (Alt' idBnd idOcc dcOcc tcOcc)
+instance (Binary idBnd, Binary idOcc, Binary dcOcc, Binary tcOcc) => Binary (Expr' idBnd idOcc dcOcc tcOcc)
+instance (Binary idBnd, Binary idOcc, Binary dcOcc, Binary tcOcc, Binary tcBnd) => Binary (Module' idBnd idOcc dcOcc tcOcc tcBnd)
