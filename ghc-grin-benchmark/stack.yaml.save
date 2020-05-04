@@ -1,0 +1,86 @@
+resolver: lts-15.6
+
+allow-newer: true
+
+extra-path:
+  - /home/csaba/haskell/ghc-gitlab/ghc-8.11.0.20200222-src-git-fromSTG-Quickest/ghc-8.11.0.20200222-src/_build/stage1/bin
+
+packages:
+- 'app'
+- 'lib'
+
+#- 'sum-list'
+
+#- 'basic'
+#- 'boq-custom'
+#- 'boquist-grin-bench'
+#- 'miniagda'
+#- 'hpp-0.6.1'
+#- 'stylish-haskell-0.11.0.0'
+#- 'calenderweek-1.0.0'
+#- 'pandoc-2.9.2.1'
+#- 'idris-1.3.2'
+
+############################
+#- 'memory-0.15.0'
+#- 'hxt-9.3.1.18'
+#- 'HTTP-4000.3.14'
+#- 'hxt-regex-xmlschema-9.2.0.3'
+#- 'regex-base-0.94.0.0'
+#- 'basement-0.0.11'
+#- 'pandoc-master'
+##############################
+
+#- 'Idris-dev-master'
+
+#- 'Idris-dev-1.3.1'
+
+#- 'lambdacube-workshop-master/hello'
+#- 'lambdacube-workshop-master/hello-obj'
+#- 'lambdacube-workshop-master/asteroids'
+#- 'lambdacube-workshop-master/lambdacube-obj'
+
+#- 'lambdacube-quake3-master'
+
+extra-deps:
+  - primitive-0.7.0.1
+  - cheapskate-0.1.1.2@sha256:b8ae3cbb826610ea45e6840b7fde0af2c2ea6690cb311edfe9683f61c0a50d96,3072
+  - base-noprelude-4.13.0.0@sha256:3cccbfda38e1422ca5cc436d58858ba51ff9114d2ed87915a6569be11e4e5a90,6842
+  - jira-wiki-markup-1.3.0
+
+
+# - proteaaudio-0.7.0.1
+# - vect-0.4.7
+# - wavefront-0.7.1.1
+# - megaparsec-6.5.0
+# - cheapskate-0.1.1
+# - haskell-src-exts-1.21.1
+
+
+#- github: lambdacube3d/lambdacube-ir
+#  commit: 8a0a17abedc9d6b46b41d744c1a2be53efa6336b
+#  subdirs:
+#    - lambdacube-ir.haskell
+
+#- github: lambdacube3d/lambdacube-gl
+#  commit: 297828bdcf105c5942ed0e43d9f28130f543f34c
+
+#- github: lambdacube3d/lambdacube-compiler
+#  commit: dc10dc255638b86f4a20a29a1b492e2415640b60
+
+
+# ok ; Quick (not Quickest)
+#  - /home/csaba/haskell/ghc-gitlab/gitlab-ghc-fresh/ghc/_build/stage1/bin
+
+# Turn on system GHC
+system-ghc: true
+skip-ghc-check: true
+
+dump-logs: all
+
+build:
+  keep-tmp-files: true
+  cabal-verbose: true
+
+ghc-options:
+  boquist-grin-bench: -O2

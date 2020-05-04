@@ -2,12 +2,11 @@ resolver: lts-15.6
 
 allow-newer: true
 
+packages:
+- 'unordered-containers-0.2.10.0'
+
 extra-path:
 - /home/csaba/haskell/ghc-gitlab/ghc-8.11.0.20200222-src-git-fromSTG-Quickest/ghc-8.11.0.20200222-src/_build/stage1/bin
-
-packages:
-- 'boquist-grin-bench'
-
 
 # Turn on system GHC
 system-ghc: true
