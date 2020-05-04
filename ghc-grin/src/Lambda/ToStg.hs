@@ -1,5 +1,5 @@
 {-# LANGUAGE LambdaCase, TupleSections, RecordWildCards, OverloadedStrings #-}
-module Lambda.ToStg (toStg) where
+module Lambda.ToStg (toStg, toStgWithNames) where
 
 -- Compiler
 import GHC
@@ -73,7 +73,7 @@ primRepToType = anyTypeOfKind . tYPE . primRepToRuntimeRep
 
 data Env
   = Env
-  { topBindings     :: [StgTopBinding]
+  { topBindings     :: [(L.Name, StgTopBinding)]
   , nameMap         :: Map L.Name Unique
   , idMap           :: Map L.Name (Id, L.RepType)
   , externalMap     :: Map L.Name L.External
@@ -97,8 +97,8 @@ clearVoidVarSet = modify' $ \env@Env{..} -> env {voidVarSet = Set.empty}
 freshFFIUnique :: StgM Unique
 freshFFIUnique = state $ \env@Env{..} -> (mkUnique 'f' ffiUniqueCount, env {ffiUniqueCount = succ ffiUniqueCount})
 
-addTopBinding :: StgTopBinding -> StgM ()
-addTopBinding b = modify' $ \env@Env{..} -> env {topBindings = b : topBindings}
+addTopBinding :: L.Name -> StgTopBinding -> StgM ()
+addTopBinding n b = modify' $ \env@Env{..} -> env {topBindings = (n, b) : topBindings}
 
 setExternals :: [L.External] -> StgM ()
 setExternals exts = modify' $ \env@Env{..} -> env {externalMap = Map.fromList [(L.eName e, e) | e <- exts]}
@@ -312,7 +312,7 @@ convertStaticData :: L.StaticData -> StgM ()
 convertStaticData L.StaticData{..} = case sValue of
   L.StaticString s -> do
     i <- addVarId sName $ L.SingleValue L.AddrRep
-    addTopBinding $ StgTopStringLit i s
+    addTopBinding sName $ StgTopStringLit i s
 
 -- top rhs con
 isTopCon :: L.Def -> Bool
@@ -324,7 +324,7 @@ genRhsCon :: L.ConGroup -> StgM ()
 genRhsCon L.ConGroup{..} = forM_ cgCons $ \L.ConSpec{..} -> when (csArgsRep == []) $ do
   nameId <- addVarId csName (L.SingleValue L.LiftedRep)
   dataCon <- getDataCon (L.SingleValue L.UnliftedRep) csName
-  addTopBinding $ StgTopLifted $ StgNonRec nameId $ StgRhsCon dontCareCCS dataCon []
+  addTopBinding csName $ StgTopLifted $ StgNonRec nameId $ StgRhsCon dontCareCCS dataCon []
 
 setCurrentModuleFromName :: L.Name -> StgM ()
 setCurrentModuleFromName n = do
@@ -344,7 +344,7 @@ convertClosureDef (L.Def name args exp) = do
   setCurrentModuleFromName name
   stgArgs <- mapM (uncurry addVarId) args
   exp2 <- convertExp exp
-  addTopBinding $ StgTopLifted $ StgNonRec nameId $ StgRhsClosure noExtFieldSilent dontCareCCS Updatable stgArgs exp2
+  addTopBinding name $ StgTopLifted $ StgNonRec nameId $ StgRhsClosure noExtFieldSilent dontCareCCS Updatable stgArgs exp2
 
 -- rhs
 convertRHS :: L.SimpleExp -> StgM StgRhs
@@ -373,17 +373,21 @@ data SExpRep
 convertExp :: L.BindChain -> StgM StgExpr
 convertExp = \case
   L.Var name -> do
-    t <- getVarRepType name
-    case t of
-      L.PolymorphicRep        -> error $ "PolymorphicRep var: " ++ L.unpackName name
-      L.UnboxedTuple []       -> pure $ StgConApp (tupleDataCon Unboxed 0) [] []
-      L.SingleValue L.VoidRep -> pure $ StgConApp (tupleDataCon Unboxed 0) [] []
-      L.SingleValue _ -> do
-        i <- getVarId name
-        pure $ StgConApp (tupleDataCon Unboxed 1) [StgVarArg i] []
-      _ -> do
-        i <- getVarId name
-        pure $ StgApp i []
+    tokenVars <- gets voidVarSet
+    case Set.member name tokenVars of
+      True  -> pure $ StgApp voidPrimId []
+      False -> do
+        t <- getVarRepType name
+        case t of
+          L.PolymorphicRep        -> error $ "PolymorphicRep var: " ++ L.unpackName name
+          L.UnboxedTuple []       -> pure $ StgConApp (tupleDataCon Unboxed 0) [] []
+          L.SingleValue L.VoidRep -> pure $ StgConApp (tupleDataCon Unboxed 0) [] []
+          L.SingleValue _ -> do
+            i <- getVarId name
+            pure $ StgConApp (tupleDataCon Unboxed 1) [StgVarArg i] []
+          _ -> do
+            i <- getVarId name
+            pure $ StgApp i []
 
   L.Let binds bind -> do
     binds2 <- forM binds $ \(name, repType, sexp) -> do
@@ -430,7 +434,19 @@ convertExp = \case
     convertExp bind
 
   -- var copy of unboxed tuple
-  L.LetS [(name, repType@(L.UnboxedTuple l), (L.Var name2))] bind | length l > 0 -> error "var copy of unboxed tuple"
+  L.LetS [(name, repType@(L.UnboxedTuple _), sexp@(L.Var sname))] (L.Var name2) | name2 == name -> do
+    rt <- getVarRepType sname
+    case rt of
+      L.SingleValue (L.LiftedRep) -> do
+        nameId <- addVarId name repType
+        convertStrictExp repType nameId sexp
+      _ -> error $ "[case A] var copy of unboxed tuple, instruction: " ++ L.unpackName name
+
+  L.LetS [(name, repType@(L.UnboxedTuple [_]), sexp)] (L.Var name2) | name2 == name -> do
+    nameId <- addVarId name repType
+    convertStrictExp repType nameId sexp
+
+  L.LetS [(name, repType@(L.UnboxedTuple l), (L.Var name2))] bind | length l > 0 -> error $ "var copy of unboxed tuple, instruction: " ++ L.unpackName name
 
   -- var copy
   L.LetS [(name, repType@(L.SingleValue _), (L.Var name2))] bind -> do
@@ -474,10 +490,14 @@ convertStrictExp resultTy resultId = \case
       Nothing -> StgApp <$> getVarId name <*> pure stgArgs
       Just L.External{..} -> case eKind of
         L.PrimOp -> case Map.lookup name primOpMap of
-          Nothing -> error $ "unknown primop: " ++ show (L.unpackName name)
           Just op -> pure $ StgOpApp (StgPrimOp op) stgArgs (idType resultId)
+          Nothing -> case L.decodePackageQualifiedName name of
+            Nothing -> error $ "invalid foreign primop name: " ++ L.unpackName name
+            Just (uid, _, lbl) -> do
+              -- foreign primop
+              pure $ StgOpApp (StgPrimCallOp $ PrimCall (mkFastString lbl) (stringToUnitId uid)) stgArgs (idType resultId)
         L.FFI -> do
-          let callSpec      = CCallSpec (StaticTarget NoSourceText (mkFastString $ L.unpackName name) Nothing True) CCallConv PlayRisky
+          let callSpec      = CCallSpec (StaticTarget NoSourceText (mkFastString $ L.unpackName name) Nothing True) CCallConv PlaySafe
               stgFCallType  = mkVisFunTys (map convertFArgType eArgsType) intTy -- HINT: the result type does not matter
           u <- freshFFIUnique
           pure $ StgOpApp (StgFCallOp (CCall callSpec) stgFCallType) stgArgs (idType resultId)
@@ -525,7 +545,10 @@ convertAlt scrutTy (L.Alt name pat bind) = do
     - rep type is set for all binding sites
 -}
 toStg :: L.Program -> ([TyCon], [StgTopBinding])
-toStg prg = (tyCons, topBindings) where
+toStg = fmap (map snd) . toStgWithNames
+
+toStgWithNames :: L.Program -> ([TyCon], [(L.Name, StgTopBinding)])
+toStgWithNames prg = (tyCons, topBindings) where
   emptyEnv = Env
     { topBindings     = []
     , nameMap         = mempty
@@ -536,7 +559,7 @@ toStg prg = (tyCons, topBindings) where
     , tyCons          = []
     , moduleMap       = Map.empty
     , currentModule   = mkModule mainUnitId (mkModuleName ":Main")
-    , publicNames     = Set.fromList $ L.pPublicNames prg
+    , publicNames     = Set.fromList $ L.pPublicNames prg ++ L.pForeignExportedNames prg
     , voidVarSet      = Set.empty
     }
   Env{..} = execState (convertProgram $ prepStg prg) emptyEnv
