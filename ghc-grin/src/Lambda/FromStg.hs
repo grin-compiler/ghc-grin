@@ -95,13 +95,14 @@ deriveNewName name = do
 
 encodeBinderName :: C.Binder -> Name
 encodeBinderName C.Binder{..}
-  | binderIsExported  = mkPackageQualifiedName unitId modName (BS8.unpack binderName)
-  | binderIsTop       = mkPackageQualifiedName unitId modName (BS8.unpack binderName ++ "_" ++ show bu)
-  | otherwise         = packName (BS8.unpack binderName ++ "_" ++ show bu)
+  | isExported  = mkPackageQualifiedName unitId modName (BS8.unpack binderName)
+  | binderIsTop = mkPackageQualifiedName unitId modName (BS8.unpack binderName ++ "_" ++ show bu)
+  | otherwise   = packName (BS8.unpack binderName ++ "_" ++ show bu)
   where
     C.BinderId bu = binderId
     unitId        = BS8.unpack $ C.getUnitId binderUnitId
     modName       = BS8.unpack $ C.getModuleName binderModule
+    isExported    = binderExportSpec /= C.NotExported
 
 -- maps GHC unique binder names to unique lambda names
 genName :: C.Binder -> CG Name
@@ -188,24 +189,25 @@ ffiArgType = \case
   C.StgLitArg l -> TySimple <$> lift (deriveNewName "t") <*> pure (getLitType l)
   C.StgVarArg b -> do
     (name, repType) <- lift $ genBinder b
+    let cvtName = packName . BS8.unpack
     case C.binderType b of
-      C.SingleValue C.UnliftedRep -> case C.binderTypeSig b of
+      C.SingleValue C.UnliftedRep -> case BS8.words $ C.binderTypeSig b of
         -- NOTE: byte array is allowed as FFI argument ; this is GHC special case
-        "MutableByteArray# RealWorld" -> do
+        ["MutableByteArray#", varA] -> do
           n0 <- lift (deriveNewName "t")
           n1 <- lift (deriveNewName "t")
-          pure $ TyCon n0 "MutableByteArray#" [TyCon n1 "RealWorld" []]
+          pure $ TyCon n0 "MutableByteArray#" [TyCon n1 (cvtName varA) []]
 
-        "ByteArray#" -> do
+        ["ByteArray#"] -> do
           n0 <- lift (deriveNewName "t")
           pure $ TyCon n0 "ByteArray#" []
 
-        "Weak# ThreadId" -> do
+        ["Weak#", varA] -> do
           n0 <- lift (deriveNewName "t")
           n1 <- lift (deriveNewName "t")
-          pure $ TyCon n0 "Weak#" [TyCon n1 "ThreadId" []]
+          pure $ TyCon n0 "Weak#" [TyCon n1 (cvtName varA) []]
 
-        "ThreadId#" -> do
+        ["ThreadId#"] -> do
           n0 <- lift (deriveNewName "t")
           pure $ TyCon n0 "ThreadId#" []
 
@@ -254,8 +256,6 @@ getLitPrimRep = \case
   C.LitDouble{}   -> DoubleRep
   C.LitLabel{}    -> AddrRep
   C.LitNumber t _ -> case t of
-    C.LitNumInteger -> error "impossible: LitNumInteger"
-    C.LitNumNatural -> error "impossible: LitNumNatural"
     C.LitNumInt     -> Int64Rep
     C.LitNumInt64   -> Int64Rep
     C.LitNumWord    -> Word64Rep
@@ -270,8 +270,6 @@ getLitType = \case
   C.LitDouble{}   -> T_Double
   C.LitLabel{}    -> T_Addr
   C.LitNumber t _ -> case t of
-    C.LitNumInteger -> error "impossible: LitNumInteger"
-    C.LitNumNatural -> error "impossible: LitNumNatural"
     C.LitNumInt     -> T_Int64
     C.LitNumInt64   -> T_Int64
     C.LitNumWord    -> T_Word64
@@ -280,8 +278,6 @@ getLitType = \case
 convertLit :: C.Lit -> Lit
 convertLit = \case
   C.LitNumber t i -> case t of
-    C.LitNumInteger -> error "impossible: LitNumInteger"
-    C.LitNumNatural -> error "impossible: LitNumNatural"
     C.LitNumInt     -> LInt64 $ fromIntegral i
     C.LitNumInt64   -> LInt64 $ fromIntegral i
     C.LitNumWord    -> LWord64 $ fromIntegral i
@@ -327,6 +323,14 @@ mkConSpec tc C.DataCon{..}
 
 -- stg ast conversion
 
+isPrimVoidRep :: Name -> Bool
+isPrimVoidRep n = Set.member n voidNames where
+  voidNames = Set.fromList
+    [ "ghc-prim_GHC.Prim.coercionToken#"
+    , "ghc-prim_GHC.Prim.realWorld#"
+    , "ghc-prim_GHC.Prim.void#"
+    ]
+
 emitLitArg :: RepType -> Lit -> CG Name
 emitLitArg t l = do
   name <- deriveNewName "lit"
@@ -344,13 +348,10 @@ visitArgT = \case
 
   C.StgVarArg o -> do
     (name, repType) <- genBinder o
-    n <- case name of
-      "ghc-prim_GHC.Prim.coercionToken#" -> emitLitArg (SingleValue VoidRep) $ LToken "ghc-prim_GHC.Prim.coercionToken#"
-      "ghc-prim_GHC.Prim.realWorld#"     -> emitLitArg (SingleValue VoidRep) $ LToken "ghc-prim_GHC.Prim.realWorld#"
-      "ghc-prim_GHC.Prim.void#"          -> emitLitArg (SingleValue VoidRep) $ LToken "ghc-prim_GHC.Prim.void#"
-      _ -> pure name
+    n <- if isPrimVoidRep name
+      then emitLitArg (SingleValue VoidRep) . LToken . BS8.pack . unpackName $ name
+      else pure name
     pure (n, repType)
-
 
 -- CG bind chain operations
 
@@ -445,9 +446,25 @@ visitOpApp resultName op args ty tc = do
           args2 <- mapM visitArg args
           emitCmd $ S (resultName, resultRepType, App name args2)
 
-    C.StgPrimCallOp _ -> do
-      let errLit = Lit $ LError "GHC PrimCallOp is not supported"
-      emitCmd $ S (resultName, resultRepType, errLit)
+    C.StgPrimCallOp p@(C.PrimCall labelName uid) -> case ffiTys of
+      Just (retTy, argsTy) -> do
+        let name = mkPackageQualifiedName (BS8.unpack $ C.getUnitId uid) "" (BS8.unpack labelName)
+        addExternal External
+          { eName       = name
+          , eRetType    = retTy
+          , eArgsType   = argsTy
+          , eEffectful  = False
+          , eKind       = PrimOp
+          }
+        args2 <- mapM visitArg args
+        emitCmd $ S (resultName, resultRepType, App name args2)
+
+      _ -> do
+        let name    = BS8.unpack labelName
+            argsTy  = map showArgType args
+            retTy   = show ty
+            errLit  = Lit . LError . BS8.pack $ "Unsupported foreign primitive type: " ++ name ++ " :: " ++ intercalate " -> " (argsTy ++ [retTy])
+        emitCmd $ S (resultName, resultRepType, errLit)
 
     C.StgFCallOp f@C.ForeignCall{..} -> case foreignCTarget of
       C.DynamicTarget -> do
@@ -497,6 +514,11 @@ visitExpr mname expr = case expr of
       SingleValue LiftedRep -> do
         -- NOTE: force thunk
         emitCmd $ S (name, SingleValue LiftedRep, App n [])
+
+      _ | isPrimVoidRep n
+        -> do
+          emitCmd $ S (name, SingleValue VoidRep, Lit . LToken . BS8.pack . unpackName $ n)
+
       _ -> do
         emitCmd $ S (name, t, Var n)
 
@@ -671,29 +693,32 @@ visitTopBinder = \case
     walk ext stg and collect values and expressions in state monad
 -}
 
-visitModule :: C.Module -> CG [Name]
+visitModule :: C.Module -> CG ([Name], [Name])
 visitModule C.Module{..} = do
   -- register top level names
-  let (exportedIds, internalIds) = partition C.binderIsExported $ concatMap C.topBindings moduleTopBindings
+  let (internalIds, exportedIds)    = partition (\b -> C.binderExportSpec b == C.NotExported) $ concatMap C.topBindings moduleTopBindings
+      (exportedIdsHS, exportedIdsF) = partition (\b -> C.binderExportSpec b == C.HaskellExported) exportedIds
   mapM_ genName internalIds
-  exportedTopNames <- mapM genName exportedIds
+  exportedTopNamesHS <- mapM genName exportedIdsHS
+  exportedTopNamesF <- mapM genName exportedIdsF
   -- register external names
   extNames <- mapM genName (concatMap snd $ concatMap snd moduleExternalTopIds)
   -- convert bindings
   mapM_ visitTopBinder moduleTopBindings
   -- return public names: external top ids + exported top bindings
-  pure $ extNames ++ exportedTopNames
+  pure (extNames ++ exportedTopNamesHS, exportedTopNamesF)
 
 codegenLambda :: C.Module -> IO Program
 codegenLambda mod = do
   let modName     = packName . BS8.unpack . C.getModuleName $ C.moduleName mod
       conGroups   = convertTyCons $ C.moduleAlgTyCons mod
       initialEnv  = emptyEnv { conGroupMap = Map.fromList [(cgName c, c) | c <- conGroups] }
-  (publicNames, Env{..}) <- runStateT (visitModule mod) initialEnv
+  ((publicNames, foreignExportedNames), Env{..}) <- runStateT (visitModule mod) initialEnv
   pure . smashLet $ Program
-    { pExternals    = Map.elems externals
-    , pConstructors = conGroups
-    , pPublicNames  = publicNames
-    , pStaticData   = staticData
-    , pDefinitions  = defs
+    { pExternals            = Map.elems externals
+    , pConstructors         = conGroups
+    , pPublicNames          = publicNames
+    , pForeignExportedNames = foreignExportedNames
+    , pStaticData           = staticData
+    , pDefinitions          = defs
     }
