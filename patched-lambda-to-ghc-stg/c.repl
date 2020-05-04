@@ -1,0 +1,4 @@
+set -x -e
+
+stack --stack-root `pwd`/.stack-root -- ghci
+
