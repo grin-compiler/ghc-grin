@@ -4,12 +4,12 @@ resolver: lts-15.0
 allow-newer: true
 
 packages:
-  - 'ghc-primop-lib'
-  - 'ghc-primop-gen'
+#  - 'ghc-primop-lib'
+#  - 'ghc-primop-gen'
   - 'external-stg'
   - 'external-stg-util'
-  - 'ghc-grin'
-  - 'lambda-grin'
+#  - 'ghc-grin'
+#  - 'lambda-grin'
 
 build:
   test-arguments:
