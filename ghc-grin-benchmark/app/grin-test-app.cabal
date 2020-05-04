@@ -36,3 +36,7 @@ executable hello
     grin-test-lib
   main-is:
     Main.hs
+  other-modules:
+    Util
+  c-sources:
+    main_c_lib.c

@@ -37,3 +37,4 @@ library
   build-depends:       base,
                        mtl
   default-language:    Haskell2010
+  c-sources:           mylib.c
