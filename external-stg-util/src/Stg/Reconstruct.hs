@@ -72,6 +72,7 @@ reconLocalBinder BinderMap{..} SBinder{..} = -- HINT: local binders only
   , binderId          = sbinderId
   , binderType        = sbinderType
   , binderTypeSig     = sbinderTypeSig
+  , binderDetails     = sbinderDetails
   , binderUnitId      = bmUnitId
   , binderModule      = bmModule
   , binderScope       = LocalScope
@@ -84,6 +85,7 @@ reconDataCon u m tc SDataCon{..} = DataCon
   , dcUnitId  = u
   , dcModule  = m
   , dcRep     = sdcRep
+  , dcWorker  = mkTopBinder u m (sbinderScope sdcWorker) sdcWorker
   , dcTyCon   = tc
   }
 
@@ -96,6 +98,19 @@ reconTyCon u m STyCon{..} = tc where
     , tcModule    = m
     , tcDataCons  = map (reconDataCon u m tc) stcDataCons
     }
+
+mkTopBinder :: UnitId -> ModuleName -> Scope -> SBinder -> Binder
+mkTopBinder u m scope SBinder{..} =
+  Binder
+  { binderName        = sbinderName
+  , binderId          = sbinderId
+  , binderType        = sbinderType
+  , binderTypeSig     = sbinderTypeSig
+  , binderDetails     = sbinderDetails
+  , binderUnitId      = u
+  , binderModule      = m
+  , binderScope       = scope
+  }
 
 reconModule :: SModule -> Module
 reconModule Module{..} = mod where
@@ -142,18 +157,6 @@ reconModule Module{..} = mod where
 
   exts :: [(UnitId, [(ModuleName, [Binder])])]
   exts = [(u, [(m, map (mkTopBinder u m HaskellExported) l) | (m, l) <- ml]) | (u, ml) <- moduleExternalTopIds]
-
-  mkTopBinder :: UnitId -> ModuleName -> Scope -> SBinder -> Binder
-  mkTopBinder u m scope SBinder{..} =
-    Binder
-    { binderName        = sbinderName
-    , binderId          = sbinderId
-    , binderType        = sbinderType
-    , binderTypeSig     = sbinderTypeSig
-    , binderUnitId      = u
-    , binderModule      = m
-    , binderScope       = scope
-    }
 
   reconTopBinder :: SBinder -> Binder
   reconTopBinder b = getBinder bm $ sbinderId b

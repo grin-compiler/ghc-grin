@@ -94,6 +94,7 @@ data SDataCon
   { sdcName   :: !Name
   , sdcId     :: !DataConId
   , sdcRep    :: !DataConRep
+  , sdcWorker :: !SBinder
   }
   deriving (Eq, Ord, Generic, Show)
 
@@ -114,6 +115,7 @@ data DataCon
   , dcModule :: !ModuleName
   , dcRep    :: !DataConRep
   , dcTyCon  :: !TyCon
+  , dcWorker :: !Binder
   }
   deriving (Eq, Ord, Generic, Show)
 
@@ -125,6 +127,23 @@ data TyCon
   , tcModule    :: !ModuleName
   , tcDataCons  :: ![DataCon]
   }
+  deriving (Eq, Ord, Generic, Show)
+
+-- id info
+
+data IdDetails
+  = VanillaId
+  | FExportedId
+  | RecSelId
+  | DataConWorkId DataConId
+  | DataConWrapId DataConId
+  | ClassOpId
+  | PrimOpId
+  | FCallId
+  | TickBoxOpId
+  | DFunId
+  | CoVarId
+  | JoinId        Int
   deriving (Eq, Ord, Generic, Show)
 
 -- stg expr related
@@ -148,6 +167,7 @@ data SBinder
     , sbinderType     :: !Type
     , sbinderTypeSig  :: !Name
     , sbinderScope    :: !Scope
+    , sbinderDetails  :: !IdDetails
     }
   deriving (Eq, Ord, Generic, Show)
 
@@ -158,6 +178,7 @@ data Binder
     , binderType      :: !Type
     , binderTypeSig   :: !Name
     , binderScope     :: !Scope
+    , binderDetails   :: !IdDetails
     , binderUnitId    :: !UnitId
     , binderModule    :: !ModuleName
     }
@@ -390,6 +411,7 @@ instance Binary Unique
 instance Binary PrimElemRep
 instance Binary PrimRep
 instance Binary Type
+instance Binary IdDetails
 instance Binary Scope
 instance Binary Binder
 instance Binary SBinder
