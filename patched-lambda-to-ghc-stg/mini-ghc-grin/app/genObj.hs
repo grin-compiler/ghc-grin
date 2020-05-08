@@ -2,6 +2,7 @@
 module Main where
 
 import Control.Monad
+import Control.Monad.IO.Class
 
 import System.Environment
 
@@ -12,6 +13,8 @@ import Stg.ToStg
 
 import qualified GHC.Driver.Types as GHC
 
+import GHC
+import GHC.Paths ( libdir )
 
 {-
   = StgModule
@@ -25,7 +28,7 @@ import qualified GHC.Driver.Types as GHC
 -}
 
 main :: IO ()
-main = do
+main = runGhc (Just libdir) $ liftIO $ do
   let cg = NCG
 
   stgbins <- getArgs
@@ -36,5 +39,8 @@ main = do
         oName         = stgbinName ++ ".o"
     putStrLn $ "compiling " ++ oName
     putStrLn $ unlines $ map show stgIdUniqueMap
-    compileToObject cg stgUnitId stgModuleName {-stgForeignStubs-}GHC.NoStubs stgModuleTyCons stgTopBindings oName
+
+    -- HINT: the stubs are compiled at link time
+    compileToObject cg stgUnitId stgModuleName GHC.NoStubs stgModuleTyCons stgTopBindings oName
+
     -- TODO: simplify API to: compileToObject cg stgModule oName
