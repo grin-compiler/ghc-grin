@@ -15,6 +15,8 @@ import System.Process
 --import Lambda.Syntax
 --import Lambda.ToStg
 import StgLoopback
+import Stg.Util
+import Stg.Syntax (ForeignStubs(..))
 
 import Data.Binary
 
@@ -103,6 +105,18 @@ sortChunks :: [(FilePath, [StgTopBinding])] -> [(FilePath, [StgTopBinding])]
 sortChunks l = map snd $ sortBy (\a b -> compare (fst b) (fst a)) [(length $ snd x, x) | x <- l]
 -}
 
+getStubs :: [FilePath] -> IO GHC.ForeignStubs
+getStubs stgBins = do
+  stubs <- forM stgBins $ \f -> do
+    (_, _, _, stub) <- readStgbinStubs f
+    pure stub
+  let (hStub, cStub) = unzip [(h, c) | ForeignStubs h c <- stubs]
+      hStr = BS8.unpack $ BS8.unlines hStub
+      cStr = BS8.unpack $ BS8.unlines cStub
+  pure $ if null hStr && null cStr
+    then GHC.NoStubs
+    else GHC.ForeignStubs (GHC.text hStr) (GHC.text cStr)
+
 main :: IO ()
 main = do
   [stgAppFname] <- getArgs
@@ -118,5 +132,8 @@ main = do
 
   let cg = NCG
 
+  putStrLn $ "collecting stubs"
+  stubs <- getStubs stgBins
+
   putStrLn $ "linking exe"
-  compileProgram cg incPaths libPaths ldOpts (clikeFiles ++ oStg) GHC.NoStubs [] []
+  compileProgram cg incPaths libPaths ldOpts (clikeFiles ++ oStg) stubs [] []

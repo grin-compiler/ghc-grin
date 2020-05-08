@@ -1,7 +1,7 @@
 module Stg.Util
     ( -- * Convenient IO
       readStgbin, readStgbin',
-      readStgbinInfo
+      readStgbinInfo, readStgbinStubs
     ) where
 
 import Prelude hiding (readFile)
@@ -21,3 +21,6 @@ readStgbin fname = reconModule <$> readStgbin' fname
 
 readStgbinInfo :: FilePath -> IO (Name, UnitId, ModuleName, ForeignStubs, Bool, [(UnitId, [ModuleName])])
 readStgbinInfo fname = decode <$> BSL.readFile fname
+
+readStgbinStubs :: FilePath -> IO (Name, UnitId, ModuleName, ForeignStubs)
+readStgbinStubs fname = decode <$> BSL.readFile fname
