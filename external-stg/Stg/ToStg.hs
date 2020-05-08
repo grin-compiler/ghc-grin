@@ -14,6 +14,8 @@ import Outputable
 import Module
 import Name
 import Id
+import IdInfo
+import Var
 import Unique
 import OccName
 import GHC.Stg.Syntax
@@ -25,6 +27,7 @@ import BasicTypes
 import CoreSyn (AltCon(..))
 
 import PrimOp
+import PrelNames
 import TysWiredIn
 import TysPrim
 import Literal
@@ -62,13 +65,14 @@ ambiguousPrimOps = Map.filter (\a -> length a > 1) $
 -- tycon + datacon utility
 
 -- minimalistic type construction for GHC/STG codegen
-simpleDataCon :: TyCon -> Name -> [PrimRep] -> ConTag -> DataCon
-simpleDataCon tc name args tag = mkDataCon
-  name False (error "TyConRepName") [] [] [] [] [] [] []
-  (map primRepToType args) ({-error "Original result type"-}primRepToType LiftedRep) (error "RuntimeRepInfo")
-  tc tag [] fakeWorkerId NoDataConRep
+simpleDataCon :: TyCon -> Name -> [PrimRep] -> ConTag -> Name -> DataCon
+simpleDataCon tc name args tag workerName = dataCon
   where
-    fakeWorkerId = mkVanillaGlobal name (error "repTy LiftedRep")
+    dataCon       = mkDataCon
+                      name False (error "TyConRepName") [] [] [] [] [] [] []
+                      (map primRepToType args) ({-error "Original result type"-}primRepToType LiftedRep) (error "RuntimeRepInfo")
+                      tc tag [] workerId NoDataConRep
+    workerId      = mkDataConWorkId workerName dataCon
 
 simpleTyCon :: Name -> [DataCon] -> TyCon
 simpleTyCon name dataCons = mkAlgTyCon name [] {-(error "Kind")-}liftedTypeKind [] Nothing [] (mkDataTyConRhs dataCons) (VanillaAlgTyCon (error "TyConRepName")) False
@@ -117,23 +121,27 @@ type M = State Env
 
 getFreshUnique :: M Unique
 getFreshUnique = state $ \env@Env{..} ->
-  let u = mkUnique 'u' envNextUnique
+  let u = mkUnique 'W' envNextUnique
   in (u, env {envNextUnique = succ envNextUnique})
 
 ---------------
 {-
   TODO:
     - cache things
-    - distinct Alg DataCon and Unboxed DataCon
 -}
 
 setAlgTyCons :: [Ext.TyCon] -> M ()
 setAlgTyCons tyCons = do
   forM_ tyCons $ \Ext.TyCon{..} -> do
     tyConName <- getFreshExternalName OccName.tcName tcUnitId tcModule tcName
-    dcNames <- forM tcDataCons $ \Ext.DataCon{..} -> getFreshExternalName OccName.dataName dcUnitId dcModule dcName
+    dcNames <- forM tcDataCons $ \Ext.DataCon{..} -> do
+      conName <- getFreshExternalName OccName.dataName dcUnitId dcModule dcName
+      let Ext.Binder{..} = dcWorker
+      workerName <- getFreshExternalName OccName.varName binderUnitId binderModule binderName
+      pure (conName, workerName)
+
     let dataCons :: [(Ext.DataCon, DataCon)]
-        dataCons = [(edc, simpleDataCon tyCon conName (getConRep dcRep) tag) | (conName, edc@Ext.DataCon{..}, tag) <- zip3 dcNames tcDataCons [1..]]
+        dataCons = [(edc, simpleDataCon tyCon conName (getConRep dcRep) tag workerName) | ((conName, workerName), edc@Ext.DataCon{..}, tag) <- zip3 dcNames tcDataCons [1..]]
 
         tyCon :: TyCon
         tyCon = simpleTyCon tyConName $ map snd dataCons
@@ -156,9 +164,12 @@ getFreshName ns uid mod name = do
       modl <- getBinderModule uid mod
       pure $ mkExternalName uniq modl (mkOccNameFS ns $ mkFastStringByteString name) noSrcSpan
     else do
-      --pure $ mkInternalName uniq (mkOccNameFS ns $ mkFastStringByteString name) noSrcSpan
+      {-
+      pure $ mkInternalName uniq (mkOccNameFS ns $ mkFastStringByteString name) noSrcSpan
+      -}
       modl <- getBinderModule uid mod
-      pure $ mkExternalName uniq modl (mkOccNameFS ns $ mkFastStringByteString $ name Prelude.<> (BS8.pack $ '_' : show uniq)) noSrcSpan
+      pure $ mkExternalName uniq modl (mkOccNameFS ns $ mkFastStringByteString $ name Prelude.<> (BS8.pack $ show uniq)) noSrcSpan
+
 
 getFreshExternalName :: NameSpace -> Ext.UnitId -> Ext.ModuleName -> Ext.Name -> M Name
 getFreshExternalName ns uid mod name = do
@@ -173,17 +184,63 @@ getBinderModule uid mod = do
       m = cvtModuleName mod
   pure $ mkModule u m
 
+cvtIdDetails :: Ext.IdDetails -> M IdDetails
+cvtIdDetails details = do
+  dcMap <- gets envDataConMap
+  pure $ case details of
+    Ext.VanillaId       -> VanillaId
+    Ext.FExportedId     -> VanillaId
+    Ext.RecSelId        -> RecSelId       (error "Ext.RecSelId sel_tycon") (error "Ext.RecSelId sel_naughty")
+    Ext.DataConWorkId d -> DataConWorkId  $ Map.findWithDefault (error $ "Ext.DataConWorkId DataCon: " ++ show d) d dcMap
+    Ext.DataConWrapId d -> DataConWrapId  $ Map.findWithDefault (error $ "Ext.DataConWrapId DataCon: " ++ show d) d dcMap
+    Ext.ClassOpId       -> ClassOpId      (error "Ext.ClassOpId Class")
+    Ext.PrimOpId        -> PrimOpId       (error "Ext.PrimOpId PrimOp")
+    Ext.FCallId         -> FCallId        (error "Ext.FCallId ForeignCall")
+    Ext.TickBoxOpId     -> TickBoxOpId    (error "Ext.TickBoxOpId TickBoxOp")
+    Ext.DFunId          -> DFunId         (error "Ext.DFunId Bool")
+    Ext.CoVarId         -> CoVarId
+    Ext.JoinId ar       -> JoinId ar
+
 cvtId :: Ext.Binder -> M Id
-cvtId Ext.Binder{..} = do
+cvtId b@Ext.Binder{..} = do
   Env{..} <- get
   case Map.lookup binderId envIdMap of
     Just i  -> pure i
-    Nothing -> do
+    Nothing -> cvtNewId b
+
+rootMainBinderId :: Ext.BinderId
+rootMainBinderId = Ext.BinderId $ Ext.Unique a b
+  where (a,b) = unpkUnique rootMainKey
+
+cvtIdDef :: Ext.Binder -> M Id
+cvtIdDef b
+  -- special case for :Main.main that has wired-in rootMainKey unique value
+  | Ext.binderId b == rootMainBinderId
+  = cvtId $ b {Ext.binderModule = Ext.ModuleName ":Main"}
+
+  -- always alloc new uniques for local binders
+  | Ext.binderScope b == Ext.LocalScope
+  = cvtNewId b
+
+  -- keep unique values, globals are never shadowed
+  | otherwise
+  = cvtId b
+
+
+cvtNewId :: Ext.Binder -> M Id
+cvtNewId Ext.Binder{..} = do
+  details <- cvtIdDetails binderDetails
+  nameId <- case binderScope of
+    s | s == Ext.LocalScope || s == Ext.GlobalScope -> do
       name <- getFreshName OccName.varName binderUnitId binderModule binderName
-      let nameId = case binderScope of
-            --Ext.LocalScope  -> mkLocalId       name (cvtPrimRepType binderType)
-            _               -> mkVanillaGlobal name (cvtPrimRepType binderType)
-      state $ \env@Env{..} -> (nameId, env {envIdMap = Map.insert binderId nameId envIdMap})
+      pure $ mkLocalId name (cvtPrimRepType binderType)
+    _ -> do
+      name <- getFreshExternalName OccName.varName binderUnitId binderModule binderName
+      pure $ mkVanillaGlobal name (cvtPrimRepType binderType)
+
+  let finalId = setIdDetails nameId details
+
+  state $ \env@Env{..} -> (finalId, env {envIdMap = Map.insert binderId finalId envIdMap})
 
 cvtUnitId :: Ext.UnitId -> UnitId
 cvtUnitId = fsToUnitId . mkFastStringByteString . Ext.getUnitId
@@ -340,7 +397,7 @@ cvtAltCon = \case
   Ext.AltDefault    -> pure $ DEFAULT
 
 cvtAlt :: Ext.Alt -> M StgAlt
-cvtAlt Ext.Alt{..} = (,,) <$> cvtAltCon altCon <*> mapM cvtId altBinders <*> cvtExpr altRHS
+cvtAlt Ext.Alt{..} = (,,) <$> cvtAltCon altCon <*> mapM cvtIdDef altBinders <*> cvtExpr altRHS
 
 cvtExpr :: Ext.Expr -> M StgExpr
 cvtExpr = \case
@@ -348,7 +405,7 @@ cvtExpr = \case
   Ext.StgLit l              -> pure $ StgLit (cvtLit l)
   Ext.StgConApp dc args t   -> StgConApp <$> cvtDataCon dc <*> cvtArgs args <*> pure (map cvtPrimRepType t)
   Ext.StgOpApp op args t tc -> StgOpApp (cvtOp args op) <$> cvtArgs args <*> cvtADTType t tc
-  Ext.StgCase exp i at alts -> StgCase <$> cvtExpr exp <*> cvtId i <*> cvtAltType at <*> mapM cvtAlt alts
+  Ext.StgCase exp i at alts -> StgCase <$> cvtExpr exp <*> cvtIdDef i <*> cvtAltType at <*> mapM cvtAlt alts
   Ext.StgLet b exp          -> StgLet noExtFieldSilent <$> cvtBinding b <*> cvtExpr exp
   Ext.StgLetNoEscape b exp  -> StgLetNoEscape noExtFieldSilent <$> cvtBinding b <*> cvtExpr exp
 
@@ -368,18 +425,21 @@ cvtUpdateFlag = \case
 
 cvtRhs :: Ext.Rhs -> M StgRhs
 cvtRhs = \case
-  Ext.StgRhsClosure u args exp  -> StgRhsClosure noExtFieldSilent dontCareCCS (cvtUpdateFlag u) <$> mapM cvtId args <*> cvtExpr exp
+  Ext.StgRhsClosure u args exp  -> StgRhsClosure noExtFieldSilent dontCareCCS (cvtUpdateFlag u) <$> mapM cvtIdDef args <*> cvtExpr exp
   Ext.StgRhsCon dc args         -> StgRhsCon dontCareCCS <$> cvtDataCon dc <*> cvtArgs args
 
 cvtBinding :: Ext.Binding -> M StgBinding
 cvtBinding = \case
-  Ext.StgNonRec i r -> StgNonRec <$> cvtId i <*> cvtRhs r
-  Ext.StgRec l      -> StgRec <$> sequence [(,) <$> cvtId i <*> cvtRhs r | (i, r) <- l]
+  Ext.StgNonRec i r -> StgNonRec <$> cvtIdDef i <*> cvtRhs r
+  Ext.StgRec l      -> do
+                        -- HINT: add new ids to the scope
+                        mapM_ (cvtIdDef . fst) l
+                        StgRec <$> sequence [(,) <$> cvtId i <*> cvtRhs r | (i, r) <- l]
 
 cvtTopBinding :: Ext.TopBinding -> M StgTopBinding
 cvtTopBinding = \case
   Ext.StgTopLifted b      -> StgTopLifted <$> cvtBinding b
-  Ext.StgTopStringLit i s -> StgTopStringLit <$> cvtId i <*> pure s
+  Ext.StgTopStringLit i s -> StgTopStringLit <$> cvtIdDef i <*> pure s
 
 -- foreign stubs/files
 

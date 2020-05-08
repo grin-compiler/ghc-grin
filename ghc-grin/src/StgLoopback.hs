@@ -90,7 +90,7 @@ compileToObject backend unitId modName stubs tyCons topBinds_simple outputName =
     putStrLn "==== Lint STG ===="
     lintStgTopBindings dflags this_mod True "Manual" topBinds_simple
 
-  us <- liftIO $ mkSplitUniqSupply 'g'
+  --us <- liftIO $ mkSplitUniqSupply 'u'
   --let topBinds = unarise us topBinds_simple
   let topBinds = topBinds_simple
 {-
@@ -100,12 +100,12 @@ compileToObject backend unitId modName stubs tyCons topBinds_simple outputName =
 -}
   -- Compile
   dflags <- getSessionDynFlags
-  l <- setSessionDynFlags $
+  pkgs <- setSessionDynFlags $
     dflags { hscTarget = target, ghcLink = NoLink }
     `gopt_set`  Opt_KeepSFiles
     `gopt_set`  Opt_KeepLlvmFiles
 --    `dopt_set`  Opt_D_dump_cmm
-    `dopt_set`  Opt_D_dump_cmm_raw
+--    `dopt_set`  Opt_D_dump_cmm_raw
 --    `dopt_set`  Opt_D_dump_cmm_from_stg
     `dopt_set`  Opt_D_dump_timings
     `gopt_set`  Opt_DoStgLinting
