@@ -26,6 +26,12 @@ import GHC.Stg.Syntax (StgTopBinding)
 import qualified GHC.Driver.Types as GHC
 import qualified Outputable as GHC
 
+moduleStgbin :: String -> FilePath
+moduleStgbin moduleName = replaceEq '.' '/' moduleName <.> "o_stgbin"
+
+replaceEq :: Eq a => a -> a -> [a] -> [a]
+replaceEq from to = map (\cur -> if cur == from then to else cur)
+
 parseSection :: [String] -> String -> [String]
 parseSection content n = map (read . tail) . takeWhile (isPrefixOf "-") . tail . dropWhile (not . isPrefixOf n) $ content
 
@@ -42,8 +48,16 @@ getAppLibs fname = do
       cLibs     = filter (isPrefixOf "-lC") pkgLibs
   archives <- Set.fromList . map takeFileName . concat <$> mapM (find always (extension ==? ".a")) paths
   let cbits   = [o ++ ".cbits" | o <- pkgLibs, Set.member ("lib" ++ drop 2 o ++ ".cbits.a") archives]
-      ldOpts  = concat [cbits, cLibs, ldFlags, extraLibs]
+      stubs   = [o ++ ".stubs" | o <- pkgLibs, Set.member ("lib" ++ drop 2 o ++ ".stubs.a") archives]
+      ldOpts  = concat [stubs, cbits, cLibs, ldFlags, extraLibs]
   pure (incPaths, paths, ldOpts, [root </> o | o <- cObjFiles])
+
+getPkgStgbins :: FilePath -> IO [FilePath]
+getPkgStgbins stglibPath = do
+  fname <- head <$> find always (extension ==? ".stglib") stglibPath
+  content <- lines <$> readFile fname
+  let modules = parseSection content "modules:"
+  pure [stglibPath </> moduleStgbin m | m <- modules]
 
 getStgbins :: FilePath -> IO [FilePath]
 getStgbins fname = do
@@ -51,7 +65,7 @@ getStgbins fname = do
   let paths   = parseSection content "pkg_lib_paths:"
       [root]  = parseSection content "root:"
       o_files = parseSection content "o_files:"
-  stgbins <- mapM (find always (extension ==? ".o_stgbin")) paths
+  stgbins <- mapM getPkgStgbins paths
   pure $ [root </> (o ++ "_stgbin") | o <- o_files ] ++ concat stgbins
 
 {-
@@ -105,18 +119,6 @@ sortChunks :: [(FilePath, [StgTopBinding])] -> [(FilePath, [StgTopBinding])]
 sortChunks l = map snd $ sortBy (\a b -> compare (fst b) (fst a)) [(length $ snd x, x) | x <- l]
 -}
 
-getStubs :: [FilePath] -> IO GHC.ForeignStubs
-getStubs stgBins = do
-  stubs <- forM stgBins $ \f -> do
-    (_, _, _, stub) <- readStgbinStubs f
-    pure stub
-  let (hStub, cStub) = unzip [(h, c) | ForeignStubs h c <- stubs]
-      hStr = BS8.unpack $ BS8.unlines hStub
-      cStr = BS8.unpack $ BS8.unlines cStub
-  pure $ if null hStr && null cStr
-    then GHC.NoStubs
-    else GHC.ForeignStubs (GHC.text hStr) (GHC.text cStr)
-
 main :: IO ()
 main = do
   [stgAppFname] <- getArgs
@@ -132,8 +134,5 @@ main = do
 
   let cg = NCG
 
-  putStrLn $ "collecting stubs"
-  stubs <- getStubs stgBins
-
   putStrLn $ "linking exe"
-  compileProgram cg incPaths libPaths ldOpts (clikeFiles ++ oStg) stubs [] []
+  compileProgram cg incPaths libPaths ldOpts (clikeFiles ++ oStg) GHC.NoStubs [] []
