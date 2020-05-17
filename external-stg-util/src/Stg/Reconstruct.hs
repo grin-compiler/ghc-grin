@@ -76,6 +76,7 @@ reconLocalBinder BinderMap{..} SBinder{..} = -- HINT: local binders only
   , binderUnitId      = bmUnitId
   , binderModule      = bmModule
   , binderScope       = LocalScope
+  , binderTopLevel    = False
   }
 
 reconDataCon :: UnitId -> ModuleName -> TyCon -> SDataCon -> DataCon
@@ -110,6 +111,7 @@ mkTopBinder u m scope SBinder{..} =
   , binderUnitId      = u
   , binderModule      = m
   , binderScope       = scope
+  , binderTopLevel    = True
   }
 
 reconModule :: SModule -> Module

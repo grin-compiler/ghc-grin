@@ -181,6 +181,7 @@ data Binder
     , binderDetails   :: !IdDetails
     , binderUnitId    :: !UnitId
     , binderModule    :: !ModuleName
+    , binderTopLevel  :: !Bool
     }
   deriving (Eq, Ord, Generic, Show)
 
@@ -191,11 +192,20 @@ data Scope
   | ForeignExported -- ^ visible for foreign libraries
   deriving (Eq, Ord, Generic, Show)
 
+tyConUniqueName :: TyCon -> Name
+tyConUniqueName TyCon{..} = getUnitId tcUnitId <> "_" <> getModuleName tcModule <> "." <> tcName
+
+dataConUniqueName :: DataCon -> Name
+dataConUniqueName DataCon{..} = getUnitId dcUnitId <> "_" <> getModuleName dcModule <> "." <> dcName
+
 binderUniqueName :: Binder -> Name
 binderUniqueName Binder{..} = case binderScope of
-  LocalScope  -> binderName <> BS8.pack ('.' : show u)
-  GlobalScope -> getUnitId binderUnitId <> "_" <> getModuleName binderModule <> "." <> binderName <> BS8.pack ('.' : show u)
-  _           -> getUnitId binderUnitId <> "_" <> getModuleName binderModule <> "." <> binderName
+  LocalScope      -> if binderTopLevel
+                      then getUnitId binderUnitId <> "_" <> getModuleName binderModule <> "." <> binderName <> BS8.pack ('.' : show u)
+                      else binderName <> BS8.pack ('.' : show u)
+  GlobalScope     -> getUnitId binderUnitId <> "_" <> getModuleName binderModule <> "." <> binderName <> BS8.pack ('.' : show u)
+  HaskellExported -> getUnitId binderUnitId <> "_" <> getModuleName binderModule <> "." <> binderName
+  ForeignExported -> getUnitId binderUnitId <> "_" <> getModuleName binderModule <> "." <> binderName
   where
     BinderId u = binderId
 
