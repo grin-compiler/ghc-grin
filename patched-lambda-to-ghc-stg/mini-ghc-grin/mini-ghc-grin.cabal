@@ -15,15 +15,17 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:
-    --Lambda.Name
+    Lambda.Name
     --Lambda.Syntax
     --Lambda.ToStg
+    Lambda.GHCSymbols
     StgLoopback
     Stg.ToStg
     Stg.Convert
     Stg.Syntax
     Stg.Util
     Stg.Reconstruct
+    Stg.WriteDfeFacts
 
   build-depends:
       base
@@ -52,6 +54,7 @@ executable gen-exe
                      , ghc
                      , mini-ghc-grin
                      , split
+                     , async-pool
                      , process
                      , filepath
                      , filemanip
