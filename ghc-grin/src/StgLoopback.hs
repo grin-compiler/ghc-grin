@@ -66,7 +66,11 @@ data Backend = NCG | LLVM
 
 
 compileToObject :: Backend -> UnitId -> ModuleName -> ForeignStubs -> [TyCon] -> [StgTopBinding] -> FilePath -> IO ()
-compileToObject backend unitId modName stubs tyCons topBinds_simple outputName = runGhc (Just libdir) $ do
+compileToObject backend unitId modName stubs tyCons topBinds_simple outputName = do
+  runGhc (Just libdir) $ compileToObjectM backend unitId modName stubs tyCons topBinds_simple outputName
+
+compileToObjectM :: Backend -> UnitId -> ModuleName -> ForeignStubs -> [TyCon] -> [StgTopBinding] -> FilePath -> Ghc ()
+compileToObjectM backend unitId modName stubs tyCons topBinds_simple outputName = do
   dflags <- getSessionDynFlags
 
   let ccs       = emptyCollectedCCs :: CollectedCCs
@@ -110,6 +114,7 @@ compileToObject backend unitId modName stubs tyCons topBinds_simple outputName =
     `dopt_set`  Opt_D_dump_timings
     `gopt_set`  Opt_DoStgLinting
     `gopt_set`  Opt_DoCmmLinting
+    `gopt_set`  Opt_SplitSections -- HINT: linker based dead code elimination
 
   env <- getSession
   liftIO $ do
@@ -178,6 +183,7 @@ type CollectedCCs
     `dopt_set`  Opt_D_dump_timings
     `gopt_set`  Opt_DoStgLinting
     `gopt_set`  Opt_DoCmmLinting
+    `gopt_set`  Opt_SplitSections -- HINT: linker based dead code elimination
 
   let libSet = Set.fromList ["rts"] -- "rts", "ghc-prim-cbits", "base-cbits", "integer-gmp-cbits"]
   dflags <- getSessionDynFlags
