@@ -28,19 +28,20 @@ import GHC.Paths ( libdir )
 -}
 
 main :: IO ()
-main = runGhc (Just libdir) $ liftIO $ do
+main = runGhc (Just libdir) $ do
   let cg = NCG
 
-  stgbins <- getArgs
+  stgbins <- liftIO getArgs
   forM_ stgbins $ \stgbinName -> do
-    putStrLn $ "reading   " ++ stgbinName
-    extStgModule <- readStgbin stgbinName
+    extStgModule <- liftIO $ do
+      putStrLn $ "reading   " ++ stgbinName
+      readStgbin stgbinName
     let StgModule{..} = toStg extStgModule
         oName         = stgbinName ++ ".o"
-    putStrLn $ "compiling " ++ oName
-    putStrLn $ unlines $ map show stgIdUniqueMap
+    liftIO $ putStrLn $ "compiling " ++ oName
+    --putStrLn $ unlines $ map show stgIdUniqueMap
 
     -- HINT: the stubs are compiled at link time
-    compileToObject cg stgUnitId stgModuleName GHC.NoStubs stgModuleTyCons stgTopBindings oName
+    compileToObjectM cg stgUnitId stgModuleName GHC.NoStubs stgModuleTyCons stgTopBindings oName
 
     -- TODO: simplify API to: compileToObject cg stgModule oName

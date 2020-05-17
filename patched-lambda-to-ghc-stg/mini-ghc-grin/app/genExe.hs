@@ -1,28 +1,34 @@
 module Main where
 
+import qualified Data.Map as Map
 import qualified Data.Set as Set
-import Data.List (isPrefixOf, groupBy, sortBy)
+import Data.Maybe
+import Data.List (isPrefixOf, groupBy, sortBy, foldl')
 import Data.List.Split
 import Control.Monad
 import Text.Printf
+import Control.Concurrent.Async.Pool
 
 import System.Environment
 import System.FilePath
 import System.FilePath.Find
 import System.Process
 
---import Lambda.Name
+import qualified Lambda.GHCSymbols as GHCSymbols
+import Lambda.Name
 --import Lambda.Syntax
 --import Lambda.ToStg
 import StgLoopback
 import Stg.Util
-import Stg.Syntax (ForeignStubs(..))
+import Stg.Syntax
+
+import Stg.WriteDfeFacts
 
 import Data.Binary
 
 import qualified Data.ByteString.Char8 as BS8
 
-import GHC.Stg.Syntax (StgTopBinding)
+--import GHC.Stg.Syntax (StgTopBinding)
 import qualified GHC.Driver.Types as GHC
 import qualified Outputable as GHC
 
@@ -69,55 +75,48 @@ getStgbins fname = do
   pure $ [root </> (o ++ "_stgbin") | o <- o_files ] ++ concat stgbins
 
 {-
-readStubs :: String -> IO GHC.ForeignStubs
-readStubs fname = do
-  (hStub, cStub) <- decodeFile (fname ++ ".stubsbin") :: IO (BS8.ByteString, BS8.ByteString)
-  let hStr = BS8.unpack hStub
-      cStr = BS8.unpack cStub
-  pure $ if null hStr && null cStr
-    then GHC.NoStubs
-    else GHC.ForeignStubs (GHC.text hStr) (GHC.text cStr)
+  TODO: LTO-DFE
+    done - app module pruning
+    - ext stg name collector pass
+    - cli tool to generate facts
 
+    - collect facts + run LTO-DFE + export results
+    - call gen-obj + import liveness result + prune top level bindings
 
-main :: IO ()
-main = do
-  [fname] <- getArgs
-  let lambdaName = fname ++ ".lambdabin"
-  putStrLn $ "reading " ++ lambdaName
-  program <- decodeFile lambdaName :: IO Program
-  stubs <- readStubs fname
-  putStrLn "compiling"
-  let (tyCons, binds) = toStgWithNames program
-  o@(incPaths, libPaths, ldOpts, clikeFiles) <- getAppLibs fname
-  print o
-
-  --let stgChunks = [(printf "%s.%04d.o" fname i, s) | (i, s) <- zip [0 :: Int ..] (chunksOf 30 binds)]
-  let stgChunks   = getStgChunks fname binds
-  forM_ stgChunks $ \(oName, stgBinds) -> do
-    printf "%5d\t%s\n" (length stgBinds) oName
-
-  let cg = NCG
-
-  chunkFiles <- forM stgChunks $ \(oName, stgBinds) -> do
-    putStrLn "compiling:"
-    printf "%5d\t%s\n" (length stgBinds) oName
-    compileToObject cg [] stgBinds oName
-    pure oName
-
-  putStrLn $ "compiling and linking"
-  compileProgram cg incPaths libPaths ldOpts (clikeFiles ++ chunkFiles) stubs tyCons []
-
-getStgChunks :: FilePath -> [(Name, StgTopBinding)] -> [(FilePath, [StgTopBinding])]
-getStgChunks appName l = zipWith mkChunk [0 :: Int ..] $ groupBy (\a b -> fst a == fst b) [(mkOutName n, s) | (n, s) <- l]
-  where
-    mkChunk i xs@((n,_):_) = (printf "%s.%s.%02d.o" appName n i, map snd xs)
-    mkOutName n = case decodePackageQualifiedName n of
-      Nothing             -> error $ "illegal name: " ++ unpackName n
-      Just (uid, mod, _)  -> uid ++ "_" ++ mod
-
-sortChunks :: [(FilePath, [StgTopBinding])] -> [(FilePath, [StgTopBinding])]
-sortChunks l = map snd $ sortBy (\a b -> compare (fst b) (fst a)) [(length $ snd x, x) | x <- l]
 -}
+
+collectProgramModules :: [FilePath] -> String -> String -> IO [FilePath]
+collectProgramModules stgbinFileNames unitId mod = do
+  -- filter dependenies only
+  (fexportedList, depList) <- fmap unzip . forM stgbinFileNames $ \fname -> do
+    (_, u, m, _, hasForeignExport, deps) <- readStgbinInfo fname
+    let fexport = if hasForeignExport then Just (u, m) else Nothing
+    pure (fexport, ((u, m), [(du, dm) | (du, dl) <- deps, dm <- dl]))
+  let fnameMap  = Map.fromList $ zip (map fst depList) stgbinFileNames
+      mnameMap  = Map.fromList $ zip stgbinFileNames (map fst depList)
+      depMap    = Map.fromList depList
+      calcDep s n
+        | Set.member n s = s
+        | Just l <- Map.lookup n depMap = foldl' calcDep (Set.insert n s) l
+        | otherwise = Set.insert n s -- error $ printf "missing module: %s" . show $ getModuleName n
+
+      keyMain = (UnitId $ BS8.pack unitId, ModuleName $ BS8.pack mod)
+      prunedDeps = catMaybes [Map.lookup m fnameMap | m <- Set.toList $ foldl calcDep mempty $ keyMain : rtsDeps ++ catMaybes fexportedList]
+      rtsDeps = [(UnitId $ BS8.pack u, ModuleName $ BS8.pack m) | (u, m, _) <- catMaybes $ map (decodePackageQualifiedName . packName) GHCSymbols.liveSymbols]
+
+  putStrLn $ "all modules: " ++ show (length stgbinFileNames)
+  putStrLn $ "app modules: " ++ show (length prunedDeps)
+  putStrLn $ "app dependencies:\n"
+  forM_ [mnameMap Map.! fname | fname <- prunedDeps] $ \(UnitId uid, ModuleName mod) -> do
+    printf "%-60s %s\n" (BS8.unpack uid) (BS8.unpack mod)
+  pure prunedDeps
+
+genProgramDfeFacts :: [FilePath] -> IO ()
+genProgramDfeFacts stgbinFileNames = do
+  putStrLn "generate datalog facts for whole stg program dead function elimination"
+  forM_ stgbinFileNames $ \stgbinName -> do
+    extStgModule <- readStgbin stgbinName
+    writeDfeFacts stgbinName extStgModule
 
 main :: IO ()
 main = do
@@ -126,10 +125,15 @@ main = do
   putStrLn "compile STG modules"
   stgBins <- getStgbins stgAppFname
 
-  --callProcess "gen-obj" stgBins
-  forM_ stgBins $ \f -> callProcess "gen-obj" [f]
+  appStgBins <- collectProgramModules stgBins "main" "Main"
 
-  let oStg = [s ++ ".o" | s <- stgBins]
+  -- DFE pass
+  genProgramDfeFacts appStgBins
+
+  withTaskGroup 4 $ \g -> do
+    mapTasks g [callProcess "gen-obj" f | f <- chunksOf 1 appStgBins]
+
+  let oStg = [s ++ ".o" | s <- appStgBins]
   o@(incPaths, libPaths, ldOpts, clikeFiles) <- getAppLibs stgAppFname
 
   let cg = NCG

@@ -20,3 +20,6 @@ build:
 
 ghc-options:
   mini-ghc-grin: -DEXT_STG_FOR_NON_PATCHED_GHC
+
+extra-deps:
+  - async-pool-0.9.1@sha256:4015140f896c3f1652b06a679b0ade2717d05557970c283ea2c372a71be2a6a1,1605
