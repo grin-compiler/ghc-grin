@@ -10,6 +10,7 @@ import StgLoopback
 
 import Stg.Util
 import Stg.ToStg
+import Stg.DeadFunctionElimination.StripModule
 
 import qualified GHC.Driver.Types as GHC
 
@@ -34,11 +35,14 @@ main = runGhc (Just libdir) $ do
   stgbins <- liftIO getArgs
   forM_ stgbins $ \stgbinName -> do
     extStgModule <- liftIO $ do
-      putStrLn $ "reading   " ++ stgbinName
+      putStrLn $ stgbinName
       readStgbin stgbinName
-    let StgModule{..} = toStg extStgModule
+
+    strippedExtModule <- liftIO $ tryStripDeadParts {-stgbinName-}"." extStgModule -- TODO: fix liveness input name
+
+    let StgModule{..} = toStg strippedExtModule
         oName         = stgbinName ++ ".o"
-    liftIO $ putStrLn $ "compiling " ++ oName
+    --liftIO $ putStrLn $ "compiling " ++ oName
     --putStrLn $ unlines $ map show stgIdUniqueMap
 
     -- HINT: the stubs are compiled at link time

@@ -22,7 +22,8 @@ import StgLoopback
 import Stg.Util
 import Stg.Syntax
 
-import Stg.WriteDfeFacts
+import Stg.DeadFunctionElimination.Facts
+import Stg.DeadFunctionElimination.Analysis
 
 import Data.Binary
 
@@ -114,9 +115,14 @@ collectProgramModules stgbinFileNames unitId mod = do
 genProgramDfeFacts :: [FilePath] -> IO ()
 genProgramDfeFacts stgbinFileNames = do
   putStrLn "generate datalog facts for whole stg program dead function elimination"
+{-
   forM_ stgbinFileNames $ \stgbinName -> do
     extStgModule <- readStgbin stgbinName
     writeDfeFacts stgbinName extStgModule
+-}
+  withTaskGroup 4 $ \g -> do
+    mapTasks g [readStgbin f >>= writeDfeFacts f | f <- stgbinFileNames]
+  pure ()
 
 main :: IO ()
 main = do
@@ -129,6 +135,7 @@ main = do
 
   -- DFE pass
   genProgramDfeFacts appStgBins
+  livenessAnalysisLogM appStgBins
 
   withTaskGroup 4 $ \g -> do
     mapTasks g [callProcess "gen-obj" f | f <- chunksOf 1 appStgBins]
