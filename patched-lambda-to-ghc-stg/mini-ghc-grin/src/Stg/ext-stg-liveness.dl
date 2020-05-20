@@ -31,22 +31,28 @@ LiveFunName(fun) :-
   LiveSource(fun).
 
 LiveFunName(ref) :-
-  FunReference(fun, ref),
-  LiveFunName(fun).
+  LiveFunName(fun),
+  FunReference(fun, ref).
 
 // calculate live data cons
 LiveDataConName(fun) :-
   LiveSource(fun).
 
 LiveDataConName(datacon) :-
-  DataConReference(fun, datacon),
-  LiveFunName(fun).
+  LiveFunName(fun),
+  DataConReference(fun, datacon).
 
 // calculate live type cons
 LiveTyConName(tycon) :-
-  TyCon(tycon, datacon),
-  LiveDataConName(datacon).
+  LiveDataConName(datacon),
+  TyCon(tycon, datacon).
 
 LiveTyConName(tycon) :-
-  TyConReference(fun, tycon),
-  LiveFunName(fun).
+  LiveFunName(fun),
+  TyConReference(fun, tycon).
+
+
+
+// temp hack: keep all datacons live
+LiveDataConName(datacon) :-
+  TyCon(_, datacon).
