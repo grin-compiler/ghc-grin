@@ -1,6 +1,5 @@
 {-# LANGUAGE RecordWildCards, LambdaCase, TupleSections, OverloadedStrings #-}
--- Dead Function Elimination
-module Stg.WriteDfeFacts where
+module Stg.DeadFunctionElimination.Facts where
 
 import Data.Map (Map)
 import qualified Data.Map as Map
@@ -27,7 +26,25 @@ writeDfeFacts stgbinFname Module{..} = do
         hFlush h
         hClose h
 
+      getTopBinders :: TopBinding -> [Binder]
+      getTopBinders = \case
+        StgTopLifted (StgNonRec b _)  -> [b]
+        StgTopLifted (StgRec bs)      ->  map fst bs
+        StgTopStringLit b _           -> [b]
+
+      topBinders :: [Binder]
+      topBinders = concatMap getTopBinders moduleTopBindings
+
+      extBinders :: [Binder]
+      extBinders = concatMap snd . concatMap snd $ moduleExternalTopIds
+
   -- from module
+
+  -- export LiveSource
+  factLiveSource <- openFact "LiveSource.facts"
+  forM_ topBinders $ \b -> when (binderScope b == ForeignExported) $ do
+    BS8.hPutStrLn factLiveSource $ binderUniqueName b
+  closeFact factLiveSource
 
   -- export TyCon with DataCons
   factTyCon <- openFact "TyCon.facts"
@@ -43,14 +60,8 @@ writeDfeFacts stgbinFname Module{..} = do
   factFunReference      <- openFact "FunReference.facts"
 
   let
-      getTopBinders :: TopBinding -> [Binder]
-      getTopBinders = \case
-        StgTopLifted (StgNonRec b _)  -> [b]
-        StgTopLifted (StgRec bs)      ->  map fst bs
-        StgTopStringLit b _           -> [b]
-
       funNameMap :: Map BinderId Name
-      funNameMap = Map.fromList [(binderId b, binderUniqueName b) | b <- concatMap getTopBinders moduleTopBindings]
+      funNameMap = Map.fromList [(binderId b, binderUniqueName b) | b <- topBinders ++ extBinders]
 
       addFunRef :: Name -> Binder -> IO ()
       addFunRef fun b = case Map.lookup (binderId b) funNameMap of
@@ -125,20 +136,3 @@ writeDfeFacts stgbinFname Module{..} = do
   closeFact factTyConReference
   closeFact factDataConReference
   closeFact factFunReference
-
-{-
-  collect top level names defs <---> top-level/external names references
-
-  to collect:
-    - top-name => [referred top level name]
-    - top-name => [referred type con]
-    - top-name => [referred data con]
-
-  TODO:
-    done - datalog analysis
-
-    done - save facts for an stgbin
-    done - use globally unique names (program global)
-    - export live fun sources i.e. foreign exported top level names
-
--}
