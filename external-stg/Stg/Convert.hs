@@ -1,30 +1,30 @@
 {-# LANGUAGE RecordWildCards, LambdaCase, TupleSections, OverloadedStrings, CPP #-}
 module Stg.Convert where
 
-import GhcPrelude
+import GHC.Prelude
 
 import qualified Data.ByteString.Char8 as BS8
 
-import qualified CoreSyn      as GHC
-import qualified DataCon      as GHC
-import qualified FastString   as GHC
-import qualified ForeignCall  as GHC
-import qualified Id           as GHC
-import qualified IdInfo       as GHC
-import qualified BasicTypes   as GHC
-import qualified Literal      as GHC
-import qualified Module       as GHC
-import qualified Name         as GHC
-import qualified Outputable   as GHC
-import qualified PrimOp       as GHC
-import qualified TyCon        as GHC
-import qualified Type         as GHC
-import qualified TyCoPpr      as GHC
-import qualified Unique       as GHC
-import qualified GHC.Types.RepType  as GHC
-import qualified GHC.Stg.Syntax     as GHC
-import qualified GHC.Driver.Session as GHC
-import qualified GHC.Driver.Types   as GHC
+import qualified GHC.Builtin.PrimOps    as GHC
+import qualified GHC.Core               as GHC
+import qualified GHC.Core.DataCon       as GHC
+import qualified GHC.Core.TyCon         as GHC
+import qualified GHC.Core.TyCo.Ppr      as GHC
+import qualified GHC.Core.Type          as GHC
+import qualified GHC.Data.FastString    as GHC
+import qualified GHC.Driver.Session     as GHC
+import qualified GHC.Driver.Types       as GHC
+import qualified GHC.Stg.Syntax         as GHC
+import qualified GHC.Types.Basic        as GHC
+import qualified GHC.Types.ForeignCall  as GHC
+import qualified GHC.Types.Id           as GHC
+import qualified GHC.Types.Id.Info      as GHC
+import qualified GHC.Types.Literal      as GHC
+import qualified GHC.Types.Name         as GHC
+import qualified GHC.Types.RepType      as GHC
+import qualified GHC.Types.Unique       as GHC
+import qualified GHC.Unit.Module        as GHC
+import qualified GHC.Utils.Outputable   as GHC
 
 import Control.Monad
 import Control.Monad.Trans.State.Strict
@@ -42,7 +42,8 @@ import Stg.Syntax
 import Debug.Trace
 import Control.Exception
 import System.IO.Unsafe
-import qualified PprCore as GHC
+import qualified GHC.Core.Ppr as GHC
+import GHC.Prelude
 
 --trace :: String -> a -> a
 --trace _ = id
@@ -106,7 +107,7 @@ cvtModuleName :: GHC.ModuleName -> ModuleName
 cvtModuleName = ModuleName . GHC.bytesFS . GHC.moduleNameFS
 
 cvtUnitIdAndModuleName :: GHC.Module -> (UnitId, ModuleName)
-cvtUnitIdAndModuleName m = (cvtUnitId $ GHC.moduleUnitId m, cvtModuleName $ GHC.moduleName m)
+cvtUnitIdAndModuleName m = (cvtUnitId . GHC.toUnitId $ GHC.moduleUnit m, cvtModuleName $ GHC.moduleName m)
 
 -- data con conversion
 
@@ -387,7 +388,7 @@ cvtSourceText = \case
 
 cvtCCallTarget :: GHC.CCallTarget -> CCallTarget
 cvtCCallTarget = \case
-  GHC.StaticTarget s l u b  -> StaticTarget (cvtSourceText s) (GHC.bytesFS l) (fmap cvtUnitId u) b
+  GHC.StaticTarget s l u b  -> StaticTarget (cvtSourceText s) (GHC.bytesFS l) (fmap (cvtUnitId . GHC.toUnitId) u) b
   GHC.DynamicTarget         -> DynamicTarget
 
 cvtCCallConv :: GHC.CCallConv -> CCallConv
@@ -408,7 +409,7 @@ cvtForeignCall :: GHC.ForeignCall -> ForeignCall
 cvtForeignCall (GHC.CCall (GHC.CCallSpec t c s)) = ForeignCall (cvtCCallTarget t) (cvtCCallConv c) (cvtSafety s)
 
 cvtPrimCall :: GHC.PrimCall -> PrimCall
-cvtPrimCall (GHC.PrimCall lbl uid) = PrimCall (GHC.bytesFS lbl) (cvtUnitId uid)
+cvtPrimCall (GHC.PrimCall lbl uid) = PrimCall (GHC.bytesFS lbl) (cvtUnitId . GHC.toUnitId $ uid)
 
 cvtOp :: GHC.StgOp -> StgOp
 cvtOp = \case

@@ -4,7 +4,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Stg.Syntax where
 
-import GhcPrelude
+import GHC.Prelude
 
 import GHC.Generics
 

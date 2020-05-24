@@ -1,6 +1,6 @@
 module Stg.UnariseType (unariseType, unariseTypePrimRep) where
 
-import GhcPrelude
+import GHC.Prelude
 
 import Data.Maybe
 import Data.Semigroup
