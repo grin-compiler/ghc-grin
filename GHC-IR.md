@@ -21,3 +21,12 @@ http://fixpt.de/blog/2018-12-30-strictness-analysis-part-2.html
 
 https://gitlab.haskell.org/ghc/ghc/wikis/commentary/compiler/demand  
 https://www.microsoft.com/en-us/research/wp-content/uploads/2017/03/demand-jfp-draft.pdf  
+
+## Cmm
+[[ny-haskell] Who Ya Gonna Call? Getting Dirty with Cmm, the GHC backend, and writing new PrimOps with Carter Schonwald (video)](https://vimeo.com/69025829)  
+https://takenobu-hs.github.io/downloads/haskell_ghc_illustrated.pdf  
+https://en.wikipedia.org/wiki/C--#References  
+https://www.cs.tufts.edu/~nr/c--/extern/man2.pdf  
+http://www.scs.stanford.edu/11au-cs240h/notes/ghc.html  
+https://llvm.org/pubs/2009-10-TereiThesis.pdf  
+
