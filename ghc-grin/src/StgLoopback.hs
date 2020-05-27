@@ -2,42 +2,35 @@ module StgLoopback where
 
 -- Compiler
 import GHC
-import ErrUtils
-import GHC.Platform ( platformOS, osSubsectionsViaSymbols )
-import Outputable
 import GHC.Paths ( libdir )
---import HscTypes
---import DriverPhases
---import DynFlags
---import DriverPipeline
---import HscMain
---import CodeOutput
---import Hooks
+import GHC.Platform ( platformOS, osSubsectionsViaSymbols )
+import GHC.Driver.CodeOutput
+import GHC.Driver.Hooks
+import GHC.Driver.Main
+import GHC.Driver.Phases
+import GHC.Driver.Pipeline
 import GHC.Driver.Session
 import GHC.Driver.Types
-import GHC.Driver.Pipeline
-import GHC.Driver.Phases
-import GHC.Driver.Main
-import GHC.Driver.Hooks
-import GHC.Driver.CodeOutput
+import GHC.Utils.Error
+import GHC.Utils.Outputable
 
 -- Stg Types
-import FastString
-import Module
-import NameSet
-import Stream (Stream)
-import qualified Stream
-import GHC.Stg.Syntax
-import CostCentre
-import GHC.Stg.Lint
+import GHC.Data.FastString
 import GHC.Stg.FVs
+import GHC.Stg.Lint
+import GHC.Stg.Syntax
 import GHC.Stg.Unarise
+import GHC.Types.CostCentre
+import GHC.Types.Module
+import GHC.Types.Name.Set
+import GHC.Data.Stream (Stream)
+import qualified GHC.Data.Stream as Stream
 
 -- Core Passes
-import GHC.StgToCmm (codeGen)
 import GHC.Cmm
 import GHC.Cmm.Info (cmmToRawCmm )
-import UniqSupply ( mkSplitUniqSupply, initUs_ )
+import GHC.StgToCmm (codeGen)
+import GHC.Types.Unique.Supply ( mkSplitUniqSupply, initUs_ )
 
 import Control.Monad.Trans
 import Control.Monad
@@ -87,13 +80,15 @@ compileToObjectM backend unitId modName stubs tyCons topBinds_simple outputName 
       afterStgbinFName  = outputName -<.> ".after_unarise.stgbin"
 
   liftIO $ do
+    pure ()
 {-
     putStrLn "==== Writing before unarise STG ===="
     encodeFile beforeStgbinFName $ C.cvtModule [] [] "whole program stg before unarise" mainUnitId (mkModuleName ":Main") topBinds_simple NoStubs []
 -}
+{-
     putStrLn "==== Lint STG ===="
     lintStgTopBindings dflags this_mod True "Manual" topBinds_simple
-
+-}
   --us <- liftIO $ mkSplitUniqSupply 'u'
   --let topBinds = unarise us topBinds_simple
   let topBinds = topBinds_simple
@@ -111,9 +106,11 @@ compileToObjectM backend unitId modName stubs tyCons topBinds_simple outputName 
 --    `dopt_set`  Opt_D_dump_cmm
 --    `dopt_set`  Opt_D_dump_cmm_raw
 --    `dopt_set`  Opt_D_dump_cmm_from_stg
+{-
     `dopt_set`  Opt_D_dump_timings
     `gopt_set`  Opt_DoStgLinting
     `gopt_set`  Opt_DoCmmLinting
+-}
     `gopt_set`  Opt_SplitSections -- HINT: linker based dead code elimination
 
   env <- getSession

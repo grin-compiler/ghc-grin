@@ -2,9 +2,13 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Stg.Syntax where
 
+#ifdef EXT_STG_PACKAGE
+module Stg.Syntax where
+#else
+module GHC.Stg.External.Syntax where
 import GHC.Prelude
+#endif
 
 import GHC.Generics
 

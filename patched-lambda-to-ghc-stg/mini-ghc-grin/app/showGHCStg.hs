@@ -9,9 +9,9 @@ import System.Environment
 import Stg.Util
 import Stg.ToStg
 
-import qualified GHC.Stg.Syntax     as GHC
-import qualified Outputable         as GHC
-import qualified GHC.Driver.Session as GHC
+import qualified GHC.Stg.Syntax       as GHC
+import qualified GHC.Utils.Outputable as GHC
+import qualified GHC.Driver.Session   as GHC
 
 import GHC.Paths ( libdir )
 import GHC

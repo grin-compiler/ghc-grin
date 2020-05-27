@@ -15,7 +15,7 @@ import System.FilePath.Find
 import System.Process
 
 import qualified Lambda.GHCSymbols as GHCSymbols
-import Lambda.Name
+--import Lambda.Name
 --import Lambda.Syntax
 --import Lambda.ToStg
 import StgLoopback
@@ -31,7 +31,7 @@ import qualified Data.ByteString.Char8 as BS8
 
 --import GHC.Stg.Syntax (StgTopBinding)
 import qualified GHC.Driver.Types as GHC
-import qualified Outputable as GHC
+import qualified GHC.Utils.Outputable as GHC
 
 moduleStgbin :: String -> FilePath
 moduleStgbin moduleName = replaceEq '.' '/' moduleName <.> "o_stgbin"

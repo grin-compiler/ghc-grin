@@ -8,33 +8,33 @@ module Stg.ToStg
 import GHC
 --import GHC.Driver.Session
 import GHC.Driver.Types
-import Outputable
+import GHC.Utils.Outputable
 
 -- Stg Types
-import Module
-import Name
-import Id
-import IdInfo
-import Var
-import Unique
-import OccName
+import GHC.Types.Module
+import GHC.Types.Name
+import GHC.Types.Id
+import GHC.Types.Id.Info
+import GHC.Types.Var
+import GHC.Types.Unique
+import GHC.Types.Name.Occurrence as OccName
 import GHC.Stg.Syntax
---import StgSyn
-import CostCentre
-import ForeignCall
-import FastString
-import BasicTypes
-import CoreSyn (AltCon(..))
 
-import PrimOp
-import PrelNames
-import TysWiredIn
-import TysPrim
-import Literal
-import MkId
-import TyCon
-import DataCon
-import Type
+import GHC.Types.CostCentre
+import GHC.Types.ForeignCall
+import GHC.Data.FastString
+import GHC.Types.Basic
+import GHC.Core (AltCon(..))
+
+import GHC.Builtin.PrimOps
+import GHC.Builtin.Names
+import GHC.Builtin.Types
+import GHC.Builtin.Types.Prim
+import GHC.Types.Literal
+import GHC.Types.Id.Make
+import GHC.Core.TyCon
+import GHC.Core.DataCon
+import GHC.Core.Type
 
 import Control.Monad.State
 import Data.List (partition)
@@ -164,11 +164,11 @@ getFreshName ns uid mod name = do
       modl <- getBinderModule uid mod
       pure $ mkExternalName uniq modl (mkOccNameFS ns $ mkFastStringByteString name) noSrcSpan
     else do
-      {-
       pure $ mkInternalName uniq (mkOccNameFS ns $ mkFastStringByteString name) noSrcSpan
-      -}
+      {-
       modl <- getBinderModule uid mod
       pure $ mkExternalName uniq modl (mkOccNameFS ns $ mkFastStringByteString $ name Prelude.<> (BS8.pack $ show uniq)) noSrcSpan
+      -}
 
 
 getFreshExternalName :: NameSpace -> Ext.UnitId -> Ext.ModuleName -> Ext.Name -> M Name
@@ -401,13 +401,13 @@ cvtAlt Ext.Alt{..} = (,,) <$> cvtAltCon altCon <*> mapM cvtIdDef altBinders <*> 
 
 cvtExpr :: Ext.Expr -> M StgExpr
 cvtExpr = \case
-  Ext.StgApp f args _ _     -> StgApp <$> cvtId f <*> cvtArgs args
-  Ext.StgLit l              -> pure $ StgLit (cvtLit l)
-  Ext.StgConApp dc args t   -> StgConApp <$> cvtDataCon dc <*> cvtArgs args <*> pure (map cvtPrimRepType t)
-  Ext.StgOpApp op args t tc -> StgOpApp (cvtOp args op) <$> cvtArgs args <*> cvtADTType t tc
-  Ext.StgCase exp i at alts -> StgCase <$> cvtExpr exp <*> cvtIdDef i <*> cvtAltType at <*> mapM cvtAlt alts
-  Ext.StgLet b exp          -> StgLet noExtFieldSilent <$> cvtBinding b <*> cvtExpr exp
-  Ext.StgLetNoEscape b exp  -> StgLetNoEscape noExtFieldSilent <$> cvtBinding b <*> cvtExpr exp
+  Ext.StgApp f args t (_,_,l) -> StgApp <$> cvtId f <*> cvtArgs args <*> pure (cvtPrimRepType t, BS8.unpack l)
+  Ext.StgLit l                -> pure $ StgLit (cvtLit l)
+  Ext.StgConApp dc args t     -> StgConApp <$> cvtDataCon dc <*> cvtArgs args <*> pure (map cvtPrimRepType t)
+  Ext.StgOpApp op args t tc   -> StgOpApp (cvtOp args op) <$> cvtArgs args <*> cvtADTType t tc
+  Ext.StgCase exp i at alts   -> StgCase <$> cvtExpr exp <*> cvtIdDef i <*> cvtAltType at <*> mapM cvtAlt alts
+  Ext.StgLet b exp            -> StgLet noExtFieldSilent <$> cvtBinding b <*> cvtExpr exp
+  Ext.StgLetNoEscape b exp    -> StgLetNoEscape noExtFieldSilent <$> cvtBinding b <*> cvtExpr exp
 
 cvtArgs :: [Ext.Arg] -> M [StgArg]
 cvtArgs = mapM cvtArg
