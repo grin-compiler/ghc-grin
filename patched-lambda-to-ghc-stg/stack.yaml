@@ -5,21 +5,22 @@ allow-newer: true
 packages:
   - 'mini-ghc-grin'
 
-extra-path:
-  - /home/csaba/haskell/ghc-gitlab/ghc-8.11.0.20200222-src-git-toSTG/ghc-8.11.0.20200222-src/_build/stage1/bin
-
-# Turn on system GHC
+# use custom ext-stg whole program compiler GHC
+compiler:   ghc-8.11.0.20200524-ext-stg
 system-ghc: true
-skip-ghc-check: true
+extra-path:
+#- /home/csaba/haskell/ghc-gitlab/gitlab-ghc-fresh-may21/ghc/_build/stage1/bin
+- /home/csaba/haskell/grin-compiler/ghc-whole-program-compiler/_build/stage1/bin
+#- /home/csaba/haskell/grin-compiler/ghc-extstg-whole-program-compiler/_build/stage1/bin
 
-dump-logs: all
-
-build:
-  keep-tmp-files: true
-  #cabal-verbose: true
+#dump-logs: all
+#build:
+#  keep-tmp-files: true
+#  cabal-verbose: true
 
 ghc-options:
-  mini-ghc-grin: -DEXT_STG_FOR_NON_PATCHED_GHC
+  #mini-ghc-grin: -DEXT_STG_FOR_NON_PATCHED_GHC
+  "$everything": -fno-stgbin -fno-stgapp
 
 extra-deps:
   - async-pool-0.9.1@sha256:4015140f896c3f1652b06a679b0ade2717d05557970c283ea2c372a71be2a6a1,1605

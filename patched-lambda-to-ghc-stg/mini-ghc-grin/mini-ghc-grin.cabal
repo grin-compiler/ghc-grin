@@ -15,14 +15,14 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:
-    Lambda.Name
+    --Lambda.Name
     --Lambda.Syntax
     --Lambda.ToStg
     Lambda.GHCSymbols
     StgLoopback
     Stg.ToStg
-    Stg.Convert
-    Stg.Syntax
+--    Stg.Convert
+--    Stg.Syntax
     Stg.Util
     Stg.Reconstruct
     Stg.DeadFunctionElimination.Analysis
