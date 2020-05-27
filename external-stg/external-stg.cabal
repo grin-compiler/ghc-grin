@@ -18,7 +18,7 @@ library
 --    Stg.UnariseType
 --    Stg.Convert
     Stg.Syntax
-  ghc-options:         -Wall
+  ghc-options:         -Wall -DEXT_STG_PACKAGE
   other-extensions:    GeneralizedNewtypeDeriving
   build-depends:       base,
                        bytestring,
