@@ -9,7 +9,10 @@ GRIN backend for GHC
 
 The project is under heavy development.
 
-Currently we work on GHC primop and FFI support.
+Currently I work on the high level semantic model of GHC primop and RTS.
+
+This work is hosted in a spearate repository: https://github.com/grin-compiler/ghc-whole-program-compiler-project
+
 
 GHC-GRIN can not compile programs yet. 
 
